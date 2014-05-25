@@ -5,7 +5,9 @@
   :description "Describe langnostic here"
   :author "Your Name <your.name@example.com>"
   :license "Specify license here"
-  :depends-on (#:house #:cl-who #:cl-fad #:cl-css)
+  :depends-on (#:house #:cl-who #:cl-fad #:cl-css #:parenscript #:fact-base)
   :components ((:file "package")
+	       (:file "util")
+	       (:file "cosmetics")
                (:file "langnostic")))
 
