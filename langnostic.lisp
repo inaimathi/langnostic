@@ -2,11 +2,22 @@
 (in-package #:langnostic)
 
 (define-closing-handler (meta) ()
-  (page (:code "/tmp/langnostic/about-me")
-    (:p "I'm a Graphic Designer specializing in illustration and web development. Also, I like programming, and learning languages. Which is why I'm here.")))
+  (page ("Meta" :section "meta")
+    (:h3 "About Me")
+    (:p "I'm a Graphic Designer " 
+	(:i "(graduated from OCAD with a bachelor's)")
+	"specializing in illustration and web development. Also, I like programming, and learning languages. Which is why I'm here.")
+    (:p "Currently, I'm working as a Common Lisp developer at the Moneris point of sale R&D team.")
+
+    (:h3 "About This Site")
+    (:p "This site was built out of parentheses and adrenaline. The site itself is about 300 lines of fairly readable Common Lisp. The \"database\" is a " 
+	(:a :href "https://github.com/Inaimathi/fact-base" "simple triple-store")
+	" implemented in another ~400 lines of the same, and the web server is a "
+	(:a :href "https://github.com/Inaimathi/house" "minimal, asynchronous system")
+	" put together in yet another ~800 lines of CL.")))
 
 (define-closing-handler (root) ()
-  (page nil
+  (page (nil :section "blog")
     (:p "This is a stopgap blog archive for my own sanity, until either"
 	(:ul (:li "Google/blogger gets off its ass and fixes " (:a :href "http://langnostic.blogspot.com" "this"))
 	     (:li "I have enough time to put something nicer together.")))
@@ -15,15 +26,160 @@
 	" and possibly putting something together for " (:a :href "http://www.future-programming.org/call.html" "this") 
         ". In the meanwhile, enjoy the below archived offerings.")
     (:hr)
-    (:ul (loop for (fname title) in (articles)
-	    do (htm (:li (:a :href (format nil "/article?name=~a" fname) (str title))))))))
+    (:ul (for-all (and (?id :title ?title) (?id :file ?fname)) :in *base*
+		  :do (htm (:li (:a :href (format nil "/article?name=~a" ?fname) (str ?title))))))))
 
 (define-closing-handler (article) ((name :string))
-  (let ((article (first (for-all (and (?id :file name) (?id :body ?body)) :in *base* :collecting ?body))))
-    (page (:code (str (format nil "/tmp/langnostic/~a" name)))
+  (let ((article (first (for-all (and (?id :file name) (?id :title ?title) (?id :body ?body)) :in *base* :collect (list ?title ?body)))))
+    (page ((str (if article (first article) name)) :section "blog")
       (if article
-	  (str article)
+	  (str (second article))
 	  (str "Nope...")))))
+
+(define-closing-handler (archive) ()
+  (page (nil :section "archive")
+    (:ul (for-all (and (?id :title ?title) (?id :file ?fname)) :in *base*
+		  :do (htm (:li (:a :href (format nil "/article?name=~a" ?fname) (str ?title))))))))
+
+(define-closing-handler (links) ()
+  (page ("Links of Interest to Programming Polyglots" :section "links")
+    (:h3 "Generally useful things")
+    (link-list
+     "http://git-scm.com/" "GIT - Fast Version Control"
+     "http://conkeror.org/" "Conkeror - Firefox for Emacs users"
+     "http://xmonad.org/" "XMonad"
+     "http://www.nongnu.org/stumpwm/" "StumpWM"
+     "http://rosettacode.org/wiki/Rosetta_Code" "Rosetta Code"
+     "http://hyperpolyglot.org/" "Hyperpolyglot"
+     "https://github.com/adambard/learnxinyminutes-docs" "Learn X in Y Minutes")
+    (:h3 "Language Resources (in no particular order)")
+    (:h4 "JavaScript")
+    (link-list
+     "http://nodejs.org/" "node.js"
+     "http://code.google.com/p/v8/" "V8"
+     "http://jquery.com/" "jQuery"
+     "http://underscorejs.org/" "underscore.js"
+     "http://mbostock.github.com/d3/" "d3.js"
+     "http://handlebarsjs.com/" "Handlebars.js"
+     "http://angularjs.org/" "Angular.js")
+    (:h4 "REBOL")
+    (link-list
+     "https://github.com/rebol/r3" "REBOL3 Repository"
+     "http://www.rebol.com/rebolsteps.html" "REBOL in Ten Steps"
+     "http://www.rebol.com/r3/docs/guide.html" "REBOL3 Guide"
+     "http://www.rebol.com/r3/docs/functions.html" "REBOL3 function reference"
+     "http://chat.stackoverflow.com/rooms/291/rebol-and-red" "REBOL/RED Chatroom"
+     "http://www.red-lang.org/" "RED: an in-development variant of REBOL with a JIT compiler")
+    (:h4 "Ruby")
+    (link-list
+     "http://www.ruby-lang.org/en/" "The Ruby Language"
+     "http://mislav.uniqpath.com/poignant-guide/book/" "Why's Guide"
+     "http://watir.com/" "Watir Testing Framework")
+    (:h4 "Erlang")
+    (link-list
+     "http://armstrongonsoftware.blogspot.com/" "Armstrong on Software"
+     "http://ftp.sunet.se/pub/lang/erlang/" "Erlang + OTP"
+     "http://yaws.hyber.org/" "YAWS"
+     "http://nitrogenproject.com/" "Nitrogen"
+     "http://learnyousomeerlang.com/" "Learn You Erlang"
+     "https://github.com/rvirding/lfe" "Lisp Flavored Erlang"
+     "https://github.com/basho/rebar/" "Rebar")
+    (:h6 "Erlang Language Interfaces")
+    (link-list
+     "http://www.erlang.org/doc/tutorial/c_port.html" "C"
+     "http://erlport.org/" "Python"
+     "https://github.com/mojombo/erlectricity" "Ruby"
+     "http://www.erlang.org/doc/apps/jinterface/java/index.html" "Java")
+    (:i :style "font-size: x-small;" "The Common Lisp and Haskell interfaces aren't listed because \"I haven't gotten it working\" and \"it sucks donkey dong\" respectively.")
+    (:h4 "Haskell")
+    (link-list
+     "http://learnyouahaskell.com/" "Learn You Haskell"
+     "http://book.realworldhaskell.org/" "Real World Haskell"
+     "http://www.xent.com/pipermail/fork/Week-of-Mon-20070219/044101.html" "An Accurate Assessment"
+     "http://en.wikibooks.org/wiki/Write_Yourself_a_Scheme_in_48_Hours" "Write Yourself a Scheme"
+     "http://happstack.com/docs/crashcourse/index.html" "Happstack Crash Course"
+     "http://snapframework.com/" "snap"
+     "http://www.haskell.org/haskellwiki/Web/Servers#Warp" "Warp"
+     "http://hackage.haskell.org/packages/archive/pkg-list.html" "hackage"
+     "http://www.haskell.org/hoogle/" "hoogle"
+     "http://holumbus.fh-wedel.de/hayoo/hayoo.html" "hayoo"
+     "http://leksah.org/index.html" "leksah")
+    (:h4 "Smalltalk")
+    (link-list
+     "http://www.pharo-project.org/home" "Pharo"
+     "http://rmod.lille.inria.fr/coral/index.html" "Coral - Scripting with Pharo"
+     "http://pharobyexample.org/" "Pharo By Example"
+     "http://book.pharo-project.org/book/table-of-contents/?_s=GaoutvL8fOIi-wBt&_k=dffRK647Ld0GiAwR&_n&6" "Pharo CollaborActive Book"
+     "http://www.seaside.st/" "Seaside Web Framework"
+     "http://seaside.gemstone.com/tutorial.html" "Seaside 3.0 In Pharo"
+     "http://onsmalltalk.com/terse-guide-to-seaside" "Terse Guide to Seaside")
+    (:h4 "PHP")
+    (link-list
+     "http://php.net/manual/en/index.php" "PHP Manual"
+     "http://codeigniter.com/" "CodeIgniter"
+     "http://wordpress.org/" "WordPress"
+     "http://drupal.org/" "Drupal")
+    (:h4 "Python")
+    (link-list
+     "http://www.python.org/download/" "IDLE Download"
+     "http://webpython.codepoint.net/mod_python_tutorial" "mod_python tutorial"
+     "http://www.modpython.org/live/current/doc-html/" "mod_python docs"
+     "http://webpy.org/" "web.py"
+     "http://www.tornadoweb.org/" "tornado")
+    (:h4 "Common Lisp")
+    (link-list
+     "http://dept-info.labri.u-bordeaux.fr/~idurand/enseignement/PFS/Common/Strandh-Tutorial/indentation.html" "Indenting Lisp"
+     "http://www.cliki.net/CL-WIKI" "The CLiki"
+     "http://www.lispworks.com/documentation/HyperSpec/Front/X_AllSym.htm" "Hyperspec Symbol List"
+     "http://community.schemewiki.org/?scheme-vs-common-lisp" "Scheme vs. Common Lisp comparison"
+     "http://www.lisperati.com/" "Lisperati"
+     "http://gigamonkeys.com/book/" "Practical Common Lisp"
+     "http://cl-cookbook.sourceforge.net/index.html" "Common Lisp Cookbook"
+     "http://weitz.de/hunchentoot/" "Hunchentoot (the CL-web server, not the rock opera)")
+    (:h4 "Scheme")
+    (link-list
+     "http://racket-lang.org/" "PLT Racket"
+     "http://schemecookbook.org/" "Scheme Cookbook"
+     "http://community.schemewiki.org/?scheme-vs-common-lisp" "Scheme vs. Common Lisp comparison"
+     "http://www.call-cc.org/" "Chicken Scheme"
+     "http://www-sop.inria.fr/mimosa/fp/Bigloo/" "Bigloo Scheme"
+     "http://dynamo.iro.umontreal.ca/~gambit/wiki/index.php/Main_Page" "Gambit"
+     "http://code.google.com/p/termite/" "Termite")
+    (:h4 "Clojure")
+    (link-list
+     "http://clojuredocs.org/" "Clojure Docs"
+     "http://leiningen.org/" "Leiningen"
+     "http://webnoir.org/" "Noir"
+     "http://search.maven.org/" "maven"
+     "https://clojars.org/" "clojars"
+     "http://www.heroku.com/" "Heroku")
+    (:h4 "Emacs")
+    (link-list
+     "http://www.gnu.org/software/emacs/" "Emacs"
+     "http://www.emacswiki.org/emacs/RedoMode" "Redo Mode"
+     "http://www.emacswiki.org/emacs/auto-complete.el" "auto-complete mode"
+     "http://www.emacswiki.org/emacs/AutoPairs" "autopair mode"
+     "http://www.emacswiki.org/emacs/ParEdit" "paredit"
+     "http://www.emacswiki.org/emacs/multi-shell.el" "multi-eshell mode"
+     "http://www.emacs.uniyar.ac.ru/doc/O'reilly_emacs/writing%20gnu%20emacs%20extensions.pdf" "Emacs Extension Guide(pdf)"
+     "http://xahlee.org/emacs/emacs.html" "Xah's Emacs Guide"
+     "http://xahlee.org/emacs/elisp.html" "Xah's Elisp Guide")
+    (:h6 "Emacs Language-specific Modes")
+    (link-list
+     "http://common-lisp.net/project/slime/" "SLIME - Superior Lisp Interaction Mode for Emacs"
+     "http://www.neilvandyke.org/quack/" "Quack - enhanced Scheme mode for Emacs"
+     "https://github.com/technomancy/clojure-mode/" "Clojure Mode and Clojure Test Mode"
+     "https://github.com/technomancy/swank-clojure" "swank-clojure"
+     "http://www.emacswiki.org/emacs/Js2Mode" "js2 mode"
+     "http://blog.deadpansincerity.com/2011/05/setting-up-emacs-as-a-javascript-editing-environment-for-fun-and-profit/" "Setting up node environment in Emacs"
+     "http://projects.haskell.org/haskellmode-emacs/" "Haskell Mode")
+    (:i :style "font-size: x-small;" "Ruby and Erlang each come with their own modes, and recent Emacs versions ship with a built-in Python mode and shell. Smalltalk uses its own environment (though GNU Smalltalk does have " (:a :href "http://www.gnu.org/software/smalltalk/manual/html_node/Emacs.html" "its own mode") "), and I'd really rather not talk about PHP. If you're writing in it, chances are you're using Eclipse or an IDE anyway.")
+    (:h3 "More from Inaimathi")
+    (link-list
+     "https://github.com/Inaimathi" "github"
+     "http://inaimathi.deviantart.com/" "deviantArt"
+     "http://stackoverflow.com/users/190887/inaimathi" "SO profile"
+     "http://www.cliki.net/Inaimathi" "Cliki entry")))
 
 (define-file-handler "static")
 

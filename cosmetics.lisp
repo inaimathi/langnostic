@@ -1,20 +1,29 @@
 (in-package :langnostic)
 
-(defmacro page (title &body body)
+(defun top-menu (current-section name/uri-pairs)
+  `(:div :class "top-menu fade-in second"
+	 ,@(loop for ((name uri) . rest) on name/uri-pairs
+	      if (and current-section (string= name current-section))
+	      collect name
+	      else collect `(:a :href ,uri ,name)
+	      when rest collect " | ")))
+
+(defmacro page ((&optional title &key section) &body body)
   `(with-html-output-to-string (*standard-output* nil :prologue t)
      (:html (:head (:link :rel "stylesheet" :href "/static/langnostic.css")
 		   (:script :type "text/javascript" :src "/static/langnostic.js")
 		   (:noscript (:style :type "text/css" (str (cl-css:css '((.fade-in :opacity 0)))))))
 	    (:body 
-	     (:img :class "logo-image fade-in first" :src "/static/img/langnostic.png")
-	     (:hr :class "fade-in fourth")
-	     (:div :class "top-menu fade-in second"
-		   "blog | "
-		   (:a :href "https://github.com/Inaimathi" "github") " | "
-		   (:a :href "http://inaimathi.deviantart.com/" "deviantArt") " | "
-		   (:a :href "/meta" "meta"))
-	     (:hr :class "fade-in fourth")
-	     ,@(when title `((:h1 :class "fade-in third" ,title)))
+	     (:a :href "/" (:img :class "logo-image fade-in first" :src "/static/img/langnostic.png"))
+	     (:hr :class "fade-in second")
+	     ,(top-menu 
+	       section
+	       '(("blog" "/")
+		 ("archive" "/archive")
+		 ("links" "/links")
+		 ("meta" "/meta")))
+	     (:hr :class "fade-in second")
+	     ,@(when title `((:h1 :class "page-title fade-in third" ,title)))
 	     (:div :class "content fade-in fourth" 
 		   ,@body)
 	     (:hr :class "license fade-in fourth")
@@ -36,13 +45,17 @@
   (cl-css:css 
    `((body :width 80% :margin auto :font-family sans-serif)
      
-     (.logo-image :width 100% :margin-top 15px)
-     (".top-menu li" :list-style-type none)
+     (.logo-image :width 100% :margin-top 15px :padding-bottom 3px)
+     (.top-menu :font-weight bold)
+     (".top-menu a" :color "#CC0606")
+     (".top-menu a:hover" :text-decoration none :color "#999")
      (.license :font-size x-small)
 
      (hr :border-color red)
-     ;; ("h1,h2,h3,h4,h5,h6" :color red)
+     (.page-title :color "#CC0606")
      
+     (pre :padding 10px :background-color "#eee")
+
      (.fade-in :opacity 0)
      (.first ,@(cl-css:transition :opacity :duration 2))
      (.second ,@(cl-css:transition :opacity :duration 1 :delay .3))

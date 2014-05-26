@@ -1,7 +1,7 @@
 (in-package :langnostic)
 
-(defparameter *base* (fact-base:load! "langnostic.base"))
+(defparameter *base* (fact-base:load! #p"langnostic.base"))
 
 (defun articles ()
   (for-all (and (?id :file ?fname) (?id :title ?title))
-	   :in *base* :collecting (list ?fname ?title)))
+	   :in *base* :collect (list ?fname ?title)))
