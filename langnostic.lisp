@@ -26,8 +26,10 @@
 	" and possibly putting something together for " (:a :href "http://www.future-programming.org/call.html" "this") 
         ". In the meanwhile, enjoy the below archived offerings.")
     (:hr)
-    (:ul (for-all (and (?id :title ?title) (?id :file ?fname)) :in *base*
-		  :do (htm (:li (:a :href (format nil "/article?name=~a" ?fname) (str ?title))))))))
+    (for-all (and (?id :current nil) (?id :title ?title) (?id :body ?body))
+	     :in *base*
+	     :do (htm (:span (:h1 :class "page-title" (str ?title))
+			     (:div :class "content" (str ?body)))))))
 
 (define-closing-handler (article) ((name :string))
   (let ((article (first (for-all (and (?id :file name) (?id :title ?title) (?id :body ?body)) :in *base* :collect (list ?title ?body)))))
