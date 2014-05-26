@@ -183,4 +183,5 @@
 
 (define-file-handler "static")
 
+(defparameter *base* (fact-base:load! #p"langnostic.base"))
 (defvar *server* (bt:make-thread (lambda () (start 4444))))
