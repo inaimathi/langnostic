@@ -24,7 +24,7 @@
     (:p "The second should happen within a week or so, when I've finished writing "
 	(:a :href "https://github.com/Inaimathi/500lines/blob/master/async-web-server/writeup.md" "this")
 	" and possibly putting something together for " (:a :href "http://www.future-programming.org/call.html" "this") 
-        ". In the meanwhile, enjoy the below archived offerings.")
+        ". In the meanwhile, enjoy the archived offerings.")
     (:hr)
     (for-all (and (?id :current nil) (?id :title ?title) (?id :body ?body))
 	     :in *base*
@@ -32,16 +32,18 @@
 			     (:div :class "content" (str ?body)))))))
 
 (define-closing-handler (article) ((name :string))
-  (let ((article (first (for-all (and (?id :file name) (?id :title ?title) (?id :body ?body)) :in *base* :collect (list ?title ?body)))))
-    (page ((str (if article (first article) name)) :section "blog")
-      (if article
-	  (str (second article))
-	  (str "Nope...")))))
+  (aif (for-all (and (?id :file name) (?id :title ?title) (?id :body ?body)) 
+		:in *base* 
+		:collect (page ((str ?title) :section "blog")
+			   (str ?body)))
+       (first it)
+       (page ((fmt "Not found: ~s" name) :section "blog"))))
 
 (define-closing-handler (archive) ()
-  (page (nil :section "archive")
+  (page ("Archive" :section "archive")
     (:ul (for-all (and (?id :title ?title) (?id :file ?fname)) :in *base*
 		  :do (htm (:li (:a :href (format nil "/article?name=~a" ?fname) (str ?title))))))))
+
 
 (define-closing-handler (links) ()
   (page ("Links of Interest to Programming Polyglots" :section "links")
