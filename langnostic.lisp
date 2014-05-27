@@ -26,23 +26,50 @@
 	" and possibly putting something together for " (:a :href "http://www.future-programming.org/call.html" "this") 
         ". In the meanwhile, enjoy the archived offerings.")
     (:hr)
-    (for-all (and (?id :current nil) (?id :title ?title) (?id :body ?body))
+    (for-all (and (?id :current t) (?id :title ?title) (?id :body ?body))
 	     :in *base*
-	     :do (htm (:span (:h1 :class "page-title" (str ?title))
-			     (:div :class "content" (str ?body)))))))
+	     :do (htm (:h1 :class "page-title" (str ?title))
+		      (:div :class "content" (str ?body))
+		      (:hr)
+		      (let ((prev (- ?id 1)))
+			(for-all (prev :file ?prev) :in *base*
+				 :do (htm (:a :class "prev" :href (format nil "/article?name=~a" ?prev) "Previous"))))))))
 
 (define-closing-handler (article) ((name :string))
   (aif (for-all (and (?id :file name) (?id :title ?title) (?id :body ?body)) 
 		:in *base* 
 		:collect (page ((str ?title) :section "blog")
-			   (str ?body)))
+			   (str ?body)
+			   (:hr)
+			   (let ((prev (- ?id 1))
+				 (next (+ ?id 1)))
+			     (for-all (prev :file ?prev) :in *base*
+				      :do (htm (:a :class "prev" :href (format nil "/article?name=~a" ?prev) "Previous")))
+			     (for-all (next :file ?next) :in *base*
+				      :do (htm (:a :class "next" :href (format nil "/article?name=~a" ?next) "Next")))
+			     (htm (:br :style "clear:both;")))))
        (first it)
        (page ((fmt "Not found: ~s" name) :section "blog"))))
 
 (define-closing-handler (archive) ()
   (page ("Archive" :section "archive")
+    (:h3 "Tags")
+    (:ul :class "tags" 
+	 (loop for (tg . ct) in (all-tags)
+	    do (htm (:li (:a :href (format nil "/archive/by-tag?tag=~a" tg) (str tg)) (fmt "(~a)" ct)))))
+    (:hr)
+    (:h3 "Latest First")
     (:ul (for-all (and (?id :title ?title) (?id :file ?fname)) :in *base*
 		  :do (htm (:li (:a :href (format nil "/article?name=~a" ?fname) (str ?title))))))))
+
+(define-closing-handler (archive/by-tag) ((tag :keyword))
+  (page ((fmt "By Tag: ~a" tag) :section "archive")
+    (:ul (for-all (and (?id :title ?title) (?id :file ?fname) (?id :tag tag)) :in *base*
+		  :do (htm (:li (:a :href (format nil "/article?name=~a" ?fname) (str ?title))))))
+    (:hr)
+    (:ul :class "tags" 
+	 (loop for (tg . ct) in (all-tags)
+	    do (htm (:li (:a :href (format nil "/archive/by-tag?tag=~a" tg) (str tg)) (fmt "(~a)" ct)))))))
 
 
 (define-closing-handler (links) ()
@@ -187,5 +214,4 @@
 
 (define-file-handler "static")
 
-(defparameter *base* (fact-base:load! #p"langnostic.base"))
 (defvar *server* (bt:make-thread (lambda () (start 4444))))

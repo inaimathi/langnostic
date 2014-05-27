@@ -8,6 +8,7 @@
   :depends-on (#:anaphora #:house #:cl-who #:cl-fad #:cl-css #:parenscript #:fact-base)
   :components ((:file "package")
 	       (:file "util")
+	       (:file "model")
 	       (:file "cosmetics")
                (:file "langnostic")))
 

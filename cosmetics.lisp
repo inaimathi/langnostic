@@ -49,6 +49,13 @@
      (.top-menu :font-weight bold)
      (".top-menu a" :color "#CC0606")
      (".top-menu a:hover" :text-decoration none :color "#999")
+     (.tags :clear both)
+     (".tags li" :list-style-type none :display inline-block :margin 3px :font-weight bold)
+
+     (".next, .prev" :font-weight bold :color "#CC0606")
+     (".next:hover, .prev:hover" :text-decoration none :color "#999")
+     (.next :float right)
+     
      (.license :font-size x-small)
 
      (hr :border-color red)

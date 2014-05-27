@@ -1,0 +1,51 @@
+(in-package :langnostic)
+
+(defparameter *base* (fact-base:load! #p"langnostic.base"))
+
+(defmethod read-chronology ()
+  (with-open-file (s "blog-chronology.lisp")
+    (reverse (read s))))
+
+(defmethod write-chronology (cron)
+  (with-open-file (s "blog-chronology.lisp" :direction :output :if-exists :supersede :if-does-not-exist :create)
+    (format s "~s" cron)))
+
+(defmethod load-all! ((dirname pathname))
+  (let ((base (make-fact-base :file-name "langnostic.base")))
+    (loop for (title file tags date) in (read-chronology)
+       for path = (merge-pathnames file dirname)
+       do (with-open-file (s path)
+	    (let ((buf (make-string (file-length s))))
+	      (read-sequence buf s)
+	      (multi-insert! base `((:title ,title) (:file ,file) (:edited ,(file-write-date path)) (:body ,buf) (:posted ,date)
+				    ,@(mapcar (lambda (tag) `(:tag ,tag)) tags))))))
+    base))
+
+(defmethod insert-article! ((base fact-base) (file pathname) (body string))
+  (multi-insert! 
+   base
+   `((:body ,body) (:title ,(->title file)) (:file ,(file-namestring file)) (:edited ,(file-write-date file)))))
+
+(defmethod load-new! ((base fact-base) (file pathname) (tags list))
+  (let ((id? 
+	 (for-all 
+	  (and (?id :file file) (?id :body ?body) (?id :edited ?ed))
+	  :in base 
+	  :collect (progn 
+		     (delete! base (list ?id :body ?body))
+		     (delete! base (list ?id :edited ?ed))
+		     ?id))))
+    (with-open-file (s file)
+      (let ((buf (make-string (file-length s))))
+	(read-sequence buf s)
+	(if id?
+	    (progn (insert! base (list id? :body buf))
+		   (insert! base (list id? :edited (file-write-date file))))
+	    (insert-article! base file buf))))))
+
+(defun all-tags ()
+  (let ((hash (make-hash-table)))
+    (for-all (?id :tag ?tag) :in *base* 
+	     :do (incf (gethash ?tag hash 0)))
+    (sort (alexandria:hash-table-alist hash) #'string<=
+	  :key (lambda (pair) (symbol-name (car pair))))))
