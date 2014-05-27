@@ -10,24 +10,22 @@
 
 (defmacro page ((&optional title &key section) &body body)
   `(with-html-output-to-string (*standard-output* nil :prologue t)
-     (:html (:head (:link :rel "stylesheet" :href "/static/langnostic.css")
-		   (:script :type "text/javascript" :src "/static/langnostic.js")
-		   (:noscript (:style :type "text/css" (str (cl-css:css '((.fade-in :opacity 0)))))))
+     (:html (:head (:link :rel "stylesheet" :href "/static/langnostic.css"))
 	    (:body 
-	     (:a :href "/" (:img :class "logo-image fade-in first" :src "/static/img/langnostic.png"))
-	     (:hr :class "fade-in second")
+	     (:a :href "/" (:img :class "logo-image" :src "/static/img/langnostic.png"))
+	     (:hr)
 	     ,(top-menu 
 	       section
 	       '(("blog" "/")
 		 ("archive" "/archive")
 		 ("links" "/links")
 		 ("meta" "/meta")))
-	     (:hr :class "fade-in second")
-	     ,@(when title `((:h1 :class "page-title fade-in third" ,title)))
-	     (:div :class "content fade-in fourth" 
+	     (:hr)
+	     ,@(when title `((:h1 :class "page-title" ,title)))
+	     (:div :class "content" 
 		   ,@body)
-	     (:hr :class "license fade-in fourth")
-	     (:div :class "license fade-in fourth"
+	     (:hr)
+	     (:div :class "license"
 		   (:a :rel "license" :href "http://creativecommons.org/licenses/by-sa/3.0/"
 		       (:img :alt "Creative Commons License" :style "border-width:0;float: left; margin: 0px 15px 15px 0px;"
 			     :src "http://i.creativecommons.org/l/by-sa/3.0/88x31.png"))
@@ -61,30 +59,4 @@
      (hr :border-color red)
      (.page-title :color "#CC0606")
      
-     (pre :padding 10px :background-color "#eee")
-
-     (.fade-in :opacity 0)
-     (.first ,@(cl-css:transition :opacity :duration 2))
-     (.second ,@(cl-css:transition :opacity :duration 1 :delay .3))
-     (.third ,@(cl-css:transition :opacity :duration 1 :delay .5))
-     (.fourth ,@(cl-css:transition :opacity :duration 1 :delay .7))
-     (.revealed :opacity 1))))
-
-(define-closing-handler (static/langnostic.js :content-type "application/javascript") ()
-  (ps (defun dom-ready (callback)
-	(chain document (add-event-listener "DOMContentLoaded" callback)))
-      (defun by-selector (selector)
-	(chain document (query-selector selector)))
-      (defun by-selector-all (selector)
-	(chain document (query-selector-all selector)))
-      (defun map (fn thing)
-	(if (object? thing)
-	    (let ((res (-array)))
-	      (for-in (k thing) (chain res (push (fn (aref thing k) k))))
-	      res)
-	    (loop for elem in thing collect (fn elem))))
-      
-      (dom-ready
-       (lambda ()
-	 (let ((fades (by-selector-all ".fade-in")))
-	   (when fades (loop for elem in fades do (chain elem class-list (add "revealed")))))))))
+     (pre :padding 10px :background-color "#eee"))))

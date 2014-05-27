@@ -32,8 +32,8 @@
 		      (:div :class "content" (str ?body))
 		      (:hr)
 		      (let ((prev (- ?id 1)))
-			(for-all (prev :file ?prev) :in *base*
-				 :do (htm (:a :class "prev" :href (format nil "/article?name=~a" ?prev) "Previous"))))))))
+			(for-all (and (prev :file ?prev) (prev :title ?title)) :in *base*
+				 :do (htm (:a :class "prev" :href (format nil "/article?name=~a" ?prev) (fmt "<- ~a" (truncat ?title 30))))))))))
 
 (define-closing-handler (article) ((name :string))
   (aif (for-all (and (?id :file name) (?id :title ?title) (?id :body ?body)) 
@@ -43,10 +43,10 @@
 			   (:hr)
 			   (let ((prev (- ?id 1))
 				 (next (+ ?id 1)))
-			     (for-all (prev :file ?prev) :in *base*
-				      :do (htm (:a :class "prev" :href (format nil "/article?name=~a" ?prev) "Previous")))
-			     (for-all (next :file ?next) :in *base*
-				      :do (htm (:a :class "next" :href (format nil "/article?name=~a" ?next) "Next")))
+			     (for-all (and (prev :file ?prev) (prev :title ?title)) :in *base*
+				      :do (htm (:a :class "prev" :href (format nil "/article?name=~a" ?prev) (fmt "<- ~a" (truncat ?title 30)))))
+			     (for-all (and (next :file ?next) (next :title ?title)) :in *base*
+				      :do (htm (:a :class "next" :href (format nil "/article?name=~a" ?next) (fmt "~a ->" (truncat ?title 30)))))
 			     (htm (:br :style "clear:both;")))))
        (first it)
        (page ((fmt "Not found: ~s" name) :section "blog"))))
