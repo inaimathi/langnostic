@@ -21,27 +21,12 @@
 				    ,@(mapcar (lambda (tag) `(:tag ,tag)) tags))))))
     base))
 
-(defmethod insert-article! ((base fact-base) (file pathname) (body string))
-  (multi-insert! 
-   base
-   `((:body ,body) (:title ,(->title file)) (:file ,(file-namestring file)) (:edited ,(file-write-date file)))))
+(defmethod insert-article! ((base fact-base) (file pathname) (tags list) (body string))
+  (for-all (?id :current t) :in *base* :do (delete! *base* (list ?id :current t)))
+  (multi-insert! `((:title ,(->title file)) (:file ,(file-namestring file)) (:edited ,(file-write-date file)) (:body ,body) (:posted ,(get-universal-time))
+		   ,@(mapcar (lambda (tag) `(:tag ,tag)) tags))))
 
-(defmethod load-new! ((base fact-base) (file pathname) (tags list))
-  (let ((id? 
-	 (for-all 
-	  (and (?id :file file) (?id :body ?body) (?id :edited ?ed))
-	  :in base 
-	  :collect (progn 
-		     (delete! base (list ?id :body ?body))
-		     (delete! base (list ?id :edited ?ed))
-		     ?id))))
-    (with-open-file (s file)
-      (let ((buf (make-string (file-length s))))
-	(read-sequence buf s)
-	(if id?
-	    (progn (insert! base (list id? :body buf))
-		   (insert! base (list id? :edited (file-write-date file))))
-	    (insert-article! base file buf))))))
+;; TODO - write update-article!
 
 (defun all-tags ()
   (let ((hash (make-hash-table)))
