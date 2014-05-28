@@ -25840,3 +25840,81 @@ inaimathi@self:~/.cl-notebook/books$ ls -lh base-zg1mm*
 ((5200 14803 197653000) :INSERT (179 :TAG :GENERAL-UPDATE))
 ((5200 14803 197654000) :INSERT (179 :TAG :IDEA-PEELING))
 ((5200 14809 493509000) :INSERT (179 :CURRENT T))
+((5201 19318 936790000) :DELETE (179 :CURRENT T))
+((5201 19318 936890000) :INSERT (180 :TITLE "Goodbye Blogger"))
+((5201 19318 936901000) :INSERT (180 :FILE "goodbye-blogger.html"))
+((5201 19318 936905000) :INSERT (180 :EDITED 3610243175))
+((5201 19318 936908000) :INSERT
+ (180 :BODY
+  "<p>This has actually been a long time coming, with or without <a href=\"http://langnostic.blogspot.com/\">this garbage</a>. The point at which I could write my own blog server from scratch in an afternoon or two was passed long ago, and I'd similarly long ago run into the situation where I'd found myself apologizing for using Google services. Mostly because of things like YouTube prompting you to use your real name, and the forcible pushing of G+, and \"One account. All of Google.\".</p>
+
+<p>So yeah. Whether or not they decided to lock that blog down for non-specific terms-of-service violations, I was eventually going to set up a site on my own box, at my own domain that did precisely what I wanted a blog to. The lock just sort of forced my hand. The starting point was when I jumped over to my blog to find a link to <a href=\"https://github.com/adambard/learnxinyminutes-docs\">X in Y</a> only to find a Firefox Attack Page warning telling me about an image that was causing some issues (This was a picture of a bike lock that I had hotlinked from the manufacturer's site. No, I don't feel bad about it, my blog never got anywhere near enough views to make this an issue). So I hopped onto the various contact links and tried to see what was going on. First, with the <a href=\"https://www.stopbadware.org/\">project maintainers</a>, which yielded this conversation:</p>
+
+<blockquote>Me: May 21 (7 days ago)
+<p>To: contact@stopbadware.org</p>
+<p>I just saw one of your warnings on a blogspot.com site (specifically langnostic.blogspot.com, which I know to lack malware as I administer it). Not sure if this is a false positive or an oversight of some sort on my part. I'm not about to go through the de-blacklist process for blogspot.com, but wanted to let you know about it.</p>
+</blockquote>
+
+<blockquote>StopBadware Team: May 21 (7 days ago)
+<p>To: me</p>
+<p>Thank you for contacting StopBadware. Answers to many common questions, including how to remove warnings about badware on your site, may be found in our FAQ at https://www.stopbadware.org/faq.</p>
+<p>If your message requires an answer that is not provided by the FAQ, we will try our best to be in touch soon. You may also find assistance in our online community at https://www.BadwareBusters.org.</p>
+<p>Regards,</p>
+<p>The StopBadware team</p>
+<p>--</p>
+<p>StopBadware is a 501(c)3 non-profit organization based in Cambridge, Massachusetts, USA. We are supported by individual donors and partners such as Google, Mozilla, Qualys,and Yandex. For more information, visit https://www.stopbadware.org.</p>
+</blockquote>
+
+<blockquote>StopBadware Team: May 21 (7 days ago)
+<p>To: me</p>
+<p>Hi Leo,</p>
+<p>StopBadware doesn't make warnings or have a list of bad sites. The warnings link to us because we're a nonprofit organization that helps website owners figure out how to clean up hacked sites. Google is the company blacklisting your blog for malware. Here are their diagnostics: http://google.com/safebrowsing/diagnostic?site=http://langnostic.blogspot.com.</p>
+<p>The Safe Browsing page indicates that \"bikereviews. com\" is the domain functioning as an intermediary for distributing malware to your visitors. We ran a quick check on your blog using a free, open tool maintained by one of our community forum moderators (his code name is Redleg). Here's the tool: http://aw-snap.info/blogger-tool/. </p>
+<p>And here's the output from the tool: http://aw-snap.info/blogger-tool/?tgt=http%3A%2F%2Flangnostic.blogspot.com. A search for \"bikereviews. com\" (space added) reveals that your blog has what looks to be a JPG image sourced from bikereviews. com, starting on line 1381. That site was probably hacked to serve malware and your blog was likely roped into that distribution process. </p>
+<p>After you clean that off your site, here are directions on removing Google's malware warnings:</p>
+<p>Via Google directly (requires that you add and verify your site in Webmaster Tools): https://support.google.com/webmasters/answer/168328</p>
+<p>Via StopBadware's independent review process: https://www.stopbadware.org/blacklisted-by-google</p>
+<p>Hope that helps!</p>
+<p>The StopBadware team</p>
+</blockquote>
+
+<blockquote>Me: May 21 (7 days ago)
+<p>To: StopBadware</p>
+<p>It did. Thanks for your response. It turns out that I had picked the \"from the web\" option to post an image a few posts ago (the lines you highlighted using aw-snap.info/blogger-tool/; thanks for pointing me in the right direction, that saved some time), and that sets up a link to the original domain rather than downloading the target and serving it from blogspot.com. My bad; I should have checked that at the time.</p>
+<p>I've fixed the problem and submitted an automated review request through Google.</p>
+</blockquote>
+
+<blockquote>StopBadware Team: May 21 (7 days ago)
+<p>To: me</p>
+<p>Great! We hope you don't have any further issues. </p>
+<p>Cheers,</p>
+<p>The StopBadware team</p>
+</blockquote>
+
+<p>So the result of that was identifying my mistake and fixing it. Instead of hotlinking, I downloaded, then uploaded the picture of that bike lock onto blogger, so that it would be served from a <code>blogger</code> domain. Then I asked for a review of my blog, whereupon it was locked as authors-only, <i>in addition</i> to being flagged as an attack page.</p>
+
+<img src=\"/static/img/locked-blog.png\" class=\"middle\" alt=\"A locked blog page screenshot.\" />
+
+<p>Fantastic.</p>
+
+<p>So I hit up Bloggers' support forum where I had <a href=\"https://productforums.google.com/forum/#!msg/blogger/rTbpSj30Y8Q/8CXXbmUGj_sJ\">this exchange</a> with a polite and relatively prompt gentleman who nevertheless failed to be of any help at all.</p>
+
+<p>You might be asking why I didn't just click on this \"Request Unlock Review\" button in my blogger account</p>
+
+<img src=\"/static/img/unlock-review.png\" class=\"middle\" alt=\"Salvation?\" />
+
+<p>It's because when I click it, I get this</p>
+
+<img src=\"/static/img/verify-account.png\" class=\"middle\" alt=\"Nope! Hahaha!\" />
+
+<p>And, no, a company that has this level of customer service, along with a noted anti-privacy bias doesn't get my permission to find out my phone number.</p>
+
+<p>The blog is toast, the only way of reviving it seems to be to spend more frustrating hours dicking around with Google's automated systems and/or explicitly giving them more of my personal information. And I can write code faster than that. And I enjoy writing code. And the code would be Lisp.</p>
+
+<p>So <a href=\"https://github.com/Inaimathi/langnostic\">here we are</a>.</p>
+
+<p>Now the only thing I have to do is figure out what I'm doing to get the hell away from gmail.</p>
+"))
+((5201 19318 936989000) :INSERT (180 :POSTED 3610243318))
+((5201 19318 936992000) :INSERT (180 :CURRENT T))
+((5201 19318 936996000) :INSERT (180 :TAG :BITCHING))

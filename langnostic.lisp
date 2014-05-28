@@ -28,13 +28,8 @@
 
 (define-closing-handler (root) ()
   (page (nil :section "blog")
-    (:p "This is a stopgap blog archive for my own sanity, until either"
-	(:ul (:li "Google/blogger gets off its ass and fixes " (:a :href "http://langnostic.blogspot.com" "this"))
-	     (:li "I have enough time to put something nicer together.")))
-    (:p "The second should happen within a week or so, when I've finished writing "
-	(:a :href "https://github.com/Inaimathi/500lines/blob/master/async-web-server/writeup.md" "this")
-	" and possibly putting something together for " (:a :href "http://www.future-programming.org/call.html" "this") 
-        ". In the meanwhile, enjoy the archived offerings.")
+    (:p "Welcome to Language Agnostic, the blog of " (:a :href "https://github.com/Inaimathi" "Inaimathi") "! And, thanks to the " (:a :href "https://github.com/Inaimathi/fact-base" "storage approach") ", possibly the least performant blog on the internet!")
+    (:p "Enjoy the various programming-themed writings available on offer. The Latest post is available below, and the archive link is directly above this text.")
     (:hr)
     (for-all (and (?id :current t) (?id :title ?title) (?id :body ?body))
 	     :in *base*
@@ -60,7 +55,7 @@
 	 (loop for (tg . ct) in (all-tags)
 	    do (htm (:li (:a :href (format nil "/archive/by-tag?tag=~a" tg) (str tg)) (fmt "(~a)" ct)))))
     (:hr)
-    (:h3 "Latest First")
+    (:h3 "Chronological")
     (:ul (for-all (and (?id :title ?title) (?id :file ?fname)) :in *base*
 		  :do (htm (:li (:a :href (format nil "/article?name=~a" ?fname) (str ?title))))))))
 

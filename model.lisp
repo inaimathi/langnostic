@@ -22,9 +22,15 @@
     base))
 
 (defmethod insert-article! ((base fact-base) (file pathname) (tags list) (body string))
-  (for-all (?id :current t) :in *base* :do (delete! *base* (list ?id :current t)))
-  (multi-insert! `((:title ,(->title file)) (:file ,(file-namestring file)) (:edited ,(file-write-date file)) (:body ,body) (:posted ,(get-universal-time))
-		   ,@(mapcar (lambda (tag) `(:tag ,tag)) tags))))
+  (for-all (?id :current t) :in base :do (delete! base (list ?id :current t)))
+  (multi-insert! base `((:title ,(->title file)) (:file ,(file-namestring file)) (:edited ,(file-write-date file)) (:body ,body) (:posted ,(get-universal-time))
+			(:current t) ,@(mapcar (lambda (tag) `(:tag ,tag)) tags))))
+
+(defmethod new-article! ((file pathname) (tags list))
+  (with-open-file (s file)
+    (let ((buf (make-string (file-length s))))
+      (read-sequence buf s)
+      (insert-article! *base* file tags buf))))
 
 ;; TODO - write update-article!
 

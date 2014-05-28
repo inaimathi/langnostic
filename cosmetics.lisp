@@ -50,6 +50,8 @@
      (".top-menu a:hover" :text-decoration none :color "#999")
      (.tags :clear both)
      (".tags li" :list-style-type none :display inline-block :margin 3px :font-weight bold)
+     
+     ("img.middle" :display block :width 80% :margin auto :border "1px solid #CC0606")
 
      (".next, .prev" :font-weight bold :color "#CC0606")
      (".next:hover, .prev:hover" :text-decoration none :color "#999")
@@ -60,4 +62,5 @@
      (hr :border-color red)
      (.page-title :color "#CC0606")
      
-     (pre :padding 10px :background-color "#eee"))))
+     (pre :padding 10px :background-color "#eee")
+     (blockquote :padding 10px :background-color "#eee" :font-family serif))))
