@@ -16,6 +16,16 @@
 	(:a :href "https://github.com/Inaimathi/house" "minimal, asynchronous system")
 	" put together in yet another ~800 lines of CL.")))
 
+(defun prev+next-links (article-id)
+  (with-html-output (s *standard-output*)
+    (let ((prev (- article-id 1))
+	  (next (+ article-id 1)))
+      (for-all (and (prev :file ?prev) (prev :title ?title)) :in *base*
+	       :do (htm (:a :class "prev" :href (format nil "/article?name=~a" ?prev) (fmt "<- ~a" (truncat ?title 30)))))
+      (for-all (and (next :file ?next) (next :title ?title)) :in *base*
+	       :do (htm (:a :class "next" :href (format nil "/article?name=~a" ?next) (fmt "~a ->" (truncat ?title 30)))))
+      (htm (:br :style "clear:both;")))))
+
 (define-closing-handler (root) ()
   (page (nil :section "blog")
     (:p "This is a stopgap blog archive for my own sanity, until either"
@@ -31,9 +41,7 @@
 	     :do (htm (:h1 :class "page-title" (str ?title))
 		      (:div :class "content" (str ?body))
 		      (:hr)
-		      (let ((prev (- ?id 1)))
-			(for-all (and (prev :file ?prev) (prev :title ?title)) :in *base*
-				 :do (htm (:a :class "prev" :href (format nil "/article?name=~a" ?prev) (fmt "<- ~a" (truncat ?title 30))))))))))
+		      (prev+next-links ?id)))))
 
 (define-closing-handler (article) ((name :string))
   (aif (for-all (and (?id :file name) (?id :title ?title) (?id :body ?body)) 
@@ -41,13 +49,7 @@
 		:collect (page ((str ?title) :section "blog")
 			   (str ?body)
 			   (:hr)
-			   (let ((prev (- ?id 1))
-				 (next (+ ?id 1)))
-			     (for-all (and (prev :file ?prev) (prev :title ?title)) :in *base*
-				      :do (htm (:a :class "prev" :href (format nil "/article?name=~a" ?prev) (fmt "<- ~a" (truncat ?title 30)))))
-			     (for-all (and (next :file ?next) (next :title ?title)) :in *base*
-				      :do (htm (:a :class "next" :href (format nil "/article?name=~a" ?next) (fmt "~a ->" (truncat ?title 30)))))
-			     (htm (:br :style "clear:both;")))))
+			   (prev+next-links ?id)))
        (first it)
        (page ((fmt "Not found: ~s" name) :section "blog"))))
 
