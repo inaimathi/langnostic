@@ -25840,15 +25840,17 @@ inaimathi@self:~/.cl-notebook/books$ ls -lh base-zg1mm*
 ((5200 14803 197653000) :INSERT (179 :TAG :GENERAL-UPDATE))
 ((5200 14803 197654000) :INSERT (179 :TAG :IDEA-PEELING))
 ((5200 14809 493509000) :INSERT (179 :CURRENT T))
-((5201 19318 936790000) :DELETE (179 :CURRENT T))
-((5201 19318 936890000) :INSERT (180 :TITLE "Goodbye Blogger"))
-((5201 19318 936901000) :INSERT (180 :FILE "goodbye-blogger.html"))
-((5201 19318 936905000) :INSERT (180 :EDITED 3610243175))
-((5201 19318 936908000) :INSERT
+((5201 55723 719919000) :DELETE (179 :CURRENT T))
+((5201 55723 720001000) :INSERT (180 :TITLE "Goodbye Blogger"))
+((5201 55723 720010000) :INSERT (180 :FILE "goodbye-blogger.html"))
+((5201 55723 720013000) :INSERT (180 :EDITED 3610279710))
+((5201 55723 720016000) :INSERT
  (180 :BODY
-  "<p>This has actually been a long time coming, with or without <a href=\"http://langnostic.blogspot.com/\">this garbage</a>. The point at which I could write my own blog server from scratch in an afternoon or two was passed long ago, and I'd similarly long ago run into the situation where I'd found myself apologizing for using Google services. Mostly because of things like YouTube prompting you to use your real name, and the forcible pushing of G+, and \"One account. All of Google.\".</p>
+  "<p>This has actually been a long time coming, with or without <a href=\"http://langnostic.blogspot.com/\">this garbage</a>. The point at which I could write my own blog server from scratch in an afternoon or two was passed long ago, and I'd similarly long ago run into the situation where I'd found myself apologizing for using Google services. Mostly because of things like YouTube prompting you to use your real name, and the forcible pushing of G+, and \"One account. All of Google.\"</p>
 
-<p>So yeah. Whether or not they decided to lock that blog down for non-specific terms-of-service violations, I was eventually going to set up a site on my own box, at my own domain that did precisely what I wanted a blog to. The lock just sort of forced my hand. The starting point was when I jumped over to my blog to find a link to <a href=\"https://github.com/adambard/learnxinyminutes-docs\">X in Y</a> only to find a Firefox Attack Page warning telling me about an image that was causing some issues (This was a picture of a bike lock that I had hotlinked from the manufacturer's site. No, I don't feel bad about it, my blog never got anywhere near enough views to make this an issue). So I hopped onto the various contact links and tried to see what was going on. First, with the <a href=\"https://www.stopbadware.org/\">project maintainers</a>, which yielded this conversation:</p>
+<p>So whether or not they decided to lock that blog down for non-specific terms-of-service violations, I was eventually going to set up a site on my own box, at my own domain that did precisely what I wanted a blog to do. The lock just sort of forced my hand.</p>
+
+<p>The starting point was when I jumped over to my blog to find a link to <a href=\"https://github.com/adambard/learnxinyminutes-docs\">X in Y</a> from my sidebar. Only to instead find a Firefox Attack Page warning telling me about an image that was causing some issues<a href=\"#foot-Wed-May-28-112820EDT-2014\" name=\"note-Wed-May-28-112820EDT-2014\">[1]</a>. So I hopped onto the various contact links and tried to see what was going on. First, with the <a href=\"https://www.stopbadware.org/\">project maintainers</a> of the warning modules, which yielded this conversation:</p>
 
 <blockquote>Me: May 21 (7 days ago)
 <p>To: contact@stopbadware.org</p>
@@ -25914,7 +25916,12 @@ inaimathi@self:~/.cl-notebook/books$ ls -lh base-zg1mm*
 <p>So <a href=\"https://github.com/Inaimathi/langnostic\">here we are</a>.</p>
 
 <p>Now the only thing I have to do is figure out what I'm doing to get the hell away from gmail.</p>
+
+
+<hr />
+<h5>Footnotes</h5>
+<p>1 - <a href=\"#note-Wed-May-28-112820EDT-2014\" name=\"foot-Wed-May-28-112820EDT-2014\">[back]</a> - This was a picture of a bike lock that I had hotlinked from the manufacturer's site. No, I don't feel bad about it, my blog never got anywhere near enough views to make this an issue.</p>
 "))
-((5201 19318 936989000) :INSERT (180 :POSTED 3610243318))
-((5201 19318 936992000) :INSERT (180 :CURRENT T))
-((5201 19318 936996000) :INSERT (180 :TAG :BITCHING))
+((5201 55723 720088000) :INSERT (180 :POSTED 3610279723))
+((5201 55723 720091000) :INSERT (180 :CURRENT T))
+((5201 55723 720093000) :INSERT (180 :TAG :BITCHING))

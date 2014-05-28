@@ -20,7 +20,8 @@
 	       '(("blog" "/")
 		 ("archive" "/archive")
 		 ("links" "/links")
-		 ("meta" "/meta")))
+		 ("meta" "/meta")
+		 ("atom feed" "/feed/atom")))
 	     (:hr)
 	     ,@(when title `((:h1 :class "page-title" ,title)))
 	     (:div :class "content" 
@@ -51,7 +52,7 @@
      (.tags :clear both)
      (".tags li" :list-style-type none :display inline-block :margin 3px :font-weight bold)
      
-     ("img.middle" :display block :width 80% :margin auto :border "1px solid #CC0606")
+     ("img.middle" :display block :width 70% :margin auto :border "1px solid #CC0606")
 
      (".next, .prev" :font-weight bold :color "#CC0606")
      (".next:hover, .prev:hover" :text-decoration none :color "#999")

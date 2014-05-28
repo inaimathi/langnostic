@@ -38,6 +38,28 @@
 		      (:hr)
 		      (prev+next-links ?id)))))
 
+(define-closing-handler (feed/atom :content-type "application/rss+xml") ()
+  (with-html-output-to-string (*standard-output* nil :prologue "<?xml version=\"1.0\" encoding=\"utf-8\"?>" :indent t)
+    (:feed :xmlns "http://www.w3.org/2005/Atom"
+	   (:title "Language Agnostic")
+	   (:subtitle "Site-wide Langnostic Atom feed")
+	   (:link :href "http://langnostic.inaimathi.ca/feed/atom" :rel "self")
+	   (:link :href "http://langnostic.inaimathi.ca")
+
+	   (for-all (and (?id :current t) (?id :title ?title) (?id :file ?file) (?id :posted ?timestamp) (?id :body ?body)) :in *base*
+		    :do (htm (:id (fmt "tag:langnostic.inaimathi.ca,~a" ?id))
+			     (:updated (rss-timestamp ?timestamp))
+			     (:entry
+			      (:title (str ?title))
+			      (:link :href (format nil "http://langnostic.inaimathi.ca/article?name=~a" ?file))
+			      (:id (fmt "tag:langnostic.inaimathi.ca,~a" ?id))
+			      (:updated (rss-timestamp ?timestamp))
+			      (:content 
+			       :type "xhtml" :xml\:lang "en" 
+			       (:div :xmlns "http://www.w3.org/1999/xhtml" 
+				     (str ?body)))
+			      (:author (:name "Inaimathi"))))))))
+
 (define-closing-handler (article) ((name :string))
   (aif (for-all (and (?id :file name) (?id :title ?title) (?id :body ?body)) 
 		:in *base* 
