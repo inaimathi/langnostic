@@ -52,7 +52,8 @@
      (.tags :clear both)
      (".tags li" :list-style-type none :display inline-block :margin 3px :font-weight bold)
      
-     ("img.middle" :display block :width 70% :margin auto :border "1px solid #CC0606")
+     (img.middle :display block :width 70% :margin auto :margin-bottom 10px :border "1px solid #CC0606")
+     (img.small :display block :width auto :max-width 70% :border "1px solid #cc0606")
 
      (".next, .prev" :font-weight bold :color "#CC0606")
      (".next:hover, .prev:hover" :text-decoration none :color "#999")
@@ -64,4 +65,5 @@
      (.page-title :color "#CC0606")
      
      (pre :padding 10px :background-color "#eee")
-     (blockquote :padding 10px :background-color "#eee" :font-family serif))))
+     (blockquote :padding 10px :background-color "#eee" :font-family serif)
+     ("blockquote .sig" :font-style oblique :display block :margin-top 5px :text-align right))))

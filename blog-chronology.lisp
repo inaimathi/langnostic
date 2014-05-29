@@ -163,7 +163,7 @@
  ("Various Thoughts and WebMote, the Next Part" "various-thoughts-and-web-mote-update.html"
   (:BITCHING :GENERAL-PROGRAMMING-THOUGHTS :IDEA-PEELING :SPECULATION)
   3562808400)
- ("Authentication - Part 5.75" "authentication-part-5.75.html" NIL 3562030800)
+ ("Authentication - Part 4.75" "authentication-part-4.75.html" NIL 3562030800)
  ("Fresher Install and Preliminary Brain Dump" 
   "fresher-install.html"
   (:GENERAL-PROGRAMMING-THOUGHTS :IDEA-PEELING :PROGRAMMING-ENVIRONMENT)
@@ -204,7 +204,7 @@
   (:IDEA-PEELING :SPECULATION) 3552955200)
  ("CL-Chan (a CLSQL and Hunchentoot crash course) - Part 2" "using-clsql-part2.html" (:COMMON-LISP)
   3551400000)
- ("Authentication Part 4.5 - Not" "authentication-part5.5-authentication-not.html" (:IDEA-PEELING :SECURITY :SPECULATION)
+ ("Authentication Part 4.5 - Not" "authentication-part4.5-authentication-not.html" (:IDEA-PEELING :SECURITY :SPECULATION)
   3551227200)
  ("Erlang From Scratch" "erlang-from-scratch.html" (:ERLANG) 3550449600)
  ("Not Building Erlang Apps" "not-building-erlang.html" (:BITCHING :ERLANG) 3549844800)
@@ -366,8 +366,6 @@
  ("Just got the Little Schemer" "little-lambda.html" (:SCHEME) 3472866000)
  ("Contracting in PHP" "require-base.html" (:BITCHING :GENERAL-PROGRAMMING-THOUGHTS :PHP)
   3472693200)
- ("Happy Hacking" "happy-hacking.html" (:HARDWARE :PROGRAMMING-INTERFACES)
-  3472520400)
  ("Another look at Emacs" "another-look-at-emacs.html"
   (:EMACS :PROGRAMMING-ENVIRONMENT) 3472002000)
  ("Solid State Ownership" "solid-state-ownership.html" (:HARDWARE) 3470965200))
