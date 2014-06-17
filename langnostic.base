@@ -25884,3 +25884,95 @@ inaimathi@self:~/.cl-notebook/books$ ls -lh base-zg1mm*
 ((5202 3729 183212000) :INSERT (179 :POSTED 3610314129))
 ((5202 3729 183215000) :INSERT (179 :CURRENT T))
 ((5202 3729 183217000) :INSERT (179 :TAG :BITCHING))
+((5216 78438 828911000) :DELETE (179 :CURRENT T))
+((5216 78438 829123000) :INSERT
+ (180 :TITLE "Future Of Programming Memory And Minutia"))
+((5216 78438 829135000) :INSERT
+ (180 :FILE "future-of-programming-memory-and-minutia.html"))
+((5216 78438 829140000) :INSERT (180 :EDITED 3611598435))
+((5216 78438 829143000) :INSERT
+ (180 :BODY
+  "<p>Fairly boring update time. I still haven't really had enough time to tear into the next real article I've got planned, but its been long enough that I need to release mental steam.</p>
+
+<h3>Future of Programming</h3>
+
+<p>So <a href=\"https://vimeo.com/97623064\">this</a> is a thing. I'm not sure how I feel about it since it was a zero-edit, one sitting walk-through of a still very incomplete version of <a href=\"https://github.com/Inaimathi/cl-notebook\"><code>cl-notebook</code></a>, but at least it's a thing. I recently submitted it to John Edwards et als' <a href=\"http://www.future-programming.org/call.html\">Future of Programming workshop</a> where, I guess, I'm hoping to get in as a token \"blast from the past\" entry. The funny part is that even if I get selected to participate at these conferences, there's no way in hell I could go. My passport is somewhat out of date, and I've got a family to care for and a job to do here. Hopefully they've got a remote option I guess?</p>
+
+<p>Someone just sort of mentioned the thing off-hand, and I immediately assumed from the title that this was just a mechanism by which to get more feedback on particular programming projects you were working on. Presenting to <a href=\"https://thestrangeloop.com/\">this crowd</a> isn't something I thought was part of the deal.</p>
+
+<h3>Memory</h3>
+
+<p>So it turns out that the memory management landscape I briefly mused about <a href=\"/article?name=arbitrary-update-932.html\">last time</a> is even simpler than I thought. Because \"tracers\" and \"refernce counters\" <a href=\"http://www.cs.virginia.edu/~cs415/reading/bacon-garbage.pdf\">turn out to be duals</a>. You can either follow that link to the paper, or <a href=\"https://www.youtube.com/watch?v=XtUtfARSIv8\">this one</a> to the <a href=\"https://www.youtube.com/channel/UCoj4eQh_dZR37lL78ymC6XA\">Papers We Love</a> video explaining it. Both elucidate wonderfully.</p>
+
+<p>So there isn't even five different ways of approaching memory, there's four.</p>
+
+<h3>HTTP On Windows...</h3>
+
+<p>...is a sack of balls. It's especially a sack of balls in Lisp (or leastwise SBCL), which tries to be clever about how to parse incoming line-endings. Let me back up a bit first.</p>
+
+<p>Since I've apparently got some Windows users now, <code>house</code> kind of has to fly on it. Which means that I've had to add little pieces of compatibility cruft like</p>
+
+<pre>...
+#-win32(wait-for-input (cons server (alexandria:hash-table-keys conns)) <span style=\"color: #483d8b;\">:ready-only</span> t)
+<span style=\"color: #b22222;\">#+win32(wait-for-input (cons server (alexandria:hash-table-keys conns)) :ready-only t :timeout 5)</span>
+...</pre>
+
+<p>I mean, it's nice that I <i>can</i>, but it would be even nicer if <code>usocket</code> didn't randomly require a <code>:timeout</code> argument to <code>wait-for-input</code> on Windows. It's marginally plausible that the underlying implementation there might turn out to eat massive piles of shit, so this might just be an escape hatch to keep it from shit-eating itself into an early grave, but it's still mildly annoying.</p>
+
+<p>However, one such piece of compatibility code crosses the line into outright infuriating.</p>
+
+<pre>(<span style=\"color: #a020f0;\">defun</span> <span style=\"color: #0000ff;\">line-terminated?</span> (lst)
+  (starts-with-subseq 
+   #-win32(list #\\linefeed #\\return #\\linefeed #\\return)
+   <span style=\"color: #b22222;\">#+win32(list #\\newline #\\newline)</span>
+   lst))</pre>
+
+<p>Why do I need this? It's because platform-specific line-endings read from a <code>char</code> stream are returned as <code>#\\newline</code>. On Linux machines, <code>#\\newline</code> is synonymous with a line-feed character (because Linux lines end with a single newline character).</p>
+
+<p>The situation's different on Windows though. There, a line ends with <code>CRLF</code>. Which happens to be the actual specified line-ending for HTTP. Combining these fairly sensical decisions gets you the situation that you <i>can't</i> check for a char-stream HTTP line-ending on Windows by looking for a terminating <code>CRLF</code>.</p>
+
+<p>Why don't I just use a byte stream instead? Especially since I already need bi-valent streams to serve up images and similar?</p>
+
+<pre>CL-USER&gt; (describe #'read-char-no-hang)
+#&lt;FUNCTION READ-CHAR-NO-HANG&gt;
+  [compiled function]
+
+Lambda-list: (<span style=\"color: #228b22;\">&amp;OPTIONAL</span> (STREAM *STANDARD-INPUT*) (EOF-ERROR-P T)
+              EOF-VALUE RECURSIVE-P)
+Declared type: (FUNCTION (<span style=\"color: #228b22;\">&amp;OPTIONAL</span> (OR STREAM (MEMBER NIL T)) T T T)
+                (VALUES T <span style=\"color: #228b22;\">&amp;OPTIONAL</span>))
+Derived type: (FUNCTION (<span style=\"color: #228b22;\">&amp;OPTIONAL</span> T T T T) (VALUES T <span style=\"color: #228b22;\">&amp;OPTIONAL</span>))
+Known attributes: explicit-check
+Source file: SYS:SRC<span style=\"color: #b22222;\">;</span><span style=\"color: #b22222;\">CODE;STREAM.LISP
+</span><span style=\"color: #b22222;\">; </span><span style=\"color: #b22222;\">No value
+</span>
+CL-USER&gt; (describe #'read-byte-no-hang)
+The function COMMON-LISP-USER::READ-BYTE-NO-HANG is undefined.
+   [Condition of type UNDEFINED-FUNCTION]
+
+Restarts:
+ 0: [RETRY] Retry SLIME REPL evaluation request.
+ 1: [*ABORT] Return to SLIME's top level.
+ 2: [ABORT] Abort thread (#&lt;THREAD <span style=\"color: #8b2252;\">\"repl-thread\"</span> RUNNING {10046F8063}&gt;)
+
+Backtrace:
+  0: (SB-INT:SIMPLE-EVAL-IN-LEXENV (FUNCTION READ-BYTE-NO-HANG) #&lt;NULL-LEXENV&gt;)
+  1: (SB-INT:SIMPLE-EVAL-IN-LEXENV (DESCRIBE (FUNCTION READ-BYTE-NO-HANG)) #&lt;NULL-LEXENV&gt;)
+  2: (EVAL (DESCRIBE (FUNCTION READ-BYTE-NO-HANG)))
+  ...</pre>
+
+<p>It's because there's no non-blocking way to grab a <code>byte</code> out of a stream. There <i>is</i> such a way to grab a <code>char</code>, but that doesn't help in this situation. Anyway, the end result of all of this is that ugly little hack that makes the line-ending check conditional on execution platform.</p>
+
+<h3><a href=\"https://github.com/Inaimathi/fact-base\"><code>fact-base</code></a> changes</h3>
+
+<p>Two changes I'd been considering for a while got pushed recently.</p>
+
+<p>Firstly, there's an intermediate data-structure backing <code>delta</code>s and <code>history</code>s. It's extremely simple; just a linked list you can push to the back of. The end result is saving a tiny bit of time when reading or writing things, because you suddenly don't need to reverse anything for it to work properly. Not big, and this changes literally nothing as far as <i>users</i> of <code>fact-base</code> are concerned, but it feels better not to have to toss <code>reverse</code> into the equation every so often.</p>
+
+<p>Secondly, and more relevantly for <code>cl-notebook</code>, there's now a primitive <code>:change</code> token. It doesn't reduce disk usage because both the complete before and after facts are kept on record, but <i>does</i> make changes atomic in <code>history</code>. Which will mildly help with the deep undo/branch interface I still need to put together.</p>
+"))
+((5216 78438 829224000) :INSERT (180 :POSTED 3611598438))
+((5216 78438 829227000) :INSERT (180 :CURRENT T))
+((5216 78438 829230000) :INSERT (180 :TAG :BITCHING))
+((5216 78438 829233000) :INSERT (180 :TAG :IDEA-PEELING))
+((5216 78438 829237000) :INSERT (180 :TAG :SPECULATION))

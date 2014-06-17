@@ -13,7 +13,7 @@
      (:html (:head (:meta :content "width=device-width, initial-scale=1" :name "viewport")
 		   (:link :rel "stylesheet" :href "/langnostic.css"))
 	    (:body 
-	     (:a :href "/" (:img :class "logo-image" :src "/static/img/langnostic.png"))
+	     (:a :href "/" (:img :class "logo-image" :src "/static/img/langnostic.png" :alt "Language Agnostic"))
 	     (:hr)
 	     ,(top-menu 
 	       section

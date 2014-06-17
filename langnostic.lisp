@@ -20,9 +20,10 @@
   (with-html-output (s *standard-output*)
     (let ((prev (- article-id 1))
 	  (next (+ article-id 1)))
-      (for-all (and (prev :file ?prev) (prev :title ?title)) :in *base*
-	       :do (htm (:a :class "prev" :href (format nil "/article?name=~a" ?prev) (fmt "<- ~a" (truncat ?title 30)))))
-      (for-all (and (next :file ?next) (next :title ?title)) :in *base*
+      (for-all `(and (,prev :file ?prev) (,prev :title ?title)) :in *base*
+	       :do (htm (:a :class "prev" :href (format nil "/article?name=~a" ?prev)
+			    (fmt "<- ~a" (truncat ?title 30)))))
+      (for-all `(and (,next :file ?next) (,next :title ?title)) :in *base*
 	       :do (htm (:a :class "next" :href (format nil "/article?name=~a" ?next) (fmt "~a ->" (truncat ?title 30)))))
       (htm (:br :style "clear:both;")))))
 
@@ -38,7 +39,7 @@
 		      (:hr)
 		      (prev+next-links ?id)))))
 
-(define-closing-handler (feed/atom :content-type "application/rss+xml") ()
+(define-closing-handler (feed/atom :content-type "application/atom+xml") ()
   (with-html-output-to-string (*standard-output* nil :prologue "<?xml version=\"1.0\" encoding=\"utf-8\"?>" :indent t)
     (:feed :xmlns "http://www.w3.org/2005/Atom"
 	   (:title "Language Agnostic")
