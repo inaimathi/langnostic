@@ -32,19 +32,29 @@
 (defun reload! ()
   (setf *base* (load! #p"langnostic.base")))
 
-;; TODO - write these
+(defmethod update-article! ((file pathname))
+  (for-all `(and (?id :file ,(file-namestring file))
+		 (?id :edited ?edited)
+		 (?id :body ?body))
+	   :in *base* :do (progn (delete! *base* (list ?id :edited ?edited))
+				 (delete! *base* (list ?id :body ?body))
+				 (insert! *base* (list ?id :edited (file-write-date file)))
+				 (with-open-file (s file)
+				   (let ((buf (make-string (file-length s))))
+				     (read-sequence buf s)
+				     (insert! *base* (list ?id :body buf)))))))
 
-;; (defmethod update-article! ((file pathname))
-;;   (for-all `(and (?id :file ,(file-namestring file))
-;; 		 (?id :edited ?edited)
-;; 		 (?id :body ?body)
-;; 		 (?id :))))
+(defmethod add-tags! ((article-id number) (new-tags list))
+  (loop for tag in new-tags
+     do (insert! *base* (list article-id :tag tag))))
 
-;; (defmethod add-tags! ((article-id number) (new-tags list))
-;;   )
 
-;; (defmethod replace-tags! ((article-id number) (new-tags list))
-;;   )
+(defmethod remove-tag! ((article-id number) (tag symbol))
+  (delete! *base* (list article-id :tag tag)))
+
+(defmethod replace-tags! ((article-id number) (new-tags list))
+  (for-all `(,article-id :tag ?tag) :in *base* :do (delete! *base* (list article-id :tag ?tag)))
+  (add-tags! article-id new-tags))
 
 (defmethod new-article! ((file pathname) (tags list) &optional title)
   (with-open-file (s file)
