@@ -29,6 +29,9 @@
 			(:body ,body) (:posted ,(get-universal-time))
 			(:current t) ,@(mapcar (lambda (tag) `(:tag ,tag)) tags))))
 
+(defun reload! ()
+  (setf *base* (load! #p"langnostic.base")))
+
 ;; TODO - write these
 
 ;; (defmethod update-article! ((file pathname))

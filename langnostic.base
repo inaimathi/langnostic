@@ -25884,13 +25884,13 @@ inaimathi@self:~/.cl-notebook/books$ ls -lh base-zg1mm*
 ((5202 3729 183212000) :INSERT (179 :POSTED 3610314129))
 ((5202 3729 183215000) :INSERT (179 :CURRENT T))
 ((5202 3729 183217000) :INSERT (179 :TAG :BITCHING))
-((5216 78438 828911000) :DELETE (179 :CURRENT T))
-((5216 78438 829123000) :INSERT
- (180 :TITLE "Future Of Programming Memory And Minutia"))
-((5216 78438 829135000) :INSERT
+((5221 86229 551311000) :DELETE (179 :CURRENT T))
+((5221 86229 551889000) :INSERT
+ (180 :TITLE "Future Of Programming, Memory and Minutia"))
+((5221 86229 551906000) :INSERT
  (180 :FILE "future-of-programming-memory-and-minutia.html"))
-((5216 78438 829140000) :INSERT (180 :EDITED 3611598435))
-((5216 78438 829143000) :INSERT
+((5221 86229 551910000) :INSERT (180 :EDITED 3611598435))
+((5221 86229 551913000) :INSERT
  (180 :BODY
   "<p>Fairly boring update time. I still haven't really had enough time to tear into the next real article I've got planned, but its been long enough that I need to release mental steam.</p>
 
@@ -25927,7 +25927,11 @@ inaimathi@self:~/.cl-notebook/books$ ls -lh base-zg1mm*
    <span style=\"color: #b22222;\">#+win32(list #\\newline #\\newline)</span>
    lst))</pre>
 
-<p>Why do I need this? It's because platform-specific line-endings read from a <code>char</code> stream are returned as <code>#\\newline</code>. On Linux machines, <code>#\\newline</code> is synonymous with a line-feed character (because Linux lines end with a single newline character).</p>
+<p>Why do I need this? It's because platform-specific line-endings read from a <code>char</code> stream are returned as <code>#\\newline</code>. On Linux machines, <code>#\\newline</code> is synonymous with <code>#\\linefeed</code>. Literally.</p>
+
+<pre>CL-USER&gt; (eq #\\linefeed #\\newline)
+T
+CL-USER&gt; </pre>
 
 <p>The situation's different on Windows though. There, a line ends with <code>CRLF</code>. Which happens to be the actual specified line-ending for HTTP. Combining these fairly sensical decisions gets you the situation that you <i>can't</i> check for a char-stream HTTP line-ending on Windows by looking for a terminating <code>CRLF</code>.</p>
 
@@ -25971,8 +25975,132 @@ Backtrace:
 
 <p>Secondly, and more relevantly for <code>cl-notebook</code>, there's now a primitive <code>:change</code> token. It doesn't reduce disk usage because both the complete before and after facts are kept on record, but <i>does</i> make changes atomic in <code>history</code>. Which will mildly help with the deep undo/branch interface I still need to put together.</p>
 "))
-((5216 78438 829224000) :INSERT (180 :POSTED 3611598438))
-((5216 78438 829227000) :INSERT (180 :CURRENT T))
-((5216 78438 829230000) :INSERT (180 :TAG :BITCHING))
-((5216 78438 829233000) :INSERT (180 :TAG :IDEA-PEELING))
-((5216 78438 829237000) :INSERT (180 :TAG :SPECULATION))
+((5221 86229 551964000) :INSERT (180 :POSTED 3611598438))
+((5221 86229 551966000) :INSERT (180 :CURRENT T))
+((5221 86229 551969000) :INSERT (180 :TAG :BITCHING))
+((5221 86229 551971000) :INSERT (180 :TAG :IDEA-PEELING))
+((5221 86229 551974000) :INSERT (180 :TAG :SPECULATION))
+((5222 1068 247851000) :DELETE (180 :CURRENT T))
+((5222 1068 247946000) :INSERT (181 :TITLE "How Unification Works"))
+((5222 1068 247957000) :INSERT (181 :FILE "how-unification-works.html"))
+((5222 1068 247969000) :INSERT (181 :EDITED 3612039462))
+((5222 1068 247972000) :INSERT
+ (181 :BODY "<p>So here's how unification works.</p>
+
+<pre>(<span style=\"color: #a020f0;\">defun</span> <span style=\"color: #0000ff;\">unify</span> (x y <span style=\"color: #228b22;\">&amp;optional</span> bindings)
+  (<span style=\"color: #a020f0;\">cond</span> ((fail? bindings) +fail+)
+        ((eql x y) bindings)
+        ((variable? x) (unify-variable x y bindings))
+        ((variable? y) (unify-variable y x bindings))
+        ((and (stringp x) (stringp y))
+         (<span style=\"color: #a020f0;\">if</span> (string= x y) bindings +fail+))
+        ((and (consp x) (consp y))
+         (unify (rest x) (rest y)
+                (unify (first x) (first y) bindings)))
+        (t +fail+)))
+
+(<span style=\"color: #a020f0;\">defun</span> <span style=\"color: #0000ff;\">unify-variable</span> (var x bindings)
+  (<span style=\"color: #a020f0;\">cond</span> ((get-binding var bindings)
+         (unify (lookup-binding var bindings) x bindings))
+        ((and (variable? x) (get-binding x bindings))
+         (unify var (lookup-binding x bindings) bindings))
+        ((occurs-check var x bindings)
+         +fail+)
+        (t (extend-bindings var x bindings))))</pre>
+
+<p>That's a joke.</p>
+
+<p>The above is an implementation of unification in Common Lisp. It's a very mildly modified version of the unifier that <a href=\"http://norvig.com/\">Norvig</a> built in <a href=\"http://norvig.com/paip/README.html\">PAIP</a>. What a lot of people don't grasp intuitively<a href=\"#foot-Tue-Jun-17-201209EDT-2014\" name=\"note-Tue-Jun-17-201209EDT-2014\">[1]</a> is that unifiers don't return expressions, they return environments.</p>
+
+<pre>FACT-BASE&gt; (unify '(?a <span style=\"color: #483d8b;\">:test</span> 1) '(<span style=\"color: #483d8b;\">:blah</span> ?b 1))
+<span style=\"color: #ff0000;\">((?B . </span><span style=\"color: #ff0000;\">:TEST</span><span style=\"color: #ff0000;\">) (?A . </span><span style=\"color: #ff0000;\">:BLAH</span><span style=\"color: #ff0000;\">))</span>
+FACT-BASE&gt; </pre>
+
+<p>This particular implementation represents environments is as <a href=\"http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node153.html\">association list</a>, but that's not a requirement. An <code>environment</code> is a key/value structure that tells you what variables are bound to which values. The three possible outputs of <code>unify</code> are:</p>
+
+<p><b>Failure</b>, which is the unsuccessful empty environment. Here's an example:</p>
+
+<pre>FACT-BASE&gt; (unify '(?a <span style=\"color: #483d8b;\">:test</span> 1) '(<span style=\"color: #483d8b;\">:blah</span> ?b 2))
+<span style=\"color: #ff0000;\">#</span><span style=\"color: #ff0000;\">:FAIL973</span>
+FACT-BASE&gt; </pre>
+
+<p>The problem there is that <code>1</code> and <code>2</code> are different constant values, so these two terms can't be <code>unify</code>ied. This is fundamentally different from</p>
+
+<p><b>Success</b>, which is the <i>successful</i> empty environment. You get this by successfully <code>unify</code>ing terms with no variables. For example,</p>
+
+<pre>FACT-BASE&gt; (unify '(<span style=\"color: #483d8b;\">:blah</span> <span style=\"color: #483d8b;\">:test</span> 2) '(<span style=\"color: #483d8b;\">:blah</span> <span style=\"color: #483d8b;\">:test</span> 2))
+<span style=\"color: #ff0000;\">NIL</span>
+FACT-BASE&gt; </pre>
+
+<p>This particular implementation of <code>unify</code> uses the empty list (<code>NIL</code>) as the empty success. And finally, <code>unify</code> might return </p>
+
+<p><b>An Environment</b>, which is a set of bindings under which the given unification is true. Once again,</p>
+
+<pre>FACT-BASE&gt; (unify '(?a <span style=\"color: #483d8b;\">:test</span> 1) '(<span style=\"color: #483d8b;\">:blah</span> ?b 1))
+<span style=\"color: #ff0000;\">((?B . </span><span style=\"color: #ff0000;\">:TEST</span><span style=\"color: #ff0000;\">) (?A . </span><span style=\"color: #ff0000;\">:BLAH</span><span style=\"color: #ff0000;\">))</span>
+FACT-BASE&gt; </pre>
+
+<p>What this is saying is</p>
+
+<blockquote>If <code>?a</code> were bound to <code>:BLAH</code> and <code>?b</code> were bound to <code>:TEST</code>, these two terms would be equal</blockquote>
+
+<p>Now, by default, <code>unify</code> starts with the empty environment, but it doesn't have to.</p>
+
+<pre>FACT-BASE&gt; (unify '(?a <span style=\"color: #483d8b;\">:test</span> 1) '(<span style=\"color: #483d8b;\">:blah</span> ?b 1) '((?a . <span style=\"color: #483d8b;\">:FOO</span>)))
+<span style=\"color: #ff0000;\">#</span><span style=\"color: #ff0000;\">:FAIL973</span>
+FACT-BASE&gt; </pre>
+
+<p>If <code>unify</code> tries to work on these same terms, but <code>?a</code> is already bound to <code>:foo</code>, it can do nothing but fail. Yes, you could unbind a particular variable, but that's skipping ahead a bit. Backtracking is dealt with at a different level than straight-up unification. In fact...</p>
+
+<h2>How <code>for-all</code> Works</h2>
+
+<pre>(<span style=\"color: #a020f0;\">defmacro</span> <span style=\"color: #0000ff;\">for-all</span> (goal-term <span style=\"color: #228b22;\">&amp;key</span> in collect do)
+  (<span style=\"color: #a020f0;\">with-gensyms</span> (gen res)
+    `(<span style=\"color: #a020f0;\">let</span> ((,gen ,(<span style=\"color: #a020f0;\">if</span> (and (symbolp (first goal-term))
+                           (member (-&gt;key (first goal-term))
+                                   (list <span style=\"color: #483d8b;\">:quote</span> <span style=\"color: #483d8b;\">:backq-list</span> <span style=\"color: #483d8b;\">:backq-list*</span>)))
+                      `(make-goal ,in ,goal-term)
+                      `(make-goal ,in ',goal-term))))
+       (<span style=\"color: #a020f0;\">loop</span> for ,res = (funcall ,gen)
+          until (fail? ,res)
+            ,(<span style=\"color: #a020f0;\">if</span> do 'do 'collect)
+            ,(<span style=\"color: #a020f0;\">if</span> (or collect do)
+                 `(apply (<span style=\"color: #a020f0;\">lambda</span> ,(variables-in goal-term)
+                           ,(or collect do))
+                         (subst-bindings ,res ',(variables-in goal-term)))
+                 `(subst-bindings ,res ',(variables-in goal-term)))))))</pre>
+
+<p>Hah! This'll get funny eventually, I swear. In all seriousness, understanding this implementation of <code>for-all</code> is entirely optional to understanding how you use <code>unify</code> to query a fact-base. Here's a simple query:</p>
+
+<pre>(for-all (?id <span style=\"color: #483d8b;\">:rectangle</span> nil) <span style=\"color: #483d8b;\">:in</span> base <span style=\"color: #483d8b;\">:do</span> (push (list ?id <span style=\"color: #483d8b;\">:sicp-constraint</span> nil) base))</pre>
+
+<p>This pushes a new fact into the fact-base <code>base</code> for each individual fact that <code>unify</code>ies with the pattern <code>(?id :rectangle nil)</code>. And that's more or less how you read it:</p>
+
+<blockquote>For all environments which makes this query true in the knowledge-base <code>base</code>, do <code>(push (list ?id :sicp-constraint nil) base)</code>.</blockquote>
+
+<p>Here's a more complicated query:</p>
+
+<pre>(for-all (and (?id <span style=\"color: #483d8b;\">:line-segment</span> nil)
+                (?id <span style=\"color: #483d8b;\">:start</span> ?start) (?id <span style=\"color: #483d8b;\">:end</span> ?end)
+                (?id2 <span style=\"color: #483d8b;\">:line-segment</span> nil)
+                (lisp (not (equal ?id ?id2)))
+                (or (?id2 <span style=\"color: #483d8b;\">:start</span> ?end) (?id2 <span style=\"color: #483d8b;\">:end</span> ?start)
+                    (?id2 <span style=\"color: #483d8b;\">:start</span> ?start) (?id2 <span style=\"color: #483d8b;\">:end</span> ?end)))
+           <span style=\"color: #483d8b;\">:in</span> base <span style=\"color: #483d8b;\">:do</span> (push (list ?id <span style=\"color: #483d8b;\">:line-connects-to-line</span> ?id2) base))</pre>
+
+<p>In fact, this is about the upper bound of complexity you're likely to run into in a single query. You can the full statement more or less the same way as above, but the \"this query\" part is much more complicated. In this case, rather than just going through each fact in <code>base</code> and <code>unify</code>ing it, <code>for-all</code> needs to run a deeper query. The top-level <code>and</code> there means that these sub-clauses are dependent on each other. So what it does is go through <code>base</code> looking for a fact that <code>unify</code>ies with <code>(?id :line-segment nil)</code>. If it finds such a fact, lets say it looks like <code>(27 :line-segment nil)</code>, it then tries to satisfy the next <code>and</code> clause under the resulting set of bindings. That is, it tries to find another <code>fact</code> in <code>base</code> that satisfies</p>
+
+<pre>(unify fact (?id <span style=\"color: #483d8b;\">:start</span> ?start) '((?id . 27)))</pre>
+
+<p>If <i>that</i> works, it keeps going. Either until it gets to the end of its clauses, in which case it returns the presumably fairly large <code>environment</code> which satisfies all of them, or until it gets to a sub-clause that fails. If that first sub-clause fails, <code>for-all</code> is out of answers in the given <code>base</code>, and is therefore done. If it were to fail on some other clause, it backtracks. That is, if <code>(unify fact (?id :start ?start) '((?id . 27)))</code> fails above, <code>for-all</code> will go back to the first goal and start searching where it left off until it finds another satisfying fact, then try to move up the tower again.</p>
+
+<p>Hopefully, that clarified more than it confused.</p>
+
+<hr />
+<h5>Footnotes</h5>
+<p>1 - <a href=\"#note-Tue-Jun-17-201209EDT-2014\" name=\"foot-Tue-Jun-17-201209EDT-2014\">[back]</a> - And don't worry if this set includes you; it included me too, until I spent three weeks or so hitting my head against it repeatedly.</p>
+"))
+((5222 1068 248091000) :INSERT (181 :POSTED 3612039468))
+((5222 1068 248094000) :INSERT (181 :CURRENT T))
+((5222 1068 248098000) :INSERT (181 :TAG :COMMON-LISP))
+((5222 1068 248101000) :INSERT (181 :TAG :LOGIC-PROGRAMMING))
