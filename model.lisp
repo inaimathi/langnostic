@@ -21,18 +21,33 @@
 				    ,@(mapcar (lambda (tag) `(:tag ,tag)) tags))))))
     base))
 
-(defmethod insert-article! ((base fact-base) (file pathname) (tags list) (body string))
+(defmethod insert-article! ((base fact-base) (file pathname) (tags list) (body string) &optional title)
   (for-all (?id :current t) :in base :do (delete! base (list ?id :current t)))
-  (multi-insert! base `((:title ,(->title file)) (:file ,(file-namestring file)) (:edited ,(file-write-date file)) (:body ,body) (:posted ,(get-universal-time))
+  (multi-insert! base `((:title ,(or title (->title file))) 
+			(:file ,(file-namestring file)) 
+			(:edited ,(file-write-date file))
+			(:body ,body) (:posted ,(get-universal-time))
 			(:current t) ,@(mapcar (lambda (tag) `(:tag ,tag)) tags))))
 
-(defmethod new-article! ((file pathname) (tags list))
+;; TODO - write these
+
+;; (defmethod update-article! ((file pathname))
+;;   (for-all `(and (?id :file ,(file-namestring file))
+;; 		 (?id :edited ?edited)
+;; 		 (?id :body ?body)
+;; 		 (?id :))))
+
+;; (defmethod add-tags! ((article-id number) (new-tags list))
+;;   )
+
+;; (defmethod replace-tags! ((article-id number) (new-tags list))
+;;   )
+
+(defmethod new-article! ((file pathname) (tags list) &optional title)
   (with-open-file (s file)
     (let ((buf (make-string (file-length s))))
       (read-sequence buf s)
-      (insert-article! *base* file tags buf))))
-
-;; TODO - write update-article!
+      (insert-article! *base* file tags buf title))))
 
 (defun all-tags ()
   (let ((hash (make-hash-table)))

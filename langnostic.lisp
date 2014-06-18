@@ -62,7 +62,7 @@
 			      (:author (:name "Inaimathi"))))))))
 
 (define-closing-handler (article) ((name :string))
-  (aif (for-all (and (?id :file name) (?id :title ?title) (?id :body ?body)) 
+  (aif (for-all `(and (?id :file ,name) (?id :title ?title) (?id :body ?body)) 
 		:in *base* 
 		:collect (page ((str ?title) :section "blog")
 			   (str ?body)
@@ -84,7 +84,7 @@
 
 (define-closing-handler (archive/by-tag) ((tag :keyword))
   (page ((fmt "By Tag: ~a" tag) :section "archive")
-    (:ul (for-all (and (?id :title ?title) (?id :file ?fname) (?id :tag tag)) :in *base*
+    (:ul (for-all `(and (?id :tag ,tag) (?id :title ?title) (?id :file ?fname)) :in *base*
 		  :do (htm (:li (:a :href (format nil "/article?name=~a" ?fname) (str ?title))))))
     (:hr)
     (:ul :class "tags" 
