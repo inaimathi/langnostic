@@ -1,7 +1,7 @@
 ;;;; langnostic.lisp
 (in-package #:langnostic)
 
-(define-closing-handler (meta) ()
+(define-handler (meta) ()
   (page ("Meta" :section "meta")
     (:h3 "About Me")
     (:p "I'm a Graphic Designer " 
@@ -27,7 +27,7 @@
 	       :do (htm (:a :class "next" :href (format nil "/article?name=~a" ?next) (fmt "~a ->" (truncat ?title 30)))))
       (htm (:br :style "clear:both;")))))
 
-(define-closing-handler (root) ()
+(define-handler (root) ()
   (page (nil :section "blog")
     (:p "Welcome to Language Agnostic, the blog of " (:a :href "https://github.com/Inaimathi" "Inaimathi") "! And, thanks to the " (:a :href "https://github.com/Inaimathi/fact-base" "storage approach") ", possibly the least performant blog on the internet!")
     (:p "Enjoy the various programming-themed writings available on offer. The Latest post is available below, and the archive link is directly above this text.")
@@ -39,7 +39,7 @@
 		      (:hr)
 		      (prev+next-links ?id)))))
 
-(define-closing-handler (feed/atom :content-type "application/atom+xml") ()
+(define-handler (feed/atom :content-type "application/atom+xml") ()
   (with-html-output-to-string (*standard-output* nil :prologue "<?xml version=\"1.0\" encoding=\"utf-8\"?>" :indent t)
     (:feed :xmlns "http://www.w3.org/2005/Atom"
 	   (:title "Language Agnostic")
@@ -61,7 +61,7 @@
 				     (str ?body)))
 			      (:author (:name "Inaimathi"))))))))
 
-(define-closing-handler (article) ((name :string))
+(define-handler (article) ((name :string))
   (aif (for-all `(and (?id :file ,name) (?id :title ?title) (?id :body ?body)) 
 		:in *base* 
 		:collect (page ((str ?title) :section "blog")
@@ -71,7 +71,7 @@
        (first it)
        (page ((fmt "Not found: ~s" name) :section "blog"))))
 
-(define-closing-handler (archive) ()
+(define-handler (archive) ()
   (page ("Archive" :section "archive")
     (:h3 "Tags")
     (:ul :class "tags" 
@@ -82,7 +82,7 @@
     (:ul (for-all (and (?id :title ?title) (?id :file ?fname)) :in *base*
 		  :do (htm (:li (:a :href (format nil "/article?name=~a" ?fname) (str ?title))))))))
 
-(define-closing-handler (archive/by-tag) ((tag :keyword))
+(define-handler (archive/by-tag) ((tag :keyword))
   (page ((fmt "By Tag: ~a" tag) :section "archive")
     (:ul (for-all `(and (?id :tag ,tag) (?id :title ?title) (?id :file ?fname)) :in *base*
 		  :do (htm (:li (:a :href (format nil "/article?name=~a" ?fname) (str ?title))))))
@@ -92,7 +92,7 @@
 	    do (htm (:li (:a :href (format nil "/archive/by-tag?tag=~a" tg) (str tg)) (fmt "(~a)" ct)))))))
 
 
-(define-closing-handler (links) ()
+(define-handler (links) ()
   (page ("Links of Interest to Programming Polyglots" :section "links")
     (:h3 "Generally useful things")
     (link-list

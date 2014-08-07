@@ -41,7 +41,7 @@
 		       (:a :href "http://creativecommons.org/choose/results-one?q_1=2&q_1=1&field_commercial=y&field_derivatives=sa&field_jurisdiction=&field_format=&field_worktitle=this+langnostic+article&field_attribute_to_name=Inaimathi&field_attribute_to_url=http%3A%2F%2Flangnostic.inaimathi.com&field_sourceurl=http%3A%2F%2Flangnostic.inaimathi.com&field_morepermissionsurl=&lang=en_US&n_questions=3" "Here's")
 		       " a license widget you can use."))))))
 
-(define-closing-handler (langnostic.css :content-type "text/css") ()
+(define-handler (langnostic.css :content-type "text/css") ()
   (cl-css:css 
    `((body :width 80% :margin auto :font-family sans-serif)
      
