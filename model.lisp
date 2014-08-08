@@ -1,6 +1,7 @@
 (in-package :langnostic)
 
 (defparameter *base* (fact-base:load! #p"langnostic.base"))
+(defparameter *latest* (latest-n 5))
 
 (defmethod read-chronology ()
   (with-open-file (s "blog-chronology.lisp")
@@ -30,7 +31,8 @@
 			(:current t) ,@(mapcar (lambda (tag) `(:tag ,tag)) tags))))
 
 (defun reload! ()
-  (setf *base* (load! #p"langnostic.base")))
+  (setf *base* (load! #p"langnostic.base")
+	*latest* (latest-n 5)))
 
 (defmethod update-article! ((file pathname))
   (for-all `(and (?id :file ,(file-namestring file))
