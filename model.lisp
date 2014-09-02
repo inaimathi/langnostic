@@ -32,7 +32,8 @@
 
 (defun reload! ()
   (setf *base* (load! #p"langnostic.base")
-	*latest* (latest-n 5)))
+	*latest* (latest-n 5))
+  nil)
 
 (defmethod update-article! ((file pathname))
   (for-all `(and (?id :file ,(file-namestring file))
@@ -58,6 +59,8 @@
   (for-all `(,article-id :tag ?tag) :in *base* :do (delete! *base* (list article-id :tag ?tag)))
   (add-tags! article-id new-tags))
 
+(defmethod new-article! ((file string) tags &optional title)
+  (new-article! (pathname file) tags title))
 (defmethod new-article! ((file pathname) (tags list) &optional title)
   (with-open-file (s file)
     (let ((buf (make-string (file-length s))))

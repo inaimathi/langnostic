@@ -40,25 +40,21 @@
 		      (prev+next-links ?id)))))
 
 (define-handler (feed/atom :content-type "application/atom+xml") ()
-  (with-html-output-to-string (*standard-output* nil :prologue "<?xml version=\"1.0\" encoding=\"utf-8\"?>" :indent t)
+  (with-html-output-to-string (*standard-output* nil :prologue "<?xml version=\"1.0\" encoding=\"utf-8\"?>")
     (:feed :xmlns "http://www.w3.org/2005/Atom"
 	   (:title "Language Agnostic")
 	   (:subtitle "Site-wide Langnostic Atom feed")
 	   (:link :href "http://langnostic.inaimathi.ca/feed/atom" :rel "self")
 	   (:link :href "http://langnostic.inaimathi.ca")
-	   
-	   (loop for (id timestamp title file body) in *latest*
-	      do (htm (:id (fmt "tag:langnostic.inaimathi.ca,~a" id))
-		      (:updated (rss-timestamp timestamp))
+
+	   (loop for (?id ?timestamp ?title ?file ?body) in *latest*
+	      do (htm (:id (fmt "tag:langnostic.inaimathi.ca,~a" ?id))
+		      (:updated (rss-timestamp ?timestamp))
 		      (:entry
-		       (:title (str title))
-		       (:link :href (format nil "http://langnostic.inaimathi.ca/article?name=~a" file))
-		       (:id (fmt "tag:langnostic.inaimathi.ca,~a" id))
-		       (:updated (rss-timestamp timestamp))
-		       (:content 
-			:type "xhtml" :xml\:lang "en" 
-			(:div :xmlns "http://www.w3.org/1999/xhtml" 
-			      (str body)))
+		       (:title (str ?title))
+		       (:link :href (format nil "http://langnostic.inaimathi.ca/article?name=~a" ?file))
+		       (:id (fmt "tag:langnostic.inaimathi.ca,~a" ?id))
+		       (:updated (rss-timestamp ?timestamp))
 		       (:author (:name "Inaimathi"))))))))
 
 (define-handler (article) ((name :string))
