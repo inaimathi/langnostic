@@ -29246,7 +29246,7 @@ Loading package ixset-1.0.5 ... linking ... done.
   <li>This <code>foo</code> is counter-intuitive</li>
   <li>This <code>foo</code> is too complicated</li>
   <li>The designers of this <code>foo</code> think significantly differently from me</li>
-  <li>I'm too lazy/stupid/both to figure out how to use this <code>foo</code> or what it's good for, and I already know how to use a <code>bar</code> that does approximately what I think this will</li>
+  <li>I'm unable/unwilling/both to figure out how to use this <code>foo</code> or what it's good for, and I already know how to use a <code>bar</code> that does approximately what I think this will</li>
 </ol>
 
 <p><code>foo</code> can be bound to pretty much any tool, idea or language you can think of. I assert that in the absence of a well defined, objective metric for intuitiveness and simplicity <b>all of these statements are equivalent</b>. And while you might comfort yourself by using the first two to imply that the problem is clearly in the tool you've failed to master or its constructors, I put it to you that <i>you probably really mean</i> the fourth.</p>
@@ -29272,3 +29272,708 @@ Loading package ixset-1.0.5 ... linking ... done.
 ((5316 65734 553722000) :INSERT (193 :CURRENT T))
 ((5316 65734 553730000) :INSERT (193 :TAG :IDEA-PEELING))
 ((5316 65734 553737000) :INSERT (193 :TAG :GENERAL-PROGRAMMING-THOUGHTS))
+((5316 66110 736926000) :DELETE (193 :CURRENT T))
+((5316 66110 737032000) :INSERT (194 :TITLE "Langton's Ant"))
+((5316 66110 737044000) :INSERT (194 :FILE "langtons-ant-writeup.html"))
+((5316 66110 737049000) :INSERT (194 :EDITED 3620226055))
+((5316 66110 737053000) :INSERT
+ (194 :BODY
+  "<p>At a recent <a href=\"https://github.com/CodeRetreatTO\">CodeRetreat</a>, we tackled <a href=\"http://en.wikipedia.org/wiki/Langton%27s_ant\">Langton's Ant</a> as the problem. It's another two-state cellular automaton, except that the rules are centered around a cursor named the \"ant\", rather than each cells' neighborhood. As of this writing, <a href=\"https://github.com/rabraham\"><code>rabraham</code></a> and I are the only ones who've posted their solution. Although, to be fair, what you'll see <a href=\"https://github.com/CodeRetreatTO/projects/blob/master/2014-09-langtons-ant/rabraham-and-inaimathi.hs\">here</a> is <i>not</i> the raw solution, but rather the result of the raw solution with another hour or two of polish put on it after the fact. Lets go sequentially though, starting with <a href=\"https://github.com/CodeRetreatTO/projects/blob/961fc0376e0074e8af34c9f93e55a6121b5c2981/2014-09-langtons-ant/rabraham-and-inaimathi.hs\">what we actually wrote</a> at the event from the initial state in <a href=\"https://github.com/CodeRetreatTO/projects/commits/master/2014-09-langtons-ant/rabraham-and-inaimathi.hs\">history</a>.</p>
+
+<h4>Langton's Haskelly Ant, Take One</h4>
+
+<pre><span style=\"color: #a020f0;\">module</span> <span style=\"color: #228b22;\">Langton</span> <span style=\"color: #a020f0;\">where</span>
+
+<span style=\"color: #a020f0;\">import</span> <span style=\"color: #228b22;\">Prelude</span> <span style=\"color: #a020f0;\">hiding</span> (<span style=\"color: #228b22;\">Left</span>, <span style=\"color: #228b22;\">Right</span>, flip)
+
+<span style=\"color: #a020f0;\">data</span> <span style=\"color: #228b22;\">Direction</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Up</span> <span style=\"color: #a0522d;\">|</span> <span style=\"color: #228b22;\">Right</span> <span style=\"color: #a0522d;\">|</span> <span style=\"color: #228b22;\">Down</span> <span style=\"color: #a0522d;\">|</span> <span style=\"color: #228b22;\">Left</span> <span style=\"color: #a020f0;\">deriving</span> (<span style=\"color: #228b22;\">Eq</span>, <span style=\"color: #228b22;\">Enum</span>, <span style=\"color: #228b22;\">Show</span>)
+
+<span style=\"color: #0000ff;\">right</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Direction</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Direction</span> 
+<span style=\"color: #0000ff;\">right</span> <span style=\"color: #228b22;\">Left</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Up</span>
+<span style=\"color: #0000ff;\">right</span> dir <span style=\"color: #a0522d;\">=</span> succ dir
+
+<span style=\"color: #0000ff;\">left</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Direction</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Direction</span>
+<span style=\"color: #0000ff;\">left</span> <span style=\"color: #228b22;\">Up</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Left</span>
+<span style=\"color: #0000ff;\">left</span> dir <span style=\"color: #a0522d;\">=</span> pred dir
+
+<span style=\"color: #a020f0;\">data</span> <span style=\"color: #228b22;\">Ant</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> <span style=\"color: #228b22;\">Int</span> <span style=\"color: #228b22;\">Int</span> <span style=\"color: #228b22;\">Direction</span> <span style=\"color: #a020f0;\">deriving</span> (<span style=\"color: #228b22;\">Eq</span>, <span style=\"color: #228b22;\">Show</span>)
+<span style=\"color: #a020f0;\">data</span> <span style=\"color: #228b22;\">World</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">World</span> <span style=\"color: #228b22;\">Ant</span> <span style=\"color: #228b22;\">Coords</span> <span style=\"color: #a020f0;\">deriving</span> (<span style=\"color: #228b22;\">Show</span>)
+<span style=\"color: #a020f0;\">type</span> <span style=\"color: #228b22;\">Coords</span> <span style=\"color: #a0522d;\">=</span> [(<span style=\"color: #228b22;\">Int</span>, <span style=\"color: #228b22;\">Int</span>)]
+
+
+<span style=\"color: #0000ff;\">flip</span> <span style=\"color: #a0522d;\">::</span> (<span style=\"color: #228b22;\">Int</span>, <span style=\"color: #228b22;\">Int</span>) <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Coords</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Coords</span>
+<span style=\"color: #0000ff;\">flip</span> cell coords<span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">if</span> cell <span style=\"color: #a0522d;\">`elem`</span> coords
+                  <span style=\"color: #a020f0;\">then</span> filter (<span style=\"color: #a0522d;\">/=</span>cell) coords
+                  <span style=\"color: #a020f0;\">else</span> cell<span style=\"color: #228b22;\">:</span>coords
+
+<span style=\"color: #0000ff;\">turn</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Ant</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Coords</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Ant</span>
+<span style=\"color: #0000ff;\">turn</span> (<span style=\"color: #228b22;\">Ant</span> x y dir) coords <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #a0522d;\">$</span> <span style=\"color: #a020f0;\">if</span> (x, y) <span style=\"color: #a0522d;\">`elem`</span> coords
+                                      <span style=\"color: #a020f0;\">then</span> left dir
+                                      <span style=\"color: #a020f0;\">else</span> right dir
+
+<span style=\"color: #0000ff;\">onwards</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Ant</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Ant</span>
+<span style=\"color: #0000ff;\">onwards</span> (<span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #228b22;\">Up</span>) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> x (pred y) <span style=\"color: #228b22;\">Up</span>
+<span style=\"color: #0000ff;\">onwards</span> (<span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #228b22;\">Right</span>) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> (succ x) y <span style=\"color: #228b22;\">Right</span>
+<span style=\"color: #0000ff;\">onwards</span> (<span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #228b22;\">Down</span>) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> x (succ y) <span style=\"color: #228b22;\">Down</span>
+<span style=\"color: #0000ff;\">onwards</span> (<span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #228b22;\">Left</span>) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> (pred x) y <span style=\"color: #228b22;\">Left</span>
+
+<span style=\"color: #0000ff;\">step</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">World</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">World</span>
+<span style=\"color: #0000ff;\">step</span> (<span style=\"color: #228b22;\">World</span> ant<span style=\"color: #a0522d;\">@</span>(<span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #a020f0;\">_</span>) coords) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">World</span> newAnt newCoords
+    <span style=\"color: #a020f0;\">where</span> newCoords <span style=\"color: #a0522d;\">=</span> flip (x, y) coords
+          newAnt <span style=\"color: #a0522d;\">=</span> onwards <span style=\"color: #a0522d;\">$</span> turn ant coords
+
+<span style=\"color: #0000ff;\">test</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">World</span> (<span style=\"color: #228b22;\">Ant</span> 4 4 <span style=\"color: #228b22;\">Up</span>) <span style=\"color: #228b22;\">[]</span>
+
+<span style=\"color: #0000ff;\">main</span> <span style=\"color: #a0522d;\">=</span> mapM_ (putStrLn <span style=\"color: #a0522d;\">.</span> show) <span style=\"color: #a0522d;\">.</span> take 400 <span style=\"color: #a0522d;\">$</span> iterate step test</pre>
+
+<p>Yes, it's in Haskell. I sort of assumed you knew that. First things first, module imports and namespace minutia.</p>
+
+<pre><span style=\"color: #a020f0;\">module</span> <span style=\"color: #228b22;\">Langton</span> <span style=\"color: #a020f0;\">where</span>
+
+<span style=\"color: #a020f0;\">import</span> <span style=\"color: #228b22;\">Prelude</span> <span style=\"color: #a020f0;\">hiding</span> (<span style=\"color: #228b22;\">Left</span>, <span style=\"color: #228b22;\">Right</span>, flip)</pre>
+
+<p>We'll be defining our own <code><span style=\"color: #228b22;\">Left</span></code> and <code><span style=\"color: #228b22;\">Right</span></code> constructors, and a different <code>flip</code> function, so we need to hide the defaults from <code><span style=\"color: #228b22;\">Prelude</span></code>. Next up, basic data declarations:</p>
+
+<pre><span style=\"color: #a020f0;\">data</span> <span style=\"color: #228b22;\">Direction</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Up</span> <span style=\"color: #a0522d;\">|</span> <span style=\"color: #228b22;\">Right</span> <span style=\"color: #a0522d;\">|</span> <span style=\"color: #228b22;\">Down</span> <span style=\"color: #a0522d;\">|</span> <span style=\"color: #228b22;\">Left</span> <span style=\"color: #a020f0;\">deriving</span> (<span style=\"color: #228b22;\">Eq</span>, <span style=\"color: #228b22;\">Enum</span>, <span style=\"color: #228b22;\">Show</span>)
+
+<span style=\"color: #0000ff;\">right</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Direction</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Direction</span> 
+<span style=\"color: #0000ff;\">right</span> <span style=\"color: #228b22;\">Left</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Up</span>
+<span style=\"color: #0000ff;\">right</span> dir <span style=\"color: #a0522d;\">=</span> succ dir
+
+<span style=\"color: #0000ff;\">left</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Direction</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Direction</span>
+<span style=\"color: #0000ff;\">left</span> <span style=\"color: #228b22;\">Up</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Left</span>
+<span style=\"color: #0000ff;\">left</span> dir <span style=\"color: #a0522d;\">=</span> pred dir
+
+<span style=\"color: #a020f0;\">data</span> <span style=\"color: #228b22;\">Ant</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> <span style=\"color: #228b22;\">Int</span> <span style=\"color: #228b22;\">Int</span> <span style=\"color: #228b22;\">Direction</span> <span style=\"color: #a020f0;\">deriving</span> (<span style=\"color: #228b22;\">Eq</span>, <span style=\"color: #228b22;\">Show</span>)
+<span style=\"color: #a020f0;\">data</span> <span style=\"color: #228b22;\">World</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">World</span> <span style=\"color: #228b22;\">Ant</span> <span style=\"color: #228b22;\">Coords</span> <span style=\"color: #a020f0;\">deriving</span> (<span style=\"color: #228b22;\">Show</span>)
+<span style=\"color: #a020f0;\">type</span> <span style=\"color: #228b22;\">Coords</span> <span style=\"color: #a0522d;\">=</span> [(<span style=\"color: #228b22;\">Int</span>, <span style=\"color: #228b22;\">Int</span>)]</pre>
+
+<p>We've got a <code><span style=\"color: #228b22;\">Direction</span></code> type that we'd like to wrap around at either end. As far as I know, there isn't a built-in Haskell typeclass that gives us that, so we define our own <code>right</code> and <code>left</code> functions that do the right thing on <code><span style=\"color: #228b22;\">Up</span></code> and <code><span style=\"color: #228b22;\">Down</span></code> respectively<a href=\"#foot-Sat-Sep-20-133912EDT-2014\" name=\"note-Sat-Sep-20-133912EDT-2014\">[1]</a>.</p>
+
+<p>An <code><span style=\"color: #228b22;\">Ant</span></code> is a pair of <code><span style=\"color: #228b22;\">Int</span></code>s that designate its current <code>x</code> and <code>y</code> coordinate, and a <code><span style=\"color: #228b22;\">Direction</span></code> that encodes its current facing.</p>
+
+<pre><span style=\"color: #a020f0;\">data</span> <span style=\"color: #228b22;\">Ant</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> <span style=\"color: #228b22;\">Int</span> <span style=\"color: #228b22;\">Int</span> <span style=\"color: #228b22;\">Direction</span> <span style=\"color: #a020f0;\">deriving</span> (<span style=\"color: #228b22;\">Eq</span>, <span style=\"color: #228b22;\">Show</span>)</pre>
+
+<p>We used my usual sparse world representation, since this <i>is</i> a two-state automaton. Which means that a world is only going to track \"on\" cells. A set of coordinates is an <code>(<span style=\"color: #228b22;\">Int</span>, <span style=\"color: #228b22;\">Int</span>)</code> list. Finally, a <code><span style=\"color: #228b22;\">World</span></code> is one <code><span style=\"color: #228b22;\">Ant</span></code> and a set of coordinates.</p>
+
+<pre><span style=\"color: #a020f0;\">data</span> <span style=\"color: #228b22;\">World</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">World</span> <span style=\"color: #228b22;\">Ant</span> <span style=\"color: #228b22;\">Coords</span> <span style=\"color: #a020f0;\">deriving</span> (<span style=\"color: #228b22;\">Show</span>)
+<span style=\"color: #a020f0;\">type</span> <span style=\"color: #228b22;\">Coords</span> <span style=\"color: #a0522d;\">=</span> [(<span style=\"color: #228b22;\">Int</span>, <span style=\"color: #228b22;\">Int</span>)]</pre>
+
+<p>Since we're using a sparse list for the board representation, <code>flip</code>ping a cell means either filtering it from the list (if it's there already) or <code>cons</code>ing it onto the list (if it isn't)</p>
+
+<pre><span style=\"color: #0000ff;\">flip</span> <span style=\"color: #a0522d;\">::</span> (<span style=\"color: #228b22;\">Int</span>, <span style=\"color: #228b22;\">Int</span>) <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Coords</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Coords</span>
+<span style=\"color: #0000ff;\">flip</span> cell coords<span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">if</span> cell <span style=\"color: #a0522d;\">`elem`</span> coords
+                  <span style=\"color: #a020f0;\">then</span> filter (<span style=\"color: #a0522d;\">/=</span>cell) coords
+                  <span style=\"color: #a020f0;\">else</span> cell<span style=\"color: #228b22;\">:</span>coords</pre>
+
+<p>We could have done this as a guard statement</p>
+
+<pre><span style=\"color: #0000ff;\">flip</span> <span style=\"color: #a0522d;\">::</span> (<span style=\"color: #228b22;\">Int</span>, <span style=\"color: #228b22;\">Int</span>) <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Coords</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Coords</span>
+<span style=\"color: #0000ff;\">flip</span> cell coords
+    <span style=\"color: #a0522d;\">|</span> cell <span style=\"color: #a0522d;\">`elem`</span> coords <span style=\"color: #a0522d;\">=</span> filter (<span style=\"color: #a0522d;\">/=</span>cell) coords
+    <span style=\"color: #a0522d;\">|</span> otherwise <span style=\"color: #a0522d;\">=</span> cell<span style=\"color: #228b22;\">:</span>coords</pre>
+
+<p>I'm not entirely sure why we didn't. I too was busy explaining Haskell syntax to really think through this thing at the time, I guess. Incidentally, this is why we wanted to shadow the default <code><span style=\"color: #228b22;\">Prelude</span><span style=\"color: #0000ff;\">.</span>flip</code>. Ok, next up, turning an ant according to <a href=\"http://en.wikipedia.org/wiki/Langton%27s_ant#Rules\">the automata rules</a> means that we have to <code>turn</code> it to the <code>left</code> if it's on an <code>on</code> cell and <code>turn</code> it <code>right</code> if it isn't.</p>
+
+<pre><span style=\"color: #0000ff;\">turn</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Ant</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Coords</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Ant</span>
+<span style=\"color: #0000ff;\">turn</span> (<span style=\"color: #228b22;\">Ant</span> x y dir) coords <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #a0522d;\">$</span> <span style=\"color: #a020f0;\">if</span> (x, y) <span style=\"color: #a0522d;\">`elem`</span> coords
+                                      <span style=\"color: #a020f0;\">then</span> left dir
+                                      <span style=\"color: #a020f0;\">else</span> right dir</pre>
+
+<p>Moving an <code><span style=\"color: #228b22;\">Ant</span></code> forward means changing either its <code>x</code> or <code>y</code> coordinate depending on its <code><span style=\"color: #228b22;\">Direction</span></code>.</p>
+
+<pre><span style=\"color: #0000ff;\">onwards</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Ant</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Ant</span>
+<span style=\"color: #0000ff;\">onwards</span> (<span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #228b22;\">Up</span>) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> x (pred y) <span style=\"color: #228b22;\">Up</span>
+<span style=\"color: #0000ff;\">onwards</span> (<span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #228b22;\">Right</span>) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> (succ x) y <span style=\"color: #228b22;\">Right</span>
+<span style=\"color: #0000ff;\">onwards</span> (<span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #228b22;\">Down</span>) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> x (succ y) <span style=\"color: #228b22;\">Down</span>
+<span style=\"color: #0000ff;\">onwards</span> (<span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #228b22;\">Left</span>) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> (pred x) y <span style=\"color: #228b22;\">Left</span></pre>
+
+<p>Ok, getting to the end here. <code>step</code>ping a world means <code>flip</code>ping the cell at the <code><span style=\"color: #228b22;\">Ant</span></code>, <code>turn</code>ing the ant as appropriate and moving the ant <code>onwards</code> once it has been turned.</p>
+
+<pre><span style=\"color: #0000ff;\">step</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">World</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">World</span>
+<span style=\"color: #0000ff;\">step</span> (<span style=\"color: #228b22;\">World</span> ant<span style=\"color: #a0522d;\">@</span>(<span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #a020f0;\">_</span>) coords) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">World</span> newAnt newCoords
+    <span style=\"color: #a020f0;\">where</span> newCoords <span style=\"color: #a0522d;\">=</span> flip (x, y) coords
+          newAnt <span style=\"color: #a0522d;\">=</span> onwards <span style=\"color: #a0522d;\">$</span> turn ant coords</pre>
+
+<p>Since we're writing Haskell, the result of this operation is going to have to be a new <code><span style=\"color: #228b22;\">World</span></code>, with the newly turned and re-positioned <code><span style=\"color: #228b22;\">Ant</span></code> and modified <code><span style=\"color: #228b22;\">Coords</span></code>, rather than merely a mutation of an existing area of memory.</p>
+
+<p>Now that we know how to step a world, we can define a test starting position</p>
+
+<pre><span style=\"color: #0000ff;\">test</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">World</span> (<span style=\"color: #228b22;\">Ant</span> 4 4 <span style=\"color: #228b22;\">Up</span>) <span style=\"color: #228b22;\">[]</span></pre>
+
+<p>and see how it shapes up across a few generations.</p>
+
+<pre><span style=\"color: #0000ff;\">main</span> <span style=\"color: #a0522d;\">=</span> mapM_ (putStrLn <span style=\"color: #a0522d;\">.</span> show) <span style=\"color: #a0522d;\">.</span> take 400 <span style=\"color: #a0522d;\">$</span> iterate step test</pre>
+
+<p>Running that in GHCi gets us</p>
+
+<pre><span style=\"color: #228b22;\">Prelude</span><span style=\"color: #0000ff;\">&gt;</span> <span style=\"color: #228b22;\">:</span>load <span style=\"color: #8b2252;\">\"/home/inaimathi/projects/code-retreat/projects/rabraham-and-inaimathi.hs\"</span>
+[1 <span style=\"color: #a020f0;\">of</span> 1] <span style=\"color: #228b22;\">Compiling</span> <span style=\"color: #228b22;\">Langton</span>          ( <span style=\"color: #a0522d;\">/</span>home<span style=\"color: #a0522d;\">/</span>inaimathi<span style=\"color: #a0522d;\">/</span>projects<span style=\"color: #a0522d;\">/</span>code<span style=\"color: #a0522d;\">-</span>retreat<span style=\"color: #a0522d;\">/</span>projects<span style=\"color: #a0522d;\">/</span>rabraham<span style=\"color: #a0522d;\">-</span>and<span style=\"color: #a0522d;\">-</span>inaimathi<span style=\"color: #a0522d;\">.</span>hs, interpreted )
+<span style=\"color: #228b22;\">Ok</span>, modules loaded<span style=\"color: #228b22;\">:</span> <span style=\"color: #228b22;\">Langton</span><span style=\"color: #a0522d;\">.</span>
+<span style=\"color: #a0522d;\">*</span><span style=\"color: #228b22;\">Langton</span><span style=\"color: #a0522d;\">&gt;</span> <span style=\"color: #228b22;\">Langton</span><span style=\"color: #a0522d;\">.</span>main
+<span style=\"color: #228b22;\">World</span> (<span style=\"color: #228b22;\">Ant</span> 4 4 <span style=\"color: #228b22;\">Up</span>) <span style=\"color: #228b22;\">[]</span>
+<span style=\"color: #228b22;\">World</span> (<span style=\"color: #228b22;\">Ant</span> 5 4 <span style=\"color: #228b22;\">Right</span>) [(4,4)]
+<span style=\"color: #228b22;\">World</span> (<span style=\"color: #228b22;\">Ant</span> 5 5 <span style=\"color: #228b22;\">Down</span>) [(5,4),(4,4)]
+<span style=\"color: #228b22;\">World</span> (<span style=\"color: #228b22;\">Ant</span> 4 5 <span style=\"color: #228b22;\">Left</span>) [(5,5),(5,4),(4,4)]
+
+<span style=\"color: #a0522d;\">...</span>snip a few hundred more<span style=\"color: #a0522d;\">...</span>
+
+<span style=\"color: #228b22;\">World</span> (<span style=\"color: #228b22;\">Ant</span> 7 3 <span style=\"color: #228b22;\">Down</span>) [(7,2),(6,2),(5,3),(6,4),(4,5),(3,4),(2,1),(1,1),(0,1),(<span style=\"color: #a0522d;\">-</span>1,0),(<span style=\"color: #a0522d;\">-</span>2,0),(<span style=\"color: #a0522d;\">-</span>2,1),(0,0),(<span style=\"color: #a0522d;\">-</span>1,<span style=\"color: #a0522d;\">-</span>1),(1,<span style=\"color: #a0522d;\">-</span>2),(0,<span style=\"color: #a0522d;\">-</span>2),(2,<span style=\"color: #a0522d;\">-</span>1),(3,1),(4,1),(5,1),(6,0),(7,<span style=\"color: #a0522d;\">-</span>1),(7,<span style=\"color: #a0522d;\">-</span>2),(6,<span style=\"color: #a0522d;\">-</span>2),(7,0),(8,<span style=\"color: #a0522d;\">-</span>1),(9,1),(9,0),(8,2),(5,2),(6,7),(7,7),(8,7),(9,8),(10,8),(10,7),(8,8),(9,9),(7,10),(8,10),(6,9),(5,7),(4,7),(3,7),(2,8),(1,9),(1,10),(2,10),(1,8),(0,9),(<span style=\"color: #a0522d;\">-</span>1,7),(<span style=\"color: #a0522d;\">-</span>1,8),(0,6),(3,6),(7,5),(7,4),(8,5),(1,3),(1,4),(0,3),(7,3),(1,5)]
+<span style=\"color: #228b22;\">World</span> (<span style=\"color: #228b22;\">Ant</span> 8 3 <span style=\"color: #228b22;\">Right</span>) [(7,2),(6,2),(5,3),(6,4),(4,5),(3,4),(2,1),(1,1),(0,1),(<span style=\"color: #a0522d;\">-</span>1,0),(<span style=\"color: #a0522d;\">-</span>2,0),(<span style=\"color: #a0522d;\">-</span>2,1),(0,0),(<span style=\"color: #a0522d;\">-</span>1,<span style=\"color: #a0522d;\">-</span>1),(1,<span style=\"color: #a0522d;\">-</span>2),(0,<span style=\"color: #a0522d;\">-</span>2),(2,<span style=\"color: #a0522d;\">-</span>1),(3,1),(4,1),(5,1),(6,0),(7,<span style=\"color: #a0522d;\">-</span>1),(7,<span style=\"color: #a0522d;\">-</span>2),(6,<span style=\"color: #a0522d;\">-</span>2),(7,0),(8,<span style=\"color: #a0522d;\">-</span>1),(9,1),(9,0),(8,2),(5,2),(6,7),(7,7),(8,7),(9,8),(10,8),(10,7),(8,8),(9,9),(7,10),(8,10),(6,9),(5,7),(4,7),(3,7),(2,8),(1,9),(1,10),(2,10),(1,8),(0,9),(<span style=\"color: #a0522d;\">-</span>1,7),(<span style=\"color: #a0522d;\">-</span>1,8),(0,6),(3,6),(7,5),(7,4),(8,5),(1,3),(1,4),(0,3),(1,5)]
+<span style=\"color: #a0522d;\">*</span><span style=\"color: #228b22;\">Langton</span><span style=\"color: #a0522d;\">&gt;</span> </pre>
+
+<p>You'll note that some of those coordinates are negative, since we intentionally didn't restrict our <code><span style=\"color: #228b22;\">Ant</span></code> from walking off the edge of the board. This is what we came up with at the meetup itself, and I mentioned at the time that we probably would have taken a while to write a print routine, as well as handle multiple <code><span style=\"color: #228b22;\">Ant</span></code>s. I mentioned, half-jokingly, that the printing code would probably be more difficult than the extra cursors. I think I'm going to have to shut up about that, because as you'll see in the next two chunks of this article, neither are particularly complicated<a href=\"#foot-Sat-Sep-20-133941EDT-2014\" name=\"note-Sat-Sep-20-133941EDT-2014\">[2]</a>.</p>
+
+<h4>Langton's Haskelly Ant, Take Two: M m m m multi-ant!</h4>
+
+<p>Here's what I wrote on the subway, on my way home from the event:</p>
+
+<pre><span style=\"color: #a020f0;\">module</span> <span style=\"color: #228b22;\">Langton</span> <span style=\"color: #a020f0;\">where</span>
+
+<span style=\"color: #a020f0;\">import</span> <span style=\"color: #228b22;\">Prelude</span> <span style=\"color: #a020f0;\">hiding</span> (<span style=\"color: #228b22;\">Left</span>, <span style=\"color: #228b22;\">Right</span>)
+
+<span style=\"color: #a020f0;\">data</span> <span style=\"color: #228b22;\">Direction</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Up</span> <span style=\"color: #a0522d;\">|</span> <span style=\"color: #228b22;\">Right</span> <span style=\"color: #a0522d;\">|</span> <span style=\"color: #228b22;\">Down</span> <span style=\"color: #a0522d;\">|</span> <span style=\"color: #228b22;\">Left</span> <span style=\"color: #a020f0;\">deriving</span> (<span style=\"color: #228b22;\">Eq</span>, <span style=\"color: #228b22;\">Enum</span>, <span style=\"color: #228b22;\">Show</span>)
+
+<span style=\"color: #0000ff;\">right</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Direction</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Direction</span> 
+<span style=\"color: #0000ff;\">right</span> <span style=\"color: #228b22;\">Left</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Up</span>
+<span style=\"color: #0000ff;\">right</span> dir <span style=\"color: #a0522d;\">=</span> succ dir
+
+<span style=\"color: #0000ff;\">left</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Direction</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Direction</span>
+<span style=\"color: #0000ff;\">left</span> <span style=\"color: #228b22;\">Up</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Left</span>
+<span style=\"color: #0000ff;\">left</span> dir <span style=\"color: #a0522d;\">=</span> pred dir
+
+<span style=\"color: #a020f0;\">data</span> <span style=\"color: #228b22;\">Ant</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> <span style=\"color: #228b22;\">Int</span> <span style=\"color: #228b22;\">Int</span> <span style=\"color: #228b22;\">Direction</span> <span style=\"color: #a020f0;\">deriving</span> (<span style=\"color: #228b22;\">Eq</span>, <span style=\"color: #228b22;\">Show</span>)
+<span style=\"color: #a020f0;\">data</span> <span style=\"color: #228b22;\">World</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">World</span> [<span style=\"color: #228b22;\">Ant</span>] <span style=\"color: #228b22;\">Coords</span> <span style=\"color: #a020f0;\">deriving</span> (<span style=\"color: #228b22;\">Show</span>)
+<span style=\"color: #a020f0;\">type</span> <span style=\"color: #228b22;\">Coords</span> <span style=\"color: #a0522d;\">=</span> [(<span style=\"color: #228b22;\">Int</span>, <span style=\"color: #228b22;\">Int</span>)]
+
+
+<span style=\"color: #0000ff;\">flipCell</span> <span style=\"color: #a0522d;\">::</span> (<span style=\"color: #228b22;\">Int</span>, <span style=\"color: #228b22;\">Int</span>) <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Coords</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Coords</span>
+<span style=\"color: #0000ff;\">flipCell</span> cell coords<span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">if</span> cell <span style=\"color: #a0522d;\">`elem`</span> coords
+                  <span style=\"color: #a020f0;\">then</span> filter (<span style=\"color: #a0522d;\">/=</span>cell) coords
+                  <span style=\"color: #a020f0;\">else</span> cell<span style=\"color: #228b22;\">:</span>coords
+
+<span style=\"color: #0000ff;\">turn</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Coords</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Ant</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Ant</span>
+<span style=\"color: #0000ff;\">turn</span> coords (<span style=\"color: #228b22;\">Ant</span> x y dir) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #a0522d;\">$</span> <span style=\"color: #a020f0;\">if</span> (x, y) <span style=\"color: #a0522d;\">`elem`</span> coords
+                                      <span style=\"color: #a020f0;\">then</span> left dir
+                                      <span style=\"color: #a020f0;\">else</span> right dir
+
+<span style=\"color: #0000ff;\">onwards</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Ant</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Ant</span>
+<span style=\"color: #0000ff;\">onwards</span> (<span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #228b22;\">Up</span>) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> x (pred y) <span style=\"color: #228b22;\">Up</span>
+<span style=\"color: #0000ff;\">onwards</span> (<span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #228b22;\">Right</span>) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> (succ x) y <span style=\"color: #228b22;\">Right</span>
+<span style=\"color: #0000ff;\">onwards</span> (<span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #228b22;\">Down</span>) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> x (succ y) <span style=\"color: #228b22;\">Down</span>
+<span style=\"color: #0000ff;\">onwards</span> (<span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #228b22;\">Left</span>) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> (pred x) y <span style=\"color: #228b22;\">Left</span>
+
+<span style=\"color: #0000ff;\">step</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">World</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">World</span>
+<span style=\"color: #0000ff;\">step</span> (<span style=\"color: #228b22;\">World</span> ants coords) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">World</span> newAnts newCoords
+    <span style=\"color: #a020f0;\">where</span> newCoords <span style=\"color: #a0522d;\">=</span> foldl (<span style=\"color: #a0522d;\">\\</span>memo (<span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #a020f0;\">_</span>) <span style=\"color: #a0522d;\">-&gt;</span> flipCell (x, y) memo) coords ants
+          newAnts <span style=\"color: #a0522d;\">=</span> map (onwards <span style=\"color: #a0522d;\">.</span> turn coords) ants
+
+<span style=\"color: #0000ff;\">test</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">World</span> [(<span style=\"color: #228b22;\">Ant</span> 4 4 <span style=\"color: #228b22;\">Up</span>), (<span style=\"color: #228b22;\">Ant</span> 3 7 <span style=\"color: #228b22;\">Left</span>)] <span style=\"color: #228b22;\">[]</span>
+
+<span style=\"color: #0000ff;\">main</span> <span style=\"color: #a0522d;\">=</span> mapM_ (putStrLn <span style=\"color: #a0522d;\">.</span> show) <span style=\"color: #a0522d;\">.</span> take 10 <span style=\"color: #a0522d;\">$</span> iterate step test</pre>
+
+<p>Since you already read through the single-ant solution, all you need to know are <a href=\"https://github.com/CodeRetreatTO/projects/commit/87cdeb82c39490d4fbf8580804b6bb319b8043e2\">the deltas</a>. Adding more ants comes down to exactly three changes. First, a world is no longer an <code><span style=\"color: #228b22;\">Ant</span></code> and some <code><span style=\"color: #228b22;\">Coords</span></code>, rather it's a list of <code><span style=\"color: #228b22;\">Ant</span></code>s and a some <code><span style=\"color: #228b22;\">Coords</span></code>.</p>
+
+data World = World [Ant] Coords deriving (Show)
+
+<p>Second, stepping a world now involves <code>fold</code>ing over the <code><span style=\"color: #228b22;\">Ant</span></code>s to generate new <code><span style=\"color: #228b22;\">Coords</span></code>, and <code>map</code>ping over them to generate a new list of <code><span style=\"color: #228b22;\">Ant</span></code>s</p>
+
+<pre><span style=\"color: #0000ff;\">step</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">World</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">World</span>
+<span style=\"color: #0000ff;\">step</span> (<span style=\"color: #228b22;\">World</span> ants coords) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">World</span> newAnts newCoords
+    <span style=\"color: #a020f0;\">where</span> newCoords <span style=\"color: #a0522d;\">=</span> foldl (<span style=\"color: #a0522d;\">\\</span>memo (<span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #a020f0;\">_</span>) <span style=\"color: #a0522d;\">-&gt;</span> flipCell (x, y) memo) coords ants
+          newAnts <span style=\"color: #a0522d;\">=</span> map (onwards <span style=\"color: #a0522d;\">.</span> turn coords) ants</pre>
+
+<p>As a result, I also changed the order of arguments to <code>turn</code> so that it would be more easily composed in that last line of the new <code>step</code> definition.</p>
+
+<pre><span style=\"color: #0000ff;\">turn</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Coords</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Ant</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Ant</span>
+<span style=\"color: #0000ff;\">turn</span> coords (<span style=\"color: #228b22;\">Ant</span> x y dir) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #a0522d;\">$</span> <span style=\"color: #a020f0;\">if</span> (x, y) <span style=\"color: #a0522d;\">`elem`</span> coords
+                                      <span style=\"color: #a020f0;\">then</span> left dir
+                                      <span style=\"color: #a020f0;\">else</span> right dir</pre>
+
+<p>Oh, and I gratuitously renamed our <code>flip</code> function to <code>flipCell</code> so that we no longer have to shadow <code><span style=\"color: #228b22;\">Prelude</span><span style=\"color: #0000ff;\">.</span>flip</code>. Finally, I had to define a new test world.</p>
+
+<pre><span style=\"color: #0000ff;\">test</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">World</span> [(<span style=\"color: #228b22;\">Ant</span> 4 4 <span style=\"color: #228b22;\">Up</span>), (<span style=\"color: #228b22;\">Ant</span> 3 7 <span style=\"color: #228b22;\">Left</span>)] <span style=\"color: #228b22;\">[]</span></pre>
+
+<p>Which provided very slightly different output.</p>
+
+<pre><span style=\"color: #a0522d;\">*</span><span style=\"color: #228b22;\">Langton</span><span style=\"color: #a0522d;\">&gt;</span> <span style=\"color: #228b22;\">:</span>load <span style=\"color: #8b2252;\">\"/home/inaimathi/projects/code-retreat/projects/rabraham-and-inaimathi.hs\"</span>
+[1 <span style=\"color: #a020f0;\">of</span> 1] <span style=\"color: #228b22;\">Compiling</span> <span style=\"color: #228b22;\">Langton</span>          ( <span style=\"color: #a0522d;\">/</span>home<span style=\"color: #a0522d;\">/</span>inaimathi<span style=\"color: #a0522d;\">/</span>projects<span style=\"color: #a0522d;\">/</span>code<span style=\"color: #a0522d;\">-</span>retreat<span style=\"color: #a0522d;\">/</span>projects<span style=\"color: #a0522d;\">/</span>rabraham<span style=\"color: #a0522d;\">-</span>and<span style=\"color: #a0522d;\">-</span>inaimathi<span style=\"color: #a0522d;\">.</span>hs, interpreted )
+<span style=\"color: #228b22;\">Ok</span>, modules loaded<span style=\"color: #228b22;\">:</span> <span style=\"color: #228b22;\">Langton</span><span style=\"color: #a0522d;\">.</span>
+<span style=\"color: #a0522d;\">*</span><span style=\"color: #228b22;\">Langton</span><span style=\"color: #a0522d;\">&gt;</span> main
+<span style=\"color: #228b22;\">World</span> [<span style=\"color: #228b22;\">Ant</span> 4 4 <span style=\"color: #228b22;\">Up</span>,<span style=\"color: #228b22;\">Ant</span> 3 7 <span style=\"color: #228b22;\">Left</span>] <span style=\"color: #228b22;\">[]</span>
+<span style=\"color: #228b22;\">World</span> [<span style=\"color: #228b22;\">Ant</span> 5 4 <span style=\"color: #228b22;\">Right</span>,<span style=\"color: #228b22;\">Ant</span> 3 6 <span style=\"color: #228b22;\">Up</span>] [(3,7),(4,4)]
+<span style=\"color: #228b22;\">World</span> [<span style=\"color: #228b22;\">Ant</span> 5 5 <span style=\"color: #228b22;\">Down</span>,<span style=\"color: #228b22;\">Ant</span> 4 6 <span style=\"color: #228b22;\">Right</span>] [(3,6),(5,4),(3,7),(4,4)]
+<span style=\"color: #228b22;\">World</span> [<span style=\"color: #228b22;\">Ant</span> 4 5 <span style=\"color: #228b22;\">Left</span>,<span style=\"color: #228b22;\">Ant</span> 4 7 <span style=\"color: #228b22;\">Down</span>] [(4,6),(5,5),(3,6),(5,4),(3,7),(4,4)]
+<span style=\"color: #228b22;\">World</span> [<span style=\"color: #228b22;\">Ant</span> 4 4 <span style=\"color: #228b22;\">Up</span>,<span style=\"color: #228b22;\">Ant</span> 3 7 <span style=\"color: #228b22;\">Left</span>] [(4,7),(4,5),(4,6),(5,5),(3,6),(5,4),(3,7),(4,4)]
+<span style=\"color: #228b22;\">World</span> [<span style=\"color: #228b22;\">Ant</span> 3 4 <span style=\"color: #228b22;\">Left</span>,<span style=\"color: #228b22;\">Ant</span> 3 8 <span style=\"color: #228b22;\">Down</span>] [(4,7),(4,5),(4,6),(5,5),(3,6),(5,4)]
+<span style=\"color: #228b22;\">World</span> [<span style=\"color: #228b22;\">Ant</span> 3 3 <span style=\"color: #228b22;\">Up</span>,<span style=\"color: #228b22;\">Ant</span> 2 8 <span style=\"color: #228b22;\">Left</span>] [(3,8),(3,4),(4,7),(4,5),(4,6),(5,5),(3,6),(5,4)]
+<span style=\"color: #228b22;\">World</span> [<span style=\"color: #228b22;\">Ant</span> 4 3 <span style=\"color: #228b22;\">Right</span>,<span style=\"color: #228b22;\">Ant</span> 2 7 <span style=\"color: #228b22;\">Up</span>] [(2,8),(3,3),(3,8),(3,4),(4,7),(4,5),(4,6),(5,5),(3,6),(5,4)]
+<span style=\"color: #228b22;\">World</span> [<span style=\"color: #228b22;\">Ant</span> 4 4 <span style=\"color: #228b22;\">Down</span>,<span style=\"color: #228b22;\">Ant</span> 3 7 <span style=\"color: #228b22;\">Right</span>] [(2,7),(4,3),(2,8),(3,3),(3,8),(3,4),(4,7),(4,5),(4,6),(5,5),(3,6),(5,4)]
+
+<span style=\"color: #a0522d;\">...</span> and so on <span style=\"color: #a0522d;\">...</span>
+
+<span style=\"color: #a0522d;\">*</span><span style=\"color: #228b22;\">Langton</span><span style=\"color: #a0522d;\">&gt;</span> </pre>
+
+<p>Now then...</p>
+
+<h4>Langton's Haskelly Ant, Take Three: Printing</h4>
+
+<p>Part two of my subway trip was devoted to printing this world in a more pleasing way.</p>
+
+<pre><span style=\"color: #a020f0;\">module</span> <span style=\"color: #228b22;\">Langton</span> <span style=\"color: #a020f0;\">where</span>
+
+<span style=\"color: #a020f0;\">import</span> <span style=\"color: #228b22;\">Prelude</span> <span style=\"color: #a020f0;\">hiding</span> (<span style=\"color: #228b22;\">Left</span>, <span style=\"color: #228b22;\">Right</span>)
+<span style=\"color: #a020f0;\">import</span> <span style=\"color: #228b22;\">Data.Set</span> (<span style=\"color: #228b22;\">Set</span>(<span style=\"color: #a0522d;\">..</span>), member, insert, delete, fromList)
+
+<span style=\"color: #a020f0;\">data</span> <span style=\"color: #228b22;\">Direction</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Up</span> <span style=\"color: #a0522d;\">|</span> <span style=\"color: #228b22;\">Right</span> <span style=\"color: #a0522d;\">|</span> <span style=\"color: #228b22;\">Down</span> <span style=\"color: #a0522d;\">|</span> <span style=\"color: #228b22;\">Left</span> <span style=\"color: #a020f0;\">deriving</span> (<span style=\"color: #228b22;\">Eq</span>, <span style=\"color: #228b22;\">Enum</span>, <span style=\"color: #228b22;\">Show</span>)
+
+<span style=\"color: #0000ff;\">right</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Direction</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Direction</span> 
+<span style=\"color: #0000ff;\">right</span> <span style=\"color: #228b22;\">Left</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Up</span>
+<span style=\"color: #0000ff;\">right</span> dir <span style=\"color: #a0522d;\">=</span> succ dir
+
+<span style=\"color: #0000ff;\">left</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Direction</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Direction</span>
+<span style=\"color: #0000ff;\">left</span> <span style=\"color: #228b22;\">Up</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Left</span>
+<span style=\"color: #0000ff;\">left</span> dir <span style=\"color: #a0522d;\">=</span> pred dir
+
+<span style=\"color: #a020f0;\">data</span> <span style=\"color: #228b22;\">Ant</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> <span style=\"color: #228b22;\">Int</span> <span style=\"color: #228b22;\">Int</span> <span style=\"color: #228b22;\">Direction</span> <span style=\"color: #a020f0;\">deriving</span> (<span style=\"color: #228b22;\">Eq</span>, <span style=\"color: #228b22;\">Show</span>)
+<span style=\"color: #a020f0;\">data</span> <span style=\"color: #228b22;\">World</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">World</span> [<span style=\"color: #228b22;\">Ant</span>] <span style=\"color: #228b22;\">Coords</span> <span style=\"color: #a020f0;\">deriving</span> (<span style=\"color: #228b22;\">Show</span>)
+<span style=\"color: #a020f0;\">type</span> <span style=\"color: #228b22;\">Coords</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Set</span> (<span style=\"color: #228b22;\">Int</span>, <span style=\"color: #228b22;\">Int</span>)
+
+<span style=\"color: #0000ff;\">flipCell</span> <span style=\"color: #a0522d;\">::</span> (<span style=\"color: #228b22;\">Int</span>, <span style=\"color: #228b22;\">Int</span>) <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Coords</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Coords</span>
+<span style=\"color: #0000ff;\">flipCell</span> cell coords<span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">if</span> cell <span style=\"color: #a0522d;\">`member`</span> coords
+                  <span style=\"color: #a020f0;\">then</span> cell <span style=\"color: #a0522d;\">`delete`</span> coords
+                  <span style=\"color: #a020f0;\">else</span> cell <span style=\"color: #a0522d;\">`insert`</span> coords
+
+<span style=\"color: #0000ff;\">turn</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Coords</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Ant</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Ant</span>
+<span style=\"color: #0000ff;\">turn</span> coords (<span style=\"color: #228b22;\">Ant</span> x y dir) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #a0522d;\">$</span> <span style=\"color: #a020f0;\">if</span> (x, y) <span style=\"color: #a0522d;\">`member`</span> coords
+                                      <span style=\"color: #a020f0;\">then</span> left dir
+                                      <span style=\"color: #a020f0;\">else</span> right dir
+
+<span style=\"color: #0000ff;\">onwards</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Ant</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Ant</span>
+<span style=\"color: #0000ff;\">onwards</span> (<span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #228b22;\">Up</span>) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> x (pred y) <span style=\"color: #228b22;\">Up</span>
+<span style=\"color: #0000ff;\">onwards</span> (<span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #228b22;\">Right</span>) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> (succ x) y <span style=\"color: #228b22;\">Right</span>
+<span style=\"color: #0000ff;\">onwards</span> (<span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #228b22;\">Down</span>) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> x (succ y) <span style=\"color: #228b22;\">Down</span>
+<span style=\"color: #0000ff;\">onwards</span> (<span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #228b22;\">Left</span>) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> (pred x) y <span style=\"color: #228b22;\">Left</span>
+
+<span style=\"color: #0000ff;\">step</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">World</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">World</span>
+<span style=\"color: #0000ff;\">step</span> (<span style=\"color: #228b22;\">World</span> ants coords) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">World</span> newAnts newCoords
+    <span style=\"color: #a020f0;\">where</span> newCoords <span style=\"color: #a0522d;\">=</span> foldl (<span style=\"color: #a0522d;\">\\</span>memo (<span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #a020f0;\">_</span>) <span style=\"color: #a0522d;\">-&gt;</span> flipCell (x, y) memo) coords ants
+          newAnts <span style=\"color: #a0522d;\">=</span> map (onwards <span style=\"color: #a0522d;\">.</span> turn coords) ants
+
+<span style=\"color: #0000ff;\">test</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">World</span> [(<span style=\"color: #228b22;\">Ant</span> 4 4 <span style=\"color: #228b22;\">Up</span>), (<span style=\"color: #228b22;\">Ant</span> 3 7 <span style=\"color: #228b22;\">Left</span>)] <span style=\"color: #a0522d;\">$</span> fromList <span style=\"color: #228b22;\">[]</span>
+
+<span style=\"color: #0000ff;\">showWorld</span> <span style=\"color: #a0522d;\">::</span> (<span style=\"color: #228b22;\">Int</span>, <span style=\"color: #228b22;\">Int</span>) <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">World</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">String</span>
+<span style=\"color: #0000ff;\">showWorld</span> (w, h) (<span style=\"color: #228b22;\">World</span> ants coords) <span style=\"color: #a0522d;\">=</span> unlines [line y <span style=\"color: #a0522d;\">|</span> y <span style=\"color: #a0522d;\">&lt;-</span> [0<span style=\"color: #a0522d;\">..</span>h]]
+    <span style=\"color: #a020f0;\">where</span> line y <span style=\"color: #a0522d;\">=</span> [charOf (x, y) <span style=\"color: #a0522d;\">|</span> x <span style=\"color: #a0522d;\">&lt;-</span> [0<span style=\"color: #a0522d;\">..</span>w]]
+          antCells <span style=\"color: #a0522d;\">=</span> map (<span style=\"color: #a0522d;\">\\</span>(<span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #a020f0;\">_</span>) <span style=\"color: #a0522d;\">-&gt;</span> (x, y)) ants
+          charOf cell
+              <span style=\"color: #a0522d;\">|</span> cell <span style=\"color: #a0522d;\">`elem`</span> antCells <span style=\"color: #a0522d;\">=</span> <span style=\"color: #8b2252;\">'+'</span>
+              <span style=\"color: #a0522d;\">|</span> cell <span style=\"color: #a0522d;\">`member`</span> coords <span style=\"color: #a0522d;\">=</span> <span style=\"color: #8b2252;\">'O'</span>
+              <span style=\"color: #a0522d;\">|</span> otherwise <span style=\"color: #a0522d;\">=</span> <span style=\"color: #8b2252;\">' '</span>
+
+<span style=\"color: #0000ff;\">main</span> <span style=\"color: #a0522d;\">=</span> mapM_ (putStrLn <span style=\"color: #a0522d;\">.</span> showWorld (10, 10)) <span style=\"color: #a0522d;\">.</span> take 40 <span style=\"color: #a0522d;\">$</span> iterate step test</pre>
+
+<p>Again, since you've been keeping up, you'll only need to know <a href=\"https://github.com/CodeRetreatTO/projects/commit/d9eddbc01d722ab8032608987e3cb1bf6330d04a\">the deltas</a>. Firstly, I decided to change the representation of <code><span style=\"color: #228b22;\">Coords</span></code>, since printing would entail <i>a lot</i> of membership checks, and I wanted those to be at least somewhat fast. To that end, I imported <code><span style=\"color: #228b22;\">Data</span><span style=\"color: #0000ff;\">.</span><span style=\"color: #228b22;\">Set</span></code>, and very slightly changed the definitions of <code>flipCell</code> and <code>turn</code>.</p>
+
+<pre><span style=\"color: #a0522d;\">...</span>
+<span style=\"color: #a020f0;\">import</span> <span style=\"color: #228b22;\">Data.Set</span> (<span style=\"color: #228b22;\">Set</span>(<span style=\"color: #a0522d;\">..</span>), member, insert, delete, fromList)
+<span style=\"color: #a0522d;\">...</span>
+<span style=\"color: #a020f0;\">type</span> <span style=\"color: #228b22;\">Coords</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Set</span> (<span style=\"color: #228b22;\">Int</span>, <span style=\"color: #228b22;\">Int</span>)
+<span style=\"color: #a0522d;\">...</span>
+<span style=\"color: #0000ff;\">flipCell</span> <span style=\"color: #a0522d;\">::</span> (<span style=\"color: #228b22;\">Int</span>, <span style=\"color: #228b22;\">Int</span>) <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Coords</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Coords</span>
+<span style=\"color: #0000ff;\">flipCell</span> cell coords<span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">if</span> cell <span style=\"color: #a0522d;\">`member`</span> coords
+                  <span style=\"color: #a020f0;\">then</span> cell <span style=\"color: #a0522d;\">`delete`</span> coords
+                  <span style=\"color: #a020f0;\">else</span> cell <span style=\"color: #a0522d;\">`insert`</span> coords
+<span style=\"color: #a0522d;\">...</span>
+<span style=\"color: #0000ff;\">turn</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Coords</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Ant</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Ant</span>
+<span style=\"color: #0000ff;\">turn</span> coords (<span style=\"color: #228b22;\">Ant</span> x y dir) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #a0522d;\">$</span> <span style=\"color: #a020f0;\">if</span> (x, y) <span style=\"color: #a0522d;\">`member`</span> coords
+                                      <span style=\"color: #a020f0;\">then</span> left dir
+                                      <span style=\"color: #a020f0;\">else</span> right dir
+<span style=\"color: #a0522d;\">...</span></pre>
+
+<p>The functions just needed to use the right membership check, insertions and deletions. Membership happens to be called <code>elem</code> for regular linked lists but <code>member</code> for <code><span style=\"color: #228b22;\">Set</span></code>s, deletion from linked lists was a <code>filter</code> call but a straight up <code>delete</code> for <code><span style=\"color: #228b22;\">Set</span></code>s, and finally, <code>cons</code> was changed out for <code>insert</code>. Next up, <code>showWorld</code> itself:</p>
+
+<pre><span style=\"color: #0000ff;\">showWorld</span> <span style=\"color: #a0522d;\">::</span> (<span style=\"color: #228b22;\">Int</span>, <span style=\"color: #228b22;\">Int</span>) <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">World</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">String</span>
+<span style=\"color: #0000ff;\">showWorld</span> (w, h) (<span style=\"color: #228b22;\">World</span> ants coords) <span style=\"color: #a0522d;\">=</span> unlines [line y <span style=\"color: #a0522d;\">|</span> y <span style=\"color: #a0522d;\">&lt;-</span> [0<span style=\"color: #a0522d;\">..</span>h]]
+    <span style=\"color: #a020f0;\">where</span> line y <span style=\"color: #a0522d;\">=</span> [charOf (x, y) <span style=\"color: #a0522d;\">|</span> x <span style=\"color: #a0522d;\">&lt;-</span> [0<span style=\"color: #a0522d;\">..</span>w]]
+          antCells <span style=\"color: #a0522d;\">=</span> map (<span style=\"color: #a0522d;\">\\</span>(<span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #a020f0;\">_</span>) <span style=\"color: #a0522d;\">-&gt;</span> (x, y)) ants
+          charOf cell
+              <span style=\"color: #a0522d;\">|</span> cell <span style=\"color: #a0522d;\">`elem`</span> antCells <span style=\"color: #a0522d;\">=</span> <span style=\"color: #8b2252;\">'+'</span>
+              <span style=\"color: #a0522d;\">|</span> cell <span style=\"color: #a0522d;\">`member`</span> coords <span style=\"color: #a0522d;\">=</span> <span style=\"color: #8b2252;\">'O'</span>
+              <span style=\"color: #a0522d;\">|</span> otherwise <span style=\"color: #a0522d;\">=</span> <span style=\"color: #8b2252;\">' '</span></pre>
+
+<p>Since I'm trying to format these as a grid, I need to know how big to make it. I probably should have taken a pair of coordinates instead, and probably <i>could</i> have checked the <code>min</code> and <code>max</code> of the World instead of accepting them, but it seemed easier this way. Left as an exercise for the reader, I think. For every line of the printed grid, we want to collect a character for each cell. If the cell contains an Ant, we'll collect <code>'<span style=\"color: #a0522d;\">+</span>'</code>, if it's an \"on\" cell we'll collect <code><span style=\"color: #228b22;\">'O'</span></code>, otherwise, we'll collect a space (<code>' '</code>). Our main function also needs to change to accommodate this approach to display.</p>
+
+<pre><span style=\"color: #0000ff;\">main</span> <span style=\"color: #a0522d;\">=</span> mapM_ (putStrLn <span style=\"color: #a0522d;\">.</span> showWorld (10, 10)) <span style=\"color: #a0522d;\">.</span> take 40 <span style=\"color: #a0522d;\">$</span> iterate step test</pre>
+
+<p>The output should now look rather prettier:</p>
+
+<pre><span style=\"color: #a0522d;\">*</span><span style=\"color: #228b22;\">Langton</span><span style=\"color: #a0522d;\">&gt;</span> <span style=\"color: #228b22;\">:</span>load <span style=\"color: #8b2252;\">\"/home/inaimathi/projects/code-retreat/projects/rabraham-and-inaimathi.hs\"</span>
+[1 <span style=\"color: #a020f0;\">of</span> 1] <span style=\"color: #228b22;\">Compiling</span> <span style=\"color: #228b22;\">Langton</span>          ( <span style=\"color: #a0522d;\">/</span>home<span style=\"color: #a0522d;\">/</span>inaimathi<span style=\"color: #a0522d;\">/</span>projects<span style=\"color: #a0522d;\">/</span>code<span style=\"color: #a0522d;\">-</span>retreat<span style=\"color: #a0522d;\">/</span>projects<span style=\"color: #a0522d;\">/</span>rabraham<span style=\"color: #a0522d;\">-</span>and<span style=\"color: #a0522d;\">-</span>inaimathi<span style=\"color: #a0522d;\">.</span>hs, interpreted )
+<span style=\"color: #228b22;\">Ok</span>, modules loaded<span style=\"color: #228b22;\">:</span> <span style=\"color: #228b22;\">Langton</span><span style=\"color: #a0522d;\">.</span>
+<span style=\"color: #a0522d;\">*</span><span style=\"color: #228b22;\">Langton</span><span style=\"color: #a0522d;\">&gt;</span> main
+<span style=\"color: #228b22;\">Loading</span> package array<span style=\"color: #a0522d;\">-</span>0<span style=\"color: #a0522d;\">.</span>4<span style=\"color: #a0522d;\">.</span>0<span style=\"color: #a0522d;\">.</span>1 <span style=\"color: #a0522d;\">...</span> linking <span style=\"color: #a0522d;\">...</span> done<span style=\"color: #a0522d;\">.</span>
+<span style=\"color: #228b22;\">Loading</span> package deepseq<span style=\"color: #a0522d;\">-</span>1<span style=\"color: #a0522d;\">.</span>3<span style=\"color: #a0522d;\">.</span>0<span style=\"color: #a0522d;\">.</span>1 <span style=\"color: #a0522d;\">...</span> linking <span style=\"color: #a0522d;\">...</span> done<span style=\"color: #a0522d;\">.</span>
+<span style=\"color: #228b22;\">Loading</span> package containers<span style=\"color: #a0522d;\">-</span>0<span style=\"color: #a0522d;\">.</span>5<span style=\"color: #a0522d;\">.</span>0<span style=\"color: #a0522d;\">.</span>0 <span style=\"color: #a0522d;\">...</span> linking <span style=\"color: #a0522d;\">...</span> done<span style=\"color: #a0522d;\">.</span>
+           
+           
+           
+           
+    <span style=\"color: #a0522d;\">+</span>      
+           
+           
+   <span style=\"color: #a0522d;\">+</span>       
+           
+           
+           
+
+           
+           
+           
+           
+    <span style=\"color: #228b22;\">O</span><span style=\"color: #a0522d;\">+</span>     
+           
+   <span style=\"color: #a0522d;\">+</span>       
+   <span style=\"color: #228b22;\">O</span>       
+           
+           
+           
+
+           
+           
+           
+           
+    <span style=\"color: #228b22;\">OO</span>     
+     <span style=\"color: #a0522d;\">+</span>     
+   <span style=\"color: #228b22;\">O</span><span style=\"color: #a0522d;\">+</span>      
+   <span style=\"color: #228b22;\">O</span>       
+           
+           
+           
+
+           
+           
+           
+           
+    <span style=\"color: #228b22;\">OO</span>     
+    <span style=\"color: #a0522d;\">+</span><span style=\"color: #228b22;\">O</span>     
+   <span style=\"color: #228b22;\">OO</span>      
+   <span style=\"color: #228b22;\">O</span><span style=\"color: #a0522d;\">+</span>      
+           
+           
+           
+
+           
+           
+           
+           
+    <span style=\"color: #a0522d;\">+</span><span style=\"color: #228b22;\">O</span>     
+    <span style=\"color: #228b22;\">OO</span>     
+   <span style=\"color: #228b22;\">OO</span>      
+   <span style=\"color: #a0522d;\">+</span><span style=\"color: #228b22;\">O</span>      
+           
+           
+           
+
+           
+           
+           
+           
+   <span style=\"color: #a0522d;\">+</span> <span style=\"color: #228b22;\">O</span>     
+    <span style=\"color: #228b22;\">OO</span>     
+   <span style=\"color: #228b22;\">OO</span>      
+    <span style=\"color: #228b22;\">O</span>      
+   <span style=\"color: #a0522d;\">+</span>       
+           
+           
+
+           
+           
+           
+   <span style=\"color: #a0522d;\">+</span>       
+   <span style=\"color: #228b22;\">O</span> <span style=\"color: #228b22;\">O</span>     
+    <span style=\"color: #228b22;\">OO</span>     
+   <span style=\"color: #228b22;\">OO</span>      
+    <span style=\"color: #228b22;\">O</span>      
+  <span style=\"color: #a0522d;\">+</span><span style=\"color: #228b22;\">O</span>       
+           
+           
+
+           
+           
+           
+   <span style=\"color: #228b22;\">O</span><span style=\"color: #a0522d;\">+</span>      
+   <span style=\"color: #228b22;\">O</span> <span style=\"color: #228b22;\">O</span>     
+    <span style=\"color: #228b22;\">OO</span>     
+   <span style=\"color: #228b22;\">OO</span>      
+  <span style=\"color: #a0522d;\">+</span> <span style=\"color: #228b22;\">O</span>      
+  <span style=\"color: #228b22;\">OO</span>       
+           
+           
+
+           
+           
+           
+   <span style=\"color: #228b22;\">OO</span>      
+   <span style=\"color: #228b22;\">O</span><span style=\"color: #a0522d;\">+</span><span style=\"color: #228b22;\">O</span>     
+    <span style=\"color: #228b22;\">OO</span>     
+   <span style=\"color: #228b22;\">OO</span>      
+  <span style=\"color: #228b22;\">O</span><span style=\"color: #a0522d;\">+</span><span style=\"color: #228b22;\">O</span>      
+  <span style=\"color: #228b22;\">OO</span>       
+           
+           
+
+           
+           
+           
+   <span style=\"color: #228b22;\">OO</span>      
+   <span style=\"color: #a0522d;\">+</span><span style=\"color: #228b22;\">OO</span>     
+    <span style=\"color: #228b22;\">OO</span>     
+   <span style=\"color: #228b22;\">OO</span>      
+  <span style=\"color: #228b22;\">OOO</span>      
+  <span style=\"color: #228b22;\">O</span><span style=\"color: #a0522d;\">+</span>       
+           
+           
+
+           
+           
+           
+   <span style=\"color: #228b22;\">OO</span>      
+    <span style=\"color: #228b22;\">OO</span>     
+   <span style=\"color: #a0522d;\">+</span><span style=\"color: #228b22;\">OO</span>     
+   <span style=\"color: #228b22;\">OO</span>      
+  <span style=\"color: #228b22;\">OOO</span>      
+  <span style=\"color: #228b22;\">O</span> <span style=\"color: #a0522d;\">+</span>      
+           
+           
+
+           
+           
+           
+   <span style=\"color: #228b22;\">OO</span>      
+    <span style=\"color: #228b22;\">OO</span>     
+  <span style=\"color: #a0522d;\">+</span><span style=\"color: #228b22;\">OOO</span>     
+   <span style=\"color: #228b22;\">OO</span>      
+  <span style=\"color: #228b22;\">OOO</span>      
+  <span style=\"color: #228b22;\">O</span> <span style=\"color: #228b22;\">O</span>      
+    <span style=\"color: #a0522d;\">+</span>      
+           
+
+           
+           
+           
+   <span style=\"color: #228b22;\">OO</span>      
+  <span style=\"color: #a0522d;\">+</span> <span style=\"color: #228b22;\">OO</span>     
+  <span style=\"color: #228b22;\">OOOO</span>     
+   <span style=\"color: #228b22;\">OO</span>      
+  <span style=\"color: #228b22;\">OOO</span>      
+  <span style=\"color: #228b22;\">O</span> <span style=\"color: #228b22;\">O</span>      
+   <span style=\"color: #a0522d;\">+</span><span style=\"color: #228b22;\">O</span>      
+           
+
+           
+           
+           
+   <span style=\"color: #228b22;\">OO</span>      
+  <span style=\"color: #228b22;\">O</span><span style=\"color: #a0522d;\">+</span><span style=\"color: #228b22;\">OO</span>     
+  <span style=\"color: #228b22;\">OOOO</span>     
+   <span style=\"color: #228b22;\">OO</span>      
+  <span style=\"color: #228b22;\">OOO</span>      
+  <span style=\"color: #228b22;\">O</span><span style=\"color: #a0522d;\">+</span><span style=\"color: #228b22;\">O</span>      
+   <span style=\"color: #228b22;\">OO</span>      
+           
+
+           
+           
+           
+   <span style=\"color: #228b22;\">OO</span>      
+  <span style=\"color: #228b22;\">OOOO</span>     
+  <span style=\"color: #228b22;\">O</span><span style=\"color: #a0522d;\">+</span><span style=\"color: #228b22;\">OO</span>     
+   <span style=\"color: #228b22;\">OO</span>      
+  <span style=\"color: #228b22;\">OOO</span>      
+  <span style=\"color: #228b22;\">OO</span><span style=\"color: #a0522d;\">+</span>      
+   <span style=\"color: #228b22;\">OO</span>      
+           
+
+           
+           
+           
+   <span style=\"color: #228b22;\">OO</span>      
+  <span style=\"color: #228b22;\">OOOO</span>     
+  <span style=\"color: #228b22;\">O</span> <span style=\"color: #a0522d;\">+</span><span style=\"color: #228b22;\">O</span>     
+   <span style=\"color: #228b22;\">OO</span>      
+  <span style=\"color: #228b22;\">OO</span><span style=\"color: #a0522d;\">+</span>      
+  <span style=\"color: #228b22;\">OO</span>       
+   <span style=\"color: #228b22;\">OO</span>      
+           
+
+           
+           
+<span style=\"color: #a0522d;\">...</span> and a few more <span style=\"color: #a0522d;\">...</span>           
+           
+   <span style=\"color: #228b22;\">OO</span>      
+  <span style=\"color: #228b22;\">O</span>  <span style=\"color: #228b22;\">O</span>     
+ <span style=\"color: #228b22;\">O</span>   <span style=\"color: #228b22;\">O</span>     
+<span style=\"color: #228b22;\">O</span>   <span style=\"color: #228b22;\">O</span>      
+<span style=\"color: #a0522d;\">+</span><span style=\"color: #228b22;\">O</span>    <span style=\"color: #a0522d;\">+</span><span style=\"color: #228b22;\">O</span>   
+  <span style=\"color: #228b22;\">O</span>  <span style=\"color: #228b22;\">OOO</span>   
+   <span style=\"color: #228b22;\">O</span>  <span style=\"color: #228b22;\">O</span>    
+    <span style=\"color: #228b22;\">OO</span>     
+
+<span style=\"color: #a0522d;\">*</span><span style=\"color: #228b22;\">Langton</span><span style=\"color: #a0522d;\">&gt;</span> </pre>
+
+<p>Now, that's cool and all. And it's all I had time for on my subway ride home, but it did seem kind of a shame to have this newly pretty-ish representation printed to the REPL. So the next day, I whipped out <a href=\"http://haste-lang.org/\">Haste</a>.</p>
+
+<h4>Langton's Haskelly Ant, Bonus Stage: The DOM</h4>
+
+<pre><span style=\"color: #a020f0;\">module</span> <span style=\"color: #228b22;\">Main</span> <span style=\"color: #a020f0;\">where</span>
+
+<span style=\"color: #a020f0;\">import</span> <span style=\"color: #228b22;\">Prelude</span> <span style=\"color: #a020f0;\">hiding</span> (<span style=\"color: #228b22;\">Left</span>, <span style=\"color: #228b22;\">Right</span>)
+
+<span style=\"color: #a020f0;\">import</span> <span style=\"color: #228b22;\">Haste</span>
+<span style=\"color: #a020f0;\">import</span> <span style=\"color: #228b22;\">Data.Set</span> (<span style=\"color: #228b22;\">Set</span>(<span style=\"color: #a0522d;\">..</span>), member, insert, delete, fromList)
+<span style=\"color: #a020f0;\">import</span> <span style=\"color: #228b22;\">Data.Maybe</span>
+<span style=\"color: #a020f0;\">import</span> <span style=\"color: #a020f0;\">qualified</span> <span style=\"color: #228b22;\">Data.Map</span> <span style=\"color: #a020f0;\">as</span> <span style=\"color: #228b22;\">Map</span>
+
+<span style=\"color: #a020f0;\">data</span> <span style=\"color: #228b22;\">Direction</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Up</span> <span style=\"color: #a0522d;\">|</span> <span style=\"color: #228b22;\">Right</span> <span style=\"color: #a0522d;\">|</span> <span style=\"color: #228b22;\">Down</span> <span style=\"color: #a0522d;\">|</span> <span style=\"color: #228b22;\">Left</span> <span style=\"color: #a020f0;\">deriving</span> (<span style=\"color: #228b22;\">Eq</span>, <span style=\"color: #228b22;\">Enum</span>, <span style=\"color: #228b22;\">Show</span>)
+
+<span style=\"color: #0000ff;\">right</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Direction</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Direction</span> 
+<span style=\"color: #0000ff;\">right</span> <span style=\"color: #228b22;\">Left</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Up</span>
+<span style=\"color: #0000ff;\">right</span> dir <span style=\"color: #a0522d;\">=</span> succ dir
+
+<span style=\"color: #0000ff;\">left</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Direction</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Direction</span>
+<span style=\"color: #0000ff;\">left</span> <span style=\"color: #228b22;\">Up</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Left</span>
+<span style=\"color: #0000ff;\">left</span> dir <span style=\"color: #a0522d;\">=</span> pred dir
+
+<span style=\"color: #a020f0;\">data</span> <span style=\"color: #228b22;\">Ant</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> <span style=\"color: #228b22;\">Int</span> <span style=\"color: #228b22;\">Int</span> <span style=\"color: #228b22;\">Direction</span> <span style=\"color: #a020f0;\">deriving</span> (<span style=\"color: #228b22;\">Eq</span>, <span style=\"color: #228b22;\">Show</span>)
+<span style=\"color: #a020f0;\">data</span> <span style=\"color: #228b22;\">World</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">World</span> [<span style=\"color: #228b22;\">Ant</span>] <span style=\"color: #228b22;\">Coords</span> <span style=\"color: #a020f0;\">deriving</span> (<span style=\"color: #228b22;\">Show</span>)
+<span style=\"color: #a020f0;\">type</span> <span style=\"color: #228b22;\">Coords</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Set</span> (<span style=\"color: #228b22;\">Int</span>, <span style=\"color: #228b22;\">Int</span>)
+
+<span style=\"color: #0000ff;\">flipCell</span> <span style=\"color: #a0522d;\">::</span> (<span style=\"color: #228b22;\">Int</span>, <span style=\"color: #228b22;\">Int</span>) <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Coords</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Coords</span>
+<span style=\"color: #0000ff;\">flipCell</span> cell coords<span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">if</span> cell <span style=\"color: #a0522d;\">`member`</span> coords
+                  <span style=\"color: #a020f0;\">then</span> cell <span style=\"color: #a0522d;\">`delete`</span> coords
+                  <span style=\"color: #a020f0;\">else</span> cell <span style=\"color: #a0522d;\">`insert`</span> coords
+
+<span style=\"color: #0000ff;\">turn</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Coords</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Ant</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Ant</span>
+<span style=\"color: #0000ff;\">turn</span> coords (<span style=\"color: #228b22;\">Ant</span> x y dir) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #a0522d;\">$</span> <span style=\"color: #a020f0;\">if</span> (x, y) <span style=\"color: #a0522d;\">`member`</span> coords
+                                      <span style=\"color: #a020f0;\">then</span> left dir
+                                      <span style=\"color: #a020f0;\">else</span> right dir
+
+<span style=\"color: #0000ff;\">onwards</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Ant</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Ant</span>
+<span style=\"color: #0000ff;\">onwards</span> (<span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #228b22;\">Up</span>) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> x (pred y) <span style=\"color: #228b22;\">Up</span>
+<span style=\"color: #0000ff;\">onwards</span> (<span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #228b22;\">Right</span>) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> (succ x) y <span style=\"color: #228b22;\">Right</span>
+<span style=\"color: #0000ff;\">onwards</span> (<span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #228b22;\">Down</span>) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> x (succ y) <span style=\"color: #228b22;\">Down</span>
+<span style=\"color: #0000ff;\">onwards</span> (<span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #228b22;\">Left</span>) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Ant</span> (pred x) y <span style=\"color: #228b22;\">Left</span>
+
+<span style=\"color: #0000ff;\">step</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">World</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">World</span>
+<span style=\"color: #0000ff;\">step</span> (<span style=\"color: #228b22;\">World</span> ants coords) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">World</span> newAnts newCoords
+    <span style=\"color: #a020f0;\">where</span> newCoords <span style=\"color: #a0522d;\">=</span> foldl (<span style=\"color: #a0522d;\">\\</span>memo (<span style=\"color: #228b22;\">Ant</span> x y <span style=\"color: #a020f0;\">_</span>) <span style=\"color: #a0522d;\">-&gt;</span> flipCell (x, y) memo) coords ants
+          newAnts <span style=\"color: #a0522d;\">=</span> map (onwards <span style=\"color: #a0522d;\">.</span> turn coords) ants
+
+
+<span style=\"color: #b22222;\">--</span><span style=\"color: #b22222;\">--- Pretty-print a world state
+</span><span style=\"color: #0000ff;\">showWorld</span> <span style=\"color: #a0522d;\">::</span> (<span style=\"color: #228b22;\">Int</span>, <span style=\"color: #228b22;\">Int</span>) <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">World</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">String</span>
+<span style=\"color: #0000ff;\">showWorld</span> (w, h) (<span style=\"color: #228b22;\">World</span> ants coords) <span style=\"color: #a0522d;\">=</span> unlines [line y <span style=\"color: #a0522d;\">|</span> y <span style=\"color: #a0522d;\">&lt;-</span> [0<span style=\"color: #a0522d;\">..</span>h]]
+    <span style=\"color: #a020f0;\">where</span> line y <span style=\"color: #a0522d;\">=</span> [charOf (x, y) <span style=\"color: #a0522d;\">|</span> x <span style=\"color: #a0522d;\">&lt;-</span> [0<span style=\"color: #a0522d;\">..</span>w]]
+          antCells <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Map</span><span style=\"color: #a0522d;\">.</span>fromList <span style=\"color: #a0522d;\">$</span> map (<span style=\"color: #a0522d;\">\\</span>(<span style=\"color: #228b22;\">Ant</span> x y dir) <span style=\"color: #a0522d;\">-&gt;</span> ((x, y), dir )) ants
+          charDir <span style=\"color: #228b22;\">Up</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #8b2252;\">'&#8593;'</span>
+          charDir <span style=\"color: #228b22;\">Right</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #8b2252;\">'&#8594;'</span>
+          charDir <span style=\"color: #228b22;\">Down</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #8b2252;\">'&#8595;'</span>
+          charDir <span style=\"color: #228b22;\">Left</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #8b2252;\">'&#8592;'</span>
+          charOf cell
+              <span style=\"color: #a0522d;\">|</span> cell `<span style=\"color: #228b22;\">Map</span><span style=\"color: #a0522d;\">.</span>member` antCells <span style=\"color: #a0522d;\">=</span> charDir <span style=\"color: #a0522d;\">.</span> fromJust <span style=\"color: #a0522d;\">$</span> <span style=\"color: #228b22;\">Map</span><span style=\"color: #a0522d;\">.</span>lookup cell antCells
+              <span style=\"color: #a0522d;\">|</span> cell <span style=\"color: #a0522d;\">`member`</span> coords <span style=\"color: #a0522d;\">=</span> <span style=\"color: #8b2252;\">'O'</span>
+              <span style=\"color: #a0522d;\">|</span> otherwise <span style=\"color: #a0522d;\">=</span> <span style=\"color: #8b2252;\">' '</span>
+
+<span style=\"color: #b22222;\">--</span><span style=\"color: #b22222;\">--- Haste stuff
+</span><span style=\"color: #0000ff;\">setContent</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">ElemID</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">String</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">IO</span> <span style=\"color: #228b22;\">()</span>
+<span style=\"color: #0000ff;\">setContent</span> id newContent <span style=\"color: #a0522d;\">=</span> withElem id (<span style=\"color: #a0522d;\">\\</span>e <span style=\"color: #a0522d;\">-&gt;</span> setProp e <span style=\"color: #8b2252;\">\"innerHTML\"</span> newContent)
+
+<span style=\"color: #0000ff;\">animate</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Int</span> <span style=\"color: #a0522d;\">-&gt;</span> (<span style=\"color: #228b22;\">Int</span>, <span style=\"color: #228b22;\">Int</span>) <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">World</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Int</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">IO</span> <span style=\"color: #228b22;\">()</span>
+<span style=\"color: #0000ff;\">animate</span> delay size world steps <span style=\"color: #a0522d;\">=</span> setTimeout delay <span style=\"color: #a0522d;\">$</span> recur world steps
+    <span style=\"color: #a020f0;\">where</span> puts ct w <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">do</span> setContent <span style=\"color: #8b2252;\">\"world\"</span> <span style=\"color: #a0522d;\">$</span> showWorld size w
+                         setContent <span style=\"color: #8b2252;\">\"generations\"</span> <span style=\"color: #a0522d;\">$</span> show (steps <span style=\"color: #a0522d;\">-</span> ct)
+          recur world 0 <span style=\"color: #a0522d;\">=</span> setTimeout delay <span style=\"color: #a0522d;\">$</span> puts 0 world
+          recur world ct <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">do</span> puts ct world
+                              setTimeout delay <span style=\"color: #a0522d;\">$</span> recur (step world) <span style=\"color: #a0522d;\">$</span> pred ct
+
+
+<span style=\"color: #b22222;\">--</span><span style=\"color: #b22222;\">--- Test data and main
+</span><span style=\"color: #0000ff;\">test</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">World</span> [(<span style=\"color: #228b22;\">Ant</span> 4 4 <span style=\"color: #228b22;\">Up</span>), (<span style=\"color: #228b22;\">Ant</span> 3 7 <span style=\"color: #228b22;\">Left</span>), (<span style=\"color: #228b22;\">Ant</span> 27 34 <span style=\"color: #228b22;\">Down</span>)] <span style=\"color: #a0522d;\">$</span> fromList <span style=\"color: #228b22;\">[]</span>
+
+<span style=\"color: #0000ff;\">main</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">IO</span> <span style=\"color: #228b22;\">()</span>
+<span style=\"color: #0000ff;\">main</span> <span style=\"color: #a0522d;\">=</span> animate 10 (50, 50) test 4000</pre>
+
+<p>Firstly, I did make one gratuitous change. Specifically, I made <code><span style=\"color: #228b22;\">Ant</span></code>s print out directionally, rather than as a <code>'<span style=\"color: #a0522d;\">+</span>'</code> regardless of their facing. This involved making an intermediate map of <code><span style=\"color: #228b22;\">Ant</span></code> coordinates to <code><span style=\"color: #228b22;\">Direction</span></code>s. Which meant importing <code><span style=\"color: #228b22;\">Data</span><span style=\"color: #0000ff;\">.</span><span style=\"color: #228b22;\">Map</span></code> and <code><span style=\"color: #228b22;\">Data</span><span style=\"color: #0000ff;\">.</span><span style=\"color: #228b22;\">Maybe</span></code>, and slightly complicating <code>showWorld</code>.</p>
+
+<pre><span style=\"color: #a0522d;\">...</span>
+
+<span style=\"color: #a020f0;\">import</span> <span style=\"color: #228b22;\">Data.Maybe</span>
+<span style=\"color: #a020f0;\">import</span> <span style=\"color: #a020f0;\">qualified</span> <span style=\"color: #228b22;\">Data.Map</span> <span style=\"color: #a020f0;\">as</span> <span style=\"color: #228b22;\">Map</span>
+
+<span style=\"color: #a0522d;\">...</span>
+
+<span style=\"color: #0000ff;\">showWorld</span> <span style=\"color: #a0522d;\">::</span> (<span style=\"color: #228b22;\">Int</span>, <span style=\"color: #228b22;\">Int</span>) <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">World</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">String</span>
+<span style=\"color: #0000ff;\">showWorld</span> (w, h) (<span style=\"color: #228b22;\">World</span> ants coords) <span style=\"color: #a0522d;\">=</span> unlines [line y <span style=\"color: #a0522d;\">|</span> y <span style=\"color: #a0522d;\">&lt;-</span> [0<span style=\"color: #a0522d;\">..</span>h]]
+    <span style=\"color: #a020f0;\">where</span> line y <span style=\"color: #a0522d;\">=</span> [charOf (x, y) <span style=\"color: #a0522d;\">|</span> x <span style=\"color: #a0522d;\">&lt;-</span> [0<span style=\"color: #a0522d;\">..</span>w]]
+          antCells <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Map</span><span style=\"color: #a0522d;\">.</span>fromList <span style=\"color: #a0522d;\">$</span> map (<span style=\"color: #a0522d;\">\\</span>(<span style=\"color: #228b22;\">Ant</span> x y dir) <span style=\"color: #a0522d;\">-&gt;</span> ((x, y), dir )) ants
+          charDir <span style=\"color: #228b22;\">Up</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #8b2252;\">'&#8593;'</span>
+          charDir <span style=\"color: #228b22;\">Right</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #8b2252;\">'&#8594;'</span>
+          charDir <span style=\"color: #228b22;\">Down</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #8b2252;\">'&#8595;'</span>
+          charDir <span style=\"color: #228b22;\">Left</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #8b2252;\">'&#8592;'</span>
+          charOf cell
+              <span style=\"color: #a0522d;\">|</span> cell `<span style=\"color: #228b22;\">Map</span><span style=\"color: #a0522d;\">.</span>member` antCells <span style=\"color: #a0522d;\">=</span> charDir <span style=\"color: #a0522d;\">.</span> fromJust <span style=\"color: #a0522d;\">$</span> <span style=\"color: #228b22;\">Map</span><span style=\"color: #a0522d;\">.</span>lookup cell antCells
+              <span style=\"color: #a0522d;\">|</span> cell <span style=\"color: #a0522d;\">`member`</span> coords <span style=\"color: #a0522d;\">=</span> <span style=\"color: #8b2252;\">'O'</span>
+              <span style=\"color: #a0522d;\">|</span> otherwise <span style=\"color: #a0522d;\">=</span> <span style=\"color: #8b2252;\">' '</span></pre>
+
+<p>You can see unicode arrows representing <code><span style=\"color: #228b22;\">Ant</span></code>s now, and you can also see the <code>fromJust</code> call that required <code><span style=\"color: #228b22;\">Data</span><span style=\"color: #0000ff;\">.</span><span style=\"color: #228b22;\">Maybe</span></code>. Anyway, not important, minor changes. The <i>major</i> change is that chunklet under the fingerquotes helpful heading <code>Haste stuff</code>.</p>
+
+<pre><span style=\"color: #b22222;\">--</span><span style=\"color: #b22222;\">--- Haste stuff
+</span><span style=\"color: #0000ff;\">setContent</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">ElemID</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">String</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">IO</span> <span style=\"color: #228b22;\">()</span>
+<span style=\"color: #0000ff;\">setContent</span> id newContent <span style=\"color: #a0522d;\">=</span> withElem id (<span style=\"color: #a0522d;\">\\</span>e <span style=\"color: #a0522d;\">-&gt;</span> setProp e <span style=\"color: #8b2252;\">\"innerHTML\"</span> newContent)
+
+<span style=\"color: #0000ff;\">animate</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Int</span> <span style=\"color: #a0522d;\">-&gt;</span> (<span style=\"color: #228b22;\">Int</span>, <span style=\"color: #228b22;\">Int</span>) <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">World</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Int</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">IO</span> <span style=\"color: #228b22;\">()</span>
+<span style=\"color: #0000ff;\">animate</span> delay size world steps <span style=\"color: #a0522d;\">=</span> setTimeout delay <span style=\"color: #a0522d;\">$</span> recur world steps
+    <span style=\"color: #a020f0;\">where</span> puts ct w <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">do</span> setContent <span style=\"color: #8b2252;\">\"world\"</span> <span style=\"color: #a0522d;\">$</span> showWorld size w
+                         setContent <span style=\"color: #8b2252;\">\"generations\"</span> <span style=\"color: #a0522d;\">$</span> show (steps <span style=\"color: #a0522d;\">-</span> ct)
+          recur world 0 <span style=\"color: #a0522d;\">=</span> setTimeout delay <span style=\"color: #a0522d;\">$</span> puts 0 world
+          recur world ct <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">do</span> puts ct world
+                              setTimeout delay <span style=\"color: #a0522d;\">$</span> recur (step world) <span style=\"color: #a0522d;\">$</span> pred ct</pre>
+
+<p><code>setContent</code> is just a helper function to let me easily set the <code>innerHTML</code> property of a particular element by referencing its <code>id</code>. <code>animate</code>, meanwhile does a nice piece of <code>setTimeout</code> recursion with which it changes the contents of a <code>pre</code> tag with the id <code>world</code> to the next iteration of our newly-defined three-ant test <code><span style=\"color: #228b22;\">World</span></code>.</p>
+
+<p>This doesn't quite do anything by itself, but when you combine it with <a href=\"https://github.com/CodeRetreatTO/projects/blob/master/2014-09-langtons-ant/rabraham-and-inaimathi.html\">this minimal HTML page</a></p>
+
+<pre>&lt;<span style=\"color: #0000ff;\">html</span> <span style=\"color: #a0522d;\">xmlns</span>=<span style=\"color: #8b2252;\">\"http://www.w3.org/1999/xhtml\"</span> <span style=\"color: #483d8b;\">xml</span>:<span style=\"color: #a0522d;\">lang</span>=<span style=\"color: #8b2252;\">\"en\"</span> <span style=\"color: #a0522d;\">lang</span>=<span style=\"color: #8b2252;\">\"en\"</span>&gt;
+  &lt;<span style=\"color: #0000ff;\">head</span>&gt;
+    &lt;<span style=\"color: #0000ff;\">script</span> <span style=\"color: #a0522d;\">type</span>=<span style=\"color: #8b2252;\">\"text/javascript\"</span> <span style=\"color: #a0522d;\">src</span>=<span style=\"color: #8b2252;\">\"rabraham-and-inaimathi.js\"</span>&gt;&lt;/<span style=\"color: #0000ff;\">script</span>&gt;
+  &lt;/<span style=\"color: #0000ff;\">head</span>&gt;
+  &lt;<span style=\"color: #0000ff;\">body</span>&gt;
+    &lt;<span style=\"color: #0000ff;\">p</span> <span style=\"color: #a0522d;\">id</span>=<span style=\"color: #8b2252;\">\"generations\"</span>&gt;0&lt;/<span style=\"color: #0000ff;\">p</span>&gt;
+    &lt;<span style=\"color: #0000ff;\">pre</span> <span style=\"color: #a0522d;\">id</span>=<span style=\"color: #8b2252;\">\"world\"</span> <span style=\"color: #a0522d;\">style</span>=<span style=\"color: #8b2252;\">\"background-color: #eee;\"</span>&gt;&lt;/<span style=\"color: #0000ff;\">pre</span>&gt;
+  &lt;/<span style=\"color: #0000ff;\">body</span>&gt;
+&lt;/<span style=\"color: #0000ff;\">html</span>&gt;</pre>
+
+<p>what you get is <a href=\"http://173.255.226.138/langtons-ants/rabraham-and-inaimathi.html\">this</a>.</p>
+
+<p>Which is pretty cool by my estimation. You can see those unicode arrows dance around, creating ant tunnels as they go. The thing I find really cool about this, as opposed to the stuff I find myself building with <a href=\"https://github.com/vsedach/Parenscript\"><code>parenscript</code></a>, is that it's very <i>very</i> easy to re-use code from a non-Haste project in the context of something that ends up compiling to JS. If I wanted to put a bit more time and thought into this, I could easily have made the Langton's Ant module completely separate from the chunk that shows it off on the DOM, even though the latter would ultimately represent the former as some <a href=\"https://github.com/CodeRetreatTO/projects/blob/master/2014-09-langtons-ant/rabraham-and-inaimathi.js#L2138-L2139\">pretty inscrutable JavaScript</a>. That's not usually the case over in Parenscript land. I often find myself having to carefully consider how a particular piece of code is going to be represented after the compilation step, so it was a pleasant surprise that Haste doesn't make me do the same.</p>
+
+<p>Do take this assessment with a grain of salt though; if <a href=\"https://github.com/vsedach/Parenscript/blob/master/README\">the Parenscript Readme</a> is to be believed, I just don't know enough about it yet.</p>
+
+<hr />
+<h5>Footnotes</h5>
+<p>1 - <a href=\"#note-Sat-Sep-20-133912EDT-2014\" name=\"foot-Sat-Sep-20-133912EDT-2014\">[back]</a> - As a side-note, We could have also defined <code>left</code> as
+
+<pre><span style=\"color: #0000ff;\">left</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Direction</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Direction</span>
+<span style=\"color: #0000ff;\">left</span> <span style=\"color: #a0522d;\">=</span> right <span style=\"color: #a0522d;\">.</span> right <span style=\"color: #a0522d;\">.</span> right</pre>
+
+but didn't feel like gettin' fancy at the time</p>
+
+<p>2 - <a href=\"#note-Sat-Sep-20-133941EDT-2014\" name=\"foot-Sat-Sep-20-133941EDT-2014\">[back]</a> - Although, to be fair, yes, the printing turned out to be more complicated than the extra ants. It turned out to have nothing to do with Haskell, or even the model really. This is just how complicated it is to print a two-dimensional board with no sugar.</p>
+"))
+((5316 66110 738256000) :INSERT (194 :POSTED 3620226110))
+((5316 66110 738264000) :INSERT (194 :CURRENT T))
+((5316 66110 738267000) :INSERT (194 :TAG :CODE-RETREAT-NOTES))
+((5316 66110 738271000) :INSERT (194 :TAG :HASKELL))
+((5316 66110 738275000) :INSERT (194 :TAG :HTML))
+((5316 66110 738279000) :INSERT (194 :TAG :HASTE))
