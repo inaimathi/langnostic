@@ -31395,3 +31395,258 @@ EXP&gt;&gt; </pre>
 ((5400 10192 399802000) :INSERT (201 :TAG :LISP))
 ((5400 10192 399804000) :INSERT (201 :TAG :SCHEME))
 ((5400 10192 399806000) :INSERT (201 :TAG :HASKELL))
+((5402 12269 967157000) :DELETE (201 :CURRENT T))
+((5402 12269 967346000) :INSERT
+ (202 :TITLE "Multi-line REPLs, Pipes and Journal Update"))
+((5402 12269 967354000) :INSERT
+ (202 :FILE "multi-line-repls-pipes-and-journal-update.html"))
+((5402 12269 967356000) :INSERT (202 :EDITED 3627602659))
+((5402 12269 967358000) :INSERT
+ (202 :BODY
+  "<p>I'll get the interesting tech stuff out of the way first, then write about one thing I don't want to miss, and a personal journal entry. Also, I'll probably be a little scarce around here over the next while. The why of it will hopefully be obvious when I get to it.</p>
+
+<h2>Pipes and Multi-Line REPLs</h2>
+
+<p>Before we begin, be aware that I'm not trying to teach you about Pipes. I'm just showing you a use case. If you want the full tutorial and explanation, go check out <a href=\"http://hackage.haskell.org/package/pipes-4.0.0/docs/Pipes-Tutorial.html\">this</a> and possibly <a href=\"https://hackage.haskell.org/package/pipes-concurrency-2.0.1/docs/Pipes-Concurrent-Tutorial.html\">this</a>. The documentation attached to this project is anomalously understandable.</p>
+
+<p>Now then.</p>
+
+<p>I've had a working Haskell-based interpreter for experimentaLISP for a while now. And, in fact, a web-based version of the same, so that you can take the minimal thing there out for a spin without bothering with installing new runtimes or compilers. The web-repl neatly side-stepped this problem, but the command-line one never did.</p>
+
+<pre>*Main Data.IORef&gt; main
+experimentaLISP v0.00001
+EXP&gt;&gt; (+ 2 3)
+5
+EXP&gt;&gt; (+ 2
+READ ERROR
+EXP&gt;&gt; </pre>
+
+<p>Even worse, if I pasted multi-line input from another buffer:</p>
+
+<pre><span style=\"color: #b22222;\">;; </span><span style=\"color: #b22222;\">external buffer \"foo\"
+</span>(def map 
+  (fn (f lst) 
+    (<span style=\"color: #a020f0;\">if</span> (null? lst)
+      () 
+      (cons (f (car lst)) 
+            (<span style=\"color: #a020f0;\">map</span> f (cdr lst))))))</pre>
+
+
+<pre>-- the GHCi REPL
+EXP&gt;&gt; (def map 
+  (fn (f lst) 
+    (if (null? lst)
+      () 
+      (cons (f (car lst)) 
+            (map f (cdr lst))))))
+READ ERROR
+EXP&gt;&gt; READ ERROR
+EXP&gt;&gt; READ ERROR
+EXP&gt;&gt; NIL
+EXP&gt;&gt; READ ERROR
+EXP&gt;&gt; *** Exception: Undefined function 'map'
+*Main Data.IORef&gt; </pre>
+
+<p>See, my initial REPL was naive.</p>
+
+<pre><span style=\"color: #a020f0;\">module</span> <span style=\"color: #228b22;\">Main</span> <span style=\"color: #a020f0;\">where</span>
+
+<span style=\"color: #a020f0;\">import</span> <span style=\"color: #228b22;\">Model</span>
+<span style=\"color: #a020f0;\">import</span> <span style=\"color: #228b22;\">Reader</span>
+<span style=\"color: #a020f0;\">import</span> <span style=\"color: #228b22;\">Evaluator</span>
+
+<span style=\"color: #a020f0;\">import</span> <span style=\"color: #228b22;\">System.IO</span>
+
+<span style=\"color: #0000ff;\">main_loop</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Environment</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">IO</span> <span style=\"color: #228b22;\">()</span>
+<span style=\"color: #0000ff;\">main_loop</span> env <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">do</span> putStr <span style=\"color: #8b2252;\">\"EXP&gt;&gt; \"</span>
+                   hFlush stdout
+                   ln <span style=\"color: #a0522d;\">&lt;-</span> getLine
+                   <span style=\"color: #a020f0;\">case</span> lisp_read ln <span style=\"color: #a020f0;\">of</span>
+                     <span style=\"color: #228b22;\">Right</span> res <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #a020f0;\">let</span> evaled <span style=\"color: #a0522d;\">=</span> eval res env
+                                      env' <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">case</span> evaled <span style=\"color: #a020f0;\">of</span>
+                                               (<span style=\"color: #228b22;\">Res</span> <span style=\"color: #a020f0;\">_</span>) <span style=\"color: #a0522d;\">-&gt;</span> env
+                                               (<span style=\"color: #228b22;\">Mod</span> <span style=\"color: #a020f0;\">_</span> e) <span style=\"color: #a0522d;\">-&gt;</span> e
+                                  <span style=\"color: #a020f0;\">in</span> <span style=\"color: #a020f0;\">do</span> putStrLn <span style=\"color: #a0522d;\">.</span> show <span style=\"color: #a0522d;\">$</span> res_of evaled
+                                        main_loop env'
+                     <span style=\"color: #a020f0;\">_</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #a020f0;\">do</span> putStrLn <span style=\"color: #8b2252;\">\"READ ERROR\"</span>
+                             main_loop env
+
+<span style=\"color: #0000ff;\">main</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">IO</span> <span style=\"color: #228b22;\">()</span>
+<span style=\"color: #0000ff;\">main</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">do</span> putStrLn <span style=\"color: #a0522d;\">$</span> <span style=\"color: #8b2252;\">\"experimentaLISP v0.00001\"</span>
+          main_loop global_env</pre>
+
+<p>The Racket one accidentally allows multi-line input because the function I'm using to get it, the built-in <code>read</code>, is expression based. GHCi is not. And the Haskell <code>getLine</code> has the predictable effect of getting a single line. And since it's unlikely that every piece of a particular expression split across multiple lines would parse on its own, that's a problem.</p>
+
+<p>The first solution I thought of was non-blocking reads from <code>stdin</code>, with evaluation triggering when input ran out. After a quick read of <code>System.IO</code>, it's not immediately obvious how I'd go about doing that.</p>
+
+<p>The second solution involved pipes, and gave me precisely the effect I wanted:</p>
+
+<pre>*Main Data.IORef&gt; main
+experimentaLISP v0.00001
+
+EXP&gt;&gt; (+
+2
+3)
+5
+
+EXP&gt;&gt; (def map 
+  (fn (f lst) 
+    (if (null? lst)
+      () 
+      (cons (f (car lst)) 
+            (map f (cdr lst))))))
+NIL
+
+EXP&gt;&gt; map
+&lt;<span style=\"color: #0000ff;\">fn</span> (f lst)&gt;
+
+EXP&gt;&gt; </pre>
+
+<p>I can now spread valid expressions across as many lines as I like. Which includes</p>
+
+<pre>EXP&gt;&gt; <span style=\"color: #8b2252;\">\"trivial
+multi
+line
+strings\"</span>
+<span style=\"color: #8b2252;\">\"trivial\\nmulti\\nline\\nstrings\"</span>
+
+EXP&gt;&gt; </pre>
+
+<p>So, here's how.</p>
+
+<pre><span style=\"color: #a020f0;\">module</span> <span style=\"color: #228b22;\">Main</span> <span style=\"color: #a020f0;\">where</span>
+
+<span style=\"color: #a020f0;\">import</span> <span style=\"color: #228b22;\">Model</span>
+<span style=\"color: #a020f0;\">import</span> <span style=\"color: #228b22;\">Reader</span>
+<span style=\"color: #a020f0;\">import</span> <span style=\"color: #228b22;\">Evaluator</span>
+
+<span style=\"color: #a020f0;\">import</span> <span style=\"color: #228b22;\">Pipes</span>
+<span style=\"color: #a020f0;\">import</span> <span style=\"color: #228b22;\">Control.Monad</span> (unless)
+<span style=\"color: #a020f0;\">import</span> <span style=\"color: #228b22;\">System.IO</span>
+<span style=\"color: #a020f0;\">import</span> <span style=\"color: #228b22;\">Data.Char</span> (isSpace)
+
+<span style=\"color: #0000ff;\">main</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">IO</span> <span style=\"color: #228b22;\">()</span>
+<span style=\"color: #0000ff;\">main</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">do</span> putStrLn <span style=\"color: #a0522d;\">$</span> <span style=\"color: #8b2252;\">\"experimentaLISP v0.00001\"</span>
+          runEffect <span style=\"color: #a0522d;\">$</span> stdinLn <span style=\"color: #a0522d;\">&gt;-&gt;</span> reader <span style=\"color: #a0522d;\">&gt;-&gt;</span> evaluator <span style=\"color: #a0522d;\">&gt;-&gt;</span> prompt
+
+<span style=\"color: #0000ff;\">stdinLn</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Producer</span> <span style=\"color: #228b22;\">String</span> <span style=\"color: #228b22;\">IO</span> <span style=\"color: #228b22;\">()</span>
+<span style=\"color: #0000ff;\">stdinLn</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">do</span>
+  eof <span style=\"color: #a0522d;\">&lt;-</span> lift isEOF
+  unless eof <span style=\"color: #a0522d;\">$</span> <span style=\"color: #a020f0;\">do</span>
+            str <span style=\"color: #a0522d;\">&lt;-</span> lift getLine
+            yield str
+            stdinLn
+
+<span style=\"color: #0000ff;\">reader</span> <span style=\"color: #a0522d;\">::</span> (<span style=\"color: #228b22;\">Monad</span> m) <span style=\"color: #a0522d;\">=&gt;</span> <span style=\"color: #228b22;\">Pipe</span> <span style=\"color: #228b22;\">String</span> <span style=\"color: #228b22;\">LispVal</span> m <span style=\"color: #228b22;\">()</span>
+<span style=\"color: #0000ff;\">reader</span> <span style=\"color: #a0522d;\">=</span> loop <span style=\"color: #228b22;\">[]</span>
+    <span style=\"color: #a020f0;\">where</span> loop acc <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">do</span> 
+            ln <span style=\"color: #a0522d;\">&lt;-</span> await
+            <span style=\"color: #a020f0;\">case</span> strip ln <span style=\"color: #a020f0;\">of</span>
+              <span style=\"color: #8b2252;\">\":c\"</span> <span style=\"color: #a0522d;\">-&gt;</span> loop <span style=\"color: #228b22;\">[]</span>
+              <span style=\"color: #a020f0;\">_</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #a020f0;\">case</span> lisp_read <span style=\"color: #a0522d;\">.</span> unlines <span style=\"color: #a0522d;\">$</span> reverse (ln<span style=\"color: #228b22;\">:</span>acc) <span style=\"color: #a020f0;\">of</span>
+                     <span style=\"color: #228b22;\">Right</span> res <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #a020f0;\">do</span> yield res
+                                     loop <span style=\"color: #228b22;\">[]</span>
+                     <span style=\"color: #228b22;\">Left</span> <span style=\"color: #a020f0;\">_</span> <span style=\"color: #a0522d;\">-&gt;</span> loop <span style=\"color: #a0522d;\">$</span> ln <span style=\"color: #228b22;\">:</span> acc
+
+<span style=\"color: #0000ff;\">evaluator</span> <span style=\"color: #a0522d;\">::</span> (<span style=\"color: #228b22;\">Monad</span> m) <span style=\"color: #a0522d;\">=&gt;</span> <span style=\"color: #228b22;\">Pipe</span> <span style=\"color: #228b22;\">LispVal</span> <span style=\"color: #228b22;\">LispVal</span> m <span style=\"color: #228b22;\">()</span>
+<span style=\"color: #0000ff;\">evaluator</span> <span style=\"color: #a0522d;\">=</span> loop global_env
+    <span style=\"color: #a020f0;\">where</span> loop env <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">do</span> 
+            exp <span style=\"color: #a0522d;\">&lt;-</span> await
+            <span style=\"color: #a020f0;\">let</span> evaled <span style=\"color: #a0522d;\">=</span> eval exp env
+                env' <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">case</span> evaled <span style=\"color: #a020f0;\">of</span>
+                         (<span style=\"color: #228b22;\">Res</span> <span style=\"color: #a020f0;\">_</span>) <span style=\"color: #a0522d;\">-&gt;</span> env
+                         (<span style=\"color: #228b22;\">Mod</span> <span style=\"color: #a020f0;\">_</span> e) <span style=\"color: #a0522d;\">-&gt;</span> e
+            <span style=\"color: #a020f0;\">do</span> yield <span style=\"color: #a0522d;\">$</span> res_of evaled
+               loop env'
+
+<span style=\"color: #0000ff;\">prompt</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Show</span> a <span style=\"color: #a0522d;\">=&gt;</span> <span style=\"color: #228b22;\">Consumer</span> a <span style=\"color: #228b22;\">IO</span> <span style=\"color: #228b22;\">()</span>
+<span style=\"color: #0000ff;\">prompt</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">do</span> lift <span style=\"color: #a0522d;\">$</span> putStr <span style=\"color: #8b2252;\">\"\\nEXP&gt;&gt; \"</span>
+            lift <span style=\"color: #a0522d;\">$</span> hFlush stdout
+            msg <span style=\"color: #a0522d;\">&lt;-</span> await
+            lift <span style=\"color: #a0522d;\">$</span> putStrLn <span style=\"color: #a0522d;\">$</span> show msg
+            prompt
+
+<span style=\"color: #0000ff;\">strip</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">String</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">String</span>
+<span style=\"color: #0000ff;\">strip</span> <span style=\"color: #a0522d;\">=</span> takeWhile (not <span style=\"color: #a0522d;\">.</span> isSpace) <span style=\"color: #a0522d;\">.</span> dropWhile isSpace</pre>
+
+<p>Aside from the usual program composition problem of requiring <code><span style=\"color: #a020f0;\">import</span></code>s to preceed the program, you can pretty much read this one top to bottom.</p>
+
+<pre><span style=\"color: #0000ff;\">main</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">IO</span> <span style=\"color: #228b22;\">()</span>
+<span style=\"color: #0000ff;\">main</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">do</span> putStrLn <span style=\"color: #a0522d;\">$</span> <span style=\"color: #8b2252;\">\"experimentaLISP v0.00001\"</span>
+          runEffect <span style=\"color: #a0522d;\">$</span> stdinLn <span style=\"color: #a0522d;\">&gt;-&gt;</span> reader <span style=\"color: #a0522d;\">&gt;-&gt;</span> evaluator <span style=\"color: #a0522d;\">&gt;-&gt;</span> prompt</pre>
+
+<p>We're going to write a little intro message on which our version number will be proudly displayed, then we're going to go run a <code>Pipe</code>. The pipe will consist of four stations, <code>stdinLn</code>, <code>reader</code>, <code>evaluator</code> and <code>prompt</code>. The <code>stdinLn</code> station is going to get input from the user a line at a time, which should surprise precisely no one.</p>
+
+<pre><span style=\"color: #0000ff;\">stdinLn</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Producer</span> <span style=\"color: #228b22;\">String</span> <span style=\"color: #228b22;\">IO</span> <span style=\"color: #228b22;\">()</span>
+<span style=\"color: #0000ff;\">stdinLn</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">do</span>
+  eof <span style=\"color: #a0522d;\">&lt;-</span> lift isEOF
+  unless eof <span style=\"color: #a0522d;\">$</span> <span style=\"color: #a020f0;\">do</span>
+            str <span style=\"color: #a0522d;\">&lt;-</span> lift getLine
+            yield str
+            stdinLn</pre>
+
+<p>If we <code>EOF</code>, we're done. Otherwise, get a line, <code>yield</code> it, and loop. The station collecting those <code>yield</code>ed strings is the <code>reader</code></p>
+
+<pre><span style=\"color: #0000ff;\">reader</span> <span style=\"color: #a0522d;\">::</span> (<span style=\"color: #228b22;\">Monad</span> m) <span style=\"color: #a0522d;\">=&gt;</span> <span style=\"color: #228b22;\">Pipe</span> <span style=\"color: #228b22;\">String</span> <span style=\"color: #228b22;\">LispVal</span> m <span style=\"color: #228b22;\">()</span>
+<span style=\"color: #0000ff;\">reader</span> <span style=\"color: #a0522d;\">=</span> loop <span style=\"color: #228b22;\">[]</span>
+    <span style=\"color: #a020f0;\">where</span> loop acc <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">do</span> 
+            ln <span style=\"color: #a0522d;\">&lt;-</span> await
+            <span style=\"color: #a020f0;\">case</span> strip ln <span style=\"color: #a020f0;\">of</span>
+              <span style=\"color: #8b2252;\">\":c\"</span> <span style=\"color: #a0522d;\">-&gt;</span> loop <span style=\"color: #228b22;\">[]</span>
+              <span style=\"color: #a020f0;\">_</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #a020f0;\">case</span> lisp_read <span style=\"color: #a0522d;\">.</span> unlines <span style=\"color: #a0522d;\">$</span> reverse (ln<span style=\"color: #228b22;\">:</span>acc) <span style=\"color: #a020f0;\">of</span>
+                     <span style=\"color: #228b22;\">Right</span> res <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #a020f0;\">do</span> yield res
+                                     loop <span style=\"color: #228b22;\">[]</span>
+                     <span style=\"color: #228b22;\">Left</span> <span style=\"color: #a020f0;\">_</span> <span style=\"color: #a0522d;\">-&gt;</span> loop <span style=\"color: #a0522d;\">$</span> ln <span style=\"color: #228b22;\">:</span> acc</pre>
+
+<p>It gets a line, checks whether it's a special interpreter directive. If not, it tries to read the entirety of its accumulator, including this new line. If that worked, it <code>yield</code>s the result and clears its accumulator. Otherwise, it accumulates this new line. If the incoming line <i>is</i> an interpreter directive, it handles that directive. Though, at the moment, the only such directive is <code>:c</code>, which clears the current accumulator. Lines successfully read by the <code>reader</code> are passed to the <code>evaluator</code></p>
+
+<pre><span style=\"color: #0000ff;\">evaluator</span> <span style=\"color: #a0522d;\">::</span> (<span style=\"color: #228b22;\">Monad</span> m) <span style=\"color: #a0522d;\">=&gt;</span> <span style=\"color: #228b22;\">Pipe</span> <span style=\"color: #228b22;\">LispVal</span> <span style=\"color: #228b22;\">LispVal</span> m <span style=\"color: #228b22;\">()</span>
+<span style=\"color: #0000ff;\">evaluator</span> <span style=\"color: #a0522d;\">=</span> loop global_env
+    <span style=\"color: #a020f0;\">where</span> loop env <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">do</span> 
+            exp <span style=\"color: #a0522d;\">&lt;-</span> await
+            <span style=\"color: #a020f0;\">let</span> evaled <span style=\"color: #a0522d;\">=</span> eval exp env
+                env' <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">case</span> evaled <span style=\"color: #a020f0;\">of</span>
+                         (<span style=\"color: #228b22;\">Res</span> <span style=\"color: #a020f0;\">_</span>) <span style=\"color: #a0522d;\">-&gt;</span> env
+                         (<span style=\"color: #228b22;\">Mod</span> <span style=\"color: #a020f0;\">_</span> e) <span style=\"color: #a0522d;\">-&gt;</span> e
+            <span style=\"color: #a020f0;\">do</span> yield <span style=\"color: #a0522d;\">$</span> res_of evaled
+               loop env'</pre>
+
+<p>Which evaluates each incoming expression and yields the result. If evaluating that expression changes the environment, it also keeps those changes going forward. Finally, those evaluated expressions feed forward into <code>prompt</code></p>
+
+<pre><span style=\"color: #0000ff;\">prompt</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Show</span> a <span style=\"color: #a0522d;\">=&gt;</span> <span style=\"color: #228b22;\">Consumer</span> a <span style=\"color: #228b22;\">IO</span> <span style=\"color: #228b22;\">()</span>
+<span style=\"color: #0000ff;\">prompt</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">do</span> lift <span style=\"color: #a0522d;\">$</span> putStr <span style=\"color: #8b2252;\">\"\\nEXP&gt;&gt; \"</span>
+            lift <span style=\"color: #a0522d;\">$</span> hFlush stdout
+            msg <span style=\"color: #a0522d;\">&lt;-</span> await
+            lift <span style=\"color: #a0522d;\">$</span> putStrLn <span style=\"color: #a0522d;\">$</span> show msg
+            prompt</pre>
+
+<p>Which prints a prompt of \"EXP>> \", flushes <code>stdout</code> so that the prompt is actually displayed, awaits an expression, and prints it when it arrives.</p>
+
+<p>This is a pretty useful use for <code>Pipe</code>s, but I get the feeling that the interesting stuff really happens over in <a href=\"https://hackage.haskell.org/package/pipes-concurrency-2.0.1/docs/Pipes-Concurrent-Tutorial.html\"><code><span style=\"color: #228b22;\">Pipes</span><span style=\"color: #0000ff;\">.</span><span style=\"color: #228b22;\">Concurrent</span></code></a>. Where you can fork pipelines off into multiple directions, then merge disparate outputs up again later on. I can think of one or two uses to put that to.</p>
+
+<h2>The Toronto Computer Science Reading Group</h2>
+
+<p>Also known as the <a href=\"https://github.com/CompSciCabal\">Comp-Sci Cabal</a> just finished up reading through <a href=\"https://en.wikipedia.org/wiki/Structure_and_Interpretation_of_Computer_Programs\">SICP</a>. And we made ourselves these</p>
+
+<img src=\"/static/img/cabal-badge.png\" class=\"middle\" alt=\"A picture of a Toronto Comp-Sci Cabal badge, with the recursive fixed-point combinator shield.\" />
+
+<p>Then we had a ceremony wherein we handed them out to the four of us who finished the book and a large percentage of the exercises.</p>
+
+<img src=\"/static/img/cabal-ceremony.jpg\" class=\"middle\" alt=\"The four members of the Toronto Computer Science Reading Group who read SICP and did most of the exercises (not all; some of us skipped a few weeks, but we did the big stuff). Each of us wearing the Squires of the Lambda Calculus pins. I'm the large redshirt on the right.\" />
+
+<p>As a side-note, only 10 of the pins remain unclaimed, so if you want one, read SICP, do one of the last five exercises in the book, then find me in meatspace before they run out. Post-pinning, we sat down and reflected on what we had learned late into the night. Ok, it was only 'till around 10 or so, but we're old, and some of us had to travel. I loved every minute of it. It was, hands down, the highlight of the last half-year or so for me.</p>
+
+<h2>Journal</h2>
+
+<p>So I'm about to have another son. The second of two.  We've picked out a name, but aren't telling anyone 'till he's here. <i>You</i> won't get to know in any case, unless you know me in real life. I'm mildly worried, which is only natural, I guess. It was more or less the same thing last time. I'm hoping both my wife and my new offspring make it through ok. And I'm hoping I do well raising him. Which is going to be hard, given that I don't have a clear metric for what it means to \"do well\" in this context. I think it has something to do with giving him the tools to interact well with human societies, but again \"well\" is ill defined. I think <i>that</i> has something to do with making sure he learns to contribute in a positive-sum way. It's something I'll have cause to think about carefully in the next little while, in between helping my wife with the recovery, looking after my existing heir, and maybe getting some day-job work done in the meantime.</p>
+
+<p>There's a large number of branching futures ahead of me is what I'm trying to say here. And most of them have me thinking, no offense, about more important matters than the construction of functionally pure interpreters, or exploring the possibility space of LISP dialects. So, keep an eye out for updates, or have your <a href=\"/feed/atom\">rss reader do it for you</a>, but don't hold your breath.</p>
+
+<p>This is probably me signing off for a relatively long while.</p>
+"))
+((5402 12269 967504000) :INSERT (202 :POSTED 3627602669))
+((5402 12269 967506000) :INSERT (202 :CURRENT T))
+((5402 12269 967507000) :INSERT (202 :TAG :JOURNAL))
+((5402 12269 967510000) :INSERT (202 :TAG :ALMOST-LITERATE-PROGRAMMING))
+((5402 12269 967512000) :INSERT (202 :TAG :HASKELL))
+((5402 12269 967514000) :INSERT (202 :TAG :FLOW-BASED-PROGRAMMING))
