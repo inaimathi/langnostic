@@ -11,6 +11,7 @@
 (defmacro page ((&optional title &key section) &body body)
   `(with-html-output-to-string (*standard-output* nil :prologue t)
      (:html (:head (:meta :content "width=device-width, initial-scale=1" :name "viewport")
+		   (:title (fmt "~@[~a - ~]langnostic" ,section))
 		   (:link :rel "stylesheet" :href "/langnostic.css"))
 	    (:body 
 	     (:a :href "/" (:img :class "logo-image" :src "/static/img/langnostic.png" :alt "Language Agnostic"))

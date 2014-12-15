@@ -29977,3 +29977,1421 @@ but didn't feel like gettin' fancy at the time</p>
 ((5316 66110 738271000) :INSERT (194 :TAG :HASKELL))
 ((5316 66110 738275000) :INSERT (194 :TAG :HTML))
 ((5316 66110 738279000) :INSERT (194 :TAG :HASTE))
+((5322 56164 736849000) :DELETE (194 :CURRENT T))
+((5322 56164 736897000) :INSERT
+ (195 :TITLE "Langton's Ant Redux, and Unrestricted Types"))
+((5322 56164 736902000) :INSERT
+ (195 :FILE "langtons-ant-redux-and-unrestricted-types.html"))
+((5322 56164 736904000) :INSERT (195 :EDITED 3620734559))
+((5322 56164 736906000) :INSERT
+ (195 :BODY
+  "<p>So this past Wednesday was the monthly <a href=\"https://github.com/HaskellTO/projects\">Toronto Haskell</a> User <a href=\"https://groups.google.com/forum/#!forum/toronto-haskell\">Group</a> meeting, and I used the opportunity to A) show off <a href=\"https://github.com/CodeRetreatTO/projects/blob/master/2014-09-langtons-ant/rabraham-and-inaimathi.hs\">my Langton's Ant implementation</a> to people that might be able to offer pointers and B) ask a question about types that I'd been thinking about. We'll handle those in reverse order, with a bit of exposition on the question.</p>
+
+<h3>Splay Trees</h3>
+
+<p>Here's a Haskell implementation of a <a href=\"https://en.wikipedia.org/wiki/Splay_tree\">Splay Tree</a> not interesting enough to dwell on:</p>
+
+<pre><span style=\"color: #a020f0;\">module</span> <span style=\"color: #228b22;\">SplayTree</span> (<span style=\"color: #228b22;\">Tree</span>(<span style=\"color: #a0522d;\">..</span>), fromList, <span style=\"color: #228b22;\">SplayTree</span><span style=\"color: #a0522d;\">.</span>elem, insert, remove) <span style=\"color: #a020f0;\">where</span>
+
+<span style=\"color: #a020f0;\">data</span> <span style=\"color: #228b22;\">Tree</span> a <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Node</span> { value <span style=\"color: #a0522d;\">::</span> a
+                   , left <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Tree</span> a
+                   , right <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Tree</span> a }
+            <span style=\"color: #a0522d;\">|</span> <span style=\"color: #228b22;\">Empty</span> <span style=\"color: #a020f0;\">deriving</span> (<span style=\"color: #228b22;\">Eq</span>, <span style=\"color: #228b22;\">Ord</span>, <span style=\"color: #228b22;\">Show</span>, <span style=\"color: #228b22;\">Read</span>)
+
+<span style=\"color: #0000ff;\">rotateR</span> <span style=\"color: #228b22;\">Empty</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Empty</span>
+<span style=\"color: #0000ff;\">rotateR</span> tree<span style=\"color: #a0522d;\">@</span>(<span style=\"color: #228b22;\">Node</span> <span style=\"color: #a020f0;\">_</span> <span style=\"color: #228b22;\">Empty</span> <span style=\"color: #a020f0;\">_</span>) <span style=\"color: #a0522d;\">=</span> tree
+<span style=\"color: #0000ff;\">rotateR</span> (<span style=\"color: #228b22;\">Node</span> val (<span style=\"color: #228b22;\">Node</span> child ll lr) right) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Node</span> child ll (<span style=\"color: #228b22;\">Node</span> val lr right)
+
+<span style=\"color: #0000ff;\">rotateL</span> <span style=\"color: #228b22;\">Empty</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Empty</span>
+<span style=\"color: #0000ff;\">rotateL</span> tree<span style=\"color: #a0522d;\">@</span>(<span style=\"color: #228b22;\">Node</span> <span style=\"color: #a020f0;\">_</span> <span style=\"color: #a020f0;\">_</span> <span style=\"color: #228b22;\">Empty</span>) <span style=\"color: #a0522d;\">=</span> tree
+<span style=\"color: #0000ff;\">rotateL</span> (<span style=\"color: #228b22;\">Node</span> val left (<span style=\"color: #228b22;\">Node</span> child rl rr)) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Node</span> child (<span style=\"color: #228b22;\">Node</span> val left rl) rr
+
+<span style=\"color: #0000ff;\">insertRaw</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Ord</span> a <span style=\"color: #a0522d;\">=&gt;</span> <span style=\"color: #228b22;\">Tree</span> a <span style=\"color: #a0522d;\">-&gt;</span> a <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Tree</span> a
+<span style=\"color: #0000ff;\">insertRaw</span> <span style=\"color: #228b22;\">Empty</span> a <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Node</span> a <span style=\"color: #228b22;\">Empty</span> <span style=\"color: #228b22;\">Empty</span>
+<span style=\"color: #0000ff;\">insertRaw</span> tree<span style=\"color: #a0522d;\">@</span>(<span style=\"color: #228b22;\">Node</span> val left right) a 
+    <span style=\"color: #a0522d;\">|</span> a <span style=\"color: #a0522d;\">==</span> val <span style=\"color: #a0522d;\">=</span> tree
+    <span style=\"color: #a0522d;\">|</span> a <span style=\"color: #a0522d;\">&gt;</span> val <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Node</span> val left <span style=\"color: #a0522d;\">$</span> insertRaw right a
+    <span style=\"color: #a0522d;\">|</span> otherwise <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Node</span> val (insertRaw left a) right
+
+<span style=\"color: #0000ff;\">fromList</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Ord</span> a <span style=\"color: #a0522d;\">=&gt;</span> [a] <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Tree</span> a
+<span style=\"color: #0000ff;\">fromList</span> lst <span style=\"color: #a0522d;\">=</span> foldl (<span style=\"color: #a0522d;\">\\</span>memo a <span style=\"color: #a0522d;\">-&gt;</span> splayTo (insertRaw memo a) a) <span style=\"color: #228b22;\">Empty</span> lst
+
+
+<span style=\"color: #0000ff;\">splayTo</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Ord</span> a <span style=\"color: #a0522d;\">=&gt;</span> <span style=\"color: #228b22;\">Tree</span> a <span style=\"color: #a0522d;\">-&gt;</span> a <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Tree</span> a
+<span style=\"color: #0000ff;\">splayTo</span> <span style=\"color: #228b22;\">Empty</span> <span style=\"color: #a020f0;\">_</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Empty</span>
+<span style=\"color: #0000ff;\">splayTo</span> tree<span style=\"color: #a0522d;\">@</span>(<span style=\"color: #228b22;\">Node</span> val left right) a
+    <span style=\"color: #a0522d;\">|</span> a <span style=\"color: #a0522d;\">==</span> val <span style=\"color: #a0522d;\">=</span> tree
+    <span style=\"color: #a0522d;\">|</span> a <span style=\"color: #a0522d;\">&gt;</span> val <span style=\"color: #a0522d;\">=</span> rotateL <span style=\"color: #a0522d;\">$</span> <span style=\"color: #228b22;\">Node</span> val left <span style=\"color: #a0522d;\">$</span> splayTo right a
+    <span style=\"color: #a0522d;\">|</span> otherwise <span style=\"color: #a0522d;\">=</span> rotateR <span style=\"color: #a0522d;\">$</span> <span style=\"color: #228b22;\">Node</span> val (splayTo left a) right
+
+<span style=\"color: #0000ff;\">elem</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Ord</span> a <span style=\"color: #a0522d;\">=&gt;</span> <span style=\"color: #228b22;\">Tree</span> a <span style=\"color: #a0522d;\">-&gt;</span> a <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Maybe</span> (a, <span style=\"color: #228b22;\">Tree</span> a)
+<span style=\"color: #0000ff;\">elem</span> tree a <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">case</span> a <span style=\"color: #a0522d;\">==</span> value splayed <span style=\"color: #a020f0;\">of</span>
+                <span style=\"color: #228b22;\">True</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Just</span> (a, splayed)
+                <span style=\"color: #a020f0;\">_</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Nothing</span>
+    <span style=\"color: #a020f0;\">where</span> splayed <span style=\"color: #a0522d;\">=</span> splayTo tree a
+
+<span style=\"color: #0000ff;\">insert</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Ord</span> a <span style=\"color: #a0522d;\">=&gt;</span> <span style=\"color: #228b22;\">Tree</span> a <span style=\"color: #a0522d;\">-&gt;</span> a <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Tree</span> a
+<span style=\"color: #0000ff;\">insert</span> tree elem <span style=\"color: #a0522d;\">=</span> splayTo (insertRaw tree elem) elem
+
+<span style=\"color: #0000ff;\">remove</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Ord</span> a <span style=\"color: #a0522d;\">=&gt;</span> <span style=\"color: #228b22;\">Tree</span> a <span style=\"color: #a0522d;\">-&gt;</span> a <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Tree</span> a
+<span style=\"color: #0000ff;\">remove</span> tree elem <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">if</span> root <span style=\"color: #a0522d;\">==</span> elem
+                   <span style=\"color: #a020f0;\">then</span> deleteRoot splayed
+                   <span style=\"color: #a020f0;\">else</span> tree
+    <span style=\"color: #a020f0;\">where</span> splayed<span style=\"color: #a0522d;\">@</span>(<span style=\"color: #228b22;\">Node</span> root <span style=\"color: #a020f0;\">_</span> <span style=\"color: #a020f0;\">_</span>) <span style=\"color: #a0522d;\">=</span> splayTo tree elem
+
+<span style=\"color: #0000ff;\">deleteRoot</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Tree</span> a <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Tree</span> a
+<span style=\"color: #0000ff;\">deleteRoot</span> (<span style=\"color: #228b22;\">Node</span> val <span style=\"color: #228b22;\">Empty</span> <span style=\"color: #228b22;\">Empty</span>) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Empty</span>
+<span style=\"color: #0000ff;\">deleteRoot</span> tree<span style=\"color: #a0522d;\">@</span>(<span style=\"color: #228b22;\">Node</span> val left <span style=\"color: #228b22;\">Empty</span>) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Node</span> (rightLeaf left) (trim left) <span style=\"color: #228b22;\">Empty</span>
+    <span style=\"color: #a020f0;\">where</span> rightLeaf (<span style=\"color: #228b22;\">Node</span> val <span style=\"color: #a020f0;\">_</span> <span style=\"color: #228b22;\">Empty</span>) <span style=\"color: #a0522d;\">=</span> val
+          rightLeaf (<span style=\"color: #228b22;\">Node</span> <span style=\"color: #a020f0;\">_</span> <span style=\"color: #a020f0;\">_</span> right) <span style=\"color: #a0522d;\">=</span> rightLeaf right
+          trim (<span style=\"color: #228b22;\">Node</span> <span style=\"color: #a020f0;\">_</span> <span style=\"color: #228b22;\">Empty</span> <span style=\"color: #228b22;\">Empty</span>) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Empty</span>
+          trim (<span style=\"color: #228b22;\">Node</span> <span style=\"color: #a020f0;\">_</span> left <span style=\"color: #228b22;\">Empty</span>) <span style=\"color: #a0522d;\">=</span> left
+          trim (<span style=\"color: #228b22;\">Node</span> val left right) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Node</span> val left <span style=\"color: #a0522d;\">$</span> trim right
+<span style=\"color: #0000ff;\">deleteRoot</span> tree<span style=\"color: #a0522d;\">@</span>(<span style=\"color: #228b22;\">Node</span> val left right) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Node</span> (leftLeaf right) left (trim right)
+    <span style=\"color: #a020f0;\">where</span> leftLeaf (<span style=\"color: #228b22;\">Node</span> val <span style=\"color: #228b22;\">Empty</span> <span style=\"color: #a020f0;\">_</span>) <span style=\"color: #a0522d;\">=</span> val
+          leftLeaf (<span style=\"color: #228b22;\">Node</span> <span style=\"color: #a020f0;\">_</span> left <span style=\"color: #a020f0;\">_</span>) <span style=\"color: #a0522d;\">=</span> leftLeaf left
+          trim (<span style=\"color: #228b22;\">Node</span> <span style=\"color: #a020f0;\">_</span> <span style=\"color: #228b22;\">Empty</span> <span style=\"color: #228b22;\">Empty</span>) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Empty</span>
+          trim (<span style=\"color: #228b22;\">Node</span> <span style=\"color: #a020f0;\">_</span> <span style=\"color: #228b22;\">Empty</span> right) <span style=\"color: #a0522d;\">=</span> right
+          trim (<span style=\"color: #228b22;\">Node</span> val left right) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Node</span> val (trim left) right </pre>
+
+<p>Notice in particular that the <code><span style=\"color: #228b22;\">Tree</span></code> type has an unrestricted <code>a</code> in it.</p>
+
+<pre><span style=\"color: #b22222;\">--        </span><span style=\"color: #b22222;\">v
+</span><span style=\"color: #a020f0;\">data</span> <span style=\"color: #228b22;\">Tree</span> a <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Nod</span><span style=\"color: #a0522d;\">...</span>
+<span style=\"color: #8b2252;\">--        ^ </span></pre>
+
+<p>but most of the manipulation functions that act on a <code><span style=\"color: #228b22;\">Tree</span> a</code> <i>do</i> have a restriction</p>
+
+<pre><span style=\"color: #a0522d;\">...</span>
+<span style=\"color: #0000ff;\">insertRaw</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Ord</span> a <span style=\"color: #a0522d;\">=&gt;</span> <span style=\"color: #228b22;\">Tree</span> a <span style=\"color: #a0522d;\">-&gt;</span> a <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Tree</span> a
+<span style=\"color: #a0522d;\">...</span>
+<span style=\"color: #0000ff;\">fromList</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Ord</span> a <span style=\"color: #a0522d;\">=&gt;</span> [a] <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Tree</span> a
+<span style=\"color: #a0522d;\">...</span>
+<span style=\"color: #0000ff;\">splayTo</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Ord</span> a <span style=\"color: #a0522d;\">=&gt;</span> <span style=\"color: #228b22;\">Tree</span> a <span style=\"color: #a0522d;\">-&gt;</span> a <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Tree</span> a
+<span style=\"color: #a0522d;\">...</span>
+<span style=\"color: #0000ff;\">elem</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Ord</span> a <span style=\"color: #a0522d;\">=&gt;</span> <span style=\"color: #228b22;\">Tree</span> a <span style=\"color: #a0522d;\">-&gt;</span> a <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Maybe</span> (a, <span style=\"color: #228b22;\">Tree</span> a)
+<span style=\"color: #a0522d;\">...</span>
+<span style=\"color: #0000ff;\">insert</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Ord</span> a <span style=\"color: #a0522d;\">=&gt;</span> <span style=\"color: #228b22;\">Tree</span> a <span style=\"color: #a0522d;\">-&gt;</span> a <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Tree</span> a
+<span style=\"color: #a0522d;\">...</span>
+<span style=\"color: #0000ff;\">remove</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Ord</span> a <span style=\"color: #a0522d;\">=&gt;</span> <span style=\"color: #228b22;\">Tree</span> a <span style=\"color: #a0522d;\">-&gt;</span> a <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Tree</span> a
+<span style=\"color: #a0522d;\">...</span></pre>
+
+<p>They all need an <code>a</code> that's a member of the <code><span style=\"color: #228b22;\">Ord</span></code> typeclass. That is, you need to be able to run <code>compare</code> on the elements of a Splay Tree in order for it to do you any good.</p>
+
+<p>So from my perspective, the unrestricted <code>a</code> in my <code><span style=\"color: #a020f0;\">data</span></code> declaration feels like lying. I'm giving the impression that you can make a tree out of anything, when in fact you can only make a tree out of anything <i>you can sort</i>. My question was, \"Is there a way to restrict this structure at the type level?\". What I wanted to write was something like</p>
+
+<pre><span style=\"color: #a020f0;\">data</span> <span style=\"color: #228b22;\">Ord</span> a <span style=\"color: #a0522d;\">=&gt;</span> <span style=\"color: #228b22;\">Tree</span> a <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Nod</span><span style=\"color: #a0522d;\">...</span></pre>
+
+<p>To paraphrase <a href=\"https://github.com/bcdarwin\">Ben Darwin</a> and <a href=\"http://www.cs.toronto.edu/~trebla/personal/index.html\">Albert Lai</a>,</p>
+
+<h3>You Don't Want That</h3>
+
+<p>As it happens, they managed to convince me of this. Here's a paraphrase of the argument they used; maybe it'll work on you too.</p>
+
+<blockquote><p>There are only two ways you'll ever want to export your type. You either want to export it as a black box, or you want to export it in a non-opaque way so that your users can see some or all of its implementation details. If you're going the black box route</p>
+
+<pre><span style=\"color: #a020f0;\">module</span> <span style=\"color: #228b22;\">Foo</span> (<span style=\"color: #228b22;\">YourTypeConstructor</span>, apiFn, apiFn', apiFn''<span style=\"color: #a0522d;\">...</span>) <span style=\"color: #a020f0;\">where</span> <span style=\"color: #a0522d;\">...</span></pre>
+
+<p>then your users are <i>only</i> going to be interacting with your type through your API functions, which are already suitably annotated, and restricted to valid inputs, so there's no need to redundantly restrict the type. If you're going the non-opaque route<a href=\"#foot-Fri-Sep-26-113506EDT-2014\" name=\"note-Fri-Sep-26-113506EDT-2014\">[1]</a>, </p>
+
+<pre><span style=\"color: #a020f0;\">module</span> <span style=\"color: #228b22;\">Foo</span> (<span style=\"color: #228b22;\">YourTypeConstructor</span>(<span style=\"color: #a0522d;\">..</span>), apiFn, apiFn', apiFn''<span style=\"color: #a0522d;\">...</span>) <span style=\"color: #a020f0;\">where</span> <span style=\"color: #a0522d;\">...</span></pre>
+
+<p>then your users might ignore some or all of your API, and just use your structure. In doing so, they may find a purpose for it that <i>doesn't</i> require its elements to be members of <code><span style=\"color: #228b22;\">Ord</span></code>. In this case, you would be doing them a disservice by restricting your type declaration.</p></blockquote>
+
+<p>And I'll buy that.</p>
+
+<p>So I don't really want a restricted <code><span style=\"color: #228b22;\">Tree</span></code>, I just want restricted manipulation functions, which I have. Case closed.</p>
+
+<h3>Langton's Haskelly Ant Redux</h3>
+
+<p>I also ended up showing off <a href=\"/article?name=langtons-ant-writeup.html\">my ants implementation</a>. I'm near the bottom in terms of Haskell skill-level at the group, so the explanation went quite quickly. The only part there was any confusion about was the admittedly over-complicated <code>animate</code> function. I mentioned that ideally, I'd want to write something like</p>
+
+<pre><span style=\"color: #0000ff;\">iterateM_</span> (<span style=\"color: #a0522d;\">\\</span>w <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #a020f0;\">do</span> { printWorld w ; wait 10 ; step w }) test</pre>
+
+<p>instead of the code I <a href=\"https://github.com/CodeRetreatTO/projects/blob/93983f74a5c9fab3fc472ebff971b034152a0c9b/2014-09-langtons-ant/rabraham-and-inaimathi.hs#L75-L81\">had actually written</a>, but didn't have <code>iterateM_</code>. The group considered that no excuse, and promptly found a definition from <a href=\"https://github.com/mokus0/monad-loops\">Control.Monad.Loop</a><a href=\"#foot-Fri-Sep-26-113520EDT-2014\" name=\"note-Fri-Sep-26-113520EDT-2014\">[2]</a> via <a href=\"http://hayoo.fh-wedel.de/\">Hayoo</a>. It turned out to be a bit more baroque than necessary.</p>
+
+<pre><span style=\"color: #0000ff;\">iterateM_</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Monad</span> m <span style=\"color: #a0522d;\">=&gt;</span> (a <span style=\"color: #a0522d;\">-&gt;</span> m a) <span style=\"color: #a0522d;\">-&gt;</span> a <span style=\"color: #a0522d;\">-&gt;</span> m b
+<span style=\"color: #0000ff;\">iterateM_</span> f <span style=\"color: #a0522d;\">=</span> g
+    <span style=\"color: #a020f0;\">where</span> g x <span style=\"color: #a0522d;\">=</span> f x <span style=\"color: #a0522d;\">&gt;&gt;=</span> g</pre>
+
+<p>I was feeling a bit intimidated by that, but the group pushed me to write my own, starting with just the type signature. \"It's extremely simple\", they said, \"and should really use <code><span style=\"color: #a020f0;\">do</span></code>-notation\", unless I shared the Control.Monad.Loop writers' apparently bizarre taste for point-free style. They were right:</p>
+
+<pre><span style=\"color: #0000ff;\">loop</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Monad</span> m <span style=\"color: #a0522d;\">=&gt;</span> (a <span style=\"color: #a0522d;\">-&gt;</span> m a) <span style=\"color: #a0522d;\">-&gt;</span> a <span style=\"color: #a0522d;\">-&gt;</span> m b
+<span style=\"color: #0000ff;\">loop</span> f a <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">do</span> res <span style=\"color: #a0522d;\">&lt;-</span> f a
+              loop f res</pre>
+
+<p>Tadaah.</p>
+
+<p>With that, we can basically write <code>animate</code> out of existence entirely by re-defining <code>main</code> as</p>
+
+<pre><span style=\"color: #0000ff;\">main</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">IO</span> <span style=\"color: #228b22;\">()</span>
+<span style=\"color: #0000ff;\">main</span> <span style=\"color: #a0522d;\">=</span> concurrent <span style=\"color: #a0522d;\">$</span> loop nextFrame (test, 0)
+    <span style=\"color: #a020f0;\">where</span> nextFrame (w, ct) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">do</span> liftIO <span style=\"color: #a0522d;\">$</span> setContent <span style=\"color: #8b2252;\">\"world\"</span> <span style=\"color: #a0522d;\">$</span> showWorld w
+                                 liftIO <span style=\"color: #a0522d;\">$</span> setContent <span style=\"color: #8b2252;\">\"generations\"</span> <span style=\"color: #a0522d;\">$</span> show ct
+                                 wait 50
+                                 return <span style=\"color: #a0522d;\">$</span> (step w, succ ct)</pre>
+
+<p>which is at once easier for me to read, and apparently more idiomatic than <a href=\"https://github.com/CodeRetreatTO/projects/blob/93983f74a5c9fab3fc472ebff971b034152a0c9b/2014-09-langtons-ant/rabraham-and-inaimathi.hs#L75-L81\">the <code>setTimeout</code> recursion</a> I had set up last time. The <code>concurrent</code> call at the top, and the <code>liftIO</code>s in <code>nextFrame</code> are there because <a href=\"http://hackage.haskell.org/package/haste-compiler-0.4.2/docs/Haste-Concurrent.html\"><code>wait</code></a><a href=\"#foot-Fri-Sep-26-113536EDT-2014\" name=\"note-Fri-Sep-26-113536EDT-2014\">[3]</a> is a monadic function introduced in <a href=\"http://haste-lang.org/\">Haste</a>, but it's in a monad called <a href=\"http://hackage.haskell.org/package/haste-compiler-0.4.2/docs/Haste-Concurrent.html#t:CIO\"><code><span style=\"color: #228b22;\">CIO</span></code></a>, whose goal is to be used for client-side concurrency, while <code>setContent</code>, and more importantly <code>main</code>, are both plain <code>IO ()</code> functions.</p>
+
+<p>The complete revised code, and recompiled <code>.js</code> are both up at the same <a href=\"https://github.com/CodeRetreatTO/projects/blob/master/2014-09-langtons-ant/\">CodeRetreat github</a>.</p>
+
+
+<hr />
+<h5>Footnotes</h5>
+<p>1 - <a href=\"#note-Fri-Sep-26-113506EDT-2014\" name=\"foot-Fri-Sep-26-113506EDT-2014\">[back]</a> - Incidentally, the example below exports <i>all</i> internals of <code><span style=\"color: #228b22;\">YourTypeConstructor</span></code>, but the argument works whenever you expose any internal implementation detail to your users, not just at the transparent extreme.</p>
+
+<p>2 - <a href=\"#note-Fri-Sep-26-113520EDT-2014\" name=\"foot-Fri-Sep-26-113520EDT-2014\">[back]</a> - This would be a <a href=\"http://hackage.haskell.org/\">hackage</a> link, but it's down as I write this. That happens with irritating regularity when I'm collecting links for these pieces.</p>
+
+<p>3 - <a href=\"#note-Fri-Sep-26-113536EDT-2014\" name=\"foot-Fri-Sep-26-113536EDT-2014\">[back]</a> - Scroll down to the bottom for the actual documentation of <code>wait</code>; it doesn't have a direct link target.</p>
+"))
+((5322 56164 737057000) :INSERT (195 :POSTED 3620734564))
+((5322 56164 737059000) :INSERT (195 :CURRENT T))
+((5322 56164 737061000) :INSERT (195 :TAG :HASKELL))
+((5322 56164 737063000) :INSERT (195 :TAG :HASTE))
+((5329 50677 883116000) :DELETE (195 :CURRENT T))
+((5329 50677 883202000) :INSERT (196 :TITLE "History. Briefly."))
+((5329 50677 883212000) :INSERT (196 :FILE "history.html"))
+((5329 50677 883216000) :INSERT (196 :EDITED 3621333874))
+((5329 50677 883220000) :INSERT
+ (196 :BODY
+  "<p>So I've been thinking about history. Or, more accurately, history-aware persistent storage, and what it takes to implement it. There's a fairly small core that can be torn out of <a href=\"https://github.com/Inaimathi/fact-base\"><code>:fact-base</code></a> and generalized, and I wanted to point that out before I forgot.</p>
+
+<pre>(<span style=\"color: #a020f0;\">in-package</span> #<span style=\"color: #483d8b;\">:cl-history</span>)
+
+(<span style=\"color: #a020f0;\">defclass</span> <span style=\"color: #228b22;\">event</span> ()
+  ((timestamp <span style=\"color: #483d8b;\">:accessor</span> timestamp <span style=\"color: #483d8b;\">:initform</span> (local-time:now) <span style=\"color: #483d8b;\">:initarg</span> <span style=\"color: #483d8b;\">:timestamp</span>)
+   (event-type <span style=\"color: #483d8b;\">:accessor</span> event-type <span style=\"color: #483d8b;\">:initform</span> <span style=\"color: #483d8b;\">:in</span> <span style=\"color: #483d8b;\">:initarg</span> <span style=\"color: #483d8b;\">:event-type</span>)
+   (data <span style=\"color: #483d8b;\">:accessor</span> data <span style=\"color: #483d8b;\">:initform</span> nil <span style=\"color: #483d8b;\">:initarg</span> <span style=\"color: #483d8b;\">:data</span>)))
+
+(<span style=\"color: #a020f0;\">defgeneric</span> <span style=\"color: #0000ff;\">tick</span> (whole part)
+  (<span style=\"color: #483d8b;\">:documentation</span> <span style=\"color: #8b2252;\">\"Should take a whole and a part. Should return the whole with the part added.\"</span>))
+
+(<span style=\"color: #a020f0;\">defgeneric</span> <span style=\"color: #0000ff;\">wind</span> (whole part)
+  (<span style=\"color: #483d8b;\">:documentation</span> <span style=\"color: #8b2252;\">\"Should take a whole and a part. Should return the whole with the part removed.\"</span>))
+
+(<span style=\"color: #a020f0;\">defmethod</span> <span style=\"color: #0000ff;\">apply-event</span> (whole (ev event))
+  (<span style=\"color: #a020f0;\">let</span> ((part (data ev)))
+    (<span style=\"color: #a020f0;\">case</span> (event-type ev)
+      (<span style=\"color: #483d8b;\">:in</span> (tick whole part))
+      (<span style=\"color: #483d8b;\">:out</span> (wind whole part)))))
+
+(<span style=\"color: #a020f0;\">defmethod</span> <span style=\"color: #0000ff;\">load-from</span> (empty (storage stream))
+  (<span style=\"color: #a020f0;\">let</span> ((res empty))
+    (<span style=\"color: #a020f0;\">handler-case</span>
+        (<span style=\"color: #a020f0;\">loop</span> 
+           do (setf res (tick res (cl-store:restore storage)))
+           do (read-byte storage))
+      (end-of-file () res))))
+
+(<span style=\"color: #a020f0;\">defmethod</span> <span style=\"color: #0000ff;\">load-from</span> (empty (fname pathname))
+  (<span style=\"color: #a020f0;\">with-open-file</span> (s fname <span style=\"color: #483d8b;\">:element-type</span> '(unsigned-byte 8))
+    (load-from empty s)))
+
+(<span style=\"color: #a020f0;\">defmethod</span> <span style=\"color: #0000ff;\">new-event!</span> (whole (ev event) (storage stream) <span style=\"color: #228b22;\">&amp;rest</span> more-streams)
+  (<span style=\"color: #a020f0;\">loop</span> for s in (cons storage more-streams)
+     do (cl-store:store ev s)
+     do (write-byte (char-code #\\newline) s))
+  (apply-event whole ev))</pre>
+
+<p>And once more, in Haskell</p>
+
+<pre><span style=\"color: #a020f0;\">module</span> <span style=\"color: #228b22;\">History</span> <span style=\"color: #a020f0;\">where</span>
+
+<span style=\"color: #a020f0;\">import</span> <span style=\"color: #228b22;\">System.IO</span>
+
+<span style=\"color: #a020f0;\">data</span> <span style=\"color: #228b22;\">Event</span> a <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">In</span> a
+             <span style=\"color: #a0522d;\">|</span> <span style=\"color: #228b22;\">Out</span> a <span style=\"color: #a020f0;\">deriving</span> (<span style=\"color: #228b22;\">Eq</span>, <span style=\"color: #228b22;\">Read</span>, <span style=\"color: #228b22;\">Show</span>)
+
+<span style=\"color: #a020f0;\">data</span> <span style=\"color: #228b22;\">Archive</span> a b <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Archive</span> { tick <span style=\"color: #a0522d;\">::</span> (a <span style=\"color: #a0522d;\">-&gt;</span> b <span style=\"color: #a0522d;\">-&gt;</span> a)
+                           , wind <span style=\"color: #a0522d;\">::</span> (a <span style=\"color: #a0522d;\">-&gt;</span> b <span style=\"color: #a0522d;\">-&gt;</span> a)
+                           , empty <span style=\"color: #a0522d;\">::</span> a }
+
+<span style=\"color: #0000ff;\">applyEvent</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Archive</span> a b <span style=\"color: #a0522d;\">-&gt;</span> a <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Event</span> b <span style=\"color: #a0522d;\">-&gt;</span> a
+<span style=\"color: #0000ff;\">applyEvent</span> arc a (<span style=\"color: #228b22;\">In</span> b) <span style=\"color: #a0522d;\">=</span> (tick arc) a b
+<span style=\"color: #0000ff;\">applyEvent</span> arc a (<span style=\"color: #228b22;\">Out</span> b) <span style=\"color: #a0522d;\">=</span> (wind arc) a b
+
+<span style=\"color: #0000ff;\">loadFrom</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Read</span> b <span style=\"color: #a0522d;\">=&gt;</span> <span style=\"color: #228b22;\">Archive</span> a b <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Handle</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">IO</span> a
+<span style=\"color: #0000ff;\">loadFrom</span> arc handle <span style=\"color: #a0522d;\">=</span> recur handle (empty arc)
+    <span style=\"color: #a020f0;\">where</span> recur h acc <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">do</span> res <span style=\"color: #a0522d;\">&lt;-</span> hIsEOF h
+                           <span style=\"color: #a020f0;\">if</span> res
+                           <span style=\"color: #a020f0;\">then</span> return acc
+                           <span style=\"color: #a020f0;\">else</span> <span style=\"color: #a020f0;\">do</span> ln <span style=\"color: #a0522d;\">&lt;-</span> hGetLine h
+                                   recur h <span style=\"color: #a0522d;\">.</span> applyEvent arc acc <span style=\"color: #a0522d;\">$</span> read ln
+
+<span style=\"color: #0000ff;\">newEvent</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Show</span> b <span style=\"color: #a0522d;\">=&gt;</span> <span style=\"color: #228b22;\">Archive</span> a b <span style=\"color: #a0522d;\">-&gt;</span> a <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Event</span> b <span style=\"color: #a0522d;\">-&gt;</span> [<span style=\"color: #228b22;\">Handle</span>] <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">IO</span> a
+<span style=\"color: #0000ff;\">newEvent</span> arc a ev handles <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">do</span> <span style=\"color: #a020f0;\">_</span> <span style=\"color: #a0522d;\">&lt;-</span> mapM_ (<span style=\"color: #a0522d;\">\\</span>h <span style=\"color: #a0522d;\">-&gt;</span> hPutStrLn h <span style=\"color: #a0522d;\">$</span> show ev) handles
+                               return <span style=\"color: #a0522d;\">$</span> applyEvent arc a ev</pre>
+
+
+<p>The Haskell version is pretty much all in the <code><span style=\"color: #228b22;\">IO</span></code> monad because this is meant to be a persistence layer. And regardless of whatever else your persistence layer does, it's eventually going to want to write some data out to a stream. Not necessarily to <i>disk</i>, mind you, it might be going out over a TCP socket or something<a href=\"#foot-Thu-Oct-02-222843EDT-2014\" name=\"note-Thu-Oct-02-222843EDT-2014\">[1]</a>.</p>
+
+<p>If you've been paying any attention at all to <a href=\"https://github.com/Inaimathi/fact-base\"><code><span style=\"color: #483d8b;\">:fact-base</span></code></a>, or seen <a href=\"https://github.com/Inaimathi/cl-notebook/blob/master/cl-notebook.lisp\">what I'm getting down to with it</a>, you'll notice that a few things are missing from the above.</p>
+
+<p>Lets get the trivials out of the way first. There is no <code>batch</code> mode, as implemented in <code><span style=\"color: #483d8b;\">:fact-base</span></code>s'<a href=\"https://github.com/Inaimathi/fact-base/blob/master/fact-base.lisp#L223-L233\"><code><span style=\"color: #483d8b;\">:change</span></code> event</a>. I just haven't bothered yet; that's something we can fix with between four and ten lines of code, so it's not a big deal. Second, there's no indexing system, because that's entirely incidental. In the Haskell version, the <code>a</code> part of <code><span style=\"color: #228b22;\">Archive</span> a b</code> might have its own indexing scheme, but it's none of our business as history recorders. It'll be hooked into whatever the appropriate implementation of <code>tick</code> and <code>wind</code> happen to be. Finally, there aren't deltas because we're not buffering events here; we're just writing them straight out to whatever <code><span style=\"color: #228b22;\">Handle</span></code>s or <code>stream</code>s we get as input.</p>
+
+<p>The <i>real</i> hole in functionality is the lack of a rewinding mechanism. I'm still thinking it through, although the core would basically have to look something like</p>
+
+<pre><span style=\"color: #0000ff;\">opposite</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Event</span> a <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Event</span> a
+<span style=\"color: #0000ff;\">opposite</span> (<span style=\"color: #228b22;\">In</span> a) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Out</span> a
+<span style=\"color: #0000ff;\">opposite</span> (<span style=\"color: #228b22;\">Out</span> a) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">In</span> a
+
+<span style=\"color: #0000ff;\">rewindEvent</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Archive</span> a b <span style=\"color: #a0522d;\">-&gt;</span> a <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Event</span> b <span style=\"color: #a0522d;\">-&gt;</span> a
+<span style=\"color: #0000ff;\">rewindEvent</span> arc a <span style=\"color: #a0522d;\">=</span> applyEvent arc a <span style=\"color: #a0522d;\">.</span> opposite</pre>
+
+<p>The thing is, if we're not making the assumption that <code>newEvent</code> is specifically writing to a file, we can't assume we have random access to it, hence we can't really abstract the traversal of history. That <i>has</i> to be handled by the users of this little framework, although we can provide convenience functions to handle the file-storage case specifically.</p>
+
+<p>I'm not entirely sure which direction to go in, because there's exactly one place I use the <code><span style=\"color: #483d8b;\">:fact-base</span></code> <code>rewind</code> system heavily, and that one place performed poorly enough from disk that I was forced to go back and implement an in-memory option. And this was on a pretty speedy SSD, so it was almost the optimal case for the technique. In other words, it's not clear to me that we <i>want</i> to provide a full rewind-from-disk implementation. This might be the reason to chuck deltas into the mix after all; you could then keep one sessions' worth of data around, which would coincidentally both give you the ability to rewind into the shallow past, <i>and</i> reduce the need for disk IO, <i>and</i> keep a bit more of the Haskell implementation in the realm of pure code.</p>
+
+<p>So yeah. The three potential directions I can see are:</p>
+
+<ul>
+  <li>provide a pure-functional rewind system that leaves getting a list of <code><span style=\"color: #228b22;\">Event</span></code>s up to the user of <code><span style=\"color: #228b22;\">History</span></code>. It'll be harder to call, and there might be overlap in terms of what each implementer has to put together, but this would afford users the greatest flexibility.</li>
+  <li>provide a file-specific rewind system that knows rather a lot about the on-disk storage format and handles reading <code><span style=\"color: #228b22;\">Event</span></code>s in as well as rolling them back. This would be less flexible, since we'd assume we had random access to whatever storage solution we're using, but it would be easier for callers to actually use<a href=\"#foot-Thu-Oct-02-224232EDT-2014\" name=\"note-Thu-Oct-02-224232EDT-2014\">[2]</a></li>
+  <li>provide a system in which archives carry around session deltas. This would give them partial in-memory rewind capability, and give the caller more explicit control over when stream writes happen.</li>
+</ul>
+
+<p>Not quite sure whether I want to pick one, or a hybrid, or something else entirely.</p>
+
+<p>I'll let you know if I figure anything out.</p>
+
+
+<hr />
+<h5>Footnotes</h5>
+<p>1 - <a href=\"#note-Thu-Oct-02-222843EDT-2014\" name=\"foot-Thu-Oct-02-222843EDT-2014\">[back]</a> - In fact, if I wanted to <i>really</i> generalize <code>newEvent</code>, it would instead have the signature <code><span style=\"color: #0000ff;\">newEvent</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Show</span> b <span style=\"color: #a0522d;\">=&gt;</span> <span style=\"color: #228b22;\">Archive</span> a b <span style=\"color: #a0522d;\">-&gt;</span> a <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Event</span> b <span style=\"color: #a0522d;\">-&gt;</span> (<span style=\"color: #228b22;\">Event</span> b <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">IO</span> <span style=\"color: #228b22;\">()</span>) <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">IO</span> a</code>. Which would then let you do some mildly crazy things. Like, for instance, using this with the <a href=\"http://haste-lang.org/\">Haste compiler</a> to set up a client-side database that sends off write requests via <a href=\"http://hackage.haskell.org/package/haste-compiler-0.2.99/docs/Haste-Ajax.html\">Ajax</a>. Left as an exercise for the reader, or perhaps a mildly bored future self.</p>
+
+<p>2 - <a href=\"#note-Thu-Oct-02-224232EDT-2014\" name=\"foot-Thu-Oct-02-224232EDT-2014\">[back]</a> - Assuming they were ok with the assumption, of course.</p>
+"))
+((5329 50677 883393000) :INSERT (196 :POSTED 3621333877))
+((5329 50677 883397000) :INSERT (196 :CURRENT T))
+((5329 50677 883400000) :INSERT (196 :TAG :HASKELL))
+((5329 50677 883404000) :INSERT (196 :TAG :COMMON-LISP))
+((5329 50677 883407000) :INSERT (196 :TAG :IDEA-PEELING))
+((5349 15352 770629000) :DELETE (196 :CURRENT T))
+((5349 15352 770759000) :INSERT (197 :TITLE "Seam Carving"))
+((5349 15352 770775000) :INSERT (197 :FILE "seam-carving.html"))
+((5349 15352 770781000) :INSERT (197 :EDITED 3623026550))
+((5349 15352 770787000) :INSERT
+ (197 :BODY
+  "<p>More reports from Code Retreat! This is getting to be a habit, though not an altogether unwelcome one. This month, we tackled <a href=\"http://en.wikipedia.org/wiki/Seam_carving\">Seam Carving</a>, which is an algorithm to scale down a bitmap by taking out the \"uninteresting\"<a href=\"#foot-Wed-Oct-22-234842EDT-2014\" name=\"note-Wed-Oct-22-234842EDT-2014\">[1]</a> parts, leaving interesting points relatively unaffected.</p>
+
+<p>The way it works in outline is:</p>
+
+<ol>
+  <li>generate an \"energy map\" of the image, producing a single numeric score for each pixel</li>
+  <li>use the above map to trace one-pixel paths from one end to the other<a href=\"#foot-Wed-Oct-22-234846EDT-2014\" name=\"note-Wed-Oct-22-234846EDT-2014\">[2]</a></li>
+  <li>remove the lowest cost path from the image</li>
+</ol>
+
+<p>Repeat this as necessary for additional scaling. Steps 1 is not <i>quite</i> primitive, though they are quite simple for a toy example. In the simplest case, you compare a pixel to its neighbor and get the delta of their saturation<a href=\"#foot-Wed-Oct-22-234849EDT-2014\" name=\"note-Wed-Oct-22-234849EDT-2014\">[3]</a>. If you want to do a bit better<a href=\"#foot-Wed-Oct-22-234852EDT-2014\" name=\"note-Wed-Oct-22-234852EDT-2014\">[4]</a>, compare each neighbor rather than just one.</p>
+
+<p>Step two is the meat of the algorithm. It works like this:</p>
+
+<ul>
+  <li>start a new seam for each pixel in the first row of an image, tallying that pixels' cost</li>
+  <li>for each other row of pixels, add each pixel in the row to the seam with the lowest tallied cost among its adjacent seams</li>
+  <li>return all complete seams in ascending order of tallied cost</li>
+</ul>
+
+<P>Each line eliminates some seams that continued from above; that's intentional, not accidental. We're not looking for all possible seams sorted by total cost, we want the seam with the lowest possible total cost <i>that's also cheaper at each step than its neighbors</i>.</p>
+
+<h3>At The Event</h3>
+
+<p>It turns out that this isn't an easy problem to approach if this is your first time seeing it, so the code we wrote <i>at</i> the event mostly doesn't work very well.</p>
+
+<p>My <a href=\"https://github.com/CodeRetreatTO/projects/blob/master/2014-10-seam-carving/csaunders_and_inaimathi.py\">first pairing</a> of the evening was with <a href=\"https://github.com/csaunders\">csaunders</a>, and we tackled it in Python. In the interests of getting something workable together fast, we used <a href=\"https://packages.debian.org/wheezy/jp2a\">the <code>jp2a</code> utility</a> to turn the default <a href=\"http://en.wikipedia.org/wiki/Seam_carving#mediaviewer/File:Broadway_tower_edit.jpg\">seam-carving castle photo</a> into its <a href=\"https://github.com/CodeRetreatTO/projects/blob/master/2014-10-seam-carving/scene.txt\">ascii equivalent representation</a>, then we worked on that. It might not have been too hard to find a bitmap parsing/manipulating library, but neither of us knew one off the top of our head. Also, by the time we got something workable together, we had something like ten minutes left in the session, so we decided to cut the image by naive columns rather than trying to find arbitrarily shaped seams. This, of course, left no time at all for cleanup, which is why this is the single fugliest piece of Python code my name will ever be attached to. God, I hope.</p>
+
+<p>The <a href=\"https://github.com/CodeRetreatTO/projects/blob/master/2014-10-seam-carving/dann-josiah-and-inaimathi.lisp\">second \"pairing\"</a> was together with <a href=\"https://github.com/dxnn\">Dann</a> and Josiah<a href=\"#foot-Wed-Oct-22-234855EDT-2014\" name=\"note-Wed-Oct-22-234855EDT-2014\">[5]</a>, and we forged ahead in Common Lisp. I'll admit to making a tweak or two on the way home, but we had the essentials of the algorithm down before breaking. Instead of indexing observed characters, this group decided to just use the numeric char codes representing each character. This meant the spread was a bit uneven, but it didn't seem to affect the quality of scaling much, if at all. We also got enough time to consider real seams, rather than just columns. The effectful approach we took ended up fighting us on it though. Consequently, we had to explicitly copy seams, where we should just have been functionally <code>cons</code>ing them up. To be fair, my focus was on presenting a mini guided tour of CLOS rather than keeping things pure...</p>
+
+<h3>Later</h3>
+
+<p>...which is why I reached for Haskell when I <a href=\"https://github.com/CodeRetreatTO/projects/blob/master/2014-10-seam-carving/inaimathi.hs\">tried it out by myself</a> the following day. So lets finally get to some code I want to show, rather than hand-wave away.</p>
+
+<pre><span style=\"color: #a020f0;\">module</span> <span style=\"color: #228b22;\">SeamCarving</span> <span style=\"color: #a020f0;\">where</span>
+
+<span style=\"color: #a020f0;\">import</span> <span style=\"color: #228b22;\">Data.Char</span> (ord)
+<span style=\"color: #a020f0;\">import</span> <span style=\"color: #228b22;\">Data.List</span> (sortBy)
+<span style=\"color: #a020f0;\">import</span> <span style=\"color: #228b22;\">Data.Function</span> (on)
+
+<span style=\"color: #0000ff;\">scoreGrid</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Image</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Score</span>
+<span style=\"color: #0000ff;\">scoreGrid</span> ls <span style=\"color: #a0522d;\">=</span> map scoreLine ls
+    <span style=\"color: #a020f0;\">where</span> scoreLine ln <span style=\"color: #a0522d;\">=</span> map total zipped
+              <span style=\"color: #a020f0;\">where</span> l <span style=\"color: #a0522d;\">=</span> map (toInteger <span style=\"color: #a0522d;\">.</span> ord) ln
+                    zipped <span style=\"color: #a0522d;\">=</span> zip3 (head l<span style=\"color: #228b22;\">:</span>l) l <span style=\"color: #a0522d;\">$</span> tail l
+                    total (a, b, c) <span style=\"color: #a0522d;\">=</span> abs (a<span style=\"color: #a0522d;\">-</span>b) <span style=\"color: #a0522d;\">+</span> abs (b<span style=\"color: #a0522d;\">-</span>c)
+
+<span style=\"color: #0000ff;\">seamsIn</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Score</span> <span style=\"color: #a0522d;\">-&gt;</span> [<span style=\"color: #228b22;\">Seam</span>]
+<span style=\"color: #0000ff;\">seamsIn</span> <span style=\"color: #228b22;\">[]</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">[]</span>
+<span style=\"color: #0000ff;\">seamsIn</span> s <span style=\"color: #a0522d;\">=</span> sortByWeight allSeams
+    <span style=\"color: #a020f0;\">where</span> allSeams <span style=\"color: #a0522d;\">=</span> foldl line (freshSeams <span style=\"color: #a0522d;\">$</span> head s) <span style=\"color: #a0522d;\">$</span> tail s
+          line seams ln <span style=\"color: #a0522d;\">=</span> concatMap (choose seams) <span style=\"color: #a0522d;\">$</span> zip [0<span style=\"color: #a0522d;\">..</span>] ln
+          choose seams (ix, w) <span style=\"color: #a0522d;\">=</span> map (<span style=\"color: #a0522d;\">\\</span>seam <span style=\"color: #a0522d;\">-&gt;</span> add seam w ix) <span style=\"color: #a0522d;\">.</span> take 1 <span style=\"color: #a0522d;\">.</span> sortByWeight <span style=\"color: #a0522d;\">$</span> potentials ix seams
+          potentials ix seams <span style=\"color: #a0522d;\">=</span> filter (<span style=\"color: #a0522d;\">\\</span>(<span style=\"color: #228b22;\">Seam</span> <span style=\"color: #a020f0;\">_</span> (i<span style=\"color: #228b22;\">:</span><span style=\"color: #a020f0;\">_</span>)) <span style=\"color: #a0522d;\">-&gt;</span> i <span style=\"color: #a0522d;\">&gt;=</span> ix<span style=\"color: #a0522d;\">-</span>1 <span style=\"color: #a0522d;\">&amp;&amp;</span> ix<span style=\"color: #a0522d;\">+</span>1 <span style=\"color: #a0522d;\">&gt;=</span> i) seams
+
+<span style=\"color: #0000ff;\">scaleBy</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Image</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Int</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Image</span>
+<span style=\"color: #0000ff;\">scaleBy</span> pic count <span style=\"color: #a0522d;\">=</span> head <span style=\"color: #a0522d;\">$</span> drop count <span style=\"color: #a0522d;\">$</span> iterate scaleOne pic
+    <span style=\"color: #a020f0;\">where</span> scaleOne lns <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">case</span> seamsIn <span style=\"color: #a0522d;\">$</span> scoreGrid lns <span style=\"color: #a020f0;\">of</span>
+                           <span style=\"color: #228b22;\">[]</span> <span style=\"color: #a0522d;\">-&gt;</span> lns
+                           (cheapest<span style=\"color: #228b22;\">:</span><span style=\"color: #a020f0;\">_</span>) <span style=\"color: #a0522d;\">-&gt;</span> carveSeam lns cheapest
+
+<span style=\"color: #0000ff;\">maskSeam</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Image</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Seam</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Image</span>
+<span style=\"color: #0000ff;\">maskSeam</span> <span style=\"color: #a0522d;\">=</span> applySeam (replace <span style=\"color: #8b2252;\">' '</span>)
+
+<span style=\"color: #0000ff;\">carveSeam</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Image</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Seam</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Image</span>
+<span style=\"color: #0000ff;\">carveSeam</span> <span style=\"color: #a0522d;\">=</span> applySeam remove
+
+<span style=\"color: #0000ff;\">freshSeams</span> <span style=\"color: #a0522d;\">::</span> [<span style=\"color: #228b22;\">Integer</span>] <span style=\"color: #a0522d;\">-&gt;</span> [<span style=\"color: #228b22;\">Seam</span>]
+<span style=\"color: #0000ff;\">freshSeams</span> ln <span style=\"color: #a0522d;\">=</span> map (<span style=\"color: #a0522d;\">\\</span>(ix, w) <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Seam</span> w [ix]) <span style=\"color: #a0522d;\">$</span> zip [1<span style=\"color: #a0522d;\">..</span>] ln
+
+<span style=\"color: #0000ff;\">main</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">IO</span> <span style=\"color: #228b22;\">()</span>
+<span style=\"color: #0000ff;\">main</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">do</span> f <span style=\"color: #a0522d;\">&lt;-</span> fmap lines <span style=\"color: #a0522d;\">$</span> readFile <span style=\"color: #8b2252;\">\"scene.txt\"</span>
+          mapM_ putBlock [ f
+                         , scaleBy f 10
+                         , scaleBy f 30
+                         , scaleBy f 50 ]
+
+<span style=\"color: #b22222;\">--</span><span style=\"color: #b22222;\">--- Types and related minutia
+</span><span style=\"color: #a020f0;\">type</span> <span style=\"color: #228b22;\">Score</span> <span style=\"color: #a0522d;\">=</span> [[<span style=\"color: #228b22;\">Integer</span>]]
+<span style=\"color: #a020f0;\">type</span> <span style=\"color: #228b22;\">Image</span> <span style=\"color: #a0522d;\">=</span> [<span style=\"color: #228b22;\">String</span>]
+
+<span style=\"color: #a020f0;\">data</span> <span style=\"color: #228b22;\">Seam</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Seam</span> { weight <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Integer</span>, sIxs <span style=\"color: #a0522d;\">::</span> [<span style=\"color: #228b22;\">Integer</span>] } <span style=\"color: #a020f0;\">deriving</span> (<span style=\"color: #228b22;\">Eq</span>, <span style=\"color: #228b22;\">Ord</span>, <span style=\"color: #228b22;\">Show</span>) 
+
+<span style=\"color: #0000ff;\">add</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Seam</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Integer</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Integer</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Seam</span>
+<span style=\"color: #0000ff;\">add</span> (<span style=\"color: #228b22;\">Seam</span> w ixs) newWeight newIx <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Seam</span> (w <span style=\"color: #a0522d;\">+</span> newWeight) <span style=\"color: #a0522d;\">$</span> newIx<span style=\"color: #228b22;\">:</span>ixs
+
+<span style=\"color: #0000ff;\">indices</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Seam</span> <span style=\"color: #a0522d;\">-&gt;</span> [<span style=\"color: #228b22;\">Integer</span>]
+<span style=\"color: #0000ff;\">indices</span> (<span style=\"color: #228b22;\">Seam</span> <span style=\"color: #a020f0;\">_</span> ixs) <span style=\"color: #a0522d;\">=</span> reverse ixs
+
+<span style=\"color: #b22222;\">--</span><span style=\"color: #b22222;\">--- Utility
+</span><span style=\"color: #0000ff;\">putBlock</span> <span style=\"color: #a0522d;\">::</span> [<span style=\"color: #228b22;\">String</span>] <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">IO</span> <span style=\"color: #228b22;\">()</span>
+<span style=\"color: #0000ff;\">putBlock</span> lns <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">do</span> mapM_ putStrLn lns
+                  putStrLn <span style=\"color: #8b2252;\">\" \"</span>
+
+<span style=\"color: #0000ff;\">applySeam</span> <span style=\"color: #a0522d;\">::</span> (<span style=\"color: #228b22;\">Integer</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">String</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">String</span>) <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Image</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Seam</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Image</span>
+<span style=\"color: #0000ff;\">applySeam</span> fn lns seam <span style=\"color: #a0522d;\">=</span> map (<span style=\"color: #a0522d;\">\\</span>(ix, ln) <span style=\"color: #a0522d;\">-&gt;</span> fn ix ln) <span style=\"color: #a0522d;\">$</span> zip (indices seam) lns
+
+<span style=\"color: #0000ff;\">sortByWeight</span> <span style=\"color: #a0522d;\">::</span> [<span style=\"color: #228b22;\">Seam</span>] <span style=\"color: #a0522d;\">-&gt;</span> [<span style=\"color: #228b22;\">Seam</span>]
+<span style=\"color: #0000ff;\">sortByWeight</span> <span style=\"color: #a0522d;\">=</span> sortBy (compare <span style=\"color: #a0522d;\">`on`</span> weight)
+
+<span style=\"color: #0000ff;\">remove</span> <span style=\"color: #a0522d;\">::</span> (<span style=\"color: #228b22;\">Num</span> i, <span style=\"color: #228b22;\">Enum</span> i, <span style=\"color: #228b22;\">Eq</span> i) <span style=\"color: #a0522d;\">=&gt;</span> i <span style=\"color: #a0522d;\">-&gt;</span> [a] <span style=\"color: #a0522d;\">-&gt;</span> [a]
+<span style=\"color: #0000ff;\">remove</span> <span style=\"color: #a020f0;\">_</span> <span style=\"color: #228b22;\">[]</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">[]</span>
+<span style=\"color: #0000ff;\">remove</span> 0 (<span style=\"color: #a020f0;\">_</span><span style=\"color: #228b22;\">:</span>rest) <span style=\"color: #a0522d;\">=</span> rest
+<span style=\"color: #0000ff;\">remove</span> ix (a<span style=\"color: #228b22;\">:</span>rest) <span style=\"color: #a0522d;\">=</span> a <span style=\"color: #228b22;\">:</span> (remove (pred ix) rest)
+
+<span style=\"color: #0000ff;\">replace</span> <span style=\"color: #a0522d;\">::</span> (<span style=\"color: #228b22;\">Num</span> i, <span style=\"color: #228b22;\">Enum</span> i, <span style=\"color: #228b22;\">Eq</span> i) <span style=\"color: #a0522d;\">=&gt;</span> a <span style=\"color: #a0522d;\">-&gt;</span> i <span style=\"color: #a0522d;\">-&gt;</span> [a] <span style=\"color: #a0522d;\">-&gt;</span> [a]
+<span style=\"color: #0000ff;\">replace</span> <span style=\"color: #a020f0;\">_</span> <span style=\"color: #a020f0;\">_</span> <span style=\"color: #228b22;\">[]</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">[]</span>
+<span style=\"color: #0000ff;\">replace</span> new 0 (<span style=\"color: #a020f0;\">_</span><span style=\"color: #228b22;\">:</span>rest) <span style=\"color: #a0522d;\">=</span> new<span style=\"color: #228b22;\">:</span>rest
+<span style=\"color: #0000ff;\">replace</span> new ix (a<span style=\"color: #228b22;\">:</span>rest) <span style=\"color: #a0522d;\">=</span> a <span style=\"color: #228b22;\">:</span> (replace new (pred ix) rest)</pre>
+
+<p>We're going to skip the module and import boilerplate<a href=\"#foot-Wed-Oct-22-234904EDT-2014\" name=\"note-Wed-Oct-22-234904EDT-2014\">[6]</a>, and get directly into the meat of things.</p>
+
+<pre><span style=\"color: #0000ff;\">scoreGrid</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Image</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Score</span>
+<span style=\"color: #0000ff;\">scoreGrid</span> ls <span style=\"color: #a0522d;\">=</span> map scoreLine ls
+    <span style=\"color: #a020f0;\">where</span> scoreLine ln <span style=\"color: #a0522d;\">=</span> map total zipped
+              <span style=\"color: #a020f0;\">where</span> l <span style=\"color: #a0522d;\">=</span> map (toInteger <span style=\"color: #a0522d;\">.</span> ord) ln
+                    zipped <span style=\"color: #a0522d;\">=</span> zip3 (head l<span style=\"color: #228b22;\">:</span>l) l <span style=\"color: #a0522d;\">$</span> tail l
+                    total (a, b, c) <span style=\"color: #a0522d;\">=</span> abs (a<span style=\"color: #a0522d;\">-</span>b) <span style=\"color: #a0522d;\">+</span> abs (b<span style=\"color: #a0522d;\">-</span>c)</pre>
+
+<p>You get a Score from an ascii Image by treating each character as its char code, and summing its difference from the character on the left with its difference from the character on the right.</p>
+
+<pre><span style=\"color: #0000ff;\">seamsIn</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Score</span> <span style=\"color: #a0522d;\">-&gt;</span> [<span style=\"color: #228b22;\">Seam</span>]
+<span style=\"color: #0000ff;\">seamsIn</span> <span style=\"color: #228b22;\">[]</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">[]</span>
+<span style=\"color: #0000ff;\">seamsIn</span> s <span style=\"color: #a0522d;\">=</span> sortByWeight allSeams
+    <span style=\"color: #a020f0;\">where</span> allSeams <span style=\"color: #a0522d;\">=</span> foldl line (freshSeams <span style=\"color: #a0522d;\">$</span> head s) <span style=\"color: #a0522d;\">$</span> tail s
+          line seams ln <span style=\"color: #a0522d;\">=</span> concatMap (choose seams) <span style=\"color: #a0522d;\">$</span> zip [0<span style=\"color: #a0522d;\">..</span>] ln
+          choose seams (ix, w) <span style=\"color: #a0522d;\">=</span> map (<span style=\"color: #a0522d;\">\\</span>seam <span style=\"color: #a0522d;\">-&gt;</span> add seam w ix) <span style=\"color: #a0522d;\">.</span> take 1 <span style=\"color: #a0522d;\">.</span> sortByWeight <span style=\"color: #a0522d;\">$</span> potentials ix seams
+          potentials ix seams <span style=\"color: #a0522d;\">=</span> filter (<span style=\"color: #a0522d;\">\\</span>(<span style=\"color: #228b22;\">Seam</span> <span style=\"color: #a020f0;\">_</span> (i<span style=\"color: #228b22;\">:</span><span style=\"color: #a020f0;\">_</span>)) <span style=\"color: #a0522d;\">-&gt;</span> i <span style=\"color: #a0522d;\">&gt;=</span> ix<span style=\"color: #a0522d;\">-</span>1 <span style=\"color: #a0522d;\">&amp;&amp;</span> ix<span style=\"color: #a0522d;\">+</span>1 <span style=\"color: #a0522d;\">&gt;=</span> i) seams</pre>
+
+<p>You find the <code><span style=\"color: #228b22;\">Seam</span></code>s in a <code><span style=\"color: #228b22;\">Score</span></code>... well... by applying that algorithm I explained at the beginning of this article. You create a <code><span style=\"color: #228b22;\">Seam</span></code> for each element in the first line of the <code><span style=\"color: #228b22;\">Score</span></code>, then, for each character in each other line, add it to the cheapest adjacent <code><span style=\"color: #228b22;\">Seam</span></code>. You get the potential <code><span style=\"color: #228b22;\">Seam</span></code>s of a given index by <code>filter</code>ing any seam whose latest addition isn't within a radius of 1. You choose<a href=\"#foot-Wed-Oct-22-234910EDT-2014\" name=\"note-Wed-Oct-22-234910EDT-2014\">[7]</a> a seam for a given index to be added to by finding its potentials, sorting them by weight ascending, <code>take</code>ing <code>1</code>, and <code>add</code>ing this index and its weight to the resulting <code><span style=\"color: #228b22;\">Seam</span></code>. Note that this might result in no seams; if no <code><span style=\"color: #228b22;\">Seam</span></code> contains an adjacent index from the previous line, then this index won't be added anywhere. Processing a <code>line</code> involves processing each of its elements in the manner described two sentences ago. Finally, getting all relevant seams from a <code><span style=\"color: #228b22;\">Score</span></code> means so processing each line, starting with fresh seams generated from the first one, and sorting the result by weight.</p>
+
+<pre><span style=\"color: #0000ff;\">scaleBy</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Image</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Int</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Image</span>
+<span style=\"color: #0000ff;\">scaleBy</span> pic count <span style=\"color: #a0522d;\">=</span> head <span style=\"color: #a0522d;\">$</span> drop count <span style=\"color: #a0522d;\">$</span> iterate scaleOne pic
+    <span style=\"color: #a020f0;\">where</span> scaleOne lns <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">case</span> seamsIn <span style=\"color: #a0522d;\">$</span> scoreGrid lns <span style=\"color: #a020f0;\">of</span>
+                           <span style=\"color: #228b22;\">[]</span> <span style=\"color: #a0522d;\">-&gt;</span> lns
+                           (cheapest<span style=\"color: #228b22;\">:</span><span style=\"color: #a020f0;\">_</span>) <span style=\"color: #a0522d;\">-&gt;</span> carveSeam lns cheapest</pre>
+
+<p>Initially, I thought I'd be scaling an image by finding all seams, and taking the specified number of cheapest seams out in one step. After thinking about what happens in the edge case where you try to scale by a number greater than the available <code><span style=\"color: #228b22;\">Seam</span></code> count, I decided against it. It later occurred to me that removing a seam from an image might create new potential seams that are cheaper than any of the existing alternatives. At that point, I decided to chuck any semblance of efficiency in a bin and just scale by 1 <code>count</code> times. This means scoring the image, finding the cheapest seam <i>and</i> removing it, all at each step. It's still surprisingly snappy when you compile it under <code>-O2</code>.</p>
+
+<p>Usually, I'd take this to its bloody conclusion by going through every excruciating line in the program. I'm going to cut it here this time, because the rest of it seems perfectly obvious once you understand the above.</p>
+
+<p>And also, because I'm tired as fuck.</p>
+
+<p>Correct me if I'm wrong about the former.</p>
+
+<hr />
+<h5>Footnotes</h5>
+<p>1 - <a href=\"#note-Wed-Oct-22-234842EDT-2014\" name=\"foot-Wed-Oct-22-234842EDT-2014\">[back]</a> -Although, as I've mentioned before, the originators of this algorithm have probably never taken a design course. If you understand basic layout principles, you understand that white space is <a href=\"http://www.shutterstock.com/video/clip-673189-stock-footage-wind-turbines-producing-clean-alternative-energy-in-barren-landscape.html?src=rel/671428:4\">sometimes</a> <a href=\"http://en.wikipedia.org/wiki/Think_Small\">critical</a> to the <a href=\"http://en.wikipedia.org/wiki/Pale_Blue_Dot#mediaviewer/File:Pale_Blue_Dot.png\">impact</a> of a piece, and that's exactly what this approach would prune down. Maybe that's an edge case that we'll always have humans looking at? I don't know. Plausible, at least. In any case, I'd argue that for at least some images, naive cropping and/or scaling would do a better job getting the point across than context-aware scaling.</p>
+
+<p>2 - <a href=\"#note-Wed-Oct-22-234846EDT-2014\" name=\"foot-Wed-Oct-22-234846EDT-2014\">[back]</a> - Top-bottom if you're scaling horizontally, left-right if vertically.</p>
+
+<p>3 - <a href=\"#note-Wed-Oct-22-234849EDT-2014\" name=\"foot-Wed-Oct-22-234849EDT-2014\">[back]</a> - Or their ascii values, if you're cheating mildly and not dealing directly with pixel data.</p>
+
+<p>4 - <a href=\"#note-Wed-Oct-22-234852EDT-2014\" name=\"foot-Wed-Oct-22-234852EDT-2014\">[back]</a> - Though not <i>much</i> better, based on our admittedly limited observations.</p>
+
+<p>5 - <a href=\"#note-Wed-Oct-22-234855EDT-2014\" name=\"foot-Wed-Oct-22-234855EDT-2014\">[back]</a> - Whose github profile I don't have a direct link to. I wrote it down on a scrap of paper, but Dann took it.</p>
+
+<p>6 - <a href=\"#note-Wed-Oct-22-234904EDT-2014\" name=\"foot-Wed-Oct-22-234904EDT-2014\">[back]</a> -Incidentally, I've read an article draft semi-recently which made a convincing argument that imports <i>should not</i> be at the top of a file. Because it's very rarely the first thing a prospective reader is interested in. Unfortunately, as flexible as Haskell is in the declaration order of functions and <code><span style=\"color: #a020f0;\">data</span></code>, it forces you to put the <code><span style=\"color: #a020f0;\">module</span></code> and <code><span style=\"color: #a020f0;\">import</span></code> statements right at the top of your file. So all I can really do is apologize and elide it in the write-up.S orry.</p>
+
+<p>7 - <a href=\"#note-Wed-Oct-22-234910EDT-2014\" name=\"foot-Wed-Oct-22-234910EDT-2014\">[back]</a> - Which very probably isn't the best name for what's going on here.</p>
+"))
+((5349 15352 771144000) :INSERT (197 :POSTED 3623026552))
+((5349 15352 771153000) :INSERT (197 :CURRENT T))
+((5349 15352 771159000) :INSERT (197 :TAG :CODE-RETREAT-NOTES))
+((5349 15352 771170000) :INSERT (197 :TAG :ALMOST-LITERATE-PROGRAMMING))
+((5349 15352 771175000) :INSERT (197 :TAG :HASKELL))
+((5355 11734 347629000) :DELETE (197 :CURRENT T))
+((5355 11734 347774000) :INSERT (198 :TITLE "Dead Bitmaps"))
+((5355 11734 347785000) :INSERT (198 :FILE "dead-bitmaps.html"))
+((5355 11734 347789000) :INSERT (198 :EDITED 3623541289))
+((5355 11734 347792000) :INSERT
+ (198 :BODY
+  "<p>I've been pouring some of my time into trying to <a href=\"https://github.com/Inaimathi/EAF#eaf\">automatically translate bitmap images into richer flowchart representation</a><a href=\"#foot-Tue-Oct-28-230119EDT-2014\" name=\"note-Tue-Oct-28-230119EDT-2014\">[1]</a>. What I want ultimately, is a way of going from an old-fashioned, hand-crafted line drawing to something that I could easily use to pull <a href=\"/article?name=the-big-problem-and-visual-compilers.html\">this trick</a>. I don't quite have anything workable yet, but it feels like I'm making some progress regardless. Enough to blog about it for a bit, in any case.</p>
+
+<h3>High Level</h3>
+
+<p>I'm considering two very specific approaches at the moment, but there's a general direction I'm trying to go in. First and foremost, I want something that works, and don't care <i>too</i> much about purity or elegance. Which means I'm perfectly willing to cheat by introducing easy to handle out-of-band information. One thing I'm already considering, but won't reach for until I need it, is color-coding lines/arrows differently from shapes. So, for instance, anything red would be interpreted as lines while anything blue would be processed under the assumption that it represented shapes<a href=\"#foot-Tue-Oct-28-230122EDT-2014\" name=\"note-Tue-Oct-28-230122EDT-2014\">[2]</a>.</p>
+
+<p>Secondly, I'm working with a very tight set of constraints on the source images I'm considering. These aren't going to be photographs. I admit, it would be cool to be able to draw a program in the sand, take a picture, and have it compile correctly, but that sounds ... hard. What I'll be dealing with to start with is going to be line drawings composed of primitive shapes, arrows and some sparse annotating text on a relatively uniform white background. Most of the work I've read on the subject of edge or feature detection has been aimed either at plain text nuder various transformations<a href=\"#foot-Tue-Oct-28-230127EDT-2014\" name=\"note-Tue-Oct-28-230127EDT-2014\">[3]</a>, or at photographs<a href=\"#foot-Tue-Oct-28-230131EDT-2014\" name=\"note-Tue-Oct-28-230131EDT-2014\">[4]</a>. The box and wire diagram area seems to be relatively unexplored.</p>
+
+<h3>Thinning</h3>
+
+<p>The first approach I'm thinking about is thinning the image down to the minimal number of points it takes to represent. Once that's done, it should be possible to connect the dots at some threshold of proximity and generate the appropriate line/shape facts that we need in order to proceed further. And honestly, that's about as much thought as I've put into this approach. If you want details, check <a href=\"https://github.com/Inaimathi/EAF#thinning\">the README scection</a> and <a href=\"https://github.com/Inaimathi/EAF/blob/master/Ping.hs\"><code>Ping.hs</code></a>. I might come back to it if the other <code><span style=\"color: #228b22;\">Direction</span></code> proves fruitless, or hits some unseen roadblocks.</p>
+
+<h3>Directional Mapping</h3>
+
+<p>This is the approach I've been considering and prototyping most vigorously. Mostly because it seems within striking distance of workable results in the very near future. At its most distilled form, this involves deciding the directional tendency of each pixel in the image. Each one might be one of the Cardinal directions (North/South or East/West), one of the Ordinal directions (NorthEast/SouthWest or NorthWest/SouthEast), or it might be contested<a href=\"#foot-Tue-Oct-28-230150EDT-2014\" name=\"note-Tue-Oct-28-230150EDT-2014\">[6]</a>.</p>
+
+<p>The algorithm for separating an image into these directional maps is relatively simple: for each pixel, count the contiguous filled space in each direction and sum the totals for equivalent directions.</p>
+
+<pre><span style=\"color: #0000ff;\">scoreCoord</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Grid</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Coord</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Score</span>
+<span style=\"color: #0000ff;\">scoreCoord</span> g (x, y) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Score</span> (lengthI contigH) (lengthI contigV)
+                      (lengthI contigSW) (lengthI contigSE)
+    <span style=\"color: #a020f0;\">where</span> contig xs ys <span style=\"color: #a0522d;\">=</span> findContiguous g <span style=\"color: #a0522d;\">$</span> zip xs ys
+          contigSW <span style=\"color: #a0522d;\">=</span> concat [ contig [x, pred x<span style=\"color: #a0522d;\">..</span>] [y, pred y<span style=\"color: #a0522d;\">..</span>]
+                            , contig [x<span style=\"color: #a0522d;\">..</span>] [y<span style=\"color: #a0522d;\">..</span>]]
+          contigSE <span style=\"color: #a0522d;\">=</span> concat [ contig [x<span style=\"color: #a0522d;\">..</span>] [y, pred y<span style=\"color: #a0522d;\">..</span>]
+                            , contig [x, pred x<span style=\"color: #a0522d;\">..</span>] [y<span style=\"color: #a0522d;\">..</span>] ]
+          contigH <span style=\"color: #a0522d;\">=</span> concat [ contig [x<span style=\"color: #a0522d;\">..</span>] <span style=\"color: #a0522d;\">$</span> repeat y
+                           , contig [x,pred x<span style=\"color: #a0522d;\">..</span>] <span style=\"color: #a0522d;\">$</span> repeat y]
+          contigV <span style=\"color: #a0522d;\">=</span> concat [ contig (repeat x) [y<span style=\"color: #a0522d;\">..</span>]
+                           , contig (repeat x) [y, pred y<span style=\"color: #a0522d;\">..</span>]]
+
+<span style=\"color: #0000ff;\">findContiguous</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Grid</span> <span style=\"color: #a0522d;\">-&gt;</span> [<span style=\"color: #228b22;\">Coord</span>] <span style=\"color: #a0522d;\">-&gt;</span> [<span style=\"color: #228b22;\">Coord</span>]
+<span style=\"color: #0000ff;\">findContiguous</span> g cs <span style=\"color: #a0522d;\">=</span> recur cs <span style=\"color: #228b22;\">[]</span>
+    <span style=\"color: #a020f0;\">where</span> recur <span style=\"color: #228b22;\">[]</span> acc       <span style=\"color: #a0522d;\">=</span> reverse acc
+          recur (c<span style=\"color: #228b22;\">:</span>rest) acc <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">case</span> <span style=\"color: #228b22;\">Map</span><span style=\"color: #a0522d;\">.</span>lookup c (gridMap g) <span style=\"color: #a020f0;\">of</span>
+                                 <span style=\"color: #228b22;\">Nothing</span> <span style=\"color: #a0522d;\">-&gt;</span> recur <span style=\"color: #228b22;\">[]</span> acc
+                                 <span style=\"color: #228b22;\">Just</span> <span style=\"color: #a020f0;\">_</span> <span style=\"color: #a0522d;\">-&gt;</span> recur rest <span style=\"color: #a0522d;\">$</span> c<span style=\"color: #228b22;\">:</span>acc
+
+<span style=\"color: #0000ff;\">ordinal</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Score</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Direction</span>
+<span style=\"color: #0000ff;\">ordinal</span> (<span style=\"color: #228b22;\">Score</span> <span style=\"color: #a020f0;\">_</span> <span style=\"color: #a020f0;\">_</span> sw se) <span style=\"color: #a0522d;\">=</span> 
+    <span style=\"color: #a020f0;\">case</span> se <span style=\"color: #a0522d;\">`compare`</span> sw <span style=\"color: #a020f0;\">of</span>
+      <span style=\"color: #228b22;\">EQ</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">C</span>
+      <span style=\"color: #228b22;\">GT</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">SW</span>
+      <span style=\"color: #228b22;\">LT</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">SE</span>
+
+<span style=\"color: #0000ff;\">cardinal</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Score</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Direction</span>
+<span style=\"color: #0000ff;\">cardinal</span> (<span style=\"color: #228b22;\">Score</span> n e <span style=\"color: #a020f0;\">_</span> <span style=\"color: #a020f0;\">_</span>) <span style=\"color: #a0522d;\">=</span> 
+    <span style=\"color: #a020f0;\">case</span> n <span style=\"color: #a0522d;\">`compare`</span> e <span style=\"color: #a020f0;\">of</span>
+      <span style=\"color: #228b22;\">EQ</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">C</span>
+      <span style=\"color: #228b22;\">GT</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">H</span>
+      <span style=\"color: #228b22;\">LT</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">V</span>
+
+<span style=\"color: #a020f0;\">data</span> <span style=\"color: #228b22;\">Score</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Score</span> { north <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Integer</span>, east <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Integer</span>
+                   , southWest <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Integer</span>
+                   , southEast <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Integer</span> } <span style=\"color: #a020f0;\">deriving</span> (<span style=\"color: #228b22;\">Eq</span>)</pre>
+
+<p>That's that. The <code>scoreCoord</code> function is admittedly more repetitive than it should be. I'm not sure this</p>
+
+<pre><span style=\"color: #0000ff;\">scoreCoord</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Grid</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Coord</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Score</span>
+<span style=\"color: #0000ff;\">scoreCoord</span> g (x, y) <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">Score</span> contigH contigV contigSW contigSE
+    <span style=\"color: #a020f0;\">where</span> contig (xs, ys) <span style=\"color: #a0522d;\">=</span> findContiguous g <span style=\"color: #a0522d;\">$</span> zip xs ys
+          score <span style=\"color: #a0522d;\">=</span> lengthI <span style=\"color: #a0522d;\">.</span> concatMap contig
+          contigSW <span style=\"color: #a0522d;\">=</span> score [ ([x, pred x<span style=\"color: #a0522d;\">..</span>], [y, pred y<span style=\"color: #a0522d;\">..</span>])
+                           , ([x<span style=\"color: #a0522d;\">..</span>], [y<span style=\"color: #a0522d;\">..</span>])]
+          contigSE <span style=\"color: #a0522d;\">=</span> score [ ([x<span style=\"color: #a0522d;\">..</span>], [y, pred y<span style=\"color: #a0522d;\">..</span>])
+                           , ([x, pred x<span style=\"color: #a0522d;\">..</span>], [y<span style=\"color: #a0522d;\">..</span>]) ]
+          contigH <span style=\"color: #a0522d;\">=</span> score [ ([x<span style=\"color: #a0522d;\">..</span>], repeat y)
+                          , ([x,pred x<span style=\"color: #a0522d;\">..</span>], repeat y)]
+          contigV <span style=\"color: #a0522d;\">=</span> score [ ((repeat x), [y<span style=\"color: #a0522d;\">..</span>])
+                          , ((repeat x), [y, pred y<span style=\"color: #a0522d;\">..</span>])]</pre>
+
+<p>makes it any more readable, but it is equivalent, and doesn't repeat itself quite as frequently. The point is, this function takes a <code><span style=\"color: #228b22;\">Grid</span></code> and a <code><span style=\"color: #228b22;\">Coord</span></code> (which represents a pixel) and returns the score of that pixel in that <code><span style=\"color: #228b22;\">Grid</span></code>. <code>findContiguous</code> is a helper function used in the above.</p>
+
+<pre><span style=\"color: #0000ff;\">findContiguous</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Grid</span> <span style=\"color: #a0522d;\">-&gt;</span> [<span style=\"color: #228b22;\">Coord</span>] <span style=\"color: #a0522d;\">-&gt;</span> [<span style=\"color: #228b22;\">Coord</span>]
+<span style=\"color: #0000ff;\">findContiguous</span> g cs <span style=\"color: #a0522d;\">=</span> recur cs <span style=\"color: #228b22;\">[]</span>
+    <span style=\"color: #a020f0;\">where</span> recur <span style=\"color: #228b22;\">[]</span> acc       <span style=\"color: #a0522d;\">=</span> reverse acc
+          recur (c<span style=\"color: #228b22;\">:</span>rest) acc <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">case</span> <span style=\"color: #228b22;\">Map</span><span style=\"color: #a0522d;\">.</span>lookup c (gridMap g) <span style=\"color: #a020f0;\">of</span>
+                                 <span style=\"color: #228b22;\">Nothing</span> <span style=\"color: #a0522d;\">-&gt;</span> recur <span style=\"color: #228b22;\">[]</span> acc
+                                 <span style=\"color: #228b22;\">Just</span> <span style=\"color: #a020f0;\">_</span> <span style=\"color: #a0522d;\">-&gt;</span> recur rest <span style=\"color: #a0522d;\">$</span> c<span style=\"color: #228b22;\">:</span>acc</pre>
+
+<p>It takes a <code><span style=\"color: #228b22;\">Grid</span></code> and a list of <code><span style=\"color: #228b22;\">Coord</span></code>s, and takes only the first contiguous chunk; as soon as it fails to find a given coordinate, it terminates and returns the ones its accumulated so far. Having defined all of the above, you can then define</p>
+
+<pre><span style=\"color: #0000ff;\">main</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">IO</span> <span style=\"color: #228b22;\">()</span>
+<span style=\"color: #0000ff;\">main</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">do</span> g <span style=\"color: #a0522d;\">&lt;-</span> readSparse <span style=\"color: #8b2252;\">\"test.txt\"</span>
+          <span style=\"color: #a020f0;\">let</span> showGrid <span style=\"color: #a0522d;\">=</span> showMap (gridWidth g) (gridHeight g)
+              score <span style=\"color: #a0522d;\">=</span> scoreGrid g
+          putBeside [ showGrid <span style=\"color: #a0522d;\">$</span> <span style=\"color: #228b22;\">Map</span><span style=\"color: #a0522d;\">.</span>map cardinal score
+                    , showGrid <span style=\"color: #a0522d;\">$</span> <span style=\"color: #228b22;\">Map</span><span style=\"color: #a0522d;\">.</span>map ordinal score ]</pre>
+
+<p>and hop over to <code>GHCi</code></p>
+
+<pre><span style=\"color: #228b22;\">Prelude</span><span style=\"color: #0000ff;\">&gt;</span> <span style=\"color: #228b22;\">:</span>load <span style=\"color: #8b2252;\">\"Direction.hs\"</span>
+[1 <span style=\"color: #a020f0;\">of</span> 3] <span style=\"color: #228b22;\">Compiling</span> <span style=\"color: #228b22;\">Util</span>             ( <span style=\"color: #228b22;\">Util</span><span style=\"color: #a0522d;\">.</span>hs, interpreted )
+[2 <span style=\"color: #a020f0;\">of</span> 3] <span style=\"color: #228b22;\">Compiling</span> <span style=\"color: #228b22;\">SparseRead</span>       ( <span style=\"color: #228b22;\">SparseRead</span><span style=\"color: #a0522d;\">.</span>hs, interpreted )
+[3 <span style=\"color: #a020f0;\">of</span> 3] <span style=\"color: #228b22;\">Compiling</span> <span style=\"color: #228b22;\">Direction</span>        ( <span style=\"color: #228b22;\">Direction</span><span style=\"color: #a0522d;\">.</span>hs, interpreted )
+
+<span style=\"color: #228b22;\">Direction</span><span style=\"color: #0000ff;\">.</span>hs<span style=\"color: #228b22;\">:</span>44<span style=\"color: #228b22;\">:</span>15<span style=\"color: #228b22;\">:</span> <span style=\"color: #228b22;\">Warning:</span>
+    <span style=\"color: #228b22;\">This</span> binding for `showGrid' shadows the existing binding
+      imported from `<span style=\"color: #228b22;\">SparseRead'</span> at <span style=\"color: #228b22;\">Direction</span><span style=\"color: #a0522d;\">.</span>hs<span style=\"color: #228b22;\">:</span>4<span style=\"color: #228b22;\">:</span>1<span style=\"color: #a0522d;\">-</span>17
+      (and originally defined at <span style=\"color: #228b22;\">SparseRead</span><span style=\"color: #a0522d;\">.</span>hs<span style=\"color: #228b22;\">:</span>33<span style=\"color: #228b22;\">:</span>1<span style=\"color: #a0522d;\">-</span>8)
+<span style=\"color: #228b22;\">Ok</span>, modules loaded<span style=\"color: #228b22;\">:</span> <span style=\"color: #228b22;\">Util</span>, <span style=\"color: #228b22;\">Direction</span>, <span style=\"color: #228b22;\">SparseRead</span><span style=\"color: #a0522d;\">.</span>
+<span style=\"color: #a0522d;\">*</span><span style=\"color: #228b22;\">Direction</span><span style=\"color: #a0522d;\">&gt;</span> main
+<span style=\"color: #228b22;\">Loading</span> package array<span style=\"color: #a0522d;\">-</span>0<span style=\"color: #a0522d;\">.</span>4<span style=\"color: #a0522d;\">.</span>0<span style=\"color: #a0522d;\">.</span>1 <span style=\"color: #a0522d;\">...</span> linking <span style=\"color: #a0522d;\">...</span> done<span style=\"color: #a0522d;\">.</span>
+<span style=\"color: #228b22;\">Loading</span> package deepseq<span style=\"color: #a0522d;\">-</span>1<span style=\"color: #a0522d;\">.</span>3<span style=\"color: #a0522d;\">.</span>0<span style=\"color: #a0522d;\">.</span>1 <span style=\"color: #a0522d;\">...</span> linking <span style=\"color: #a0522d;\">...</span> done<span style=\"color: #a0522d;\">.</span>
+<span style=\"color: #228b22;\">Loading</span> package containers<span style=\"color: #a0522d;\">-</span>0<span style=\"color: #a0522d;\">.</span>5<span style=\"color: #a0522d;\">.</span>0<span style=\"color: #a0522d;\">.</span>0 <span style=\"color: #a0522d;\">...</span> linking <span style=\"color: #a0522d;\">...</span> done<span style=\"color: #a0522d;\">.</span>
+   ||                          +    \\/                         
+  --------------------         +   \\o\\////\\\\\\\\///\\\\\\\\o/        
+-----------------------        + \\\\o\\o///oo\\\\oo//o\\\\\\oo/       
+ --|||-    ----   -|||--       +  \\\\o///    oooo   \\\\\\o//      
+  o|||-           -|||-        +   \\o///           o\\\\o/       
+  ||||             |||o        +   /\\//             o\\/o       
+   |||             |||         +    /oo             //\\        
+  ||||            ||||         +   \\//\\            o///        
+  |||             ||||         +   o\\/             /o//        
+ -|||o            ||||-        +  /o\\\\/            /////       
+ -|||o            ||||-        +  /o\\\\\\            ///oo       
+ -|||--         --o|||-        +  /\\\\\\\\\\         /////o\\       
+  --------------------         +   /o\\\\\\\\\\\\\\\\o////////\\        
+  ---------||-------           +   /o\\\\\\\\\\\\\\\\o///////          
+         -||||-                +          \\\\\\///               
+          ||||-                +           \\\\///               
+          ||||                 +           /\\/o                
+          ||||                 +           //\\\\                
+         -||||                 +          ////\\                
+         -|||                  +          /o/o                 
+   -o|    ||||-    |||         +    \\\\o    o\\///    ///        
+   --oo  -||||    -o---        +    \\\\\\o  \\\\///    /////       
+    o||   ||||   ------        +     \\\\\\   oo/o   /////\\       
+     ||o -||||  ------         +      \\\\\\ //o\\\\  /////\\        
+      ----|||o ----o           +       \\\\\\//o\\\\ /////          
+       ---|||-----             +        /\\\\/\\\\\\////            
+         -|||o---              +          \\\\o\\////             
+          ||||-                +           \\\\///               
+           ||                  +            o\\                 
+        ---||----              +         ////\\\\\\\\\\             
+    -------||-------           +     o//////oo\\\\\\\\\\\\/          
+   ||----     -----||          +    o/////     \\\\\\\\\\\\/         
+  |||--          -|||          +   o////          \\\\\\\\         
+  |||o            ||||         +   ////            \\\\\\\\        
+ o|||             o|||-        +  \\///             \\\\\\\\/       
+ o|||              |||--       +  \\\\/o              \\\\o\\o      
+ o|||              |||--       +  //\\o              o/\\\\\\      
+ o|||              |||o        +  /\\\\\\              ///\\       
+  |||-           --|||         +   \\\\\\\\           /////        
+  |||----     -----||-         +   /\\\\\\\\\\\\     ///////\\        
+   -----------------           +    /\\\\\\\\\\\\\\/////////          
+      -----------              +       \\\\\\\\\\o/////             
+         ----                  +          \\\\o/                 
+                               +                               
+                               +                               
+                               +                               
+                               +                               
+
+<span style=\"color: #a0522d;\">*</span><span style=\"color: #228b22;\">Direction</span><span style=\"color: #a0522d;\">&gt;</span> </pre>
+
+<p>That transformation alone gets you some traction, although not quite enough. What I'd really want is a decision function that would give me the result of trying to merge them, rather than just two separate maps. The easiest thing I can think of is</p>
+
+<pre><span style=\"color: #0000ff;\">decide</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">Integer</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Score</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Direction</span>
+<span style=\"color: #0000ff;\">decide</span> threshold s<span style=\"color: #a0522d;\">@</span>(<span style=\"color: #228b22;\">Score</span> n e sw se)
+    <span style=\"color: #a0522d;\">|</span> ((n <span style=\"color: #a0522d;\">-</span> threshold) <span style=\"color: #a0522d;\">&gt;</span> 0 <span style=\"color: #a0522d;\">||</span> (e <span style=\"color: #a0522d;\">-</span> threshold) <span style=\"color: #a0522d;\">&gt;</span> 0) 
+      <span style=\"color: #a0522d;\">&amp;&amp;</span> (abs <span style=\"color: #a0522d;\">$</span> n <span style=\"color: #a0522d;\">-</span> e) <span style=\"color: #a0522d;\">&gt;</span> threshold <span style=\"color: #a0522d;\">=</span> cardinal s
+    <span style=\"color: #a0522d;\">|</span> ((sw <span style=\"color: #a0522d;\">-</span> threshold) <span style=\"color: #a0522d;\">&gt;</span> 0 <span style=\"color: #a0522d;\">||</span> (se <span style=\"color: #a0522d;\">-</span> threshold) <span style=\"color: #a0522d;\">&gt;</span> 0) 
+      <span style=\"color: #a0522d;\">&amp;&amp;</span> (abs <span style=\"color: #a0522d;\">$</span> sw <span style=\"color: #a0522d;\">-</span> se) <span style=\"color: #a0522d;\">&gt;</span> threshold <span style=\"color: #a0522d;\">=</span> ordinal s
+    <span style=\"color: #a0522d;\">|</span> otherwise <span style=\"color: #a0522d;\">=</span> <span style=\"color: #228b22;\">C</span></pre>
+
+<p>Which is to say, if either Cardinal scores are above a certain <code>threshold</code>, and one beats the other by said <code>threshold</code>, this is a Cardinal pixel. Same deal with the Ordinal scores. If nothing breaks the <code>threshold</code>, or if the breaking pair of scores doesn't point to a decisive winner, this is a Contested pixel. That then lets us redefine <code>main</code></p>
+
+<pre><span style=\"color: #0000ff;\">main</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">IO</span> <span style=\"color: #228b22;\">()</span>
+<span style=\"color: #0000ff;\">main</span> <span style=\"color: #a0522d;\">=</span> <span style=\"color: #a020f0;\">do</span> g <span style=\"color: #a0522d;\">&lt;-</span> readSparse <span style=\"color: #8b2252;\">\"test.txt\"</span>
+          <span style=\"color: #a020f0;\">let</span> showGrid <span style=\"color: #a0522d;\">=</span> showMap (gridWidth g) (gridHeight g)
+              score <span style=\"color: #a0522d;\">=</span> scoreGrid g
+              showScore <span style=\"color: #a0522d;\">=</span> showGrid <span style=\"color: #a0522d;\">.</span> flip <span style=\"color: #228b22;\">Map</span><span style=\"color: #a0522d;\">.</span>map score
+          putBeside <span style=\"color: #a0522d;\">$</span> map showScore [cardinal, ordinal, decide 5]</pre>
+
+<p>which gives us the output</p>
+
+<pre><span style=\"color: #a0522d;\">*</span><span style=\"color: #228b22;\">Direction</span><span style=\"color: #a0522d;\">&gt;</span> <span style=\"color: #228b22;\">:</span>load <span style=\"color: #8b2252;\">\"Direction.hs\"</span>
+[1 <span style=\"color: #a020f0;\">of</span> 3] <span style=\"color: #228b22;\">Compiling</span> <span style=\"color: #228b22;\">Util</span>             ( <span style=\"color: #228b22;\">Util</span><span style=\"color: #a0522d;\">.</span>hs, interpreted )
+[2 <span style=\"color: #a020f0;\">of</span> 3] <span style=\"color: #228b22;\">Compiling</span> <span style=\"color: #228b22;\">SparseRead</span>       ( <span style=\"color: #228b22;\">SparseRead</span><span style=\"color: #a0522d;\">.</span>hs, interpreted )
+[3 <span style=\"color: #a020f0;\">of</span> 3] <span style=\"color: #228b22;\">Compiling</span> <span style=\"color: #228b22;\">Direction</span>        ( <span style=\"color: #228b22;\">Direction</span><span style=\"color: #a0522d;\">.</span>hs, interpreted )
+
+<span style=\"color: #228b22;\">Direction</span><span style=\"color: #0000ff;\">.</span>hs<span style=\"color: #228b22;\">:</span>44<span style=\"color: #228b22;\">:</span>15<span style=\"color: #228b22;\">:</span> <span style=\"color: #228b22;\">Warning:</span>
+    <span style=\"color: #228b22;\">This</span> binding for `showGrid' shadows the existing binding
+      imported from `<span style=\"color: #228b22;\">SparseRead'</span> at <span style=\"color: #228b22;\">Direction</span><span style=\"color: #a0522d;\">.</span>hs<span style=\"color: #228b22;\">:</span>4<span style=\"color: #228b22;\">:</span>1<span style=\"color: #a0522d;\">-</span>17
+      (and originally defined at <span style=\"color: #228b22;\">SparseRead</span><span style=\"color: #a0522d;\">.</span>hs<span style=\"color: #228b22;\">:</span>33<span style=\"color: #228b22;\">:</span>1<span style=\"color: #a0522d;\">-</span>8)
+<span style=\"color: #228b22;\">Ok</span>, modules loaded<span style=\"color: #228b22;\">:</span> <span style=\"color: #228b22;\">Util</span>, <span style=\"color: #228b22;\">Direction</span>, <span style=\"color: #228b22;\">SparseRead</span><span style=\"color: #a0522d;\">.</span>
+<span style=\"color: #a0522d;\">*</span><span style=\"color: #228b22;\">Direction</span><span style=\"color: #a0522d;\">&gt;</span> main
+   ||                          +    \\/                          +    ||                         
+  --------------------         +   \\o\\////\\\\\\\\///\\\\\\\\o/         +   --------------------        
+-----------------------        + \\\\o\\o///oo\\\\oo//o\\\\\\oo/        + -----------------------       
+ --|||-    ----   -|||--       +  \\\\o///    oooo   \\\\\\o//       +  oo||oo    oooo   o|||oo      
+  o|||-           -|||-        +   \\o///           o\\\\o/        +   o||oo           o|||o       
+  ||||             |||o        +   /\\//             o\\/o        +   o||o             |||o       
+   |||             |||         +    /oo             //\\         +    ||o             |||        
+  ||||            ||||         +   \\//\\            o///         +   o||o            o|||        
+  |||             ||||         +   o\\/             /o//         +   o||             o|||        
+ -|||o            ||||-        +  /o\\\\/            /////        +  oo||o            o|||o       
+ -|||o            ||||-        +  /o\\\\\\            ///oo        +  oo||\\            /|||o       
+ -|||--         --o|||-        +  /\\\\\\\\\\         /////o\\        +  oo||o\\         o/o|ooo       
+  --------------------         +   /o\\\\\\\\\\\\\\\\o////////\\         +   --------ooo---------        
+  ---------||-------           +   /o\\\\\\\\\\\\\\\\o///////           +   -oo-----ooo------o          
+         -||||-                +          \\\\\\///                +          \\|||o/               
+          ||||-                +           \\\\///                +           |||/o               
+          ||||                 +           /\\/o                 +           |||o                
+          ||||                 +           //\\\\                 +           |||o                
+         -||||                 +          ////\\                 +          o|||\\                
+         -|||                  +          /o/o                  +          /|||                 
+   -o|    ||||-    |||         +    \\\\o    o\\///    ///         +    \\\\o    |||oo    ///        
+   --oo  -||||    -o---        +    \\\\\\o  \\\\///    /////        +    o\\\\o  o|||o    //ooo       
+    o||   ||||   ------        +     \\\\\\   oo/o   /////\\        +     o\\\\   |||o   //oooo       
+     ||o -||||  ------         +      \\\\\\ //o\\\\  /////\\         +      o\\\\ o|||o  //oooo        
+      ----|||o ----o           +       \\\\\\//o\\\\ /////           +       o\\-o|||o ///oo          
+       ---|||-----             +        /\\\\/\\\\\\////             +        ---o||o----            
+         -|||o---              +          \\\\o\\////              +          \\|||/ooo             
+          ||||-                +           \\\\///                +           |||/o               
+           ||                  +            o\\                  +            ||                 
+        ---||----              +         ////\\\\\\\\\\              +         ---||----             
+    -------||-------           +     o//////oo\\\\\\\\\\\\/           +     o------oo------o          
+   ||----     -----||          +    o/////     \\\\\\\\\\\\/          +    ooo///     \\\\\\\\ooo         
+  |||--          -|||          +   o////          \\\\\\\\          +   oo|//          \\\\|o         
+  |||o            ||||         +   ////            \\\\\\\\         +   o||/            \\|\\o        
+ o|||             o|||-        +  \\///             \\\\\\\\/        +  oo||             o|ooo       
+ o|||              |||--       +  \\\\/o              \\\\o\\o       +  oo||              |\\ooo      
+ o|||              |||--       +  //\\o              o/\\\\\\       +  oo||              |oooo      
+ o|||              |||o        +  /\\\\\\              ///\\        +  oo||              |ooo       
+  |||-           --|||         +   \\\\\\\\           /////         +   o||\\           o/|oo        
+  |||----     -----||-         +   /\\\\\\\\\\\\     ///////\\         +   oooo\\oo     ooo/oooo        
+   -----------------           +    /\\\\\\\\\\\\\\/////////           +    -----------------          
+      -----------              +       \\\\\\\\\\o/////              +       -----------             
+         ----                  +          \\\\o/                  +          \\ooo                 
+                               +                                +                               
+                               +                                +                               
+                               +                                +                               
+                               +                                +                               
+
+<span style=\"color: #a0522d;\">*</span><span style=\"color: #228b22;\">Direction</span><span style=\"color: #a0522d;\">&gt;</span> </pre>
+
+<p>That third version can very nearly be naively converted to lines. The only real issues are</p>
+
+<ul>
+  <li>There isn't much to disambiguate the circle from the square</li>
+  <li>The arrow has horizontal breaks in its diagonal lines</li>
+</ul>
+
+<p>The first two together might solve both, but introduce a new one; an ambiguity about where the break between the arrow line and the circle happens.</p>
+
+<pre>    \\/                          
+   \\o\\////\\\\\\\\///\\\\\\\\o/         
+ \\\\o\\o///oo\\\\oo//o\\\\\\oo/        
+  \\\\o///    oooo   \\\\\\o//       
+   \\o///           o\\\\o/        
+   /\\//             o\\/o        
+    /oo             //\\         
+   \\//\\            o///         
+   o\\/             /o//         
+  /o\\\\/            /////        
+  /o\\\\\\            ///oo        
+  /\\\\\\\\\\         /////o\\        
+   /o\\\\\\\\\\\\\\\\o////////\\         
+   /o\\\\\\\\\\\\\\\\o///////           
+          \\\\\\///                
+           \\\\///                
+           /\\/o                 
+           //\\\\                 
+          ////\\                 
+          /o/o                  
+    <code style=\"color: red;\">\\\\</code>o    o\\///    ///         
+    <code style=\"color: red;\">\\\\\\</code>o  \\\\///    /////        
+     <code style=\"color: red;\">\\\\\\</code>   oo/o   /////\\        
+      <code style=\"color: red;\">\\\\\\</code> //o\\\\  /////\\         
+       <code style=\"color: red;\">\\\\\\</code>//o\\\\ /////           
+        /<code style=\"color: red;\">\\\\</code>/\\\\\\////             
+          <code style=\"color: red;\">\\\\</code>o\\////              
+           <code style=\"color: red;\">\\\\</code>///                
+            o<code style=\"color: red;\">\\</code>                  
+         ////<code style=\"color: red;\">\\\\\\\\\\</code>              
+     o//////oo<code style=\"color: red;\">\\\\\\\\\\\\</code>/           
+    o/////     <code style=\"color: red;\">\\\\\\\\\\\\</code>/          
+   o////          <code style=\"color: red;\">\\\\\\\\</code>          
+   ////            <code style=\"color: red;\">\\\\\\\\</code>         
+  \\///             <code style=\"color: red;\">\\\\\\\\</code>/        
+  \\\\/o              <code style=\"color: red;\">\\\\</code>o<code style=\"color: red;\">\\</code>o       
+  //\\o              o/<code style=\"color: red;\">\\\\\\</code>       
+  /\\\\\\              ///<code style=\"color: red;\">\\</code>        
+   \\\\\\\\           /////         
+   /\\\\\\\\\\\\     ///////\\         
+    /\\\\\\\\\\\\\\/////////           
+       \\\\\\\\\\o/////              
+          \\\\o/                  
+</pre>
+
+
+<p>That is one contiguous region, you see. And I don't see a way of breaking it without a priori knowledge. Except for the cheating approach. Specifically, if I started with the input</p>
+
+<pre>    ..............................
+    ....xx........................
+    ...xxxxxxxxxxxxxxxxxxxx.......
+    .xxxxxxxxxxxxxxxxxxxxxxx......
+    ..xxxxxx....xxxx...xxxxxx.....
+    ...xxxxx...........xxxxx......
+    ...xxxx.............xxxx......
+    ....xxx.............xxx.......
+    ..xxxx............xxxx.......
+    ...xxx.............xxxx.......
+    ..xxxxx............xxxxx......
+    ..xxxxx............xxxxx......
+    ..xxxxxx.........xxxxxxx......
+    ...xxxxxxxxxxxxxxxxxxxx.......
+    ...xxxxxxxxooooxxxxxx.........
+    ..........oooooo..............
+    ...........ooooo..............
+    ...........oooo...............
+    ...........oooo...............
+    ..........ooooo...............
+    ..........oooo................
+    ....ooo....ooooo....ooo.......
+    ....oooo..ooooo....ooooo......
+    .....ooo...oooo...oooooo......
+    ......ooo.ooooo..oooooo.......
+    .......oooooooo.ooooo.........
+    ........ooooooooooo...........
+    ..........oooooooo............
+    ...........ooooo..............
+    ............oo................
+    .........xxxxxxxxx............
+    .....xxxxxxxxxxxxxxxx.........
+    ....xxxxxxx....xxxxxxx........
+    ...xxxxx..........xxxx........
+    ...xxxx............xxxx.......
+    ..xxxx.............xxxxx......
+    ..xxxx..............xxxxx.....
+    ..xxxx..............xxxxx.....
+    ..xxxx..............xxxx......
+    ...xxxx...........xxxxx.......
+    ...xxxxxxx.....xxxxxxxx.......
+    ....xxxxxxxxxxxxxxxxx.........
+    .......xxxxxxxxxxx............
+    ..........xxxx................
+    ..............................
+    ..............................
+    ..............................</pre>
+
+<p>it would be a fairly simple matter to do the arrow/shape separation first, and then figure out how each shape breaks down in the Cardinal/Ordinal sense. What I'd be looking for at that point is to see which of the two maps yielded full coverage of a particular area with the fewest lines. Which is how I could tell that</p>
+
+<pre>   ||                          +    \\/                         
+  --------------------         +   \\o\\////\\\\\\\\///\\\\\\\\o/        
+-----------------------        + \\\\o\\o///oo\\\\oo//o\\\\\\oo/       
+ --|||-    ----   -|||--       +  \\\\o///    oooo   \\\\\\o//      
+  o|||-           -|||-        +   \\o///           o\\\\o/       
+  ||||             |||o        +   /\\//             o\\/o       
+   |||             |||         +    /oo             //\\        
+  ||||            ||||         +   \\//\\            o///        
+  |||             ||||         +   o\\/             /o//        
+ -|||o            ||||-        +  /o\\\\/            /////       
+ -|||o            ||||-        +  /o\\\\\\            ///oo       
+ -|||--         --o|||-        +  /\\\\\\\\\\         /////o\\       
+  --------------------         +   /o\\\\\\\\\\\\\\\\o////////\\        
+  ---------||-------           +   /o\\\\\\\\\\\\\\\\o///////          </pre>
+
+<p>this is meant to be a Cardinal shape; it can be drawn with four cardinal lines<a href=\"#foot-Tue-Oct-28-230220EDT-2014\" name=\"note-Tue-Oct-28-230220EDT-2014\">[7]</a>, whereas the ordinal map specifies between 6 and 8 depending specifically on where you set the threshold for recognizing a line<a href=\"#foot-Tue-Oct-28-230224EDT-2014\" name=\"note-Tue-Oct-28-230224EDT-2014\">[8]</a>. This also has the side benefit of disambiguating curves/circles from squares/lines;</p>
+
+
+<pre>        ---||----              +         ////\\\\\\\\\\             
+    -------||-------           +     o//////oo\\\\\\\\\\\\/          
+   ||----     -----||          +    o/////     \\\\\\\\\\\\/         
+  |||--          -|||          +   o////          \\\\\\\\         
+  |||o            ||||         +   ////            \\\\\\\\        
+ o|||             o|||-        +  \\///             \\\\\\\\/       
+ o|||              |||--       +  \\\\/o              \\\\o\\o      
+ o|||              |||--       +  //\\o              o/\\\\\\      
+ o|||              |||o        +  /\\\\\\              ///\\       
+  |||-           --|||         +   \\\\\\\\           /////        
+  |||----     -----||-         +   /\\\\\\\\\\\\     ///////\\        
+   -----------------           +    /\\\\\\\\\\\\\\/////////          
+      -----------              +       \\\\\\\\\\o/////             
+         ----                  +          \\\\o/                 </pre>
+
+
+<p>Curves are areas where the cardinal and ordinal approaches tie for efficiency. There is another issue though.</p>
+
+<pre>       ||||          +        ---------        +    ||                   
+      -|||o-         +    ----------------     +   --------------------  
+       ||||-         +   ||----     -----||    + ----------------------- 
+       ||||          +  |||--          -|||    +  --|||-    ----   -|||--
+       ||||          +  |||o            ||||   +   o|||-           -|||- 
+      -||||          + o|||             o|||-  +   ||||             |||o 
+      -|||           + o|||              |||-- +    |||             |||  
+-o|    ||||-    |||  + o|||              |||-- +   ||||            ||||  
+--oo  -||||    -o--- + o|||              |||o  +   |||             ||||  
+ o||   ||||   ------ +  |||-           --|||   +  -|||o            ||||- 
+  ||o -||||  ------  +  |||----     -----||-   +  -|||o            ||||- 
+   ----|||o ----o    +   -----------------     +  -|||--         --o|||- 
+    ---|||-----      +      -----------        +   --------------------  
+      -|||o---       +         ----            +   -||-----    ----||    
+       ||||-         +                         +                         
+        ||           +                         +                         
+
+       \\\\o/          +        ///o\\\\\\\\\\        +    \\/                   
+      \\\\\\///         +    o/////ooo\\\\\\\\\\\\/     +   \\o\\////\\\\\\\\///\\\\\\\\o/  
+       \\o///         +   o/////     o\\\\\\\\\\/    + \\\\o\\o///oo\\\\oo//o\\\\\\oo/ 
+       /o//          +  o////          \\\\\\\\    +  \\\\o///    oooo   \\\\\\o//
+       //o/          +  ////            \\\\\\\\   +   \\o///           o\\\\o/ 
+      o///\\          + \\///             \\\\\\\\/  +   /\\//             o\\/o 
+      /o/o           + \\\\/o              \\\\o\\o +    /oo             //\\  
+\\\\o    o\\///    ///  + //\\o              o/\\\\\\ +   o//\\            o///  
+\\\\\\o  \\\\///    ///// + /\\\\\\              ///\\  +   o\\/             /o//  
+ \\\\\\   oo/o   /////\\ +  \\\\\\\\           /////   +  /o\\\\/            ///// 
+  \\\\\\ //o\\\\  /////\\  +  /\\\\\\\\\\\\     ///////\\   +  /o\\\\\\            ///oo 
+   \\\\\\//o\\\\ /////    +   /\\\\\\\\\\\\\\/////////     +  /\\\\\\\\\\         o////o\\ 
+    /\\\\/\\\\\\////      +      \\\\\\\\\\o/////        +   /o\\\\\\\\o//oo\\\\//////\\  
+      \\\\o\\////       +         \\\\o/            +   /o\\\\\\\\\\o    //////    
+       \\\\///         +                         +                         
+        oo           +                         +                         </pre>
+
+
+<p>If we go this breaking shape direction, we suddenly have the problem of how to compose the arrow. Ideally, we'd want the large vertical from the Cardinal map, and the two side diagonals from the Ordinal map. Which means we're not really checking which map gives us better coverage, we're trying to find maximum coverage of some number of coordinates by several distinct, but connected areas on a map. Which sounds like it lands us in <a href=\"https://en.wikipedia.org/wiki/Maximum_coverage_problem\">difficult-problem territory</a>. The good news is that approximation is very probably good enough for what we're doing here, and I can think of one or two half-way decent ways of doing the needed comparisons quickly enough<a href=\"#foot-Tue-Oct-28-230232EDT-2014\" name=\"note-Tue-Oct-28-230232EDT-2014\">[9]</a>.</p>
+
+<p>Anyhow, that's all I've got for now. If you want to see the up-to-the-minute details on how this progresses, keep an eye on <a href=\"https://github.com/Inaimathi/EAF\">the github</a>.</p>
+
+<p>I'll keep you posted on how this develops.</p>
+
+<hr />
+<h5>Footnotes</h5>
+<p>1 - <a href=\"#note-Tue-Oct-28-230119EDT-2014\" name=\"foot-Tue-Oct-28-230119EDT-2014\">[back]</a> - In case you're wondering, \"EAF\" stands for \"Edgy As Fuck\", which is the first thing that popped into my head when I thought about what I should name an edge-detecting project. I guess that might say something about me.</p>
+
+<p>2 - <a href=\"#note-Tue-Oct-28-230122EDT-2014\" name=\"foot-Tue-Oct-28-230122EDT-2014\">[back]</a> - Anything purple can be processed as an overlapping area, and essentially added to both the lines and shapes corpus. Black could potentially be text, but once we have the lines and shapes sussed out, there gets to be a relatively small possibility space where there might be text, and it seems like it would be easy enough to just take any occupied area within that space and pass it through some standard OCR software.</p>
+
+<p>3 - <a href=\"#note-Tue-Oct-28-230127EDT-2014\" name=\"foot-Tue-Oct-28-230127EDT-2014\">[back]</a> - Which is part of what I'm doing, but not the core, so I feel no shame whatsoever about punting it to something like <a href=\"http://code.google.com/p/tesseract-ocr/\"><code>tesseract</code></a>.</p>
+<p>4 - <a href=\"#note-Tue-Oct-28-230131EDT-2014\" name=\"foot-Tue-Oct-28-230131EDT-2014\">[back]</a> - Which, as I've mentioned, I'm not tackling<a href=\"#foot-Tue-Oct-28-230135EDT-2014\" name=\"note-Tue-Oct-28-230135EDT-2014\">[5]</a>.</p>
+<p>5 - <a href=\"#note-Tue-Oct-28-230135EDT-2014\" name=\"foot-Tue-Oct-28-230135EDT-2014\">[back]</a> - Yet.</p>
+<p>6 - <a href=\"#note-Tue-Oct-28-230150EDT-2014\" name=\"foot-Tue-Oct-28-230150EDT-2014\">[back]</a> - That is, it might be the case that no particular directional tendency exceeds a given threshold, <i>or</i> it might be the case that no single direction is the winner by a number exceeding that threshold.</p>
+
+<p>7 - <a href=\"#note-Tue-Oct-28-230220EDT-2014\" name=\"foot-Tue-Oct-28-230220EDT-2014\">[back]</a> - Minus some <i>very</i> low-threshold flash.</p>
+
+<p>8 - <a href=\"#note-Tue-Oct-28-230224EDT-2014\" name=\"foot-Tue-Oct-28-230224EDT-2014\">[back]</a> - I could also get fancy and start doing shape comparisons here; we could take a look at the cardinal map and discount it on the basis that two of its \"lines\" are L-shaped. We could use this information either to impose a penalty, or to discount the ordinal breakdown entirely.</p>
+
+<p>9 - <a href=\"#note-Tue-Oct-28-230232EDT-2014\" name=\"foot-Tue-Oct-28-230232EDT-2014\">[back]</a> - Not that <i>any</i> approach would be slow on a corpus this size. The real test is going to happen when I try running this compiler over my first 300 dpi, 11x17 scan. I'm guessing performance-oriented tweakery will be necessary, but I've been wrong before.</p>
+"))
+((5355 11734 348241000) :INSERT (198 :POSTED 3623541334))
+((5355 11734 348244000) :INSERT (198 :CURRENT T))
+((5355 11734 348247000) :INSERT (198 :TAG :HASKELL))
+((5355 11734 348251000) :INSERT (198 :TAG :VISUAL-PROGRAMMING))
+((5355 11734 348254000) :INSERT (198 :TAG :ALMOST-LITERATE-PROGRAMMING))
+((5355 11734 348257000) :INSERT (198 :TAG :IDEA-PEELING))
+((5382 59005 986654000) :DELETE (198 :CURRENT T))
+((5382 59005 986806000) :INSERT (199 :TITLE "Another General Update"))
+((5382 59005 986815000) :INSERT (199 :FILE "another-general-update.html"))
+((5382 59005 986818000) :INSERT (199 :EDITED 3625921398))
+((5382 59005 986821000) :INSERT
+ (199 :BODY "<p>Fuck its been a while.</p>
+
+<p>I think.</p>
+
+<p>I'm not actually sure because I've been under enough stress on enough different fronts lately that I'm not sure I can reckon time accurately, other than to sequence it. This isn't going to contain any kind of big insight; I'm thinking about various <a href=\"https://github.com/Inaimathi/cl-notebook\">macro-expansion</a> and <a href=\"https://github.com/Inaimathi/edgy\">edge-detection</a>-related things, but I'm saving the interesting details for their own articles once the relevant work is <i>\"done\"</i> rather than merely <i>\"in progress\"</i>. The following is just a quick brain-dump of stuff that's been on my mind lately.</p>
+
+<h2>Dead Bitmaps 2: Rise of the Ellipses</h2>
+
+<p>I'm starting to think about ellipse finding. And, at the urging of some members of the <a href=\"https://groups.google.com/forum/#!forum/toronto-haskell\">Toronto Haskell User Group</a>, shape finding in general. The pre-beta cut of the code which will find an ellipse in a region is <a href=\"https://github.com/Inaimathi/edgy/blob/master/ShapeDetection.hs\">up at github</a>. Essentially, we take a region, find its center, plot an ellipse based on that<a href=\"#foot-Tue-Nov-25-111814EST-2014\" name=\"note-Tue-Nov-25-111814EST-2014\">[1]</a>, and check perimeter coordinates at ~10 degree intervals. If we get three consecutive misses, or 10 total misses<a href=\"#foot-Tue-Nov-25-111818EST-2014\" name=\"note-Tue-Nov-25-111818EST-2014\">[2]</a>, we can discount that region as an ellipse and go do our regular line-detection routine on it.</p>
+
+<p>It's surprising to me that this seems to be standard practice in computer vision, though on reflection it <i>really</i> shouldn't be. Candidate selection is usually some simple directional scoring procedure, but once you have candidate points together, the most efficient way of processing them seems to be:</p>
+
+<ol>
+  <li>Have a theory of approximately what you're going to see</li>
+  <li>Verify the presence or absence of the thing you're expecting</li>
+  <li>Repeat with revised theories until satisfied</li>
+</ol>
+
+<p>It feels like there should be a better way. Like it should be possible to sieve meaning directly out of a color map, without having an expectation of what you'll see there. But if pressed, I confess I couldn't tell you how.</p>
+
+<h2>Garbage Collection</h2>
+
+<p>Having studied a few tracers<a href=\"#foot-Tue-Nov-25-111822EST-2014\" name=\"note-Tue-Nov-25-111822EST-2014\">[3]</a>, it's at once obvious why they emerged in Lisp systems, why Lisp had the reputation of being slow to begin with, and why the \"everything is a list\" myth continues despite its factual incorrectness. It turns out that if you commit to a one-size-fits-all data structure<a href=\"#foot-Tue-Nov-25-111842EST-2014\" name=\"note-Tue-Nov-25-111842EST-2014\">[4]</a>, decide that you don't care at all about data locality<a href=\"#foot-Tue-Nov-25-111848EST-2014\" name=\"note-Tue-Nov-25-111848EST-2014\">[5]</a>, and don't optimize anything, you can write a working tracer in just over 300 lines of C. I can't see a generational or copying approach pushing this past about 500 or 600 lines. You wouldn't want to try doing any kind of high-performance computing this way, but if your primary concern is security<a href=\"#foot-Tue-Nov-25-111852EST-2014\" name=\"note-Tue-Nov-25-111852EST-2014\">[6]</a> this starts looking like a pretty good idea.</p>
+
+<p>The problem is, contiguous memory vectors are <i>really good</i> for performance, and if you go far enough with this mad scheme, there are lots of things at the lowest levels that end up taking ridiculous amounts of memory which you could theoretically save by hand-tuning it. Theoretically. In practice, I tend to think that even small systems by the day's standards have enough moving parts to give an un-aided human plenty of trouble.</p>
+
+<p>The point being: the naive way of building tracers plays exactly to Lisp's conceptual tropes, and gives you \"slow\" code. \"Duh\", when you think about it.</p>
+
+<h2>Composability and Cost Models</h2>
+
+<p>Conflicts I've observed between the Haskell and ML communities are about</p>
+
+<ul>
+  <li><a href=\"http://existentialtype.wordpress.com/2012/12/03/exceptions-are-shared-secrets/\">exceptions</a></li>
+  <li><a href=\"http://existentialtype.wordpress.com/2011/04/24/the-real-point-of-laziness/\">the cost</a> of <a href=\"http://augustss.blogspot.ca/2011/05/more-points-for-lazy-evaluation-in.html\">laziness</a></li>
+</ul>
+
+<p>I haven't informed myself about the first well enough to comment yet, though I am trying.</p>
+
+<p>The second one comes down to the trade-off between having <a href=\"http://augustss.blogspot.ca/2011/05/more-points-for-lazy-evaluation-in.html\">very high levels of composability at the micro level</a> if you're lazy, or having a <a href=\"http://www.cs.cmu.edu/~rwh/papers/secp/secp.pdf\">simple cost model</a> for pieces of your program if you're not. There seem to be two real solutions and two non-solutions to this problem. The non-solutions are picking either strict or lazy and pretending that's good enough. As I understand it, Rob Harper has picked one of these. Specifically, he's <a href=\"http://augustss.blogspot.ca/2011/05/more-points-for-lazy-evaluation-in.html\">taken the simple cost model</a> (see the first comment) and made peace with the fact that he gets to write some amount of manual glue code. Personally, if I were forced to pick between the non-solutions I'd pick the other one. I don't give a rat's ass about performance except in very specific situations<a href=\"#foot-Tue-Nov-25-111900EST-2014\" name=\"note-Tue-Nov-25-111900EST-2014\">[7]</a>, so getting very cheap composition sounds like a good deal to me<a href=\"#foot-Tue-Nov-25-111903EST-2014\" name=\"note-Tue-Nov-25-111903EST-2014\">[8]</a>.</p>
+
+<p>However, I'd still be very loudly wondering why no one was working on either <i>real</i> solution. These are respectively</p>
+
+<ol>
+  <li>abstracting away the glue code with better compositional primitives for strict languages</li>
+  <li>developing a better cost model for lazy evaluation</li>
+</ol>
+
+<p>As far as I know, the closest anyone's ever gotten to the first is Common Lisp's <a href=\"http://www.gigamonkeys.com/book/loop-for-black-belts.html\"><code>loop</code></a> macro. Which, when you think about it, is like a roll of duct tape where you'd really like lego-esque pieces. Also as far as I know, no other language even bothers going as far as <code>loop</code>, which tells me this might be widely considered a non-problem. The second is <a href=\"http://galois.com/wp-content/uploads/2014/08/pub_JL_NaturalSemanticsForLazyEvaluation.pdf\">causing</a> some <a href=\"http://www.vex.net/~trebla/haskell/lazy.xhtml\">activity</a>. I'll admit I've read neither paper yet, but we're set to discuss it at the Toronto Haskell Users' group next month with the author of the first link, so I'll hopefully get it under my belt by then. I chatted him up about it a bit and his perspective is, spoiler warning:</p>
+
+<blockquote>
+  <p>It's not impossible to have a good cost model for lazy computation, it's just harder. I used to think it would just be different, and not harder, but I've come to realize it really is more difficult to reason about. Not impossible, no.</p>
+  <span class=\"sig\">Albert Y. C. Lai, in converation</span>
+</blockquote>
+
+<p>So I'm going to read through the linked papers, and see if I can understand the situation for myself. As always, I'll let you know how it goes.</p>
+
+<h2>Hal Abelson chats with the CompSci Cabal</h2>
+
+<p>This was fucking awesome. <a href=\"https://github.com/CompSciCabal\">We</a>'re winding down reading the final chapters of <a href=\"http://mitpress.mit.edu/sicp/full-text/book/book.html\">SICP</a>, also known as \"Abelson and Sussman\", and <a href=\"https://github.com/dxnn\">Dann</a> managed to get Hal Abelson to talk to us about what went into the book, what he thinks about CompSci teaching evolution over the past few decades, how building language interpreters helps you think about problems, and some of the things that surprised him about the industry. It was interesting enough that I don't think I could do it justice in a mere writeup, so I won't<a href=\"#foot-Tue-Nov-25-111906EST-2014\" name=\"note-Tue-Nov-25-111906EST-2014\">[9]</a>. Just wanted to mention it as an excellent highlight.</p>
+
+
+<hr />
+<h5>Footnotes</h5>
+<p>1 - <a href=\"#note-Tue-Nov-25-111814EST-2014\" name=\"foot-Tue-Nov-25-111814EST-2014\">[back]</a> - Later cuts will plot multiple ellipses with some tolerance and look for any complete ones, or alternately check a particular radius around each point.</p>
+
+<p>2 - <a href=\"#note-Tue-Nov-25-111818EST-2014\" name=\"foot-Tue-Nov-25-111818EST-2014\">[back]</a> - Actual thresholds subject to change.</p>
+
+<p>3 - <a href=\"#note-Tue-Nov-25-111822EST-2014\" name=\"foot-Tue-Nov-25-111822EST-2014\">[back]</a> - And implemented most of one that I'll never be able to show you.</p>
+
+<p>4 - <a href=\"#note-Tue-Nov-25-111842EST-2014\" name=\"foot-Tue-Nov-25-111842EST-2014\">[back]</a> - The Cons cell.</p>
+
+<p>5 - <a href=\"#note-Tue-Nov-25-111848EST-2014\" name=\"foot-Tue-Nov-25-111848EST-2014\">[back]</a> - By using exclusively Cons cells rather than occasionally resorting to contiguous memory vectors or naked primitive data.</p>
+
+<p>6 - <a href=\"#note-Tue-Nov-25-111852EST-2014\" name=\"foot-Tue-Nov-25-111852EST-2014\">[back]</a> - As in, preventing buffer overflows and segfaults at all costs.</p>
+
+<p>7 - <a href=\"#note-Tue-Nov-25-111900EST-2014\" name=\"foot-Tue-Nov-25-111900EST-2014\">[back]</a> - And I'd probably be writing <i>those</i> in C rather than either of the higher level languages up for discussion.</p>
+
+<p>8 - <a href=\"#note-Tue-Nov-25-111903EST-2014\" name=\"foot-Tue-Nov-25-111903EST-2014\">[back]</a> - To be fair, I also know quite a few languages, and that club would be missing a non-strict member without Haskell. So for me personally, making that choice expands the convex hull of my perspective, and so is virtuous regardless of the specific trade between evaluation schemes.</p>
+
+<p>9 - <a href=\"#note-Tue-Nov-25-111906EST-2014\" name=\"foot-Tue-Nov-25-111906EST-2014\">[back]</a> - Though this does unfortunately mean that you'll never see it; we weren't in an \"On Air\" hangout, so none of this was recorded as far as I know.</p>
+"))
+((5382 59005 986909000) :INSERT (199 :POSTED 3625921405))
+((5382 59005 986912000) :INSERT (199 :CURRENT T))
+((5382 59005 986914000) :INSERT (199 :TAG :JOURNAL))
+((5382 59005 986917000) :INSERT (199 :TAG :GENERAL-PROGRAMMING-THOUGHTS))
+((5389 8600 619462000) :DELETE (199 :CURRENT T))
+((5389 8600 630624000) :INSERT (200 :TITLE "Write Myself A Scheme"))
+((5389 8600 630718000) :INSERT (200 :FILE "write-myself-a-scheme.html"))
+((5389 8600 630729000) :INSERT (200 :EDITED 3626475688))
+((5389 8600 630731000) :INSERT
+ (200 :BODY "<p>Fuck it.</p>
+
+<p>I can't show you the insides, but I can damn well talk about it. And I kinda have to, because there are already a few things that surprised me while writing my own LISP in C implementation, and a couple of things I need to make decisions on before making more progress.</p>
+
+<h3>It's Easier Than You Think</h3>
+
+<p>Seriously.</p>
+
+<p>If you don't have the goal of optimizing any part of the language for performance, you can get a very comfortable environment going with much less work than you'd think. Or at least, much less work than I thought. I dunno, maybe you were more informed about these things. I on the other hand am thoroughly surprised to be sitting within striking distance of a production-capable environment after just over 1K lines of C. <i>C</i>. And these aren't line-noise lines. You can actually read all of it without having devoted large chunks of your brain to C-specific trivia. There are even comments in the few places that non-obvious, non-name-related things need to be taken into consideration.</p>
+
+<p>The reader in particular was giving me pause because I had never actually sat down to write one by hand, but it turns out to be perfectly straightforward except for exactly one gotcha.</p>
+
+<p>That gotcha is the leading dash.</p>
+
+<p>See, if you discount leading <code>-</code> signs, you can pretty much write a full LISP reader entirely using <code>getc</code><a href=\"#foot-Mon-Dec-01-211220EST-2014\" name=\"note-Mon-Dec-01-211220EST-2014\">[1]</a>. It gets mildly tricky depending on precisely how hard-assed you want to be about contiguous symbol/paren/quote situations, but you can do it. As soon as you include <code>-</code>, you suddenly <i>need</i> some sort of <code>peek-char</code> equivalent in order to stay even remotely sane. Because a <code>-</code> might start off</p>
+
+<ul>
+  <li><code>-123   <span style=\"color: #b22222;\">;; </span><span style=\"color: #b22222;\">a number</span></code></li>
+  <li><code>-test  <span style=\"color: #b22222;\">;; </span><span style=\"color: #b22222;\">a symbol starting with -</span></code></li>
+  <li><code>-      <span style=\"color: #b22222;\">;; </span><span style=\"color: #b22222;\">a symbol composed entirely of -</span></code></li>
+</ul>
+
+<p>Unless it's acceptable that users can't enter negative number literals, you have to deal with this ambiguity. I <i>don't</i> think it's acceptable, but the only way it would be was if we had a specific negation procedure. And <i>that</i> semi-leads us into part one of what I'm considering right now.</p>
+
+<h3>The ROI of Variadic Functions</h3>
+
+<p>In the vast majority<a href=\"#foot-Mon-Dec-01-211224EST-2014\" name=\"note-Mon-Dec-01-211224EST-2014\">[2]</a> of LISP interpreters available today, you can do this:</p>
+
+<pre>&gt; (- 5)
+-5
+&gt; (- 5 6)
+-1
+&gt; (- 5 6 7)
+-8
+&gt; </pre>
+
+<p>That's right. The built-in <code>-</code> function dispatches on the number of arguments it receives to determine its behavior. If you pass it one argument, it acts as negation, if you pass it two, it's vanilla subtraction, and if you pass it more, it acts like a <code>fold</code> of <code>-</code> over the arguments, starting with the first one as the memo.</p>
+
+<p>It's not just LISPs either. Most languages let you write negative number literals by putting a dash in front of the number. Whether it's by fucking with their reader hard enough to make the arithmetic operations language <i>keywords</i> rather than potentially infix functions, or by providing a variadic minus function. The only exception I can think of is <a href=\"http://learnxinyminutes.com/docs/standard-ml/\">Standard ML</a>, in which <code>-</code> is a binary infix function, and there exists a separate negation function represented by <code>~</code>.</p>
+
+<p>The reason I'm thinking hard about whether to pull shenanigans like this is that <i>variadic functions cost you some easy composition at the low level</i>.</p>
+
+<p>In particular, if I wrote a lisp wherein all functions had a fixed number of arguments, it would be easy for me to imagine being able to do something like <code>(map (+ 2) (list 1 2 3 4 5))</code>. Because, <i>of course</i> <code>(+ 2)</code> is</p>
+
+<blockquote>The function of one argument that adds <code>2</code> to its argument.</blockquote>
+
+<p>On the other hand, you absolutely wouldn't be able to do that if <code>+</code> were variadic. Because then <code>(+ 2 3)</code> might be intended either as \"add 2 to 3\" or as a partially applied function waiting for an arbitrary number of additional arguments.</p>
+
+<p>It's worth noting that even this basic kind of composition feels mildly restrictive. For instance, you could write <code>(map (- 2) (list 1 2 3))</code>, or \"subtract each element of this list from two\", but you'd still need a manual anonymous function to say <code>(map (fn (n) (- n 2)) (list 1 2 3))</code>. It's also not clear to me how useful these compositional tricks are outside of a lazy language, or how often they'd come up over the course of a particular project. That's important, because if I go ahead and implement <code>&rest</code> args, I lose the ability to pull said tricks entirely. <code>&rest</code> and <code>&body</code> args meanwhile, tend to be very useful in the context of new macros, and very few other places<a href=\"#foot-Mon-Dec-01-211341EST-2014\" name=\"note-Mon-Dec-01-211341EST-2014\">[3]</a>.</p>
+
+<p>Optional arguments are useful in that they allow you to punch your future self <i>directly in the mouth</i> during the prototyping phases of most projects. And I've sort of been trying to avoid being too hard on future me lately. He's got enough problems. So it wouldn't particularly hurt to lose those. Anywhere you could put an optional argument, you could instead put a keyword argument. And <i>those</i> are worth their weight in gold in terms of maintaining compatibility with future instances of the same function. However, I can sort of imagine a system wherein you <i>could</i> implicitly partially apply key args<a href=\"#foot-Mon-Dec-01-211345EST-2014\" name=\"note-Mon-Dec-01-211345EST-2014\">[4]</a>, so I'm unsure that the features can't coexist. I'll let you know how it goes, I guess.</p>
+
+<h3>Part Two</h3>
+
+<p>I mentioned earlier that contemplating the <code>rest</code>-args vs. implicit partial application dichotomy was <i>part one</i> of the things I'm considering. Here's another:</p>
+
+<p>What the ever-loving <i>fuck</i> do I do about built-in symbols? Not built in <i>functions</i>, certain symbol literals that are literally part of the dispatch table found in the internals of <code>eval</code>. Specifically: </p>
+
+<pre>true
+nil
+def
+fn
+macro
+begin
+if
+set!
+quote
+quasiquote
+unquote
+splice</pre>
+
+<p>There seem to be two directions I can head in:</p>
+
+<ol>
+  <li>treat them like any other symbol by interning them in the global environment with values of their name symbols</li>
+  <li>special case them in memory in the form of specific symbols that get pre-<code>intern</code>ed and stored when memory gets initialized</li>
+</ol>
+
+<p>They each come with their own boatload of problems, so I'm not sure where the win is really supposed to be.</p>
+
+<p>If I go route 1, suddenly checks against these symbols get expensive<a href=\"#foot-Mon-Dec-01-211352EST-2014\" name=\"note-Mon-Dec-01-211352EST-2014\">[5]</a>. And that's bad because they happen in each call to <code>eval</code>, which is mutually recursive with <code>apply</code>. In other words, this sounds like exactly the sort of thing that immediately and permanently kneecaps performance. With this approach, it's also entirely possible to <code>set!</code> any of them to something else, and suddenly language behavior changes in unpredictable ways. On the <i>plus</i> side, users can safely define local symbols and functions named <code>fn</code>, <code>quote</code> or <code>splice</code>, and in all probability, they'll behave as expected.</p>
+
+<p>Route 2 has the property that the definition of memory gets incidentally cumbersome. Suddenly there are a bunch more names I need to keep around outside of the scope of regular memory, and I need to make sure to mark each of them on every garbage collector pass. Woo. Not only that, but it suddenly gets really tricky to have a local variable named <code>quote</code>, and outright <i>dangerous</i> to have one named <code>unquote</code> or <code>splice</code>, because they'll share symbol identity with the built ins and behave radically differently in certain contexts.</p>
+
+<h3>Part Three</h3>
+
+<p>I've been reading up on <a href=\"http://sml-family.org/\">Standard ML</a> lately. I think I have to learn it. If for no reason other than that the most vocal ML critics tend to be ML developers and designers, and that's something I have to respect. One of the papers linked from that SML page is entitled <a href=\"http://sml-family.org/papers/Appel-critique-SML.pdf\">\"A Critique of Standard ML\"</a>, written by <a href=\"https://en.wikipedia.org/wiki/Andrew_Appel\">Andrew Appel</a>, and goes over some of the positive and negative points with the Standard ML language.</p>
+
+<p>Go read it right now. Seriously, it'll save you a lot of time in the long run. There are some points in the \"good\" that I probably won't get to, given what the target environment for this interpreter is, and there are a couple things he mentions that just outright aren't priorities or that I get to dodge by virtue of prefix notation and s-expression syntax, but a few of his bullets still stuck out to me. In particular</p>
+
+<ul>
+  <li>\"Lack of macros\"</li>
+  <li>\"No pointer equality\"</li>
+  <li>\"Overloading\" and relatedly \"Polymorphic equality\"</li>
+</ul>
+
+<p>The first one reads</p>
+
+<blockquote>This is clearly an advantage, not a disadvantage. For the programmer to have to calculate a string-to-string rewrite of the program before any semantic analysis invites problems of the worst kind. Where macros are used to attain the effect of in-line expansion of functions, they are doing something that should be done by an optimizing compiler. Where macros are used to attain call-by-name, the effect can be obtained by passing a suspension as an argument; in ML this is written with the syntax <code>fn()=></code> which though admittedly ugly is fairly concise, and is better than tolerating the semantic havoc wrought by macros.<span class=\"sig\">-Andrew Appel, <a href=\"http://sml-family.org/papers/Appel-critique-SML.pdf\">A Critique of Standard ML</a></span></blockquote>
+
+<p>Some of this makes me believe that he must be talking about C-style macros, but the two desired effects are ones you are commonly said to want when reaching for Lisp macros. Not sure, and in any event, I'm unconvinced by the argument here. In addition to offering the effect of inlining and delayed functions, having macros in a language gives you the opportunity to write more of the language in itself than you would otherwise be able to. So I'm certainly keeping them, but will keep an ear out for further arguments of this kind<a href=\"#foot-Mon-Dec-01-211357EST-2014\" name=\"note-Mon-Dec-01-211357EST-2014\">[6]</a>.</p>
+
+<p>Anyhow, the other two points are more important to me. Both because I've thought about them before, and because I've actually got an opportunity to do something about them at relatively low effort.</p>
+
+<p>The \"No pointer equality\" thing specifically refers to the lack of an <code>eq?</code> function, and that's ridiculously easy to implement. I just say it doesn't exist and we're done. It's hard to see where this would give me a <i>concrete</i> win, rather than just some admittedly interesting compiler optimizations that I could potentially do in the future, but the point is still convincing. Having only one kind of equality seems like it gets us something, and doesn't obviously cost us anything<a href=\"#foot-Mon-Dec-01-211400EST-2014\" name=\"note-Mon-Dec-01-211400EST-2014\">[7]</a>. So I might just do that.</p>
+
+<p>The other one is more complicated. And again, because of the scope of the interpreter I'm currently putting together, I might not get to go that far. You want certain operations to be type-aware. The most obvious cases being the arithmetic primitives, which you'd (perhaps somewhat unreasonably) expect to behave correctly for a wide range of different number types. Equality is another one; as Appel points out in this article, having a one-size-fits-all structural equality comparison is very probably not what you want. The example he points out is that \"The Set 1, 2\" and \"The Set 2, 1\" should compare equal to each other, but probably won't by naive structural comparison. The question is: how? I've seen a few approaches, the most interesting being a: generic functions and b: typeclasses<a href=\"#foot-Mon-Dec-01-211416EST-2014\" name=\"note-Mon-Dec-01-211416EST-2014\">[8]</a>. I've thought very superficially about how to implement each, but haven't had a hard stare at the nitty-gritty.</p>
+
+<p>That, possibly along with some comments about <code>quote</code>/<code>unquote</code>/<code>splice</code> implementation will have to wait for next time though. This piece is already quite a bit longer than I'd like.</p>
+
+
+<hr />
+<h5>Footnotes</h5>
+<p>1 - <a href=\"#note-Mon-Dec-01-211220EST-2014\" name=\"foot-Mon-Dec-01-211220EST-2014\">[back]</a> - And equivalent operations for non-stream structures you want to read from.</p>
+
+<p>2 - <a href=\"#note-Mon-Dec-01-211224EST-2014\" name=\"foot-Mon-Dec-01-211224EST-2014\">[back]</a> - I can't say \"all\", both because I'm sure there's an experimental LISP out there that doesn't let you, <i>and</i> because if you read far enough into this article, you'll realize that I'm basically proposing to build such a LISP. Still, every Common Lisp and Scheme implementation, as well as AFAIK most of the mongrels have the same behavior.</p>
+
+<p>3 - <a href=\"#note-Mon-Dec-01-211341EST-2014\" name=\"foot-Mon-Dec-01-211341EST-2014\">[back]</a> - The big exception, of course, being the <code>list</code> function. Which is the only way other than <code>quote</code> to get a sequence of literals together. If I'm going to lean on quoting <i>that</i> hard, then it damn well better be efficient, well supported in all contexts, and <i>very</i> well defined. Not sure how I feel about it. Just another thing to think through over the course of more hacking, looks like...</p>
+
+<p>4 - <a href=\"#note-Mon-Dec-01-211345EST-2014\" name=\"foot-Mon-Dec-01-211345EST-2014\">[back]</a> - As long as you could work out some typing gotchas, and as long as you were ok with only doing it to functions that had at least one <i>non</i>-keyword argument. Not sure if there's a way to do without those restrictions. I'll think on it....</p>
+
+<p>5 - <a href=\"#note-Mon-Dec-01-211352EST-2014\" name=\"foot-Mon-Dec-01-211352EST-2014\">[back]</a> - Because I need to intern on every comparison, and then traverse the full environment chain.</p>
+<p>6 - <a href=\"#note-Mon-Dec-01-211357EST-2014\" name=\"foot-Mon-Dec-01-211357EST-2014\">[back]</a> - Especially since this isn't the first time I've seen someone open with \"Macros are clearly a bad idea\". Though I do wish they'd explain their reasoning at some point. As a Common Lisper, I'm not seeing a lot of the downside, but I <i>do</i> see damage done in other languages as a result of the absence of macros.</p>
+
+<p>7 - <a href=\"#note-Mon-Dec-01-211400EST-2014\" name=\"foot-Mon-Dec-01-211400EST-2014\">[back]</a> - Since whatever structural equality operator can still do a pointer comparison before doing any kind of deep check.</p>
+
+<p>8 - <a href=\"#note-Mon-Dec-01-211416EST-2014\" name=\"foot-Mon-Dec-01-211416EST-2014\">[back]</a> - As a disclaimer, I have <i>not yet</i> read up on Standard ML, though I understand its Functors and Modules also allow some of this.</p>
+"))
+((5389 8600 630832000) :INSERT (200 :POSTED 3626475800))
+((5389 8600 630835000) :INSERT (200 :CURRENT T))
+((5389 8600 630837000) :INSERT (200 :TAG :IDEA-PEELING))
+((5400 10192 389259000) :DELETE (200 :CURRENT T))
+((5400 10192 399537000) :INSERT (201 :TITLE "Experimentalisp"))
+((5400 10192 399627000) :INSERT (201 :FILE "experimentalisp.html"))
+((5400 10192 399650000) :INSERT (201 :EDITED 3627384557))
+((5400 10192 399654000) :INSERT
+ (201 :BODY
+  "<p>So <a href=\"https://github.com/Inaimathi/experimentalisp\">here's</a> something I poured a few days into so far. It's because I'm curious about a few things, and it seemed like a good idea at the time. Here's what I've found out so far:</p>
+
+<h2>Manual Memory Management Sucks Balls</h2>
+
+<p>In <a href=\"/article?name=write-myself-a-scheme.html\">a previous piece</a>, I mentioned that a C implementation of a simple LISP ran something like 1600 lines of code. Firstly, that 1600 lines still has some odd corners; the finished implementation is going to be closer to 2k. Secondly, the vast majority of it concerns itself with memory layout. It turns out that just cutting out memory management, and relying on the underlying platforms' ability to optimize tail calls gets rid of most of the complexity.</p>
+
+<pre>~/projects/experimentalisp $ wc -l *rkt
+  74 evaluator.rkt
+  45 experimentalisp.rkt
+ 105 model.rkt
+ 224 total</pre>
+
+<p>and lest you say \"Well of course it's more concise to implement a LISP <i>in</i> a LISP; you get the reader for free!\", keep the following in mind</p>
+
+<pre>~/projects/experimentalisp $ wc -l *hs
+   65 Evaluator.hs
+   31 Experimentalisp.hs
+   91 Model.hs
+   81 Reader.hs
+  268 total</pre>
+
+<p>Granted, the <a href=\"racket-lang.org/\">Racket</a> version currently has a slight edge on features, but when I get around to experimenting heavily with reader macros, I'll have to re-implement most of the built-in reader to support them properly. At that point we'll be in a situation where a LISP-in-Racket is about as verbose as a LISP-in-Haskell, so it's not just that my substrate has s-expressions this time. The situation supports an off-handed comment I heard that most of the hard work of a Scheme-like is in the memory manager, and in making sure tail calls are optimized properly.</p>
+
+<h2>Partials And Rest Args Might Get Along</h2>
+
+<p>Still speculative, since I haven't gotten around to mixing them yet, but here's what we've got in the Racket implementation</p>
+
+<pre><span style=\"color: #b22222;\">;; </span><span style=\"color: #b22222;\">model.rkt
+</span>...
+(<span style=\"color: #a020f0;\">define</span> (<span style=\"color: #0000ff;\">make-partial</span> thing new-args)
+  (<span style=\"color: #a020f0;\">letrec</span> ((argl (arglist-of thing))
+           (rec (<span style=\"color: #a020f0;\">lambda</span> (ks vs)
+                  (<span style=\"color: #a020f0;\">cond</span> ((<span style=\"color: #a020f0;\">and</span> (null? ks) (null? vs)) '())
+                        ((null? vs) ks)
+                        ((null? ks) (error <span style=\"color: #8b2252;\">\"Too many arguments\"</span>))
+                        (<span style=\"color: #a020f0;\">else</span> (rec (cdr ks) (cdr vs)))))))
+    (<span style=\"color: #a020f0;\">if</span> (partial? thing)
+        (partial (rec argl new-args) (append (partial-values thing) new-args) (body-of thing))
+        (partial (rec argl new-args) new-args thing))))
+
+(<span style=\"color: #a020f0;\">define</span> (<span style=\"color: #0000ff;\">collapse</span> a-partial)
+  (arglist-env!
+   (extend-env (environment-of a-partial))
+   (arglist-of (body-of a-partial))
+   (partial-values a-partial)))
+
+(<span style=\"color: #a020f0;\">define</span> (<span style=\"color: #0000ff;\">arglist-env!</span> env arglist args)
+  (<span style=\"color: #a020f0;\">if</span> (<span style=\"color: #a020f0;\">and</span> (null? arglist) (null? args))
+      env
+      (arglist-env! 
+       (bind! env (car arglist) (car args)) 
+       (cdr arglist) (cdr args))))
+...</pre>
+
+<p>There's few more utility functions whose operations should be obvious from their names, but I'll talk about them if I get questions. In addition to the above model chunk, the <code>apply</code> function had to change mildly</p>
+
+<pre><span style=\"color: #b22222;\">;; </span><span style=\"color: #b22222;\">evaluator.rkt
+</span>...
+(<span style=\"color: #a020f0;\">define</span> (<span style=\"color: #0000ff;\">exp-apply</span> op args env)
+  (<span style=\"color: #a020f0;\">let*</span> ((fn (exp-eval op env))
+         (final-args
+          (<span style=\"color: #a020f0;\">if</span> (<span style=\"color: #a020f0;\">or</span> (fexpr? fn) (fexpr-partial? fn))
+              args
+              (eval-args args env)))
+         (p (make-partial fn final-args)))
+    (<span style=\"color: #a020f0;\">if</span> (complete? p)
+        (<span style=\"color: #a020f0;\">let</span> ((f (body-of p))
+              (new-env (collapse p)))
+          (<span style=\"color: #a020f0;\">cond</span> ((primitive? f)
+                 ((body-of f) new-env))
+                ((procedure? f)
+                 (eval-sequence (body-of f) new-env))
+                ((fexpr? f)
+                 (exp-eval 
+                  (eval-sequence (body-of f) new-env)
+                  env))))
+        p)))</pre>
+
+<p>So. In order to do a function application, we</p>
+
+<ol>
+  <li>evaluate the operator</li>
+  <li>evaluate the arguments, unless we're dealing with a <code>fexpr</code> or <code>fexpr partial</code></li>
+  <li>make a <code>partial</code> out of the evaluated function and arguments</li>
+  <li>if the <code>partial</code> is complete, apply its operation to its collected arguments, otherwise return the <code>partial</code></li>
+</ol>
+
+<p>The way we make a partial is</p>
+
+<pre>(<span style=\"color: #a020f0;\">define</span> (<span style=\"color: #0000ff;\">make-partial</span> thing new-args)
+  (<span style=\"color: #a020f0;\">letrec</span> ((argl (arglist-of thing))
+           (rec (<span style=\"color: #a020f0;\">lambda</span> (ks vs)
+                  (<span style=\"color: #a020f0;\">cond</span> ((<span style=\"color: #a020f0;\">and</span> (null? ks) (null? vs)) '())
+                        ((null? vs) ks)
+                        ((null? ks) (error <span style=\"color: #8b2252;\">\"Too many arguments\"</span>))
+                        (<span style=\"color: #a020f0;\">else</span> (rec (cdr ks) (cdr vs)))))))
+    (<span style=\"color: #a020f0;\">if</span> (partial? thing)
+        (partial (rec argl new-args) (append (partial-values thing) new-args) (body-of thing))
+        (partial (rec argl new-args) new-args thing))))</pre>
+
+<p>We figure out how many arguments we're still expecting, save that partial list and save the values so far. If we're making a <code>partial</code> <i>out of</i> a <code>partial</code>, we just extend that partials' existing information rather than nesting partials, or mutating the original. Finally, once we get a complete partial, we need to collapse it into an environment where its stored values are bound to the appropriate names.</p>
+
+<pre>(<span style=\"color: #a020f0;\">define</span> (<span style=\"color: #0000ff;\">collapse</span> a-partial)
+  (arglist-env!
+   (extend-env (environment-of a-partial))
+   (arglist-of (body-of a-partial))
+   (partial-values a-partial)))
+
+(<span style=\"color: #a020f0;\">define</span> (<span style=\"color: #0000ff;\">arglist-env!</span> env arglist args)
+  (<span style=\"color: #a020f0;\">if</span> (<span style=\"color: #a020f0;\">and</span> (null? arglist) (null? args))
+      env
+      (arglist-env! 
+       (bind! env (car arglist) (car args)) 
+       (cdr arglist) (cdr args))))</pre>
+
+<p>To do that, we extend the environment of this partials' operator and bind the arguments to their names in the resulting environment. This lets us do things like</p>
+
+<pre>~/projects/experimentalisp $ racket -t experimentalisp.rkt -m
+experimentalisp 0.001
+ Base env:
+ (#hash((cdr . #&lt;primitive&gt;) (+ . #&lt;primitive&gt;) (print . #&lt;primitive&gt;) (/ . #&lt;primitive&gt;) (- . #&lt;primitive&gt;) (* . #&lt;primitive&gt;) (the-env . #&lt;primitive&gt;) (cons . #&lt;primitive&gt;) (= . #&lt;primitive&gt;) (car . #&lt;primitive&gt;)))
+EXP&gt;&gt; (+ 2)
+#&lt;partial&gt;
+
+EXP&gt;&gt; ((+ 2) 4)
+6
+
+EXP&gt;&gt; (def map 
+  (fn (f lst) 
+    (<span style=\"color: #a020f0;\">if</span> (= lst '())
+      '()
+      (cons (f (car lst))
+            (map f (cdr lst))))))
+'()
+
+EXP&gt;&gt; (map (+ 2) '(1 2 3 4 5))
+'(3 4 5 6 7)
+
+EXP&gt;&gt; </pre>
+
+<p>Now. I'm not sure this is the correct model for partials. That's sort of the point of this project; finding out these little truths through experimentation so that I can understand what it is that you'd actually want. But, the implementation you see above would co-exist just fine with functions that have <code><span style=\"color: #a0522d;\">&amp;rest</span></code> or <code><span style=\"color: #a0522d;\">&amp;key</span></code>. The cost would be that you can't partially apply more arguments after you've applied the mandatory ones. So for instance, if you had a function like</p>
+
+<pre>(def foo (fn (a b <span style=\"color: #228b22;\">&amp;rest</span> r) ...))</pre>
+
+<p>you <i>could</i> do <code>((foo 5) 6)</code>, or <code>((foo 5) 6 7 8 9 10)</code> or even <code>(foo 5 6 7 8 9 10)</code>. You just couldn't do <code>((foo 5 6) 7 8 9 10)</code> because <code>(foo 5 6)</code> is already a complete application, and will therefore be evaluated to its result before getting the rest of the arguments passed<a href=\"#foot-Fri-Dec-12-094216EST-2014\" name=\"note-Fri-Dec-12-094216EST-2014\">[1]</a>.</p>
+
+<h2>Fexprs Are Surprisingly Easy</h2>
+
+<p>It's about a four-line change to a <code>fexpr</code>-less scheme interpreter to add in <code>fexpr</code> support. You already saw them in scheme up above, in the exp-apply function. So lets take a look at the Haskell version, just to keep you on your toes</p>
+
+<pre><span style=\"color: #0000ff;\">apply</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">LispVal</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">LispVal</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Environment</span> <span style=\"color: #a0522d;\">-&gt;</span> (<span style=\"color: #228b22;\">LispVal</span>, <span style=\"color: #228b22;\">Environment</span>)
+<span style=\"color: #0000ff;\">apply</span> exp args env <span style=\"color: #a0522d;\">=</span> 
+    <span style=\"color: #a020f0;\">case</span> eval exp env <span style=\"color: #a020f0;\">of</span>
+      (<span style=\"color: #228b22;\">Primitive</span> fn arglist, env') <span style=\"color: #a0522d;\">-&gt;</span> 
+          fn <span style=\"color: #a0522d;\">$</span> arglist_env (extend env') arglist <span style=\"color: #a0522d;\">$</span> eval_args args env'
+      (<span style=\"color: #228b22;\">Procedure</span> local_env arglist body, env') <span style=\"color: #a0522d;\">-&gt;</span> 
+          eval_sequence body <span style=\"color: #a0522d;\">$</span> arglist_env (extend local_env) arglist <span style=\"color: #a0522d;\">$</span> eval_args args env'
+      (<span style=\"color: #228b22;\">Fexpr</span> local_env arglist body, env') <span style=\"color: #a0522d;\">-&gt;</span> 
+          eval res env'
+                <span style=\"color: #a020f0;\">where</span> (res, <span style=\"color: #a020f0;\">_</span>) <span style=\"color: #a0522d;\">=</span> eval_sequence body <span style=\"color: #a0522d;\">$</span> arglist_env (extend local_env) arglist args
+      <span style=\"color: #a020f0;\">_</span> <span style=\"color: #a0522d;\">-&gt;</span> error <span style=\"color: #a0522d;\">$</span> <span style=\"color: #8b2252;\">\"Undefined function '\"</span> <span style=\"color: #a0522d;\">++</span> show exp <span style=\"color: #a0522d;\">++</span> <span style=\"color: #8b2252;\">\"'\"</span></pre>
+
+<p>The main difference between this one and the Racket version is that this one needs to return both a <code><span style=\"color: #228b22;\">LispVal</span></code>(expression) and an <code><span style=\"color: #228b22;\">Environment</span></code>, since I'm trying to have no side-effects here. We'll come back to that in a minute. The lines we're concerned with right now are</p>
+
+<pre><span style=\"color: #a0522d;\">...</span>
+(<span style=\"color: #228b22;\">Fexpr</span> local_env arglist body, env') <span style=\"color: #a0522d;\">-&gt;</span> 
+    eval res env'
+          <span style=\"color: #a020f0;\">where</span> (res, <span style=\"color: #a020f0;\">_</span>) <span style=\"color: #a0522d;\">=</span> eval_sequence body <span style=\"color: #a0522d;\">$</span> arglist_env (extend local_env) arglist args
+<span style=\"color: #a0522d;\">...</span></pre>
+
+<p>If you're applying a <code><span style=\"color: #228b22;\">Fexpr</span></code> to some arguments, you're going to pass it the <b>unevaluated</b> arguments, evaluate its body just as you would with a <code><span style=\"color: #228b22;\">Procedure</span></code>, and then you're going to call <code>eval</code> on the result. The idea is that a <code>fexpr</code> is a function that returns a new syntax tree to evaluate in place of its original call. It just so happens that in Lisp, you have access to the underlying data structure it uses to form its own AST, which means you get this some very powerful syntactic abstraction facilities for free. This is what <a href=\"http://www.infoq.com/interviews/mccarthy-elephant-2000\">McCarthy means</a> when he asks whether Ruby uses \"list structures as data\".</p>
+
+<p>This <i>isn't</i> <a href=\"http://axisofeval.blogspot.ca/2010/07/whats-phase-separation-and-when-do-you.html\">what macros are</a>. The main difference being that macros literally don't exist at run time. Which is why they're overall more efficient, and why you have problems when you try to <code>(apply and {args})</code> in most LISPs.</p>
+
+<h2>LISP Interpreters are Fundamentally Effectful</h2>
+
+<p>Lets take a closer look at that Haskell implementation of <code>apply</code></p>
+
+<pre><span style=\"color: #0000ff;\">apply</span> <span style=\"color: #a0522d;\">::</span> <span style=\"color: #228b22;\">LispVal</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">LispVal</span> <span style=\"color: #a0522d;\">-&gt;</span> <span style=\"color: #228b22;\">Environment</span> <span style=\"color: #a0522d;\">-&gt;</span> (<span style=\"color: #228b22;\">LispVal</span>, <span style=\"color: #228b22;\">Environment</span>)
+<span style=\"color: #0000ff;\">apply</span> exp args env <span style=\"color: #a0522d;\">=</span> 
+    <span style=\"color: #a020f0;\">case</span> eval exp env <span style=\"color: #a020f0;\">of</span>
+      (<span style=\"color: #228b22;\">Primitive</span> fn arglist, env') <span style=\"color: #a0522d;\">-&gt;</span> 
+          fn <span style=\"color: #a0522d;\">$</span> arglist_env (extend env') arglist <span style=\"color: #a0522d;\">$</span> eval_args args env'
+      (<span style=\"color: #228b22;\">Procedure</span> local_env arglist body, env') <span style=\"color: #a0522d;\">-&gt;</span> 
+          eval_sequence body <span style=\"color: #a0522d;\">$</span> arglist_env (extend local_env) arglist <span style=\"color: #a0522d;\">$</span> eval_args args env'
+      (<span style=\"color: #228b22;\">Fexpr</span> local_env arglist body, env') <span style=\"color: #a0522d;\">-&gt;</span> 
+          eval res env'
+                <span style=\"color: #a020f0;\">where</span> (res, <span style=\"color: #a020f0;\">_</span>) <span style=\"color: #a0522d;\">=</span> eval_sequence body <span style=\"color: #a0522d;\">$</span> arglist_env (extend local_env) arglist args
+      <span style=\"color: #a020f0;\">_</span> <span style=\"color: #a0522d;\">-&gt;</span> error <span style=\"color: #a0522d;\">$</span> <span style=\"color: #8b2252;\">\"Undefined function '\"</span> <span style=\"color: #a0522d;\">++</span> show exp <span style=\"color: #a0522d;\">++</span> <span style=\"color: #8b2252;\">\"'\"</span></pre>
+
+<p>For contrast, compare this to the Racket version from earlier</p>
+
+<pre>(<span style=\"color: #a020f0;\">define</span> (<span style=\"color: #0000ff;\">exp-apply</span> op args env)
+  (<span style=\"color: #a020f0;\">let*</span> ((fn (exp-eval op env))
+         (final-args
+          (<span style=\"color: #a020f0;\">if</span> (<span style=\"color: #a020f0;\">or</span> (fexpr? fn) (fexpr-partial? fn))
+              args
+              (eval-args args env)))
+         (p (make-partial fn final-args)))
+    (<span style=\"color: #a020f0;\">if</span> (complete? p)
+        (<span style=\"color: #a020f0;\">let</span> ((f (body-of p))
+              (new-env (collapse p)))
+          (<span style=\"color: #a020f0;\">cond</span> ((primitive? f)
+                 ((body-of f) new-env))
+                ((procedure? f)
+                 (eval-sequence (body-of f) new-env))
+                ((fexpr? f)
+                 (exp-eval 
+                  (eval-sequence (body-of f) new-env)
+                  env))))
+        p)))</pre>
+
+<p>Based just on reading the Racket version, you might come to the conclusion that <code>apply</code>ing an operator to arguments involves exactly two environments: the initial one passed into <code>apply</code>, and the one you create by extending the callables' environment with its new arguments. This is not true. And it becomes obvious when you lose the ability to define things by mutating your environment. Zoom in on the <code>procedure</code> clauses specifically</p>
+
+<pre><span style=\"color: #b22222;\">-- </span><span style=\"color: #b22222;\">Evaluator.hs
+</span><span style=\"color: #a0522d;\">...</span>
+(<span style=\"color: #228b22;\">Procedure</span> local_env arglist body, env') <span style=\"color: #a0522d;\">-&gt;</span> 
+    eval_sequence body <span style=\"color: #a0522d;\">$</span> arglist_env (extend local_env) arglist <span style=\"color: #a0522d;\">$</span> eval_args args env'
+<span style=\"color: #a0522d;\">...</span></pre>
+
+<pre><span style=\"color: #b22222;\">;; </span><span style=\"color: #b22222;\">evaluator.rkt
+</span>...
+ (final-args
+  (<span style=\"color: #a020f0;\">if</span> (<span style=\"color: #a020f0;\">or</span> (fexpr? fn) (fexpr-partial? fn))
+      args
+      (eval-args args env)))
+...
+       (<span style=\"color: #a020f0;\">let</span> ((f (body-of p))
+             (new-env (collapse p)))
+...
+               ((procedure? f)
+                (eval-sequence (body-of f) new-env))
+...</pre>
+
+<p>At that level, especially in the Haskell version, it should be obvious that the environment you're finally evaluating this call in is not the same one you're getting passed in <i>or</i> the one resulting from a trivial binding of arguments. In fact, if you look closely enough, you'll see that there's a bug in the Haskell version that mishandles <code>set!</code> and <code>def</code> calls passed as args. Here, imagine this hypothetical. You've got a function named foo that takes two arguments, and makes reference to some global symbol.</p>
+
+<pre>(def mumble <span style=\"color: #8b2252;\">\"A label\"</span>)
+(def foo (fn (bar baz) (print (list mumble bar baz))))</pre>
+
+<p>And you pass it a tricky set of arguments like</p>
+
+<pre>(foo (<span style=\"color: #a020f0;\">do</span> (set! mumble <span style=\"color: #8b2252;\">\"A changed label\"</span>)
+         27)
+     (<span style=\"color: #a020f0;\">do</span> (set! bar <span style=\"color: #8b2252;\">\"a string\"</span>)
+         <span style=\"color: #8b2252;\">\"and another\"</span>))</pre>
+
+<p>That's going to do one of at least three things, depending on how exactly your environment model works. You might think that the problem is mutation, and simply disallow <code>set!</code></p>
+
+<pre>(def mumble <span style=\"color: #8b2252;\">\"A label\"</span>)
+(def foo (fn (bar baz) (list mumble bar baz)))
+
+(foo (<span style=\"color: #a020f0;\">do</span> (def mumble <span style=\"color: #8b2252;\">\"A changed label\"</span>)
+         27)
+     (<span style=\"color: #a020f0;\">do</span> (def bar <span style=\"color: #8b2252;\">\"a string\"</span>)
+         <span style=\"color: #8b2252;\">\"and another\"</span>))</pre>
+
+<p>Granted, <code>def</code> is sort of a side-effect, but this'll give you similar problems. There's at least one environment implementation you could pick<a href=\"#foot-Fri-Dec-12-094240EST-2014\" name=\"note-Fri-Dec-12-094240EST-2014\">[2]</a> that can support a \"pure\" <code>def</code> operation, and I don't think it has the same sorts of problems. Under that model, <code>def</code> basically acts as a single-term <code>let</code> statement that encompasses the rest of its block, which means that you're basically trading problems with mutation for problems with defining mutually recursive functions. Open recursion and <a href=\"http://en.wikipedia.org/wiki/Fixed-point_combinator#Derivation_of_the_Y_combinator\"><code>Y</code></a>s aren't the worst thing in the world, but I sort of don't want that to be the <i>only</i> way to program.</p>
+
+<p>I've got no answers yet; I'll need to read a thing or four, build a thing or two, then let you know how it goes. And actually, the next post I do will probably be dealing with implementing a multi-line-accepting REPL in Haskell using <a href=\"http://hackage.haskell.org/package/pipes-4.0.0/docs/Pipes-Tutorial.html\">Pipes</a> rather than extending the fundamental insights.</p>
+
+<p>Stay tuned I guess?</p>
+
+<hr />
+<h5>Footnotes</h5>
+<p>1 - <a href=\"#note-Fri-Dec-12-094216EST-2014\" name=\"foot-Fri-Dec-12-094216EST-2014\">[back]</a> - It might be possible to do even better by doing a type inference pass first, actually. At that point, you'd know that in the expression <code>((foo 5 6) 7 8 9 10)</code>, the <code>(foo 5 6)</code> has to be callable, since it's being called with more arguments, so you might be able to finangle that as well. I'm just not at all sure you could get that level of insight in anything but the simplest examples.</p>
+
+<p>2 - <a href=\"#note-Fri-Dec-12-094240EST-2014\" name=\"foot-Fri-Dec-12-094240EST-2014\">[back]</a> - The <a href=\"https://github.com/chengchangwu/jonesforth/blob/master/jonesforth.S#L166-L225\">Forth</a> one, in case you were curious.</p>
+"))
+((5400 10192 399794000) :INSERT (201 :POSTED 3627427792))
+((5400 10192 399797000) :INSERT (201 :CURRENT T))
+((5400 10192 399799000) :INSERT (201 :TAG :IDEA-PEELING))
+((5400 10192 399802000) :INSERT (201 :TAG :LISP))
+((5400 10192 399804000) :INSERT (201 :TAG :SCHEME))
+((5400 10192 399806000) :INSERT (201 :TAG :HASKELL))
