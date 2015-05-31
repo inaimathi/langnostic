@@ -98,7 +98,7 @@ func OldPostPage (arc *Archive) func (http.ResponseWriter, *http.Request) {
 ////////////////////
 // Rendering helpers
 func (arc *Archive) RenderPost(post Post) []byte {
-	body, _ := ProcessMarkdown(Cats("posts/", post.File, ".md"))
+	body, _ := ProcessMarkdown(fmt.Sprintf("posts/%s.md", post.File))
 	title := fmt.Sprintf("<h1>%s</h1>", post.Title)
 	return Cat([]byte(title), body, arc.RenderPostLinks(post))
 }
@@ -137,18 +137,15 @@ var mdCache = make(map[string]Cached)
 func ProcessMarkdown (mdFile string) ([]byte, error) {
 	cache, present := mdCache[mdFile]
 	if present && (time.Minute > time.Since(cache.lastChecked)) {
-		fmt.Println("   Found recently checked cache...")
 		return cache.contents, nil
 	} 
 	
 	stat, err := os.Stat(mdFile)
-	if err != nil { fmt.Println("   Error reading..."); return nil, err }
+	if err != nil { return nil, err }
 	if present && (cache.lastEdited == stat.ModTime()) {
-		fmt.Println("   Found old cache, check showed no changes...")
 		mdCache[mdFile] = Cached{cache.contents, time.Now(), cache.lastEdited}
 		return cache.contents, nil
 	} else {
-		fmt.Println("   Fell through; reading file and making cache...")
 		f, err := ioutil.ReadFile(mdFile)
 		if err != nil { return nil, err }
 		unsafe := blackfriday.MarkdownCommon([]byte(f))
@@ -170,14 +167,6 @@ type Page struct {
 
 ////////////////////
 // General utility
-func Cats (seqs ...string) string {
-	var buf bytes.Buffer
-	for i := range seqs {
-		buf.WriteString(seqs[i])
-	}
-	return buf.String()
-}
-
 func Cat (seqs ...[]byte) []byte {
 	var buf bytes.Buffer
 	for i := range seqs {

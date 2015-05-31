@@ -35,6 +35,10 @@ func MkArchive(fname string) (*Archive, error) {
 }
 
 func (arc *Archive) Reload() error {
+	if time.Minute > time.Since(arc.lastChecked) {
+		return nil
+	}
+	
 	f, err := os.Open(arc.file)
 	if err != nil { return err }
 	defer f.Close()
@@ -42,8 +46,6 @@ func (arc *Archive) Reload() error {
 	stat, err := f.Stat()
 	if err != nil { 
 		return err 
-	} else if time.Minute > time.Since(arc.lastChecked) {
-		return nil
 	} else if stat.ModTime() == arc.lastRead {
 		return nil
 	} else {
