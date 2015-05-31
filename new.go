@@ -38,7 +38,7 @@ func newPost(fname string, title string, tags []string) error {
 	stat, err := os.Stat(fname)
 	stamp := stat.ModTime().Unix()
 	if err != nil { return err }
-	post := Post{ newId, title, path.Base(fname), stamp, stamp, tags }
+	post := Post{ newId, title, strings.TrimSuffix(path.Base(fname), path.Ext(fname)), stamp, stamp, tags }
 
 	fmt.Println(post)
 	enc := json.NewEncoder(db)
