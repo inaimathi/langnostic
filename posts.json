@@ -212,4 +212,4 @@
 {"id":211,"title":"HTTP Handlers","file":"http-handlers","edited":1430624919,"posted":1430625025,"tags":["clojure","common-lisp","golang","python","haskell","idea-peeling"]}
 {"id":212,"title":"Logo-bar Update","file":"logo-bar-update","edited":1431807593,"posted":1431807617,"tags":["journal","minor"]}
 {"id":213,"title":"Non-blocking Stream Parsing","file":"non-blocking-stream-parsing","edited":1431807085,"posted":1431807906,"tags":["common-lisp"]}
-{"Id":214,"Title":"Blog Changes","File":"blog-changes","Edited":1433054532,"Posted":1433054532,"Tags":["journal","general-update","golang"]}
+{"id":214,"title":"Blog Changes","file":"blog-changes","edited":1433054532,"posted":1433054532,"tags":["journal","general-update","golang"]}
