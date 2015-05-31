@@ -452,8 +452,11 @@ I'll keep you posted on how this develops.
 2 - <a name="foot-Tue-Oct-28-230122EDT-2014"></a>[|back|](#note-Tue-Oct-28-230122EDT-2014) - Anything purple can be processed as an overlapping area, and essentially added to both the lines and shapes corpus. Black could potentially be text, but once we have the lines and shapes sussed out, there gets to be a relatively small possibility space where there might be text, and it seems like it would be easy enough to just take any occupied area within that space and pass it through some standard OCR software.
 
 3 - <a name="foot-Tue-Oct-28-230127EDT-2014"></a>[|back|](#note-Tue-Oct-28-230127EDT-2014) - Which is part of what I'm doing, but not the core, so I feel no shame whatsoever about punting it to something like [`tesseract`](http://code.google.com/p/tesseract-ocr/).
+
 4 - <a name="foot-Tue-Oct-28-230131EDT-2014"></a>[|back|](#note-Tue-Oct-28-230131EDT-2014) - Which, as I've mentioned, I'm not tackling<a name="note-Tue-Oct-28-230135EDT-2014"></a>[|5|](#foot-Tue-Oct-28-230135EDT-2014).
+
 5 - <a name="foot-Tue-Oct-28-230135EDT-2014"></a>[|back|](#note-Tue-Oct-28-230135EDT-2014) - Yet.
+
 6 - <a name="foot-Tue-Oct-28-230150EDT-2014"></a>[|back|](#note-Tue-Oct-28-230150EDT-2014) - That is, it might be the case that no particular directional tendency exceeds a given threshold, *or* it might be the case that no single direction is the winner by a number exceeding that threshold.
 
 7 - <a name="foot-Tue-Oct-28-230220EDT-2014"></a>[|back|](#note-Tue-Oct-28-230220EDT-2014) - Minus some *very* low-threshold flash.

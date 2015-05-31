@@ -293,32 +293,32 @@ It's not expecting an account name and item ID to reference by. It's expecting a
 
 Really, I could have made one more general function along the lines of `editItem`, then called it for `need`, `got`, and separate handlers for `changeComment` and `changeCount`. In fact, that was officially a `note to self`.
 
-EDIT:
-
-The item-related section now reads
-
-```haskell
-needItem :: DB -> Account -> Item -> RES
-needItem db user item = updateItem db user new
-  where new = item { itemStatus = Need }
-
-gotItem :: DB -> Account -> Item -> RES
-gotItem db user item = updateItem db user new
-  where new = item { itemStatus = Got }
-
-editItem :: DB -> Account -> Item -> Maybe String -> Maybe String -> RES
-editItem db user item newComment newCount = updateItem db user new
-  where new = item { itemComment = comment, itemCount = count }
-        comment = fromMaybe (itemComment item) newComment
-        count = fromMaybe (itemCount item) (maybeRead newCount :: Maybe Integer)
-
-updateItem :: DB -> Account -> Item -> RES
-updateItem db user newItem = do
-  update' db $ ChangeItem user newItem
-  resIxItems $ updateIx (itemName newItem) newItem (accountItems user)
-```
-
-Sat, 09 Feb, 2013
+> EDIT:
+> 
+> The item-related section now reads
+> 
+> ```haskell
+> needItem :: DB -> Account -> Item -> RES
+> needItem db user item = updateItem db user new
+>   where new = item { itemStatus = Need }
+> 
+> gotItem :: DB -> Account -> Item -> RES
+> gotItem db user item = updateItem db user new
+>   where new = item { itemStatus = Got }
+> 
+> editItem :: DB -> Account -> Item -> Maybe String -> Maybe String -> RES
+> editItem db user item newComment newCount = updateItem db user new
+>   where new = item { itemComment = comment, itemCount = count }
+>         comment = fromMaybe (itemComment item) newComment
+>         count = fromMaybe (itemCount item) (maybeRead newCount :: Maybe Integer)
+> 
+> updateItem :: DB -> Account -> Item -> RES
+> updateItem db user newItem = do
+>   update' db $ ChangeItem user newItem
+>   resIxItems $ updateIx (itemName newItem) newItem (accountItems user)
+> ```
+> 
+> Sat, 09 Feb, 2013
 
 The way it's currently written, the most complex of the item-related handlers is `editItem`, and that's because it needs to optionally change the `comment`, `count` or both depending on what's passed in. This is the price you pay for automatic currying and maximally terse partials; those features don't share space well with optional/keyword/rest arguments. The result is that when you need the latter, you need to represent them as mandatory `Maybe` args, or as a custom type argument. We've already gone through an example of the first approach. You can see the second if you squint at `verifyPass` and `encryptPass`. Specifically, the second argument, `defaultParams` is of type `ScryptParams`, which is defined as
 
@@ -657,22 +657,31 @@ That about does it for the back end. I was going to go over the client-side code
 1 - <a name="foot-Sun-Feb-10-150629EST-2013"></a>[|back|](#note-Sun-Feb-10-150629EST-2013) - Which has progressed to three-month-old status, in case you care.
 
 2 - <a name="foot-Sun-Feb-10-150633EST-2013"></a>[|back|](#note-Sun-Feb-10-150633EST-2013) - Or whatever JS framework the server-side framework team picked out.
+
 3 - <a name="foot-Sun-Feb-10-150637EST-2013"></a>[|back|](#note-Sun-Feb-10-150637EST-2013) - So good luck getting a front-end specialist in later.
+
 4 - <a name="foot-Sun-Feb-10-150641EST-2013"></a>[|back|](#note-Sun-Feb-10-150641EST-2013) - So any changes, regardless how trivial, actually need a re-compile and re-run on the final server.
+
 5 - <a name="foot-Sun-Feb-10-150645EST-2013"></a>[|back|](#note-Sun-Feb-10-150645EST-2013) - Which shouldn't surprise you in the least: this just in languages that [affect the way you think about programming](http://en.wikiquote.org/wiki/Alan_Perlis#Epigrams_on_Programming.2C_1982) expect you to think differently about programming.
 
 6 - <a name="foot-Sun-Feb-10-150651EST-2013"></a>[|back|](#note-Sun-Feb-10-150651EST-2013) - Modulo the obvious state problems you have from potentially having some intermediary values defined in the image.
+
 7 - <a name="foot-Sun-Feb-10-150655EST-2013"></a>[|back|](#note-Sun-Feb-10-150655EST-2013) - That [SO question](http://stackoverflow.com/questions/14721720/ambiguous-type-variable-in-acidstate-functions) has an example in the [answer](http://stackoverflow.com/a/14738171)s' comments; the type `EventResult` is reported as belonging to the module `Data.Acid.Common`, but that file actually doesn't exist. What's actually happening is that `Common` is a hidden module in the `AcidState` project, and another module is responsible for exporting its symbols. I didn't know this just from looking. The reason it matters is that when you want to make a type signature explicit by *importing* the relevant module, GHCi will tell you where a given type is **defined** and not where it's **exported**. Fun times.
 
 8 - <a name="foot-Sun-Feb-10-150702EST-2013"></a>[|back|](#note-Sun-Feb-10-150702EST-2013) - Which kind of makes sense, because conceptually speaking, a purely functional REPL for a lazy language would more or less have to be implemented in the IO monad.
+
 9 - <a name="foot-Sun-Feb-10-150705EST-2013"></a>[|back|](#note-Sun-Feb-10-150705EST-2013) - If slightly clunkier than in CL or Python.
+
 10 - <a name="foot-Sun-Feb-10-150716EST-2013"></a>[|back|](#note-Sun-Feb-10-150716EST-2013) - There'll be more on that later, obviously. Do note that this is only a reasonable thing to do because we only use one database class for our model; if we used several, we'd need to figure something else out. To be fair though, I'm having a hard time imagining a situation that would call for using several DB classes in a single project.
 
 11 - <a name="foot-Sun-Feb-10-150754EST-2013"></a>[|back|](#note-Sun-Feb-10-150754EST-2013) - Meaning lookup has been done and validated for it.
+
 12 - <a name="foot-Sun-Feb-10-150758EST-2013"></a>[|back|](#note-Sun-Feb-10-150758EST-2013) - Meaning we've already collapsed the waveform and made sure that the user wants to `need` an existing item, otherwise we'd be expecting a `Maybe Item` here instead.
 
 13 - <a name="foot-Sun-Feb-10-150808EST-2013"></a>[|back|](#note-Sun-Feb-10-150808EST-2013) - In fact, I've been meaning to write a piece comparing the two, I just haven't gotten around to it.
+
 14 - <a name="foot-Sun-Feb-10-150811EST-2013"></a>[|back|](#note-Sun-Feb-10-150811EST-2013) - Which you still shouldn't count as a flat out recommendation, but I am using it, and I do intend to deploy this, so draw what conclusions you like.
+
 15 - <a name="foot-Sun-Feb-10-150814EST-2013"></a>[|back|](#note-Sun-Feb-10-150814EST-2013) - We don't do any kind of throttling on login, aside from the complexity of the `scrypt` algorithm itself, and we don't check registration requests for automation with [recaptcha](http://www.google.com/recaptcha) or similar. I'm not sure how I feel about the first, while the second seems entirely unnecessary for an acount that doesn't allow sending any kind of email, or doing anything other than managing associated data.
 
 16 - <a name="foot-Sun-Feb-10-150826EST-2013"></a>[|back|](#note-Sun-Feb-10-150826EST-2013) - Surprise.

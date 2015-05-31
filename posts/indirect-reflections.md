@@ -97,6 +97,7 @@ Perfect! That cleared my mind a bit. I think I can see the way through now. Hope
 * * *
 ##### Footnotes
 1 - <a name="foot-Fri-Aug-03-163551EDT-2012"></a>[|back|](#note-Fri-Aug-03-163551EDT-2012) - That's still coming<a name="note-Fri-Aug-03-163556EDT-2012"></a>[|2|](#foot-Fri-Aug-03-163556EDT-2012), the project I'm pointedly not mentioning uses auth for the user system, and actually started as a demo project for how you'd go about hooking that up to a larger system.
+
 2 - <a name="foot-Fri-Aug-03-163556EDT-2012"></a>[|back|](#note-Fri-Aug-03-163556EDT-2012) - Though, to be perfectly fair, I've been saying that about a lot of things.
 
 3 - <a name="foot-Fri-Aug-03-163909EDT-2012"></a>[|back|](#note-Fri-Aug-03-163909EDT-2012) - Though it did result in two articles that were reasonably interesting to write.

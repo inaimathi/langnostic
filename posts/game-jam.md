@@ -74,16 +74,29 @@ That's certainly something to fix for next time.
 ##### Footnotes
 
 1 - <a name="foot-Sat-Apr-30-024647EDT-2011"></a>[|back|](#note-Sat-Apr-30-024647EDT-2011) - "I guess Lisp can't create directories." Is what I would have thought about two years ago
+
 2 - <a name="foot-Sat-Apr-30-024740EDT-2011"></a>[|back|](#note-Sat-Apr-30-024740EDT-2011) - And by "slightly", I mean "almost not at all"; the functions that did do necessary abstraction are still there
+
 3 - <a name="foot-Sat-Apr-30-025032EDT-2011"></a>[|back|](#note-Sat-Apr-30-025032EDT-2011) - Produced, on balance, but it opens up that scarcity mechanic
+
 4 - <a name="foot-Sat-Apr-30-025041EDT-2011"></a>[|back|](#note-Sat-Apr-30-025041EDT-2011) - Or, rather, reminder.
+
 5 - <a name="foot-Sat-Apr-30-025129EDT-2011"></a>[|back|](#note-Sat-Apr-30-025129EDT-2011) - Or an open server, if you're feeling especially frisky
+
 6 - <a name="foot-Sat-Apr-30-025452EDT-2011"></a>[|back|](#note-Sat-Apr-30-025452EDT-2011) - Libre, not gratis (although GIMP is that too).
+
 7 - <a name="foot-Sat-Apr-30-025551EDT-2011"></a>[|back|](#note-Sat-Apr-30-025551EDT-2011) - leastwise, my time for the Game Jam is up
+
 8 - <a name="foot-Sat-Apr-30-025613EDT-2011"></a>[|back|](#note-Sat-Apr-30-025613EDT-2011) - even when there are multiple people playing at once
+
 9 - <a name="foot-Sat-Apr-30-025631EDT-2011"></a>[|back|](#note-Sat-Apr-30-025631EDT-2011) - though at the moment, it's really a lot of economic activity for its own sake because I didn't get to [TODO: Goals](https://github.com/Inaimathi/cl-leet/issues/10) or [TODO: Ship upgrades](https://github.com/Inaimathi/cl-leet/issues/11) yet
+
 10 - <a name="foot-Sat-Apr-30-025825EDT-2011"></a>[|back|](#note-Sat-Apr-30-025825EDT-2011) - which is to say, most of the code resulting from careful planning was later replaced by code that had an immediate, unplanned need
+
 11 - <a name="foot-Sat-Apr-30-025905EDT-2011"></a>[|back|](#note-Sat-Apr-30-025905EDT-2011) - and probably not as much as *you* think, if you're a [Joel](http://www.joelonsoftware.com/) fan
+
 12 - <a name="foot-Sat-Apr-30-030242EDT-2011"></a>[|back|](#note-Sat-Apr-30-030242EDT-2011) - which is to say, ported it from Elisp to CL, a working market system, GUI with faux-3D interface, debugging and a copious amount of testing
+
 13 - <a name="foot-Sat-Apr-30-030439EDT-2011"></a>[|back|](#note-Sat-Apr-30-030439EDT-2011) - and others besides, I'm sure
+
 14 - <a name="foot-Sat-Apr-30-030534EDT-2011"></a>[|back|](#note-Sat-Apr-30-030534EDT-2011) - or, at least, the last specific thing I was surprised to find myself ignorant of

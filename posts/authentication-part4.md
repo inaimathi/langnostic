@@ -391,10 +391,15 @@ Ok, that's it. Automated version coming soon, and good night.
 * * *
 ##### Footnotes
 1 - <a name="foot-Sat-Jun-23-012959EDT-2012"></a>[|back|](#note-Sat-Jun-23-012959EDT-2012) -  Ok, that's not true; we're missing two pieces, both critical in practice but borderline irrelevant for the theory.
+
 The first one is **bi-directional authentication**. That would be pretty simple to implement from our perspective; all we'd need to do is sign the secret as it's being sent out. Doing so would let our user verify that they're talking to the server they expect rather than an eavesdropper or phisher. This overlaps slightly with SSL, but doesn't prevent a site from using both, and is so straightforward if you're already using this model that you may as well.
-The second one is a way to **revoke keys**. That's more or less an open problem. For the purposes of this project, anyway. We could do something like hand our users a revocation phrase, or we could ask them to generate a second keypair which would be used to send a revocation message, or we could handle this through a second channel (which we should probably implement in any case, if we're serious about security). That second method sounds more secure, but really just recurses on the problem; what happens if your revocation key gets compromised? And how do you expect a user to store them? 
-Assigning a pass-phrase might seem like it's defeating the purpose, but remember that this one only comes out when you need to change keys (rather than at every login), and that lets us get a bit fancier with the sort of infrastructure we want to provide for it. For instance, I could imagine a provider mailing out actual plastic cards that people could stash in their wallets. 
+
+The second one is a way to **revoke keys**. That's more or less an open problem. For the purposes of this project, anyway. We could do something like hand our users a revocation phrase, or we could ask them to generate a second keypair which would be used to send a revocation message, or we could handle this through a second channel (which we should probably implement in any case, if we're serious about security). That second method sounds more secure, but really just recurses on the problem; what happens if your revocation key gets compromised? And how do you expect a user to store them?
+
+Assigning a pass-phrase might seem like it's defeating the purpose, but remember that this one only comes out when you need to change keys (rather than at every login), and that lets us get a bit fancier with the sort of infrastructure we want to provide for it. For instance, I could imagine a provider mailing out actual plastic cards that people could stash in their wallets.
+
 The third option is a lot more interesting, but I intend to write a piece on that by itself, so I won't much more time on it today. Sufficed to say that redundancy and isolation are key to build reliable systems, as Erlang has clearly demonstrated. And if you want a reliable channel for authentication, you really need to make it multiple independent channels. Slightly more annoying for your users, but exponentially more annoying for anyone trying to impersonate them.
+
 Anyway, that's all beyond the scope of this piece, so I'm going to tactfully ignore it for the rest of the night.
 
 2 - <a name="foot-Sat-Jun-23-013539EDT-2012"></a>[|back|](#note-Sat-Jun-23-013539EDT-2012) - So that we know whose key to encrypt the secret with.

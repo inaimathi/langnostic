@@ -90,8 +90,6 @@ Given how my `.stumpwmrc` is shaping up, I don't think this'll be a big sacrific
 
 2 - <a name="foot-Thu-Oct-06-092727EDT-2011"></a>[|back|](#note-Thu-Oct-06-092727EDT-2011) - And has a standard GNOME 2 setup out of deference to my wife, who hasn't taken the Computer Nerd prestige class remaining a regular nerd.
 
-
 3 - <a name="foot-Thu-Oct-06-112837EDT-2011"></a>[|back|](#note-Thu-Oct-06-112837EDT-2011) -  Been meaning to do a writeup on that little UI layer I'm slowly using to coat my shell experience. [pack](https://github.com/Inaimathi/shell-ui/blob/master/ruby/pack) and [unpack](https://github.com/Inaimathi/shell-ui/blob/master/ruby/unpack) have already left me smiling several times.
-
 
 4 - <a name="foot-Thu-Oct-06-114732EDT-2011"></a>[|back|](#note-Thu-Oct-06-114732EDT-2011) - :(

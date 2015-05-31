@@ -133,7 +133,11 @@ First impressions are really, *really* good. As [I've said before](/article?name
 * * *
 ##### Footnotes
 1 - <a name="foot-Sun-Apr-19-220141EDT-2015"></a>[|back|](#note-Sun-Apr-19-220141EDT-2015) - If you run that inside a Clojure project directory, the REPL will also automatically load said project and enter its namespace.
+
 2 - <a name="foot-Sun-Apr-19-220152EDT-2015"></a>[|back|](#note-Sun-Apr-19-220152EDT-2015) - Incidentally, I thought this was to do with my Free Software bent, because the OpenJDK has the reputation of being slower than the Oracle equivalent. I asked a friend who uses the non-Free version, and he confirmed that the REPL just plain takes a while to start up. Not sure how to feel about that; `M-x slime` sets up an interactive REPL in about a second at the outside, and gives feedback on progress in the meanwhile.
+
 3 - <a name="foot-Sun-Apr-19-220159EDT-2015"></a>[|back|](#note-Sun-Apr-19-220159EDT-2015) - Optional because we may not need the full history in memory. Given my experiments with [`cl-notebook`](https://github.com/Inaimathi/cl-notebook), I currently believe that you don't really need in-memory history *unless* you want to do real-time history manipulation or traversal. So, you do want it *sometimes*, but it potentially saves a lot of memory if you can do without.
+
 4 - <a name="foot-Sun-Apr-19-220201EDT-2015"></a>[|back|](#note-Sun-Apr-19-220201EDT-2015) - Again, optional because you might *only* want the in-memory representation without worrying about persisting it. I haven't come across this situation yet, but it might exist. It goes almost without saying that you want at least *one* of in-memory-history/tracking-file/tracking-streams, because if you have *none*, you don't really have a history-aware data structure. But depending on your use-case, you may need *only* one.
+
 5 - <a name="foot-Sun-Apr-19-220204EDT-2015"></a>[|back|](#note-Sun-Apr-19-220204EDT-2015) - Though they *may* require some changes to the storage format, which is why I haven't published this little library quite yet.

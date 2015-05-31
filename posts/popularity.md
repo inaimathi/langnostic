@@ -96,6 +96,7 @@ Don't let me stop you from eating it, but I remember what it tastes like so I wo
 1 - <a name="foot-Sun-Nov-10-173728EST-2013"></a>[|back|](#note-Sun-Nov-10-173728EST-2013) - Which I happen to agree with, actually. If you're looking for details on what language**s**(Spoiler warning) I'd recommend learning, you're better off reading [this](http://langnostic.blogspot.ca/2013/03/what-programming-language-should-i-learn.html) instead.
 
 2 - <a name="foot-Sun-Nov-10-173736EST-2013"></a>[|back|](#note-Sun-Nov-10-173736EST-2013) - Except for that.
+
 3 - <a name="foot-Sun-Nov-10-173739EST-2013"></a>[|back|](#note-Sun-Nov-10-173739EST-2013) - Generally among the people I know at least, no judgment here.
 
 4 - <a name="foot-Sun-Nov-10-173742EST-2013"></a>[|back|](#note-Sun-Nov-10-173742EST-2013) - That's what I get for going to design school.

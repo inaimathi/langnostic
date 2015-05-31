@@ -23,9 +23,9 @@ You'll actually need to restart your machine at this point<a name="note-Sun-Jan-
 
 I'm going to export my VM image and toss it up online somewhere so that you can just import it and skip to the "Run Genera" part without dicking around with that whole thing.
 
-EDIT:
-I should say, I was *going* to post it. It's since been pointed out to me that Open Genera doesn't actually use an open source license. So, sorry, you're out of luck and will actually have to follow the instructions I linked to along with the amendments I posted here. Good luck.
-Mon, 23 Jan, 2012
+> EDIT:
+> I should say, I was *going* to post it. It's since been pointed out to me that Open Genera doesn't actually use an open source license. So, sorry, you're out of luck and will actually have to follow the instructions I linked to along with the amendments I posted here. Good luck.
+> Mon, 23 Jan, 2012
 
 There's not really enough patience or time left in the day for me to do any more computer-related work, but I did manage to evaluate a couple of expressions and poke around for 20 minutes or so. First impressions are mixed. 
 
@@ -40,8 +40,6 @@ There's obviously a usability gap between Open Genera and today's OSes, but the 
 
 1 - <a name="foot-Sun-Jan-22-180021EST-2012"></a>[|back|](#note-Sun-Jan-22-180021EST-2012) - Not on the actual machines obviously, I don't have enough time or money to actually try to track one down.
 
-
 2 - <a name="foot-Sun-Jan-22-183522EST-2012"></a>[|back|](#note-Sun-Jan-22-183522EST-2012) -  Or at least log out and log back in again.
-
 
 3 - <a name="foot-Sun-Jan-22-190708EST-2012"></a>[|back|](#note-Sun-Jan-22-190708EST-2012) -  And for programming purposes, it seems that the gap is actually not in the direction you'd expect; with the Lisp system being marginally ahead of modern environments. It's almost as if we've spent ~30 years making things unnecessarily shiny, round, and locked down instead of adding features.

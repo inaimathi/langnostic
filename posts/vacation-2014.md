@@ -446,9 +446,13 @@ So that's what I get down to during a fun<a name="note-Sun-Jul-13-194504EDT-2014
 5 - <a name="foot-Sun-Jul-13-194409EDT-2014"></a>[|back|](#note-Sun-Jul-13-194409EDT-2014) - Ok, yes, you can [do the same thing in Python](http://stackoverflow.com/questions/1504717/why-does-comparing-strings-in-python-using-either-or-is-sometimes-produce) using `==` and `is`, but that would put me in the territory of expecting something out of [`operators`](https://docs.python.org/2/library/operator.html) as input. No idea how Pythonic that is, so I'm leaving it out, but I wanted to note that you could do the same here. Haskell, being a pure functional language, doesn't have to worry about pointer comparison at all.
 
 6 - <a name="foot-Sun-Jul-13-194413EDT-2014"></a>[|back|](#note-Sun-Jul-13-194413EDT-2014) - Which is what we're using as indices into our `Array` of buckets.
+
 7 - <a name="foot-Sun-Jul-13-194420EDT-2014"></a>[|back|](#note-Sun-Jul-13-194420EDT-2014) - Or at least, the attitudes of the core library developers/language maintainers.
+
 8 - <a name="foot-Sun-Jul-13-194427EDT-2014"></a>[|back|](#note-Sun-Jul-13-194427EDT-2014) - Granted, the Python version does so implicitly, but still.
+
 9 - <a name="foot-Sun-Jul-13-194433EDT-2014"></a>[|back|](#note-Sun-Jul-13-194433EDT-2014) - To remove any old values of `key` that might be present.
+
 10 - <a name="foot-Sun-Jul-13-194438EDT-2014"></a>[|back|](#note-Sun-Jul-13-194438EDT-2014) - Though I'm thinking that URI routing in House might eventually benefit from this storage mechanism too. I'd just need to figure out where the rough patches are and figure out how to mitigate them. I'll let you know how that goes once I get to it.
 
 11 - <a name="foot-Sun-Jul-13-194442EDT-2014"></a>[|back|](#note-Sun-Jul-13-194442EDT-2014) - If you do it yourself, just keep in mind that you can't do the *really* naive thing of deleting every element of the given string. In particular, if I did `(delete "test" *trie*)` given the demo code above, that should delete the word `"test"`, but should absolutely **not** delete `"testing"`. Left as an exercise for the reader, for now.

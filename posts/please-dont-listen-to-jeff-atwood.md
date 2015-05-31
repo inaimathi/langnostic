@@ -36,11 +36,16 @@ Begin to understand how to think precisely, and communicate clearly with entitie
 
 4 - <a name="foot-Fri-May-18-100051EDT-2012"></a>[|back|](#note-Fri-May-18-100051EDT-2012) -  (the other is that most of them use Emacs)
 
-5 - <a name="foot-Thu-May-17-200845EDT-2012"></a>[|back|](#note-Thu-May-17-200845EDT-2012) - To those who argue programming is an essential skill we should be teaching our children, right up there with reading, writing, and arithmetic: **can you explain to me how Michael Bloomberg would be better at his day to day job of leading the largest city in the USA if he woke up one morning as a crack Java coder?** It is obvious to me how being a skilled reader, a skilled writer, and at least high school level math are fundamental to performing the job of a politician. Or at any job, for that matter. But understanding variables and functions, pointers and recursion? I can't see it.
-> --Jeff Atwood (emphasis his). 
+5 - <a name="foot-Thu-May-17-200845EDT-2012"></a>[|back|](#note-Thu-May-17-200845EDT-2012) -
+
+> To those who argue programming is an essential skill we should be teaching our children, right up there with reading, writing, and arithmetic: **can you explain to me how Michael Bloomberg would be better at his day to day job of leading the largest city in the USA if he woke up one morning as a crack Java coder?** It is obvious to me how being a skilled reader, a skilled writer, and at least high school level math are fundamental to performing the job of a politician. Or at any job, for that matter. But understanding variables and functions, pointers and recursion? I can't see it.
+> --Jeff Atwood (emphasis his).
+
 I think my response is obvious from what I've said already, but just in case. "Programming" is not "variables and functions, pointers and recursion". It is a way to describe a process or concept so well that things which don't even share your biology can understand it. This is useful when dealing with things that *do* share your biology, but not *quite* all of your knowledge, and it is useful when explaining fundamental concepts to the uninitiated.
 
-6 - <a name="foot-Thu-May-17-200851EDT-2012"></a>[|back|](#note-Thu-May-17-200851EDT-2012) - Please don't advocate learning to code just for the sake of learning how to code. Or worse, because of the fat paychecks. 
+6 - <a name="foot-Thu-May-17-200851EDT-2012"></a>[|back|](#note-Thu-May-17-200851EDT-2012) -
+
+> Please don't advocate learning to code just for the sake of learning how to code. Or worse, because of the fat paychecks. 
 > --Jeff Atwood
 
 7 - <a name="foot-Thu-May-17-200915EDT-2012"></a>[|back|](#note-Thu-May-17-200915EDT-2012) - Which deals with a very specific, physical system, isn't particularly fun, isn't particularly social, and only ever needs to be practised when something goes wrong.

@@ -477,9 +477,11 @@ What you don't see above is an implementation of sessions, or very many performa
 * * *
 ##### Footnotes
 1 - <a name="foot-Sun-Sep-15-225241EDT-2013"></a>[|back|](#note-Sun-Sep-15-225241EDT-2013) - Of the three I linked, Araneida has been superseded by Hunchentoot, Hunchentoot works on a thread-per-request model so you'd need to add SSE/websockets/what-have-you support, and Wookie doesn't have sessions (or very good performance, apparently) out of the box.
+
 2 - <a name="foot-Sun-Sep-15-225259EDT-2013"></a>[|back|](#note-Sun-Sep-15-225259EDT-2013) - And currently have [questions](https://groups.google.com/a/chromium.org/forum/#!topic/chromium-dev/qcDiw-QP4RE) lodged with the [Chromium devs](https://groups.google.com/a/chromium.org/forum/#!forum/chromium-dev), as well [as SO](http://stackoverflow.com/a/18819542/190887). We'll see what comes of it, I suppose.
 
 3 - <a name="foot-Sun-Sep-15-225303EDT-2013"></a>[|back|](#note-Sun-Sep-15-225303EDT-2013) - Which explains why it errors if you omit it.
+
 4 - <a name="foot-Sun-Sep-15-225306EDT-2013"></a>[|back|](#note-Sun-Sep-15-225306EDT-2013) - Which paranthetically means that you want a reasonably big initial buffer allocated so it doesn't re-request the stream on every other event.
 
 5 - <a name="foot-Sun-Sep-15-225317EDT-2013"></a>[|back|](#note-Sun-Sep-15-225317EDT-2013) - To be fair, I probably *could* put together a system that just generates one per second, and sends that pre-serialized version to each endpoint. That would, at least, save me the effort of having to generate it per-user, but it would complicate things.

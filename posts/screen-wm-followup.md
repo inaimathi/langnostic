@@ -111,14 +111,10 @@ The only things I'm still missing:
 
 1 - <a name="foot-Mon-Oct-10-162114EDT-2011"></a>[|back|](#note-Mon-Oct-10-162114EDT-2011) - An old Presario R3000 with a 1.4ghz processor and 256MB ram.
 
-
 2 - <a name="foot-Mon-Oct-10-162255EDT-2011"></a>[|back|](#note-Mon-Oct-10-162255EDT-2011) - Which I've installed, and actually gotten to like under X, at the recommendation of a friend from the Toronto Lisp User Group. It's actually fantastic, but there are various key that just barf when you try using it from terminal. The default bindings for `slurp`, `barf`, `forward` and `back` s-exp operations are outright ignored, and it does something funky to my home and end keys so that they insert odd square-bracket escape sequence instead of doing what they say on the key. It's `paredit` because, all of the above works just fine in other modes.
-
 
 3 - <a name="foot-Mon-Oct-10-162750EDT-2011"></a>[|back|](#note-Mon-Oct-10-162750EDT-2011) - Since the Compaq still had a copy of Parabola running from last time.
 
-
 4 - <a name="foot-Mon-Oct-10-163306EDT-2011"></a>[|back|](#note-Mon-Oct-10-163306EDT-2011) - Including the steadily-growing `blog-mode`, which I've added several functions to since I started writing this piece.
-
 
 5 - <a name="foot-Mon-Oct-10-164445EDT-2011"></a>[|back|](#note-Mon-Oct-10-164445EDT-2011) - Also, conveniently, lynx doesn't let me waste any time on Reddit, since I can't actually post or upvote from it.

@@ -97,11 +97,8 @@ This has been a completely random thought about Lisp. Thank you for your time.
 
 1 - <a name="foot-Fri-Nov-04-235357EDT-2011"></a>[|back|](#note-Fri-Nov-04-235357EDT-2011) - In case you care, I stubbed my metaphorical toe on them a little while ago by trying to implement [matrix operations](http://en.wikipedia.org/wiki/Matrix_(mathematics)#Basic_operations) in CL as a learning exercise only to find that I couldn't actually give them a `+` operation. It would have to be something like `add` or `matrix-add`. No world-ending obstruction, but slightly less than satisfying. At the time I implemented it as `matrix-add`.
 
-
 2 - <a name="foot-Sat-Nov-05-000146EDT-2011"></a>[|back|](#note-Sat-Nov-05-000146EDT-2011) - leaving aside the identity vs. pointer question that may actually need to be addressed differently in some cases
 
-
 3 - <a name="foot-Sat-Nov-05-000434EDT-2011"></a>[|back|](#note-Sat-Nov-05-000434EDT-2011) - Although, to be fair, we do lose the ability to do something like `(concatenate 'string "Hello " (list #\t #\h #\e #\r #\e #\!))`
-
 
 4 - <a name="foot-Sat-Nov-05-001019EDT-2011"></a>[|back|](#note-Sat-Nov-05-001019EDT-2011) - Since that seems to be well accepted in most languages by this point.

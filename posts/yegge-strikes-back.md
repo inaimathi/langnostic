@@ -28,10 +28,10 @@ The [PLT Docs](http://docs.racket-lang.org/) are badass, and centralized. Second
 
 2. Package Repositories/Installation tools
 
-EDIT:
-I can't believe I managed to go so long without adding this note. As of the end of 2010, [quicklisp](http://www.quicklisp.org/beta/) also exists, and is awesome. That means that the gripes I had about `asdf`ing things are moot, since you don't need to for the most part. Thanks to [`ql:system-apropos`](http://www.quicklisp.org/beta/#basic-commands), it's also fairly easy to find CL packages, so I guess PLT Scheme (now Racket) no longer wins this one. I have no idea what they've been up to for the last year though, so they probably made a thousand and one improvements all over the place too.
-
-Thu, 11 Oct, 2012
+> EDIT:
+> I can't believe I managed to go so long without adding this note. As of the end of 2010, [quicklisp](http://www.quicklisp.org/beta/) also exists, and is awesome. That means that the gripes I had about `asdf`ing things are moot, since you don't need to for the most part. Thanks to [`ql:system-apropos`](http://www.quicklisp.org/beta/#basic-commands), it's also fairly easy to find CL packages, so I guess PLT Scheme (now Racket) no longer wins this one. I have no idea what they've been up to for the last year though, so they probably made a thousand and one improvements all over the place too.
+> 
+> Thu, 11 Oct, 2012
 
 Common Lisp has asdf, which is awesome compared to the tools found in most other languages I've used, but PLT beats it pretty handily. It's basically the same story as documentation. There's technically more stuff out there for CL, but it's scattered, and since development is distributed, you'll get some duplication of effort. There are four or five different HTTP servers, for example, and at least three HTML-templating libraries. Granted, there's a clear "best" in each category, but you really need to do your reading in order to find that out. PLT has a smaller offering (the biggest gaping holes are in the document generation area; there is no such thing as a good PLT Racket PDF/PostScript generator), but it's neatly organized, indexed, and accessed by typing (require (planet [package-name])) in the declaration section of whichever file you need the new package for. No hunting, no missing GPG keys. These first two points are probably the ones I'll miss most from the PLT offering.
 

@@ -317,6 +317,7 @@ Wish me luck.
 * * *
 ##### Footnotes
 1 - <a name="foot-Thu-Jun-19-203346EDT-2014"></a>[|back|](#note-Thu-Jun-19-203346EDT-2014) - The projected sum of the history states before the first one you keep in memory.
+
 2 - <a name="foot-Thu-Jun-19-203349EDT-2014"></a>[|back|](#note-Thu-Jun-19-203349EDT-2014) - Or the in-memory `delta` as appropriate.
 
 3 - <a name="foot-Thu-Jun-19-203403EDT-2014"></a>[|back|](#note-Thu-Jun-19-203403EDT-2014) - Incidentally, on Linux/Unix, both the `file-length` and the `file-position` calls are pretty friggin efficient. I have no idea what the situation is on Windows, so if you're looking to implement something there, you might want to see whether it'll perform well enough for you before getting in too deep.

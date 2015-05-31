@@ -126,24 +126,24 @@ Yup.
 
 Of course, I still don't have enough confidence in my own assessment to just run with all this, so I'll be asking questions first.
 
-EDIT:
-
-It turns out that [`:ironclad` has a built-in CSPRNG option](http://method-combination.net/lisp/ironclad/#prng) that implements [Fortuna](http://en.wikipedia.org/wiki/Fortuna_(PRNG)). If we use that, our implementation gets much simpler, but mildly slower<a name="note-Wed-Oct-16-165818EDT-2013"></a>[|9|](#foot-Wed-Oct-16-165818EDT-2013).
-
-```lisp
-(ql:quickload (list :ironclad :cl-base64))
-
-(let ((prng (ironclad:make-prng :fortuna)))
-  (defun new-session-token ()
-    (cl-base64:usb8-array-to-base64-string
-     (ironclad:random-data 32 prng) :uri t)))
-```
-
-That's it.
-
-No encryption, no fiddling with `random`, no assigning results of `make-random-state` calls. Just initialize a `:fortuna` instnce, and collect random output in batches of 32.
-
-Wed, 16 Oct, 2013
+> EDIT:
+> 
+> It turns out that [`:ironclad` has a built-in CSPRNG option](http://method-combination.net/lisp/ironclad/#prng) that implements [Fortuna](http://en.wikipedia.org/wiki/Fortuna_(PRNG)). If we use that, our implementation gets much simpler, but mildly slower<a name="note-Wed-Oct-16-165818EDT-2013"></a>[|9|](#foot-Wed-Oct-16-165818EDT-2013).
+> 
+> ```lisp
+> (ql:quickload (list :ironclad :cl-base64))
+> 
+> (let ((prng (ironclad:make-prng :fortuna)))
+>   (defun new-session-token ()
+>     (cl-base64:usb8-array-to-base64-string
+>      (ironclad:random-data 32 prng) :uri t)))
+> ```
+> 
+> That's it.
+> 
+> No encryption, no fiddling with `random`, no assigning results of `make-random-state` calls. Just initialize a `:fortuna` instnce, and collect random output in batches of 32.
+> 
+> Wed, 16 Oct, 2013
 
 Other than that, what's left is putting together a session table with its own lock to store session information indexed by these IDs. Oh, and also sending them out to the client. I guess that's kind of important. Both are waiting for next time though, or this will quickly cease being "brief".
 

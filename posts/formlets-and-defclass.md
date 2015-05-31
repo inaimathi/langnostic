@@ -131,9 +131,9 @@ Right, that's it. I've uploaded a fresh copy of [the formlet system](https://git
 
 And now, if you'll excuse me, I'm going to go collapse into bed for about 12 hours.
 
-EDIT:
-Ok, seriously, done dicking around with the formatting around now.
-
-If it's any consolation at all, the actual project is properly indented.
-
-Tue, 02 Aug, 2011
+> EDIT:
+> Ok, seriously, done dicking around with the formatting around now.
+> 
+> If it's any consolation at all, the actual project is properly indented.
+> 
+> Tue, 02 Aug, 2011

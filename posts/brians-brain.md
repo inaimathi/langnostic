@@ -249,4 +249,5 @@ That's that. Hope you learned something.
 1 - <a name="foot-Sat-Aug-16-231431EDT-2014"></a>[|back|](#note-Sat-Aug-16-231431EDT-2014) - But don't worry, we're still going through everything.
 
 2 - <a name="foot-Sat-Aug-16-231436EDT-2014"></a>[|back|](#note-Sat-Aug-16-231436EDT-2014) - Which is the only reason I need `Typeable` imported in this project.
+
 3 - <a name="foot-Sat-Aug-16-231446EDT-2014"></a>[|back|](#note-Sat-Aug-16-231446EDT-2014) - Actually, because of the way Brian's Brain rules are constructed, we only need to be concerned with cells that are `On`, and their non-`Recovering` neighbors. It's probably possible to write rules that are more general, and I didn't want to do the extra filtering work, so I just did the easier thing here.

@@ -168,10 +168,10 @@ auth(Username, Password) -&gt;
 
 Do note the use of offensive programming in the `Auth` function. We don't do any kind of cleanup if the password is incorrect, just let `AuthProc` die a horrible, error-induced death and move on with our lives. We do stop waiting for it after two seconds, which is incidentally the delay we wanted to introduce for a wrong entry. Instead of being able to naively try 10000 passwords per second, our theoretical attackers can now try one every ~2, which should make this auth process a slightly harder target.
 
-EDIT:
-It's been pointed out to me that using SHA2 is a pretty bad approach here. I was initially going to tear this article apart for an edit (which is why it took so long), but ultimately decided to handle it in [an addendum](http://langnostic.blogspot.ca/2012/11/authentication-part-575.html). The below is here for historical interest only; kids, use specialized password-storing hash algorithms and stay in school.
-
-Fri, 16 Nov, 2012
+> EDIT:
+> It's been pointed out to me that using SHA2 is a pretty bad approach here. I was initially going to tear this article apart for an edit (which is why it took so long), but ultimately decided to handle it in [an addendum](http://langnostic.blogspot.ca/2012/11/authentication-part-575.html). The below is here for historical interest only; kids, use specialized password-storing hash algorithms and stay in school.
+> 
+> Fri, 16 Nov, 2012
 
 Next up, we're still storing user passwords as plaintext, which is less than ideal. That means that anyone who succeeds in getting at our data somehow can suddenly impersonate anyone in the system flawlessly. That's why we have to hash them. Now, there are [hashing libraries](http://stackoverflow.com/questions/955161/sha256-encryption-in-erlang) in Erlang, including the built-in [crypto](http://www.erlang.org/doc/man/crypto.html) parts of which we'll be using, but.
 
@@ -525,9 +525,9 @@ but they make for a more robust password-based system. Granted, that's still lik
 
 Github [here](#), if you want to play around with it. 
 
-EDIT:
-The link above no longer exists. All features from this library have been folded into [auth](https://github.com/Inaimathi/auth) (there have been changes since this post was written, so it's not exactly the same codebase, but the principles are the same)
-Thu, 30 Aug, 2012
+> EDIT:
+> The link above no longer exists. All features from this library have been folded into [auth](https://github.com/Inaimathi/auth) (there have been changes since this post was written, so it's not exactly the same codebase, but the principles are the same)
+> Thu, 30 Aug, 2012
 
 For next time, I'll be putting together an extension to this that does public-key-based auth, (as well as passwords for the normies).
 

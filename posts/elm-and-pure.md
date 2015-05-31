@@ -1,9 +1,9 @@
 Two things on the agenda today. First, Elm has gotten some improvements that might mean I end up using it in production at some point. Second, I tried a new language called [Pure](http://purelang.bitbucket.org/), which I found by searching for "dynamically typed haskell". Stick around if that sounds interesting.
 
-EDIT:
-Do not bother sticking around if that sounds interesting. I ended up talking about Elm so much that I never got into Pure.
-
-Tue, 18 Feb, 2014
+> EDIT:
+> Do not bother sticking around if that sounds interesting. I ended up talking about Elm so much that I never got into Pure.
+> 
+> Tue, 18 Feb, 2014
 
 ### Elm Lang
 
@@ -177,10 +177,10 @@ The file you'd embed that module into would look something like this<a name="not
 &lt;/html>
 ```
 
-EDIT:
-
-You can find a running demo of the above [here](http://173.255.226.138/elm-sample/embed.html).
-Sat, 22 Feb, 2014
+> EDIT:
+> 
+> You can find a running demo of the above [here](http://173.255.226.138/elm-sample/embed.html).
+> Sat, 22 Feb, 2014
 
 The relevant bits are the positioned `div`, which will contain our program, and the `Elm.embed` call, which sets it up. Note especially the third argument; you have to do that for any input ports in the component you're embedding. Finally, note the `subscribe` call which fits that output port we defined with a listener, in this case a naive one that just prints everything it gets to the console.
 

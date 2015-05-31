@@ -215,6 +215,9 @@ It's a pretty featureful little toy for three hours of work. I may come back to 
 * * *
 ##### Footnotes
 1 - <a name="foot-Sat-Aug-10-172026EDT-2013"></a>[|back|](#note-Sat-Aug-10-172026EDT-2013) - As well as a replacement keycap for your Caps Lock, if you go that route.
+
 2 - <a name="foot-Sat-Aug-10-172030EDT-2013"></a>[|back|](#note-Sat-Aug-10-172030EDT-2013) - Though using Lisp to implement something not unlike Forth feels a little bit like cheating.
+
 3 - <a name="foot-Sat-Aug-10-172038EDT-2013"></a>[|back|](#note-Sat-Aug-10-172038EDT-2013) - Though I'm not convinced I took the right approach quite yet.
+
 4 - <a name="foot-Sat-Aug-10-172051EDT-2013"></a>[|back|](#note-Sat-Aug-10-172051EDT-2013) - It doesn't take escapes into account yet, though I don't suspect that would be very difficult to add. Likewise, it would be nice if I could designate a character to nest on, so that we could grab balanced expressions. Things for the future, I'm sure.

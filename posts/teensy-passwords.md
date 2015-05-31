@@ -159,11 +159,8 @@ And that's about it. Oh, actually, I did toss this code [up to codereview](http:
 
 2 - <a name="foot-Tue-Dec-13-155347EST-2011"></a>[|back|](#note-Tue-Dec-13-155347EST-2011) -  My only experience with it was writing a few toy programs in [gforth](http://www.gnu.org/s/gforth/), which I get the feeling won't be very useful.
 
-
 3 - <a name="foot-Tue-Dec-13-155401EST-2011"></a>[|back|](#note-Tue-Dec-13-155401EST-2011) -  In marked contrast to the more popular [Arduino](http://www.arduino.cc/).
 
-
 4 - <a name="foot-Tue-Dec-13-155549EST-2011"></a>[|back|](#note-Tue-Dec-13-155549EST-2011) -  Like the actual, physical computer I use everyday.
-
 
 5 - <a name="foot-Tue-Dec-13-155701EST-2011"></a>[|back|](#note-Tue-Dec-13-155701EST-2011) - Or just commandeer the browser to take your target to [goatse](http://www.youtube.com/watch?v=dQw4w9WgXcQ)

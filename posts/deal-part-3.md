@@ -637,26 +637,41 @@ But all of that, and probably a lot more besides, will have to wait until I've h
 * * *
 ##### Footnotes
 1 - <a name="foot-Sun-Sep-29-203106EDT-2013"></a>[|back|](#note-Sun-Sep-29-203106EDT-2013) - Possibly failing for encoding reasons.
+
 2 - <a name="foot-Sun-Sep-29-203108EDT-2013"></a>[|back|](#note-Sun-Sep-29-203108EDT-2013) - Possibly failing due to that encoding-depth, `alist`-related bug related to s we discussed [last time](http://langnostic.blogspot.ca/2013/09/deal-part-2.html).
+
 3 - <a name="foot-Sun-Sep-29-203112EDT-2013"></a>[|back|](#note-Sun-Sep-29-203112EDT-2013) - Either standalone to the table, or attached to an existing placeable.
+
 4 - <a name="foot-Sun-Sep-29-203116EDT-2013"></a>[|back|](#note-Sun-Sep-29-203116EDT-2013) - Sans session.
 
 5 - <a name="foot-Sun-Sep-29-203119EDT-2013"></a>[|back|](#note-Sun-Sep-29-203119EDT-2013) - Which will require server-side changes because I don't currently track the size of anything.
+
 6 - <a name="foot-Sun-Sep-29-203122EDT-2013"></a>[|back|](#note-Sun-Sep-29-203122EDT-2013) - That way you don't need to keep pasting from imgur or whatever every time you start a game.
 
 7 - <a name="foot-Sun-Sep-29-203128EDT-2013"></a>[|back|](#note-Sun-Sep-29-203128EDT-2013) - Entry happens in explicit k/v inputs and preview takes the form of actual, zoomable preview cards you can poke at instead of just an object dump.
+
 8 - <a name="foot-Sun-Sep-29-203131EDT-2013"></a>[|back|](#note-Sun-Sep-29-203131EDT-2013) - Though, because it's AGPL, *you* should feel perfectly free to, as long as you respect your users' freedom by pointing them at a repo that includes any changes you've made.
+
 9 - <a name="foot-Sun-Sep-29-203147EDT-2013"></a>[|back|](#note-Sun-Sep-29-203147EDT-2013) - Rather than getting the vast majority of it for free, as you would if you took the web application approach.
+
 10 - <a name="foot-Sun-Sep-29-203150EDT-2013"></a>[|back|](#note-Sun-Sep-29-203150EDT-2013) - Though it's not AGPL, which I guess technically means that [I should have disregarded it](http://www.gnu.org/philosophy/free-software-for-freedom.html) even had I known about it when starting this project.
+
 11 - <a name="foot-Sun-Sep-29-203159EDT-2013"></a>[|back|](#note-Sun-Sep-29-203159EDT-2013) - This is the *only* construct that does so, but I'm not going to hack leading "#" support into it quite yet because I have a sneaking suspicion that I could have put Deal together purely using HTML5 constructs. That's something else I'll look into after the contest; porting the back-end away from jQuery, hopefully just by re-defining the pQuery macros.
+
 12 - <a name="foot-Sun-Sep-29-203202EDT-2013"></a>[|back|](#note-Sun-Sep-29-203202EDT-2013) - Which will also be helped by that peek interface.
+
 13 - <a name="foot-Sun-Sep-29-203205EDT-2013"></a>[|back|](#note-Sun-Sep-29-203205EDT-2013) - Both conceptually and in terms of line-count, but that first one is the more important of the two.
+
 14 - <a name="foot-Sun-Sep-29-203220EDT-2013"></a>[|back|](#note-Sun-Sep-29-203220EDT-2013) - For the record, I re-wrote that macro three times as I was writing this paragraph. Someone asked me why I blogged a while ago, and my answer was basically that this was an attempt at rubber-duck debugging with the internet instead of the duck. Don't laugh; it works.
+
 15 - <a name="foot-Sun-Sep-29-203226EDT-2013"></a>[|back|](#note-Sun-Sep-29-203226EDT-2013) - For the non-schemers, that's pronounced "set expression"; `!` denotes a side-effect, not logical negation.
+
 16 - <a name="foot-Sun-Sep-29-203237EDT-2013"></a>[|back|](#note-Sun-Sep-29-203237EDT-2013) - Specifically so that we don't have to say correct, but counter-intuitive things like `($incf -4)`.
 
 17 - <a name="foot-Sun-Sep-29-203245EDT-2013"></a>[|back|](#note-Sun-Sep-29-203245EDT-2013) - That's a basic macro I defined earlier to let me group markup with behavior in various places. It defines some `who-ps-html` and some initialization to run each time I create a `thing`, and its gotten slightly more elaborate since I started.
+
 18 - <a name="foot-Sun-Sep-29-203250EDT-2013"></a>[|back|](#note-Sun-Sep-29-203250EDT-2013) - Which I don't need to do anywhere.
+
 19 - <a name="foot-Sun-Sep-29-203259EDT-2013"></a>[|back|](#note-Sun-Sep-29-203259EDT-2013) - Actually, as an aside to the aside, this change ended up giving me the expression 
 
 ```lisp

@@ -31,8 +31,6 @@ I still have my [ersatz lisp machine](http://langnostic.blogspot.com/2012/01/how
 
 1 - <a name="foot-Wed-Jan-25-223836EST-2012"></a>[|back|](#note-Wed-Jan-25-223836EST-2012) - Incidentally, the mediaphiles among you should refrain from telling me that I should be using HDMI instead. Enough of my friends tell me that already, and I could give a shit. I mostly listen to music and watch almost ridiculously low-res videos; there's a separate DVD player for the [occasional high-def media](http://www.davidattenborough.co.uk/) I watch.
 
-
 2 - <a name="foot-Wed-Jan-25-234149EST-2012"></a>[|back|](#note-Wed-Jan-25-234149EST-2012) - Enough to delete the relevant article from my archives (sorry, to the people who linked to it already) and never speak of it again<a name="note-Wed-Jan-25-234332EST-2012"></a>[|3|](#foot-Wed-Jan-25-234332EST-2012).
-
 
 3 - <a name="foot-Wed-Jan-25-234332EST-2012"></a>[|back|](#note-Wed-Jan-25-234332EST-2012) - Except for here, obviously.

@@ -110,6 +110,7 @@ Even though it's an urban legend, and sounds incredibly silly, it works *really*
 * * *
 ##### Footnotes
 1 - <a name="foot-Tue-May-08-175711EDT-2012"></a>[|back|](#note-Tue-May-08-175711EDT-2012) - As evidenced by the fact that it comes with its own built-in, fairly extensive Emacs modes.
+
 2 - <a name="foot-Tue-May-08-175721EDT-2012"></a>[|back|](#note-Tue-May-08-175721EDT-2012) - The Erlang equivalent of `asdf:load-system`, `applications:load`, seems to assume that you've already manually compiled your `.erl`s to `.beam`s rather than doing it automatically.
 
 3 - <a name="foot-Tue-May-08-175727EDT-2012"></a>[|back|](#note-Tue-May-08-175727EDT-2012) - And the author has gone on record saying he'd very much like to add more.

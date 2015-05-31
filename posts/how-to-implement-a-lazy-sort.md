@@ -393,8 +393,8 @@ And that's that. As long as the Heap Property is respected, the next item by wha
 * * *
 ##### Footnotes
 1 - <a name="foot-Thu-May-02-214518EDT-2013"></a>[|back|](#note-Thu-May-02-214518EDT-2013) - I don't incidentally, both the Python and Common Lisp code I'm going to show you use [generators](http://wiki.python.org/moin/Generators). That is, side-effect-dependent lazy sequences with the restriction that you can only traverse them once, mostly as a result of those side-effects.
-2 - <a name="foot-Thu-May-02-214521EDT-2013"></a>[|back|](#note-Thu-May-02-214521EDT-2013) - I've been saying "heapsort", though that's strictly speaking not the case. What you need for a lazy* sort is an intermediate structure that
 
+2 - <a name="foot-Thu-May-02-214521EDT-2013"></a>[|back|](#note-Thu-May-02-214521EDT-2013) - I've been saying "heapsort", though that's strictly speaking not the case. What you need for a lazy* sort is an intermediate structure that
 
 -   is easier create than a full sort in the general case
 -   has some property which makes it useful than an arbitrary collection when it comes to finding `next`

@@ -40,13 +40,14 @@ If I had this function, I could simply
 
 ```
 
-EDIT: I was severely under-optimistic here; the **ideal** situation would be to have a function that does
-```lisp
-(lambda (s i |t| o k)
-  (when (= (+ (digits->number i s) (digits->number i |t|)) (digits->number o k))
-    (list "s" s "i" i "t" |t| "o" o "k" k)))
-
-```
+> EDIT: I was severely under-optimistic here; the **ideal** situation would be to have a function that does
+>
+> ```lisp
+> (lambda (s i |t| o k)
+>   (when (= (+ (digits->number i s) (digits->number i |t|)) (digits->number o k))
+>     (list "s" s "i" i "t" |t| "o" o "k" k)))
+> 
+> ```
 
 which I could then use by doing `(loop for i from 0 to 99999 when (apply [that function] (number->digits i)) collect it)` Let this be a lesson to you; always apply the maximum amount of wishful thinking (the [response over at CR](http://codereview.stackexchange.com/questions/1227/common-lisp-solve-a-cryptoarithmetic-problem/1251#1251) has `solution-fn` generate this function rather than the original).
 

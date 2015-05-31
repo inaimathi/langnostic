@@ -48,7 +48,11 @@ I don't know the answers to any of these questions. It's thorny as fuck, and the
 * * *
 ##### Footnotes
 1 - <a name="foot-Fri-Apr-13-012416EDT-2012"></a>[|back|](#note-Fri-Apr-13-012416EDT-2012) - It could probably work on all patents, but I'm still working under the assumption that a certain portion of non-computational patents actually achieve the goal of protecting inventors. Feel free to convince me otherwise.
+
 2 - <a name="foot-Fri-Apr-13-012524EDT-2012"></a>[|back|](#note-Fri-Apr-13-012524EDT-2012) - Internationally or not
+
 3 - <a name="foot-Fri-Apr-13-012548EDT-2012"></a>[|back|](#note-Fri-Apr-13-012548EDT-2012) - As a side thought, it might be a good short-term idea to encourage patent trolls to join, since they have precisely the sort of just-legal-enough patents you'd need to start a defensive thicket. They're typically just after money, so paying members a certain amount per patent owned might not be an entirely stupid idea. The collective would just need to be careful not to set up a situation wherein *they* become the sole reason new patents are issued. That would be pretty freaking ironic.
+
 4 - <a name="foot-Fri-Apr-13-012801EDT-2012"></a>[|back|](#note-Fri-Apr-13-012801EDT-2012) - At which point the fight to dissolve them would get monumentally easier.
+
 5 - <a name="foot-Fri-Apr-13-013130EDT-2012"></a>[|back|](#note-Fri-Apr-13-013130EDT-2012) - Of course, then you get the additional takedown method, where an attacker can sneak an agent in and start provoking trolls in order to sap that defensive mechanism.

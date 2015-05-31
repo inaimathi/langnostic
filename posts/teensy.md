@@ -27,8 +27,6 @@ I haven't actually started anything yet, but I plan to go through the listings o
 
 1 - <a name="foot-Fri-Nov-11-214005EST-2011"></a>[|back|](#note-Fri-Nov-11-214005EST-2011) - Canada Post cheekily celebrates [Remembrance Day](http://en.wikipedia.org/wiki/Remembrance_Day), so I'll actually have to wait until Tuesday or so to actually get my hands on [my RPG fix](http://en.wikipedia.org/wiki/The_Elder_Scrolls_V:_Skyrim) for the year.
 
-
 2 - <a name="foot-Fri-Nov-11-221146EST-2011"></a>[|back|](#note-Fri-Nov-11-221146EST-2011) - The old one with the removable Atmega chip, rather than the new one with the tiny but soldered unit.
-
 
 3 - <a name="foot-Fri-Nov-11-221157EST-2011"></a>[|back|](#note-Fri-Nov-11-221157EST-2011) - As if I didn't already have enough projects in the air.

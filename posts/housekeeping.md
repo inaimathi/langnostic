@@ -33,11 +33,19 @@ Any or all of those are things I'd recommend to people who are already programme
 * * *
 ##### Footnotes
 1 - <a name="foot-Thu-Mar-20-195226EDT-2014"></a>[|back|](#note-Thu-Mar-20-195226EDT-2014) - There's an article either in the works or already posted, depending on what order I decide to put these up.
+
 2 - <a name="foot-Thu-Mar-20-195230EDT-2014"></a>[|back|](#note-Thu-Mar-20-195230EDT-2014) - From a macro-optimization perspective; I'm sure I could pull some micro-optimizations on it too, but I'm not into that.
+
 3 - <a name="foot-Thu-Mar-20-195232EDT-2014"></a>[|back|](#note-Thu-Mar-20-195232EDT-2014) - Turns out that even the [Debian Unstable](https://packages.debian.org/sid/leiningen) repo doesn't have a recent enough version of [Leiningen](https://github.com/technomancy/leiningen). I needed to latest using [this](https://raw.github.com/technomancy/leiningen/stable/bin/lein).
+
 4 - <a name="foot-Thu-Mar-20-195235EDT-2014"></a>[|back|](#note-Thu-Mar-20-195235EDT-2014) - In fact, the only visible revolutionization of "randomly putting shit in your buffers that you can't edit instead of giving you a goddamn REPL" is profoundly annoying, though it's possible to disagree about these things. I guess I can imagine it looking really snazzy in presentations and demo videos.
+
 5 - <a name="foot-Thu-Mar-20-195237EDT-2014"></a>[|back|](#note-Thu-Mar-20-195237EDT-2014) - ...and before that jEdit, and before that Eclipse.
+
 6 - <a name="foot-Thu-Mar-20-195240EDT-2014"></a>[|back|](#note-Thu-Mar-20-195240EDT-2014) - And yes, it handles multiple values as well as `*standard-output*` emissions, in case you were wondering.
+
 7 - <a name="foot-Thu-Mar-20-195242EDT-2014"></a>[|back|](#note-Thu-Mar-20-195242EDT-2014) - At minimum the possibility to write `:cl-who`/`:cl-css` instead of markdown, a way of installing libraries that doesn't go through quicklisp, and maybe some git/[drakma](https://github.com/edicl/drakma)/shell support. I may end up having to add non-shitty static file serving to `house` for this...
+
 8 - <a name="foot-Thu-Mar-20-195245EDT-2014"></a>[|back|](#note-Thu-Mar-20-195245EDT-2014) - [Pre-built Lisp IDE version](http://common-lisp.net/project/lispbox/) optional.
+
 9 - <a name="foot-Thu-Mar-20-195247EDT-2014"></a>[|back|](#note-Thu-Mar-20-195247EDT-2014) - Which I do wholeheartedly recommend; it's very cool.

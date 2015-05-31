@@ -128,17 +128,12 @@ I'll admit that tab completion on file names is a pretty big thing to lose<a nam
 
 1 - <a name="foot-Sun-Jan-29-015617EST-2012"></a>[|back|](#note-Sun-Jan-29-015617EST-2012) - Including fairly complex CLI stuff like `wicd-curses`, `mplayer` and `rsync --progress`
 
-
 2 - <a name="foot-Sun-Jan-29-015814EST-2012"></a>[|back|](#note-Sun-Jan-29-015814EST-2012) - And now, I do
-
 
 3 - <a name="foot-Sun-Jan-29-015954EST-2012"></a>[|back|](#note-Sun-Jan-29-015954EST-2012) - Except for compression rather than expansion
 
-
 4 - <a name="foot-Sun-Jan-29-020048EST-2012"></a>[|back|](#note-Sun-Jan-29-020048EST-2012) - Defining methods for each archive type, and the appropriate class, obviously
 
-
 5 - <a name="foot-Sun-Jan-29-020437EST-2012"></a>[|back|](#note-Sun-Jan-29-020437EST-2012) - Or import another module that defines new ones with the same names
-
 
 6 - <a name="foot-Sun-Jan-29-020554EST-2012"></a>[|back|](#note-Sun-Jan-29-020554EST-2012) - And I'm going to put a bit of research into not losing it

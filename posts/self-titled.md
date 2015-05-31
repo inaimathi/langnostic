@@ -68,17 +68,12 @@ Choosing languages. The fact is that so many factors play into what's the correc
 
 1 - <a name="foot-Thu-Feb-16-222424EST-2012"></a>[|back|](#note-Thu-Feb-16-222424EST-2012) - As opposed to a toy project.
 
-
 2 - <a name="foot-Thu-Feb-16-222540EST-2012"></a>[|back|](#note-Thu-Feb-16-222540EST-2012) - Where x is bound to a single programming language, regardless of what it is.
-
 
 3 - <a name="foot-Thu-Feb-16-222928EST-2012"></a>[|back|](#note-Thu-Feb-16-222928EST-2012) - And I don't even have kids yet.
 
-
 4 - <a name="foot-Thu-Feb-16-223158EST-2012"></a>[|back|](#note-Thu-Feb-16-223158EST-2012) - Or, as frequently happens in a larger company, several(hundred)? teams of 10.
 
-
 5 - <a name="foot-Thu-Feb-16-223219EST-2012"></a>[|back|](#note-Thu-Feb-16-223219EST-2012) - At the point that you need to maintain all the beginner code you'll be writing for the first little while.
-
 
 6 - <a name="foot-Thu-Feb-16-223347EST-2012"></a>[|back|](#note-Thu-Feb-16-223347EST-2012) - This has been my limited, subjective experience so far, it may not represent the Java community as a whole.

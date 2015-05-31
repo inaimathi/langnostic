@@ -90,8 +90,13 @@ I'm tossing it up to [my github](https://github.com/Inaimathi), but calling it `
 * * *
 ##### Footnotes
 1 - <a name="foot-Sat-Jan-04-174331EST-2014"></a>[|back|](#note-Sat-Jan-04-174331EST-2014) - Of course, the drive box says 128G, so Samsung and all drive manufacturers are lying shitbags, but I'm digressing again.
+
 2 - <a name="foot-Sat-Jan-04-174334EST-2014"></a>[|back|](#note-Sat-Jan-04-174334EST-2014) - And therefore keep drawing power until a forced shutdown.
+
 3 - <a name="foot-Sat-Jan-04-174337EST-2014"></a>[|back|](#note-Sat-Jan-04-174337EST-2014) - which it was last time I played around with it.
+
 4 - <a name="foot-Sat-Jan-04-174339EST-2014"></a>[|back|](#note-Sat-Jan-04-174339EST-2014) - No, since you ask, I've never just straight up tried Mint. It has something in common with most of the distros I get recommended, which is that it cribs heavily from Debian on everything that matters, and then tries to differentiate on the desktop environment almost entirely. Not that this is bad for end users I guess, but as you can see from the `x-window-system` and `xmonad` items in that installation list above, I do not use what you would think of as "a desktop environment". Don't let that stop you from trying it, of course, but *I'm* not going to.
+
 5 - <a name="foot-Sat-Jan-04-174349EST-2014"></a>[|back|](#note-Sat-Jan-04-174349EST-2014) - You can still do this externally via `gparted` when you image your SD card.
+
 6 - <a name="foot-Sat-Jan-04-174352EST-2014"></a>[|back|](#note-Sat-Jan-04-174352EST-2014) - running the included binary gave me a "wrong architecture" error, even though there's no way that's accurate.

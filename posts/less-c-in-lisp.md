@@ -357,8 +357,13 @@ The reason I've been picking away at this codebase isn't idle fancy<a name="note
 ##### Footnotes
 
 1 - <a name="foot-Wed-Apr-20-105412EDT-2011"></a>[|back|](#note-Wed-Apr-20-105412EDT-2011) - Especially considering the situation.
+
 2 - <a name="foot-Wed-Apr-20-105710EDT-2011"></a>[|back|](#note-Wed-Apr-20-105710EDT-2011) - Which weren't particularly horrible, most of them were upholding the time-honored tradition of testing by `printf`
+
 3 - <a name="foot-Wed-Apr-20-110208EDT-2011"></a>[|back|](#note-Wed-Apr-20-110208EDT-2011) - It's not enforced except in one or two places, but it is a style convention. SBCL **will** bitch at you if you try to do something like `(let ((*foo* '(bar baz))) ...)`, for example. Not refuse to run it of course, but it'll warn you that it's using a lexical binding for `*foo*`.
+
 4 - <a name="foot-Wed-Apr-20-110844EDT-2011"></a>[|back|](#note-Wed-Apr-20-110844EDT-2011) - That's the first time that my blog-mode highligher chugged for a second before coming back with the result, by the by, take a look at the source code and see if you can see why.
+
 5 - <a name="foot-Wed-Apr-20-111010EDT-2011"></a>[|back|](#note-Wed-Apr-20-111010EDT-2011) - Or at least, not **just** idle fancy.
+
 6 - <a name="foot-Wed-Apr-20-111105EDT-2011"></a>[|back|](#note-Wed-Apr-20-111105EDT-2011) - Which I don't have. I've never met the guy, and he couldn't possibly have known that I'd be going through his hobby-horse with a sledgehammer at some point in the distant future of 2011.

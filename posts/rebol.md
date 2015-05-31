@@ -54,4 +54,5 @@ You can find the basic primer [here](http://www.rebol.com/rebolsteps.html), but 
 * * *
 ##### Footnotes
 1 - <a name="foot-Sat-Jul-20-204704EDT-2013"></a>[|back|](#note-Sat-Jul-20-204704EDT-2013) -Note that if you're just out to *use* the language, and don't really care about any of this Software Freedom business, you've already wasted some time. You can just get the appropriate binary and call it a day. I'm getting it because REBOL3 builds part of itself using REBOL3 scripts. And I'm compiling my own because I like being able to see inside of the languages I use, *and* I'm a big enough nerd to actually do it from time to time, **and** I've probably spent more time than is strictly healthy listening to [Richard Stallman](http://www.youtube.com/watch?v=SNBMdDaYhZA). Proceed or ignore the remaining parts of the process at your discretion.
+
 2 - <a name="foot-Sat-Jul-20-204707EDT-2013"></a>[|back|](#note-Sat-Jul-20-204707EDT-2013) -Thank you user `Fork` from [this thread](http://www.rebol.com/cgi-bin/blog.r?view=0519).
