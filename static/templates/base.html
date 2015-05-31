@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>{{.Title}} - langnostic</title>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link rel="stylesheet" href="/static/css/langnostic.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/static/css/default.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="/static/js/highlight.pack.js"></script>
+    <script type="text/javascript">hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <a href="/"><img class="logo-bar" src="/static/img/langnostic.png" /></a>
+    <ul class="top-menu">
+      <li>{{if eq .Section "blog"}}blog{{else}}<a href="/">blog</a>{{end}}</li>
+      <li>{{if eq .Section "archive"}}archive{{else}}<a href="/archive">archive</a>{{end}}</li>
+      <li>{{if eq .Section "links"}}links{{else}}<a href="/links">links</a>{{end}}</li>
+      <li>{{if eq .Section "meta"}}meta{{else}}<a href="/meta">meta</a>{{end}}</li>
+      <li><a href="/feed/atom">atom feed</a></li>
+    </ul>
+    <div class="content">{{.Body}}</div>
+    <hr />
+    <div class="license">
+      <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">
+	<img alt="Creative Commons License" style="border-width:0;float: left; margin: 0px 15px 15px 0px;" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" />
+      </a>
+      <p><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">all articles at langnostic</span> are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a></p>
+      <p>Reprint, rehost and distribute freely (even for profit), but attribute the work and allow your readers the same freedoms. <a href="http://creativecommons.org/choose/results-one?q_1=2&q_1=1&field_commercial=y&field_derivatives=sa&field_jurisdiction=&field_format=&field_worktitle=this+langnostic+article&field_attribute_to_name=Inaimathi&field_attribute_to_url=http%3A%2F%2Flangnostic.inaimathi.com&field_sourceurl=http%3A%2F%2Flangnostic.inaimathi.com&field_morepermissionsurl=&lang=en_US&n_questions=3">Here's</a> a license widget you can use.</p>
+    </div>
+  </body>
+</html>

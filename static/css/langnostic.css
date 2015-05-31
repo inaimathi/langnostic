@@ -1,20 +1,23 @@
-body { width: 80%; margin-left: 10%; font-family: sans-serif; }
+body { width: 100%; margin:0px; padding: 0px; font-family: sans-serif; }
 
-.logo-bar img { width: 100%; margin-top: 15px; }
+.logo-bar { margin-top: 15px; }
 
-.top-menu { font-weight: bold; }
-.top-menu ul { margin: 0; padding: 0; }
-.top-menu ul li { list-style-type: none; display: inline-block; margin-right: 10px; }
-.top-menu a { color: #CC0606; }
+.content, .logo-bar, .license { width: 80%; margin-left: 10%; }
+
+.top-menu { font-weight: bold; margin: 0px; padding: 15px 10%; background-color: #CC0606; }
+.top-menu li { list-style-type: none; display: inline-block; margin-right: 10px; }
+.top-menu a { color: #FFF; }
 .top-menu a:hover { color: #999; }
 
 .post-nav { font-weight: bold; color: #CC0606; }
-.post-nav a { margin-bottom: 20px; color: #CC0606; }
+.post-nav a { margin-bottom: 10px; color: #CC0606; }
 .post-nav a:hover { color: #999; }
-.next-post { float: right; margin-bottom: 20px; }
-.prev-post { float: left; margin-bottom: 20px; }
+.next-post { float: right; }
+.prev-post { float: left; }
 
-hr { border-color: #CC0606; background-color: #CC0606; }
+.tags-list li { list-style-type: none; display: inline-block; font-weight: bold; margin-right: 5px; }
+
+hr { border-color: #CC0606; background-color: #CC0606; display: block; clear: both; }
 h1 { color: #CC0606; }
 
 .tags { font-weight: bold; }

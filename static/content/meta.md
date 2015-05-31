@@ -2,10 +2,10 @@
 
 ## About Me
 
-I'm a Graphic Designer (graduated from OCAD with a bachelor's)specializing in illustration and web development. Also, I like programming, and learning languages. Which is why I'm here.
+I'm a Graphic Designer (graduated from [OCAD](http://www.ocadu.ca/) with a bachelor's) specializing in illustration and web development. Also, I like programming, and learning languages. Which is why I'm here.
 
-Currently, I'm working as a Common Lisp developer at the Moneris point of sale R&D team.
+Currently, I'm working as a Ruby/Go developer as part of [500px](https://500px.com).
 
 ## About This Site
 
-This site was built out of parentheses and adrenaline. The site itself is about 300 lines of fairly readable Common Lisp. The "database" is a simple [triple-store](https://github.com/Inaimathi/fact-base) implemented in another ~400 lines of the same, and the web server is a [minimal, asynchronous system](https://github.com/Inaimathi/house) put together in yet another ~800 lines of CL.
+This site was built out of bytes and adrenaline. The site itself is about 350 lines of fairly readable Go, which I still plan to refine over the course of a few weeks or months. There is no database any more, I'm just storing `md` files on disk and serving them to you when you ask, and I'm using the default [Go server](http://golang.org/pkg/net/http/) to do all the fancy `http` crap.

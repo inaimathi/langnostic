@@ -209,6 +209,6 @@
 {"id":208,"title":"Golang Wiki","file":"golang-wiki","edited":1428273321,"posted":1428273342,"tags":["almost-literate-programming","wiki","golang"]}
 {"id":209,"title":"Assorted Housekeeping","file":"assorted-housekeeping","edited":1428893306,"posted":1428893384,"tags":["journal"]}
 {"id":210,"title":"Clojure Setup, and History Briefly","file":"clojure-setup","edited":1429497042,"posted":1429497048,"tags":["idea-peeling","programming-environment","clojure"]}
-{"id":211,"title":"HTTP Handlers","file":"http-handlers","edited":1430624919,"posted":1430625025,"tags":["clojure","common-lisp","go","python","haskell","idea-peeling"]}
+{"id":211,"title":"HTTP Handlers","file":"http-handlers","edited":1430624919,"posted":1430625025,"tags":["clojure","common-lisp","golang","python","haskell","idea-peeling"]}
 {"id":212,"title":"Logo-bar Update","file":"logo-bar-update","edited":1431807593,"posted":1431807617,"tags":["journal","minor"]}
 {"id":213,"title":"Non-blocking Stream Parsing","file":"non-blocking-stream-parsing","edited":1431807085,"posted":1431807906,"tags":["common-lisp"]}

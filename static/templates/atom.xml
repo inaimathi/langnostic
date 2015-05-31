@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Language Agnostic</title>
+  <subtitle>Site-wide Langnostic Atom feed</subtitle>
+  <link href="http://langnostic.inaimathi.ca/feed/atom" rel="self" />
+  <link href="http://langnostic.inaimathi.ca" />
+  {{ range $item := .}}
+  {{ template "item" $item }}
+  {{ end }}
+</feed>
+{{define "item"}}
+<entry>
+  <title>{{.Title}}</title>
+  <id>tag:langnostic.inaimathi.ca,{{.Id}}</id>
+  <updated>{{.UpdatedOn}}</updated>
+  <link href="http://langnostic.inaimathi.ca/posts/{{.File}}" />
+  <author><name>Inaimathi</name></author>
+</entry>
+{{end}}
