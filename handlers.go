@@ -7,20 +7,21 @@ import (
 	"io/ioutil"
 	"html/template"
 	"net/http"
+	"os"
 	"strings"
+	"time"
 
 	"github.com/microcosm-cc/bluemonday"
 	"github.com/russross/blackfriday"
 )
 
 func MainPage (arc *Archive) func (http.ResponseWriter, *http.Request) {
-	intro, _ := ProcessMarkdown("static/content/intro.md")
 	return func (w http.ResponseWriter, r *http.Request) {
-		arc.Reload()
-		post := arc.Posts[len(arc.Posts)-1]
+		intro, _ := ProcessMarkdown("static/content/intro.md")
+		post := arc.LatestPost()
 		pg := Page{
 			"welcome", "blog", 
-			template.HTML(Cat(intro, []byte("<hr />"), arc.RenderPost(post))), 
+			template.HTML(Cat(intro, []byte("<hr />"), arc.RenderPost(*post))), 
 		}
 		base.Execute(w, pg)
 	}
@@ -28,7 +29,6 @@ func MainPage (arc *Archive) func (http.ResponseWriter, *http.Request) {
 
 func PostPage (arc *Archive, trimmed string) func (http.ResponseWriter, *http.Request) {
 	return func (w http.ResponseWriter, r *http.Request) {
-		arc.Reload()
 		post := arc.PostBySlug(r.URL.Path[len(trimmed):])
 		if post == nil {
 			base.Execute(w, Page{"not found", "blog", template.HTML("No such post...")})
@@ -40,9 +40,8 @@ func PostPage (arc *Archive, trimmed string) func (http.ResponseWriter, *http.Re
 
 func ArchivePage (arc *Archive) func (http.ResponseWriter, *http.Request) {
 	return func (w http.ResponseWriter, r *http.Request) {
-		arc.Reload()
 		buf := new(bytes.Buffer)
-		WriteLinksList(buf, arc.Posts)
+		WriteLinksList(buf, arc.AllPosts())
 		buf.Write([]byte("<hr />"))
 		arc.WriteTagsList(buf)
 		base.Execute(w, Page{"archive", "archive", template.HTML(buf.Bytes())})
@@ -51,7 +50,6 @@ func ArchivePage (arc *Archive) func (http.ResponseWriter, *http.Request) {
 
 func ArchiveByTagPage (arc *Archive, trimmed string) func (http.ResponseWriter, *http.Request) {
 	return func (w http.ResponseWriter, r *http.Request) {
-		arc.Reload()
 		tag := r.URL.Path[len(trimmed):]
 		base.Execute(w, Page{fmt.Sprintf("%s tag", tag), "archive", arc.ArchiveByTag(tag)})
 	}
@@ -59,7 +57,7 @@ func ArchiveByTagPage (arc *Archive, trimmed string) func (http.ResponseWriter, 
 
 func (arc *Archive) ArchiveByTag (tag string) template.HTML {
 	buf := new(bytes.Buffer)
-	posts := arc.TagTable[tag]
+	posts := arc.PostsByTag(tag)
 	if len(posts) == 0 {
 		fmt.Fprintf(buf, "<p>No posts tagged '%s'...</p>", tag)
 	} else {
@@ -71,10 +69,9 @@ func (arc *Archive) ArchiveByTag (tag string) template.HTML {
 } 
 
 func StaticMarkdown (title string, fname string) func (http.ResponseWriter, *http.Request) {
-	md, _ := ProcessMarkdown(fname)
-	pg := Page{title, title, template.HTML(md)}
 	return func (w http.ResponseWriter, r *http.Request) {
-		base.Execute(w, pg)
+		md, _ := ProcessMarkdown(fname)
+		base.Execute(w, Page{title, title, template.HTML(md)})
 	}
 }
 
@@ -129,11 +126,35 @@ func WriteLinksList(w io.Writer, posts []Post) {
 	w.Write([]byte("</ul>"))
 } 
 
+type Cached struct {
+	contents []byte
+	lastChecked time.Time
+	lastEdited time.Time	
+}
+
+var mdCache = make(map[string]Cached)
+
 func ProcessMarkdown (mdFile string) ([]byte, error) {
-	f, err := ioutil.ReadFile(mdFile)
-	if err != nil { return nil, err}
-	unsafe := blackfriday.MarkdownCommon([]byte(f))
-	return bluemonday.UGCPolicy().SanitizeBytes(unsafe), nil
+	cache, present := mdCache[mdFile]
+	if present && (time.Minute > time.Since(cache.lastChecked)) {
+		fmt.Println("   Found recently checked cache...")
+		return cache.contents, nil
+	} 
+	
+	stat, err := os.Stat(mdFile)
+	if err != nil { fmt.Println("   Error reading..."); return nil, err }
+	if present && (cache.lastEdited == stat.ModTime()) {
+		fmt.Println("   Found old cache, check showed no changes...")
+		mdCache[mdFile] = Cached{cache.contents, time.Now(), cache.lastEdited}
+		return cache.contents, nil
+	} else {
+		fmt.Println("   Fell through; reading file and making cache...")
+		f, err := ioutil.ReadFile(mdFile)
+		if err != nil { return nil, err }
+		unsafe := blackfriday.MarkdownCommon([]byte(f))
+		mdCache[mdFile] = Cached{bluemonday.UGCPolicy().SanitizeBytes(unsafe), time.Now(), stat.ModTime()}
+		return mdCache[mdFile].contents, nil
+	}
 }
 
 ////////////////////

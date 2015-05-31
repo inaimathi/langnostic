@@ -22,6 +22,7 @@ type Archive struct {
 	TagTable map[string][]Post
 	Tags []string
 	lastRead time.Time
+	lastChecked time.Time
 	file string
 }
 
@@ -41,6 +42,8 @@ func (arc *Archive) Reload() error {
 	stat, err := f.Stat()
 	if err != nil { 
 		return err 
+	} else if time.Minute > time.Since(arc.lastChecked) {
+		return nil
 	} else if stat.ModTime() == arc.lastRead {
 		return nil
 	} else {
@@ -53,6 +56,7 @@ func (arc *Archive) Reload() error {
 			if err == io.EOF {
 				arc.Posts = res
 				arc.lastRead = stat.ModTime()
+				arc.lastChecked = time.Now()
 				tags := make([]string, 0, len(tagTable))
 				for k, _ := range tagTable {
 					tags = append(tags, k)
@@ -90,7 +94,23 @@ func (arc *Archive) AdjacentPosts(post Post) PostLinks {
 	return lnks
 }
 
+func (arc *Archive) PostsByTag(tag string) []Post {
+	arc.Reload()
+	return arc.TagTable[tag]
+}
+
+func (arc *Archive) AllPosts() []Post {
+	arc.Reload()
+	return arc.Posts
+}
+
+func (arc *Archive) LatestPost() *Post {
+	arc.Reload()
+	return &arc.Posts[len(arc.Posts)-1]
+}
+
 func (arc *Archive) PostBySlug(slug string) *Post {
+	arc.Reload()
 	for i := range arc.Posts {
 		if arc.Posts[i].File == slug {
 			return &arc.Posts[i]
