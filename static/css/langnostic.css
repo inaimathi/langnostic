@@ -1,8 +1,10 @@
 body { width: 100%; margin:0px; padding: 0px; font-family: sans-serif; }
 
-.logo-bar { margin-top: 15px; }
+.logo-bar { margin: 20px; }
 
 .content, .logo-bar, .license { width: 80%; margin-left: 10%; }
+
+.top-menu, hr { background-image: url(/static/img/red.jpg); background-size: 100%; background-position: bottom; }
 
 .top-menu { font-weight: bold; margin: 0px; padding: 15px 10%; background-color: #CC0606; }
 .top-menu li { list-style-type: none; display: inline-block; margin-right: 10px; }
