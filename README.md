@@ -1,7 +1,15 @@
-# Langnostic page
-###### The personal blog of Inaimathi
+# langnostic
 
-## Todo
+## Usage
 
-- Get RSS feeds working (got Atom)
-- Make requests check for fresh fact bases each time so you can just copy the latest diff of langnostic.base up and call it a day
+FIXME
+
+## ToDo
+
+- `BGG Data Sifting`, `cl-notebook Thoughts` and `cl-notebook introductory thoughts` all have issues with the translation-from-markdown approach. Figure out what to do about this (also, `cl-notebook` obviously needs an export-to-markdown feature)
+- `rebol-mode` and `rebol-without-a-cause` are both rendering improperly. The markdown seems good, but doesn't transform as expected.
+- Same markup problem as the `rebol` pieces with `on-neutrinos`
+
+## License
+
+Copyright © 2015 Inaimathi

@@ -1,0 +1,214 @@
+{"id":0,"title":"Solid State Ownership","file":"solid-state-ownership","edited":1401033531,"posted":1261976400,"tags":["hardware"]}
+{"id":1,"title":"Another look at Emacs","file":"another-look-at-emacs","edited":1401322841,"posted":1263013200,"tags":["programming-environment","emacs"]}
+{"id":2,"title":"Contracting in PHP","file":"require-base","edited":1401033531,"posted":1263704400,"tags":["php","general-programming-thoughts","bitching"]}
+{"id":3,"title":"Just got the Little Schemer","file":"little-lambda","edited":1401321351,"posted":1263877200,"tags":["scheme"]}
+{"id":4,"title":"Poking at Erlang","file":"install-erl","edited":1401033531,"posted":1264222800,"tags":["erlang","emacs","elisp"]}
+{"id":5,"title":"Some Free Time","file":"define-free","edited":1401142833,"posted":1266555600,"tags":["speculation","idea-peeling","general-programming-thoughts"]}
+{"id":6,"title":"Patterns","file":"patterns","edited":1401033531,"posted":1266901200,"tags":["programming-environment","git","emacs"]}
+{"id":7,"title":"Upgrading to Ubuntu 9.10","file":"define-upgrade-9.10","edited":1401033531,"posted":1267160400,"tags":["programming-environment","emacs"]}
+{"id":8,"title":"New Keyboard","file":"define-peripherals","edited":1401033531,"posted":1267592400,"tags":["programming-interfaces","programming-environment","hardware"]}
+{"id":9,"title":"Machines at Work","file":"define-work","edited":1401143127,"posted":1268110800,"tags":["programming-interfaces","programming-environment","emacs"]}
+{"id":10,"title":"Minor Ergonomics, and Boring Office Update","file":"ergonomics","edited":1401321422,"posted":1268884800,"tags":["programming-interfaces","programming-environment","hardware","emacs","elisp"]}
+{"id":11,"title":"On Quitting","file":"exit","edited":1401033531,"posted":1271304000,"tags":["speculation","idea-peeling","general-programming-thoughts"]}
+{"id":12,"title":"What happened to the Neutrino?","file":"what-happened-to-the-neutrino","edited":1401033531,"posted":1271476800,"tags":["speculation","hardware"]}
+{"id":13,"title":"On Neutrinos","file":"on-neutrinos","edited":1401033531,"posted":1271995200,"tags":["speculation","programming-environment","hardware","general-programming-thoughts"]}
+{"id":14,"title":"On Managing Windows","file":"on-managing-windows","edited":1401033531,"posted":1272513600,"tags":["programming-environment"]}
+{"id":15,"title":"Apache Blues and General Update","file":"apache-blues","edited":1401033531,"posted":1273982400,"tags":["programming-environment","bitching"]}
+{"id":16,"title":"Retrospective","file":"retrospective","edited":1401312518,"posted":1276228800,"tags":["speculation","idea-peeling","general-programming-thoughts"]}
+{"id":17,"title":"The Upside of Apathy","file":"apathy","edited":1401033531,"posted":1282276800,"tags":["speculation","scheme","idea-peeling","general-programming-thoughts"]}
+{"id":18,"title":"Yegge Strikes Back from the Grave","file":"yegge-strikes-back","edited":1401033531,"posted":1285473600,"tags":["scheme","common-lisp"]}
+{"id":19,"title":"Lisp and CSS","file":"lisp-and-css","edited":1401033531,"posted":1285732800,"tags":["idea-peeling","css","common-lisp"]}
+{"id":20,"title":"My Thoughts","file":"defun-my-thoughts","edited":1401033531,"posted":1286769600,"tags":["lisp","common-lisp","bitching"]}
+{"id":21,"title":"cl-inception","file":"inception","edited":1401033531,"posted":1287028800,"tags":["hunchentoot","common-lisp","bitching"]}
+{"id":22,"title":"OS Experiments and Project Update","file":"crunchbang","edited":1401033531,"posted":1288670400,"tags":["programming-environment","common-lisp","bitching"]}
+{"id":23,"title":"Thoughts on Cooks [sic] Source","file":"thoughts-on-cooks-source","edited":1401144917,"posted":1288843200,"tags":["speculation","idea-peeling","copyright-bullshit"]}
+{"id":24,"title":"Debian","file":"new-thoughts","edited":1401033531,"posted":1289451600,"tags":["programming-environment","free-software"]}
+{"id":25,"title":"Debian Follow-up, and StumpWM","file":"debian-and-stump-w-m","edited":1401033531,"posted":1289710800,"tags":["programming-environment"]}
+{"id":26,"title":"Not Blubbing","file":"not-blubbing","edited":1401033531,"posted":1289883600,"tags":["languages","general-programming-thoughts"]}
+{"id":27,"title":"Language Smackdown Notes and Smalltalk","file":"language-smackdown","edited":1401033531,"posted":1292389200,"tags":["smalltalk","notes","general-programming-thoughts"]}
+{"id":28,"title":"Bluetile","file":"bluetile","edited":1401033531,"posted":1292907600,"tags":["programming-environment"]}
+{"id":29,"title":"Omega","file":"omega","edited":1401033531,"posted":1293512400,"tags":["speculation","languages","idea-peeling","general-programming-thoughts"]}
+{"id":30,"title":"Writing C in Lisp","file":"writing-c-in-lisp","edited":1401319785,"posted":1294894800,"tags":["lisp","elisp","common-lisp"]}
+{"id":31,"title":"XMonad Up Close","file":"xmonad-up-close","edited":1401033531,"posted":1295845200,"tags":["programming-environment"]}
+{"id":32,"title":"Best Buy and Monitor Suspension","file":"best-buy","edited":1401033531,"posted":1296277200,"tags":["programming-interfaces","programming-environment"]}
+{"id":33,"title":"Old Machines","file":"old-computers","edited":1401323548,"posted":1296622800,"tags":["hardware"]}
+{"id":34,"title":"Heart Ruby","file":"heart-ruby","edited":1401033531,"posted":1296795600,"tags":["ruby"]}
+{"id":35,"title":"Quicklisp, Linode, Hacking in the pejorative and other notes...","file":"hacking","edited":1401033531,"posted":1297659600,"tags":["speculation","idea-peeling","hosting","general-programming-thoughts"]}
+{"id":36,"title":"CLSQL. And NOTHING ELSE.","file":"clsql","edited":1401033531,"posted":1299128400,"tags":["common-lisp","clsql"]}
+{"id":37,"title":"Formlets and Loop","file":"formlets-and-loop","edited":1401033531,"posted":1299387600,"tags":["hunchentoot","common-lisp"]}
+{"id":38,"title":"Parenscript","file":"parenscript","edited":1401033531,"posted":1299560400,"tags":["parenscript","common-lisp"]}
+{"id":39,"title":"Puzzling with Lisp","file":"cryptoarithmetic","edited":1401033531,"posted":1299819600,"tags":["common-lisp"]}
+{"id":40,"title":"Javascript with a Lisp","file":"javascript-with-a-lisp","edited":1401311382,"posted":1300852800,"tags":["parenscript","common-lisp","client-side"]}
+{"id":41,"title":"A Little Bit of Elisp","file":"a-little-bit-of-elisp","edited":1401312259,"posted":1301112000,"tags":["elisp"]}
+{"id":42,"title":"Switching","file":"on-switching","edited":1401033531,"posted":1302321600,"tags":["speculation","programming-interfaces","programming-environment","idea-peeling","hardware"]}
+{"id":43,"title":"Writing Less C in Lisp","file":"less-c-in-lisp","edited":1401322667,"posted":1303272000,"tags":["common-lisp"]}
+{"id":44,"title":"Game Jam","file":"game-jam","edited":1401033531,"posted":1304136000,"tags":["speculation","hunchentoot","general-programming-thoughts","common-lisp"]}
+{"id":45,"title":"Quite possibly The Best Line Ever","file":"best-line-ever","edited":1401033531,"posted":1304568000,"tags":[]}
+{"id":46,"title":"Freedom","file":"freedom","edited":1401033531,"posted":1305691200,"tags":["general-programming-thoughts","free-software"]}
+{"id":47,"title":"Ugh.","file":"php","edited":1401311778,"posted":1307764800,"tags":["php","general-programming-thoughts"]}
+{"id":48,"title":"Kindle and Thoughts about Work","file":"kindle","edited":1401284371,"posted":1310961600,"tags":["general-programming-thoughts"]}
+{"id":49,"title":"Joel Test Patch","file":"joel-test","edited":1401033531,"posted":1311134400,"tags":["speculation","programming-interfaces","programming-environment","idea-peeling"]}
+{"id":50,"title":"Formlets and defclass","file":"formlets-and-defclass","edited":1401312283,"posted":1312257600,"tags":["php","common-lisp","clos"]}
+{"id":51,"title":"CL-Chan (a CLSQL and Hunchentoot crash course) - Part 1","file":"using-clsql","edited":1401311862,"posted":1314331200,"tags":["hunchentoot","common-lisp","clos","clsql"]}
+{"id":52,"title":"Intermission","file":"using-clsql-intermission","edited":1401033531,"posted":1314676800,"tags":["speculation","javascript","idea-peeling","common-lisp","client-side"]}
+{"id":53,"title":"\"Mapping CLOS\", or \"Yak Shaving for Fun and No Profit\"","file":"yak-shaving-for-fun-and-no-profit","edited":1401312466,"posted":1316836800,"tags":["common-lisp","clos"]}
+{"id":54,"title":"Old Machines Redux","file":"old-machines-redux","edited":1401324208,"posted":1317528000,"tags":["hardware"]}
+{"id":55,"title":"Screen for StumpWM/Xmonad Users - GNU Screen as a window manager","file":"screen-for-stump-users","edited":1401033531,"posted":1317873600,"tags":["shell","programming-environment","idea-peeling"]}
+{"id":56,"title":"ScreenWM Follow-up","file":"screen-wm-followup","edited":1401033531,"posted":1318219200,"tags":["shell","programming-environment","common-lisp"]}
+{"id":57,"title":"Ruby vs. Python Briefly","file":"ruby-vs-python-scripting","edited":1401033531,"posted":1318737600,"tags":["syntax","ruby","python"]}
+{"id":58,"title":"Objective Lisp","file":"objective-lisp","edited":1401033531,"posted":1320379200,"tags":["idea-peeling","common-lisp"]}
+{"id":59,"title":"PostScript and Temporary Goodbye","file":"postscript","edited":1401033531,"posted":1320901200,"tags":["postscript"]}
+{"id":60,"title":"False Alarm. Also, Teensy","file":"teensy","edited":1401033531,"posted":1320987600,"tags":["hardware"]}
+{"id":61,"title":"Clomment Moderation","file":"clomments-moderation","edited":1401033531,"posted":1322802000,"tags":["hunchentoot","common-lisp"]}
+{"id":62,"title":"Teensy Fucking Passwords","file":"teensy-passwords","edited":1401312119,"posted":1323752400,"tags":["security","programming-interfaces","idea-peeling","hardware","c"]}
+{"id":63,"title":"Teensy Mode","file":"teensy-mode","edited":1401033531,"posted":1323838800,"tags":["make","elisp","c"]}
+{"id":64,"title":"x220 and (unrelatedly) Portable Keyboards","file":"x220","edited":1401322008,"posted":1324875600,"tags":["programming-interfaces","hardware"]}
+{"id":65,"title":"XMonad Keybindings and an aside on Piracy","file":"piracy","edited":1401310565,"posted":1325221200,"tags":["programming-environment","haskell","copyright-bullshit"]}
+{"id":66,"title":"Passing Notes","file":"passing-notes","edited":1401033531,"posted":1325480400,"tags":["security","programming-environment","idea-peeling"]}
+{"id":67,"title":"How Close can you get to a Lisp Machine?","file":"how-close-can-you-get-to-a-lisp-machine","edited":1401033531,"posted":1327035600,"tags":["programming-environment","common-lisp"]}
+{"id":68,"title":"WebMote and \"Open\" software","file":"webmote-quote-open-endquote-and-depression","edited":1401309999,"posted":1327467600,"tags":["common-lisp","bitching"]}
+{"id":69,"title":"The Lisp Shell Followup","file":"lisp-shell-followup","edited":1401146154,"posted":1327726800,"tags":["shell","programming-environment","common-lisp"]}
+{"id":70,"title":"Smalltalk First Impressions","file":"smalltalk-first-impressions","edited":1401311184,"posted":1328072400,"tags":["smalltalk"]}
+{"id":71,"title":"Self Titled","file":"self-titled","edited":1401033531,"posted":1329368400,"tags":["languages"]}
+{"id":72,"title":"StrifeBarge - Turn Based Web-games in Common Lisp","file":"strifebarge--turn-based-web-games-in-common-lisp","edited":1401033531,"posted":1329714000,"tags":["hunchentoot","common-lisp","almost-literate-programming"]}
+{"id":73,"title":"Client Communication","file":"client-communication","edited":1401033531,"posted":1330232400,"tags":["html5","comet","client-side"]}
+{"id":74,"title":"StrifeBarge Update and My Secure Misconceptions","file":"strifebarge-update","edited":1401312657,"posted":1330750800,"tags":["security","hunchentoot","common-lisp","almost-literate-programming"]}
+{"id":75,"title":"Quick Coffee","file":"coffee","edited":1401312430,"posted":1331182800,"tags":["javascript","coffee-script"]}
+{"id":76,"title":"cl-smtp vs Exchange server","file":"cl-smtp-vs-exchange-server","edited":1401319504,"posted":1334635200,"tags":["common-lisp","cl-smtp"]}
+{"id":77,"title":"Notes From the Borders of Erlang","file":"erlang-notes","edited":1401033531,"posted":1335672000,"tags":["notes","ffi","erlang","c"]}
+{"id":78,"title":"Indentation Ventilation","file":"indentation-ventilation","edited":1401033531,"posted":1335758400,"tags":["lisp","indentation","common-lisp"]}
+{"id":79,"title":"Hot Erlang Code","file":"erlang-barcode-generation","edited":1401311284,"posted":1336449600,"tags":["nitrogen","almost-literate-programming","erlang"]}
+{"id":80,"title":"Please Don't Listen to Jeff Atwood","file":"please-dont-listen-to-jeff-atwood","edited":1401311513,"posted":1337227200,"tags":["response","idea-peeling"]}
+{"id":81,"title":"Assumptions","file":"assumptions","edited":1401311742,"posted":1337832000,"tags":["speculation","languages","idea-peeling","erlang"]}
+{"id":82,"title":"Boring Update","file":"another-update","edited":1401312388,"posted":1338004800,"tags":["ruby","make","languages","idea-peeling","erlang"]}
+{"id":83,"title":"Authentication","file":"authentication","edited":1401311134,"posted":1339214400,"tags":["python","ffi","erlang","almost-literate-programming"]}
+{"id":84,"title":"Authentication Part Two","file":"authentication-song","edited":1401284280,"posted":1339387200,"tags":["idea-peeling"]}
+{"id":85,"title":"Fresh Install","file":"fresh-system","edited":1401310411,"posted":1339473600,"tags":["programming-environment"]}
+{"id":86,"title":"Authentication Part Three - RSA Basics","file":"rsa-crypto","edited":1401311981,"posted":1339646400,"tags":["speculation","security","python","idea-peeling"]}
+{"id":87,"title":"On Commanding Lines","file":"command-lining","edited":1401310380,"posted":1340078400,"tags":["shell","python","programming-environment"]}
+{"id":88,"title":"Authentication Part Four - Logging into Websites with RSA Keys","file":"authentication-part4","edited":1401312443,"posted":1340337600,"tags":["python","idea-peeling","erlang","almost-literate-programming"]}
+{"id":89,"title":"Rebar Frustrations and LFE","file":"rebar","edited":1401033531,"posted":1340510400,"tags":["lisp","erlang","bitching"]}
+{"id":90,"title":"Not Building Erlang Apps","file":"not-building-erlang","edited":1401033531,"posted":1340856000,"tags":["erlang","bitching"]}
+{"id":91,"title":"Erlang From Scratch","file":"erlang-from-scratch","edited":1401033531,"posted":1341460800,"tags":["erlang"]}
+{"id":92,"title":"Authentication Part 4.5 - Not","file":"authentication-part4.5-authentication-not","edited":1401312401,"posted":1342238400,"tags":["speculation","security","idea-peeling"]}
+{"id":93,"title":"CL-Chan (a CLSQL and Hunchentoot crash course) - Part 2","file":"using-clsql-part2","edited":1401322220,"posted":1342411200,"tags":["common-lisp"]}
+{"id":94,"title":"Indirect Reflections","file":"indirect-reflections","edited":1401033531,"posted":1343966400,"tags":["speculation","idea-peeling"]}
+{"id":95,"title":"Irritation","file":"irritations","edited":1401311575,"posted":1344139200,"tags":["syntax","languages","erlang","common-lisp","clos","bitching"]}
+{"id":96,"title":"Steven? I Disagree.","file":"i-disagree","edited":1401312596,"posted":1344657600,"tags":["response","idea-peeling","general-programming-thoughts"]}
+{"id":97,"title":"cl-mop, or \"Yak Shaving for Fun and Marginal Profit\"","file":"cl-mop","edited":1401312065,"posted":1344744000,"tags":["common-lisp","clos"]}
+{"id":98,"title":"Not Having Any Fun","file":"not-having-any-fun","edited":1401310762,"posted":1345435200,"tags":["erlang","bitching"]}
+{"id":99,"title":"Starting Clojure","file":"starting-clojure","edited":1401033531,"posted":1345694400,"tags":["clojure"]}
+{"id":100,"title":"Partial Poker Hand Kata in Common Lisp, Clojure and Haskell","file":"poker-hands","edited":1401033531,"posted":1346126400,"tags":["haskell","common-lisp","clojure"]}
+{"id":101,"title":"Environments and Tradeoffs","file":"environments-and-tradeoffs","edited":1401033531,"posted":1346385600,"tags":["programming-environment","general-programming-thoughts"]}
+{"id":102,"title":"Setting Up Haskell","file":"setting-up-haskell","edited":1401033531,"posted":1347854400,"tags":["programming-environment","haskell","emacs"]}
+{"id":103,"title":"JS Frameworks","file":"js-frameworks","edited":1401310588,"posted":1348372800,"tags":["speculation","programming-interfaces","jquery","javascript","general-programming-thoughts"]}
+{"id":104,"title":"Pi","file":"raspberry-pi","edited":1401323828,"posted":1348977600,"tags":["hardware"]}
+{"id":105,"title":"Pi - Addendum","file":"raspberry-pi-addendum","edited":1401033531,"posted":1349064000,"tags":["hardware"]}
+{"id":106,"title":"WebMote the Right Way&#8482;&#169;","file":"webmote-the-right-way","edited":1401310158,"posted":1349496000,"tags":["jquery","javascript","html5","html","css","client-side","almost-literate-programming"]}
+{"id":107,"title":"WebMote the Right Way&#8482;&#169; Part 2, or \"Controlling my Media via WiFi and RasPi\"","file":"webmote-the-right-way--part2","edited":1401312611,"posted":1349668800,"tags":["python","programming-environment","jquery","javascript","almost-literate-programming"]}
+{"id":108,"title":"Pythonisms and WebMote - Part 3","file":"webmote-the-right-way--part3","edited":1401312147,"posted":1350619200,"tags":["speculation","python","idea-peeling"]}
+{"id":109,"title":"Fresher Install and Preliminary Brain Dump","file":"fresher-install","edited":1401311421,"posted":1352610000,"tags":["programming-environment","idea-peeling","general-programming-thoughts"]}
+{"id":110,"title":"Authentication - Part 4.75","file":"authentication-part-4.75","edited":1401310321,"posted":1353042000,"tags":[]}
+{"id":111,"title":"Various Thoughts and WebMote, the Next Part","file":"various-thoughts-and-web-mote-update","edited":1401311828,"posted":1353819600,"tags":["speculation","idea-peeling","general-programming-thoughts","bitching"]}
+{"id":112,"title":"WebMote part Tornado","file":"web-mote-part-tornado","edited":1401033531,"posted":1354165200,"tags":["python","almost-literate-programming"]}
+{"id":113,"title":"Life, Common Lisp, Haskell, Clojure and Sparse Arrays","file":"life-common-lisp-haskell-and-clojure","edited":1401033531,"posted":1354770000,"tags":["speculation","python","haskell","common-lisp","clojure","almost-literate-programming"]}
+{"id":114,"title":"Code Retreat and Angular","file":"angularjs","edited":1401312363,"posted":1355115600,"tags":[]}
+{"id":115,"title":"Life Extreme - Optimizing for Time in Common Lisp","file":"life-EXTREME","edited":1401033531,"posted":1355374800,"tags":["emacs","common-lisp"]}
+{"id":116,"title":"Not Optimizing Haskell","file":"not-optimizing-haskell","edited":1401033531,"posted":1355461200,"tags":["haskell","elisp"]}
+{"id":117,"title":"Angular Reflections","file":"angular-reflections","edited":1401033531,"posted":1356584400,"tags":["jquery","javascript","html5","client-side","almost-literate-programming"]}
+{"id":118,"title":"Autopair, Paredit and Bitching","file":"autopair-paredit-burnout","edited":1401033531,"posted":1357448400,"tags":["emacs","elisp","bitching"]}
+{"id":119,"title":"Wai Without Yesod - Simple Example of Haskell Web Development","file":"wai-without-yesod","edited":1401310609,"posted":1360472400,"tags":["haskell","almost-literate-programming"]}
+{"id":120,"title":"Wai Without Yesod - The Front End","file":"wai-without-yesod--the-front-end","edited":1401033531,"posted":1360990800,"tags":["jquery","javascript","html","angularjs"]}
+{"id":121,"title":"Haskell Profiling Redux. Also, briefly Ponies.","file":"haskell-profiling-redux","edited":1401311545,"posted":1361077200,"tags":["haskell"]}
+{"id":122,"title":"Haskell Profiling: Third Impact, or, AcidState vs. The World","file":"haskell-benchmarking","edited":1401033531,"posted":1362891600,"tags":["haskell","databases"]}
+{"id":123,"title":"What Programming Language Should I Learn?","file":"what-language-should-i-learn","edited":1401312348,"posted":1363233600,"tags":["idea-peeling","general-programming-thoughts"]}
+{"id":124,"title":"Actors","file":"actors","edited":1401322573,"posted":1363924800,"tags":["idea-peeling","common-lisp"]}
+{"id":125,"title":"Actors Again","file":"actors-again","edited":1401312017,"posted":1364529600,"tags":["idea-peeling","common-lisp"]}
+{"id":126,"title":"Simple web chat using Haskell's Wai/Warp","file":"wai-chat","edited":1401033531,"posted":1366084800,"tags":["haskell","almost-literate-programming"]}
+{"id":127,"title":"Hardware and Squares","file":"hardware-and-squares","edited":1401322367,"posted":1366344000,"tags":["idea-peeling","hardware"]}
+{"id":128,"title":"Conduits and More Squares","file":"conduits-and-more-squares","edited":1401312532,"posted":1366689600,"tags":["idea-peeling","common-lisp"]}
+{"id":129,"title":"Briefly, Laziness","file":"laziness","edited":1401311348,"posted":1367208000,"tags":["python","javascript","haskell","general-programming-thoughts","common-lisp"]}
+{"id":130,"title":"Dissecting Squares","file":"squares","edited":1401322464,"posted":1367208000,"tags":["idea-peeling"]}
+{"id":131,"title":"How to implement a lazy sort","file":"how-to-implement-a-lazy-sort","edited":1401033531,"posted":1367467200,"tags":["python","idea-peeling","common-lisp","almost-literate-programming"]}
+{"id":132,"title":"Code Retreat - Sudoku","file":"sudoku","edited":1401033531,"posted":1369195200,"tags":["python","javascript","haskell","code-retreat-notes"]}
+{"id":133,"title":"Truthy and Falsy vs Explicit","file":"truthy-and-falsy","edited":1401033531,"posted":1369368000,"tags":["scheme","python","javascript","idea-peeling","haskell","common-lisp","clojure"]}
+{"id":134,"title":"Sudoku Redux","file":"sudoku-redux","edited":1401321540,"posted":1370145600,"tags":["haskell","almost-literate-programming"]}
+{"id":135,"title":"Sudoku ReRedux","file":"sudoku-reredux","edited":1401311402,"posted":1370145600,"tags":["haskell","almost-literate-programming"]}
+{"id":136,"title":"Elm First Impressions","file":"elm-first-impressions","edited":1401033531,"posted":1371441600,"tags":["haskell","elm","elisp"]}
+{"id":137,"title":"Dragging in an FRP Context","file":"dragging-in-an-frp-context","edited":1401312337,"posted":1371528000,"tags":["idea-peeling","elm"]}
+{"id":138,"title":"Elm In Practice","file":"elm-in-practice","edited":1401033531,"posted":1371873600,"tags":["idea-peeling","elm","almost-literate-programming"]}
+{"id":139,"title":"Bittersweet","file":"bittersweet","edited":1401312305,"posted":1373515200,"tags":["speculation","idea-peeling"]}
+{"id":140,"title":"Ping","file":"ping","edited":1401033531,"posted":1374120000,"tags":["general-update","common-lisp"]}
+{"id":141,"title":"REBOL","file":"rebol","edited":1401033531,"posted":1374292800,"tags":["rebol"]}
+{"id":142,"title":"Dear The Internet","file":"dear-internet","edited":1401311998,"posted":1374724800,"tags":["speculation","security","bitching"]}
+{"id":143,"title":"REBOL Without A Cause","file":"rebol-without-a-cause","edited":1401310099,"posted":1374897600,"tags":["rebol"]}
+{"id":144,"title":"REBOL Mode","file":"rebol-mode","edited":1401312485,"posted":1375329600,"tags":["rebol","emacs","elisp","almost-literate-programming"]}
+{"id":145,"title":"Forthlike and Briefly, Keyboards","file":"keyboards-and-forthlike","edited":1401033531,"posted":1376107200,"tags":["forth","common-lisp","almost-literate-programming"]}
+{"id":146,"title":"Debugging Insecurities","file":"debugging","edited":1401033531,"posted":1376539200,"tags":["speculation","idea-peeling","general-programming-thoughts"]}
+{"id":147,"title":"cl-web-dev","file":"cl-web-dev","edited":1401033531,"posted":1377057600,"tags":["common-lisp"]}
+{"id":148,"title":"Deal Journal - Part One","file":"deal","edited":1401312707,"posted":1377403200,"tags":["parenscript","jquery","journal","javascript","html5","html","common-lisp","almost-literate-programming"]}
+{"id":149,"title":"Deal Journal - Part Two","file":"deal-part-2","edited":1401311942,"posted":1378526400,"tags":["parenscript","jquery","javascript","html5","html","common-lisp","almost-literate-programming"]}
+{"id":150,"title":"Deal Journal - Interlude One -- A Treatise on the Design and Construction of Special-Purpose HTTP Servers using Common Lisp with a focus on Readability and Real-World Deployment","file":"deal-interlude-1","edited":1401033531,"posted":1379217600,"tags":["parenscript","javascript","html5","common-lisp","client-side","almost-literate-programming"]}
+{"id":151,"title":"Deal Journal - Part Three","file":"deal-part-3","edited":1401310528,"posted":1380427200,"tags":["parenscript","jquery","journal","javascript","common-lisp","almost-literate-programming"]}
+{"id":152,"title":"Deal Journal - Interlude Two -- Being The Thoughts on Implementation Minutia of Custom HTTP Servers","file":"deal-interlude-2","edited":1401310545,"posted":1381636800,"tags":["common-lisp","almost-literate-programming"]}
+{"id":153,"title":"Deal Journal - Interlude Three -- Being a Brief Musing on Session Mechanisms and Their Implementation","file":"deal-interlude-3","edited":1401033531,"posted":1381809600,"tags":["speculation","security","idea-peeling","common-lisp"]}
+{"id":154,"title":"defsetf Examples","file":"defsetf-examples","edited":1401033531,"posted":1382155200,"tags":["snippets","lisp","common-lisp"]}
+{"id":155,"title":"Xmonad Tweaks","file":"xmonad-tweaks","edited":1401033531,"posted":1382328000,"tags":["snippets","haskell"]}
+{"id":156,"title":"FBP in Common Lisp","file":"fbp-in-common-lisp","edited":1401033531,"posted":1383714000,"tags":["snippets","flow-based-programming","common-lisp"]}
+{"id":157,"title":"Briefly, Custom Server Redux","file":"custom-servers-redux","edited":1401311152,"posted":1384059600,"tags":["speculation","idea-peeling","general-programming-thoughts"]}
+{"id":158,"title":"From The Archives - Popularity","file":"popularity","edited":1401312556,"posted":1384059600,"tags":["speculation","languages","idea-peeling","general-programming-thoughts","bitching"]}
+{"id":159,"title":"Toronto FBP Group -- Inaugural Meeting Videos","file":"fbp-videos","edited":1401033531,"posted":1384318800,"tags":["media","flow-based-programming"]}
+{"id":160,"title":"Arbitrary Update 714","file":"arbitrary-update-714","edited":1401033531,"posted":1385442000,"tags":["programming-interfaces","programming-environment","idea-peeling","flow-based-programming"]}
+{"id":161,"title":"Combining SVG and HTML5 is still a Drag","file":"combining-svg-and-html-is-still-a-drag","edited":1401033531,"posted":1385787600,"tags":["programming-interfaces","javascript","idea-peeling","html5","html","common-lisp"]}
+{"id":162,"title":"Quick Update on Deal","file":"quick-update-on-deal","edited":1401151517,"posted":1385874000,"tags":["journal","common-lisp"]}
+{"id":163,"title":"Jef Raskin on Authentication","file":"jef-raskin-on-authentication","edited":1401033531,"posted":1386651600,"tags":["speculation","idea-peeling","common-lisp"]}
+{"id":164,"title":"Implementing Humane Authentication","file":"implementing-humane-authentication","edited":1401311881,"posted":1386997200,"tags":["common-lisp","almost-literate-programming"]}
+{"id":165,"title":"Debian Testing, Pi and Git","file":"debian-testing-and-dicking-around-with-pis","edited":1401033531,"posted":1388811600,"tags":["programming-interfaces","programming-environment","haskell","hardware","git","emacs","elisp","common-lisp"]}
+{"id":166,"title":"Which Lisp Should I Learn?","file":"recommendations","edited":1401312134,"posted":1390539600,"tags":["scheme","lisp","common-lisp","clojure"]}
+{"id":167,"title":"Update, and the Finer Points of Quasimodes","file":"update-and-the-finer-points-of-quasimodes","edited":1401033531,"posted":1390885200,"tags":["idea-peeling"]}
+{"id":168,"title":"Fact Bases and Total History","file":"fact-bases-and-total-history","edited":1401033531,"posted":1391922000,"tags":["speculation","idea-peeling","erlang","databases","common-lisp"]}
+{"id":169,"title":"Autocompletion Example with Ports in Elm","file":"elm-and-pure","edited":1401310123,"posted":1392613200,"tags":["html","flow-based-programming","elm","almost-literate-programming"]}
+{"id":170,"title":"Flow-Based Games","file":"flow-based-games","edited":1401033531,"posted":1394082000,"tags":["flow-based-programming","elm","daimio"]}
+{"id":171,"title":"Housekeeping","file":"housekeeping","edited":1401310634,"posted":1395288000,"tags":["speculation","programming-interfaces","programming-environment","journal","general-update","general-programming-thoughts","emacs","databases","common-lisp","clojure","bitching"]}
+{"id":172,"title":"Fact Base Indices","file":"fact-base-indices","edited":1401033531,"posted":1395720000,"tags":["databases","common-lisp","almost-literate-programming"]}
+{"id":173,"title":"Buildapp Minutia","file":"buildapp-minutia","edited":1401033531,"posted":1396670400,"tags":["common-lisp"]}
+{"id":174,"title":"Querying Fact Bases","file":"querying-fact-bases","edited":1401311763,"posted":1397016000,"tags":["databases","common-lisp","almost-literate-programming"]}
+{"id":175,"title":"Querying Fact Bases Redux","file":"querying-fact-bases-redux","edited":1401322056,"posted":1397275200,"tags":["databases","common-lisp","almost-literate-programming"]}
+{"id":176,"title":"cl-notebook Introductory Thoughts","file":"cl-notebook--introductory-thoughts","edited":1401312225,"posted":1397966400,"tags":["programming-interfaces","programming-environment","common-lisp","cl-notebook"]}
+{"id":177,"title":"cl-notebook Thoughts","file":"cl-notebook-thoughts","edited":1401151807,"posted":1398052800,"tags":["programming-interfaces","programming-environment","general-programming-thoughts","cl-notebook"]}
+{"id":178,"title":"Arbitrary Update 932","file":"arbitrary-update-932","edited":1401321872,"posted":1400558400,"tags":["idea-peeling","general-update","general-programming-thoughts"]}
+{"id":179,"title":"Goodbye Blogger","file":"goodbye-blogger","edited":1401290910,"posted":1401325329,"tags":["bitching"]}
+{"id":180,"title":"Future Of Programming, Memory and Minutia","file":"future-of-programming-memory-and-minutia","edited":1402609635,"posted":1402609638,"tags":["speculation","idea-peeling","bitching"]}
+{"id":181,"title":"How Unification Works","file":"how-unification-works","posted":1403050668,"tags":["logic-programming","common-lisp"],"edited":1403058868}
+{"id":182,"title":"Reading Backwards","file":"reading-backwards","edited":1403225498,"posted":1403225671,"tags":["almost-literate-programming","common-lisp"]}
+{"id":183,"title":"Arbitrary Update 1797","file":"arbitrary-update-1797","edited":1403751842,"posted":1403751860,"tags":["general-update"],"recent":true}
+{"id":184,"title":"\"The Big Problem\", and \"Visual Compilers: A Practical Example\"","file":"the-big-problem-and-visual-compilers","edited":1404059183,"posted":1404059188,"tags":["visual-programming","2dmacs","common-lisp","almost-literate-programming"],"recent":true}
+{"id":185,"title":"Vacation 2014","file":"vacation-2014","edited":1405298792,"posted":1405299160,"tags":["data-structures","almost-literate-programming","haskell","python","common-lisp"],"recent":true}
+{"id":186,"title":"Pressure Release","file":"pressure-release","edited":1406940013,"posted":1406940024,"tags":["journal","almost-literate-programming","data-structures","python","clojure","haskell"],"recent":true}
+{"id":187,"title":"cl-notebook Update","file":"cl-notebook-update","edited":1407463781,"posted":1407463814,"tags":["idea-peeling","speculation","cl-notebook"],"recent":true}
+{"id":188,"title":"Briefly, Async Completions with CodeMirror","file":"briefly-async-completions-with-code-mirror","edited":1407673374,"posted":1407673376,"tags":["cl-notebook","common-lisp","javascript"]}
+{"id":189,"title":"S-expression Navigation","file":"s-expression-navigation","edited":1408052253,"posted":1408052665,"tags":["cl-notebook","common-lisp","javascript"]}
+{"id":190,"title":"Brian's Brain","file":"brians-brain","edited":1408246665,"posted":1408246668,"tags":["almost-literate-programming","code-retreat-notes","haskell"]}
+{"id":191,"title":"BGG Data Sifting","file":"BGG Data Sifting","edited":1409496798,"posted":1409605194,"tags":["cl-notebook","almost-literate-programming","databases","logic-programming","common-lisp"]}
+{"id":192,"title":"Usual Sick Schtick","file":"usual-sick-schtick","edited":1411186419,"posted":1411186792,"tags":["common-lisp","journal","bitching","cl-notebook"]}
+{"id":193,"title":"Killing Ideas","file":"killing-ideas","edited":1411231138,"posted":1411236934,"tags":["general-programming-thoughts","idea-peeling"]}
+{"id":194,"title":"Langton's Ant","file":"langtons-ant-writeup","edited":1411237255,"posted":1411237310,"tags":["haste","html","haskell","code-retreat-notes"]}
+{"id":195,"title":"Langton's Ant Redux, and Unrestricted Types","file":"langtons-ant-redux-and-unrestricted-types","edited":1411745759,"posted":1411745764,"tags":["haste","haskell"]}
+{"id":196,"title":"History. Briefly.","file":"history","edited":1412345074,"posted":1412345077,"tags":["idea-peeling","common-lisp","haskell"]}
+{"id":197,"title":"Seam Carving","file":"seam-carving","edited":1414037750,"posted":1414037752,"tags":["haskell","almost-literate-programming","code-retreat-notes"]}
+{"id":198,"title":"Dead Bitmaps","file":"dead-bitmaps","edited":1414552489,"posted":1414552534,"tags":["idea-peeling","almost-literate-programming","visual-programming","haskell"]}
+{"id":199,"title":"Another General Update","file":"another-general-update","edited":1416932598,"posted":1416932605,"tags":["general-programming-thoughts","journal"]}
+{"id":200,"title":"Write Myself A Scheme","file":"write-myself-a-scheme","edited":1417486888,"posted":1417487000,"tags":["idea-peeling"]}
+{"id":201,"title":"Experimentalisp","file":"experimentalisp","edited":1418395757,"posted":1418438992,"tags":["haskell","scheme","lisp","idea-peeling"]}
+{"id":202,"title":"Multi-line REPLs, Pipes and Journal Update","file":"multi-line-repls-pipes-and-journal-update","edited":1418613859,"posted":1418613869,"tags":["flow-based-programming","haskell","almost-literate-programming","journal"]}
+{"id":203,"title":"I LIIIIIVE!","file":"i-liiiiive","edited":1421944291,"posted":1421944479,"tags":["general-update","journal","idea-peeling","cl-notebook"]}
+{"id":204,"title":"Quick Tool Notes","file":"quick-tool-notes","edited":1423417547,"posted":1423417554,"tags":["programming-environment","hardware"]}
+{"id":205,"title":"SBCL Quasiquoting","file":"sbcl-quasiquoting","edited":1424639076,"posted":1424639512,"tags":["common-lisp","bitching"]}
+{"id":206,"title":"Nix Update","file":"nix-update","edited":1424641843,"posted":1424641854,"tags":["nix","programming-environment"]}
+{"id":207,"title":"Arbitrary Update 3099","file":"arbitrary-update-3099","edited":1425270323,"posted":1425270347,"tags":["journal","python","almost-literate-programming"]}
+{"id":208,"title":"Golang Wiki","file":"golang-wiki","edited":1428273321,"posted":1428273342,"tags":["almost-literate-programming","wiki","golang"]}
+{"id":209,"title":"Assorted Housekeeping","file":"assorted-housekeeping","edited":1428893306,"posted":1428893384,"tags":["journal"]}
+{"id":210,"title":"Clojure Setup, and History Briefly","file":"clojure-setup","edited":1429497042,"posted":1429497048,"tags":["idea-peeling","programming-environment","clojure"]}
+{"id":211,"title":"HTTP Handlers","file":"http-handlers","edited":1430624919,"posted":1430625025,"tags":["clojure","common-lisp","go","python","haskell","idea-peeling"]}
+{"id":212,"title":"Logo-bar Update","file":"logo-bar-update","edited":1431807593,"posted":1431807617,"tags":["journal","minor"]}
+{"id":213,"title":"Non-blocking Stream Parsing","file":"non-blocking-stream-parsing","edited":1431807085,"posted":1431807906,"tags":["common-lisp"]}

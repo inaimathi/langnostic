@@ -1,0 +1,23 @@
+I'm often retrospective, just so you know.
+
+I'll take a look at a technology or idea or product, or whatnot, learn enough of it to barely get out of ignorance, and profess loudly how it's stupid, or it sucks, or it would be great for other people, but not for the awesome shit I'm doing. *Then* I re-evaluate it, and find out that actually, it's pretty awesome, and my life proceeds to revolve around it for a few weeks before I rebalance myself and get back to drawing things, occasional hacking and medicating myself with videogames. Very rarely, my second look will conclude that yes, it actually *did* suck, and I shouldn't look at it again.
+
+So far, it's happened with Wacom tablets, netbooks, Emacs, LetraTac, Common Lisp, Ruby, cell-phones and Deep Banana Blackout. There are probably more, but those are all the ones I can think of off the top of my head. In case you care, LetraTac is the only one up there to get the "Yup, it sucks" follow-up verdict. You'd think there was a rule requiring you be shitty if you called your band "Deep Banana Blackout", but no, they're pretty good.
+
+A little while ago, I wrote up two pages or so on how Flash sucks balls, and why. I believe the words "Poor Man's jQuery" featured prominently in both write-ups. I've been carefully giving it the second once-over just to make sure I can write it off. And yeah, it seems I can. Sort of.
+
+I took a long look at the Flex-SDK, which is an open-source MXML/AS3 compiler Adobe released 3.5 versions ago. They don't bundle a graphical editor with the free version, obviously, but it seems to be able to do the same stuff that Flash can, just in different ways. Instead of the visual metaphor, they've got a flavor for XML for markup. And it can take a subset of CSS. 
+
+It seem at least that I was wrong about this tech being all in Adobe's pocket because they open-sourced their compiler (to be fair, I haven't looked at the source or any community projects yet, so it might be an obfuscated pile of crap, but lets give them the benefit of the doubt). But they're using an XML dialect, a version of EcmaScript and a subset of CSS now. Sounds like my "Poor Man's jQuery" comments from earlier were right on the money.
+
+Flex is basically a compiled HTML/CSS/JS. 
+
+There are going to be tradeoffs.
+
+The big gains are in speed and confidentiality. If you don't want anyone to know how shitty your code is, use Flex, because they'll never see it. Speed in the usual compiler sense; if it optimizes well enough, then in theory, the end result will perform better than an interpreted solution. This is reinforced with the more recent Flex-SDK releases where the compiler actually optimizes based on those little type annotations you put in. There's also the linguistic abstraction to acknowledge; AS3 has some animation-specific primitives that you'd have to build yourself in JS, or even jQuery. There's also ostensibly no cross-browser issues, which may actually be true with Flex (it wasn't with AS2), but all I can really say is "I haven't run into them yet".
+
+The losses are still obvious and still glaring.
+
+The new ones hit both of the wins I cited for Flash in my earlier writeup; AS3/MXML/CSS means that you don't have a unified language anymore, and the visual UI metaphor is given up in favor of MXML's tree syntax. You already know the weaknesses Flex shares with Flash. No mobile support. No out-of-the-box support for directb linking (in the&lt;a href=""&gt; sense, not the compiler sense). You trade cross-browser headaches for cross-player-version headaches. It seems these are milder, at least, but I prefer to eliminate headaches rather than reduce them by 1/10th. Finally, the compile time is a major productivity hit when you're coding. The SDK doesn't seem to come with an interpreter, so your cycle with Flex-SDK is Code-Compile-Test-Change-Repeat instead of just Code-Test-Change-Repeat. This sounds like a quibble, and it won't bug you much if you're used to Java or C++ (where you run the same loop), but I'm used to Python and Scheme and HTML/JS/CSS, where I either get a fully-featured interpreter in addition to the compiler or a comparable workflow. I was quite alarmed to find that my 'hello world' Flex application took a good 10 seconds to compile. You'd think that a single screen which just printed out "Hello World" on a button would be instantaneous, but I guess not.
+
+So Flex is what I'd use for high-interactivity pieces of a marketing site that targeted thick-clients. That's a pretty small niche, but hey, crazier things have happened. Maybe in the next couple of years we'll get a boom of mobile R&D which will finally let mobile devices run Flash without a hitch.
