@@ -93,6 +93,8 @@
     (:h3 "Generally useful things")
     (link-list
      "http://git-scm.com/" "GIT - Fast Version Control"
+     "http://nixos.org/nix/" "Nix - purely functional package manager"
+     "http://www.gnu.org/software/guix/" "Guix - Nix for GNU fans"
      "http://conkeror.org/" "Conkeror - Firefox for Emacs users"
      "http://xmonad.org/" "XMonad"
      "http://www.nongnu.org/stumpwm/" "StumpWM"
