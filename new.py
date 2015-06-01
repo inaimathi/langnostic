@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import os.path, json
 
-from subprocess import check_output
+from subprocess import check_output, call
 from optparse import OptionParser
 
 def wc(fname):
@@ -19,15 +19,21 @@ def main(fname, title, tags):
     mod = int(os.path.getmtime(fname))
     newId = wc("posts.json")
     rec = {'id': newId, 'title': title, 'file': slug, 'edited': ed, 'posted': mod, 'tags': tags}
+    os.rename(fname, os.path.join("posts", os.path.basename(fname)))
     with open("posts.json", 'a') as f:
         f.write(json.dumps(rec))
+        f.write("\n")
 
 if __name__ == "__main__":
     parser = OptionParser()
     parser.add_option("-t", "--title", dest="title", default=False,
                       help="Manually specify the title (it'll otherwise be generated from the slug)")
+    parser.add_option("-d", "--deploy", dest="deploy", default=False, action="store_true",
+                      help="If this flag is present, automatically deploy to the server")
     (options, args) = parser.parse_args()
     if len(args) >= 2:
         main(args[0], options.title or titleFromFname(args[0]), args[1:])
+        if options.deploy:
+            call(["sh", "push.sh"])
     else:
         parser.print_help()
