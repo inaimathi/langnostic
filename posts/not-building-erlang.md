@@ -1,12 +1,12 @@
 So I've spent the past few days playing around with various ways of building Erlang projects, and it's taken me from mild frustration to fuck-everything-about-this mode. Here is the synopsis of ways that you should not build an app, despite what you may have heard to the contrary.
 
-## rebar
+## <a name="rebar"></a>rebar
 
 Like I said last time, every single tutorial that I've found so far has run me up against an error when the time comes to *actually generate a working system*. I've had [no help](http://stackoverflow.com/questions/11192466/rebar-generate-error) so far, and without that generation step, `rebar` is essentially a poor-man's `make` script fused with a poor-man's `[quickproject](https://github.com/xach/quickproject/)`-for-Erlang. This is true both of the build in [their repos](https://github.com/basho/rebar/), and of the one in [their downloads](https://github.com/basho/rebar/downloads).
 
 I'm not saying "it doesn't work", because I've successfully used the `rebar` application called [nitrogen](http://nitrogenproject.com/), I'm saying it has yet to work for me, despite the fact that I've tried following five separate pieces of allegedly correct documentation for it. It may work for you, but I'm not inclined to bet on it.
 
-## release_handler
+## <a name="releasehandler"></a>release_handler
 
 If you take a look at what `rebar` is actually supposed to do, you'll find that a lot of it can be done from within a running Erlang process. [systools](http://www.erlang.org/doc/man/systools.html) and [release_handler](http://www.erlang.org/doc/man/release_handler.html) ostensibly help you put together a production build of your environment and deploy it. And the word "ostensibly" in that sentence should tell you how that went.
 
@@ -68,7 +68,7 @@ After getting past the bureaucratic rings Erlang sets up, I generated a system u
 
 And then I copied the tar file up to my remote server, took the same steps on the same release of Erlang/OTP+erts, and got a stack dump. Ho hum. Well, at least it [worked on my machine](http://www.nappyhead.co.uk/info_1077.html), amirite?
 
-## What worked
+## <a name="what-worked"></a>What worked
 
 What ended up working was just copying my application folder up (minus the `src` and `rel` folders, just to save space), and then running
 

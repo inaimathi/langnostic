@@ -140,7 +140,7 @@ erl_start = -eval 'lists:map(fun (App) -> application:load(App), application:sta
 
 erl_stop = -s init stop
 
-### Rules
+### <a name="rules"></a>Rules
 all: 
         erlc -Wf -o ebin/ src/*erl
         cp src/*app ebin/
@@ -184,7 +184,7 @@ Tadaaah! You've just made a full OTP application from scratch, with no automated
 
 Ok, quit out of that with a `C-c C-c`. We've got the basics down. Time for a
 
-### Bonus Stage
+### <a name="bonus-stage"></a>Bonus Stage
 
 We've got a single echo server running, but what if we wanted a few that all have mildly different behaviors? I've seen some beginners who think the solution is copy/pasting the existing `echo.erl` and chopping it up. In reality, Erlang is a little more object-oriented than [Joe](http://armstrongonsoftware.blogspot.ca/) would have you believe. There is a bit of chopping involved, but only because we wrote the initial `echo` module without thinking about this situation. First off, its API needs to change to accept a process, rather than assuming one named the same as the `?MODULE`.
 
@@ -260,6 +260,7 @@ Thus endeth the lesson. Next time, I'll put together some more authentication th
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Thu-Jul-05-231940EDT-2012"></a>[|back|](#note-Thu-Jul-05-231940EDT-2012) - Which I just linked to despite the fact, because you should definitely use it if it works for you.
 
 2 - <a name="foot-Thu-Jul-05-232400EDT-2012"></a>[|back|](#note-Thu-Jul-05-232400EDT-2012) - If you specify processes and modules in your `.app` that don't actually get loaded by the supervisors, for example, it doesn't complain.

@@ -136,22 +136,24 @@ var mdCache = make(map[string]Cached)
 
 func ProcessMarkdown (mdFile string) ([]byte, error) {
 	cache, present := mdCache[mdFile]
-	if present && (time.Minute > time.Since(cache.lastChecked)) {
+	if present && (CacheLimit > time.Since(cache.lastChecked)) {
 		return cache.contents, nil
 	} 
 	
 	stat, err := os.Stat(mdFile)
 	if err != nil { return nil, err }
 	if present && (cache.lastEdited == stat.ModTime()) {
+		// Just doing `cache.lastChecked = time.Now()` doesn't do what you'd expect
 		mdCache[mdFile] = Cached{cache.contents, time.Now(), cache.lastEdited}
 		return cache.contents, nil
-	} else {
-		f, err := ioutil.ReadFile(mdFile)
-		if err != nil { return nil, err }
-		unsafe := blackfriday.MarkdownCommon([]byte(f))
-		mdCache[mdFile] = Cached{bluemonday.UGCPolicy().SanitizeBytes(unsafe), time.Now(), stat.ModTime()}
-		return mdCache[mdFile].contents, nil
-	}
+	} 
+
+	f, err := ioutil.ReadFile(mdFile)
+	if err != nil { return nil, err }
+
+	unsafe := blackfriday.MarkdownCommon([]byte(f))
+	mdCache[mdFile] = Cached{bluemonday.UGCPolicy().SanitizeBytes(unsafe), time.Now(), stat.ModTime()}
+	return mdCache[mdFile].contents, nil
 }
 
 ////////////////////

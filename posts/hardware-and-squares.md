@@ -8,7 +8,7 @@ First impressions are ok.
 
 I'm not going to endorse SATA3 for anyone, because it's honestly not a mind-blowing change. I mean load times are noticeably faster, but the difference isn't anything like what you get from switching to a SATA2 SSD from a traditional platter drive. If you end up trading up to this from one of the slower SSDs, be prepared to hear yourself say "Oh, that's nice" rather than "This is fucking glorious". Honestly, my purchase was a result of the fact that this sale price came under my may-as-well threshold for hardware and that my previous HD was *literally* held in by rubber stoppers and electrical tape.
 
-## Dissecting Squares
+## <a name="dissecting-squares"></a>Dissecting Squares
 
 I'm blaming [Dann](http://www.meetup.com/Toronto-Code-Retreat/members/2372148/) for this one [again](http://langnostic.blogspot.ca/2012/12/life-common-lisp-haskell-and-clojure.html). Here's the problem we decided to go after for this months' [Toronto Code Retreat](http://www.meetup.com/Toronto-Code-Retreat/):
 
@@ -70,6 +70,7 @@ And how they fit into each other.
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Fri-Apr-19-210429EDT-2013"></a>[|back|](#note-Fri-Apr-19-210429EDT-2013) - A proof that it's an NP-complete problem in the general case would also be noteworthy apparently.
 
 2 - <a name="foot-Fri-Apr-19-210437EDT-2013"></a>[|back|](#note-Fri-Apr-19-210437EDT-2013) - That is, taking the list of all dissections of a given grid size and filtering out the rotationally/reflectively unique ones.

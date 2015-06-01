@@ -10,7 +10,7 @@ We've been doing [Flow Based Programming](http://en.wikipedia.org/wiki/Flow-base
 
 This is heading off topic. Once more, *with feeling*
 
-### Flow Based Programming in Common Lisp
+### <a name="flow-based-programming-in-common-lisp"></a>Flow Based Programming in Common Lisp
 
 I'm not sure what I think about it yet. Lets just be clear about that up-front. You'll find plenty of FBP True Believers on the appropriate [Google group](https://groups.google.com/forum/#!forum/flow-based-programming)<a name="note-Wed-Nov-06-161759EST-2013"></a>[|1|](#foot-Wed-Nov-06-161759EST-2013), but I am not one of those. The fact that I'm willing to throw a couple years behind the idea implies curiosity, nothing more.
 
@@ -30,7 +30,7 @@ and finally, here's what it looks like when we add sessions into the mix
 
 The above is by far the most useful set of images I've got for understanding what's actually going on behind the scenes of a page-view. I've worked through the principles in multiple languages and spent quite a bit of time thinking about it, but until I sat down to draw it out, it didn't feel like I *really* understood what needed to be done. You probably don't know the same languages I do, but the above is still likely intelligible to you. So that's why I'm curious.
 
-### Flow Based Programming vs. Functional Programming
+### <a name="flow-based-programming-vs-functional-programming"></a>Flow Based Programming vs. Functional Programming
 
 Before I go, I want to tackle this, because several people I've talked to have gotten tripped up in the comparison. Including me. I ended up deleting a few lines from this post that said
 
@@ -90,6 +90,7 @@ Second, note that there's nothing in this system about the timing of `bar` and `
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Wed-Nov-06-161759EST-2013"></a>[|back|](#note-Wed-Nov-06-161759EST-2013) - Currently mostly Javascripters thanks to the hype surrounding [noflo](http://noflojs.org/).
 
 2 - <a name="foot-Wed-Nov-06-161805EST-2013"></a>[|back|](#note-Wed-Nov-06-161805EST-2013) - Assuming the programmer hasn't done something "clever" with global variables, `goto`s or `comefrom`s.

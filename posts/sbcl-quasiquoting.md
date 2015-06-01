@@ -2,7 +2,7 @@ I needed to make a note of this, because I've just tried running [`fact-base`](h
 
 This is because of the `1.2.2` change in "internal representation" of the `backquote` reader macro. [Enough](http://christophe.rhodes.io/notes/blog/posts/2014/backquote_and_pretty_printing/) metaphorical ink [has](http://christophe.rhodes.io/notes/blog/posts/2014/naive_vs_proper_code-walking/) been spilled on this that I don't particularly care to add much more. But. I need to point out a couple of things about the situation.
 
-## Trees That Aren't
+## <a name="trees-that-arent"></a>Trees That Aren't
 
 So here's something to consider
 
@@ -94,13 +94,13 @@ If I take his reasoning at face value, there seem to be two legitimate ways to d
 
 Both of those seem ridiculous<a name="note-Sat-Feb-21-103325EST-2015"></a>[|1|](#foot-Sat-Feb-21-103325EST-2015). Both are going to introduce<a name="note-Sat-Feb-21-103350EST-2015"></a>[|2|](#foot-Sat-Feb-21-103350EST-2015) errors into existing code, and either complexity or redundancy into new code, for the purpose of getting some guarantees about edge-case behavior in certain fairly specialized situations. Which honestly doesn't sound like a very good trade.
 
-## Internal Representations That Leak
+## <a name="internal-representations-that-leak"></a>Internal Representations That Leak
 
 If you make a change to the "internal representation" of something, it sounds as if you're implying that a user can expect to use it as before without seeing the difference.
 
 That is not the case for this particular change, as demonstrated above. And calling it "internal" is, at the very least, playing fast and loose with the meaning of the word. This is an externally visible, compatibility-breaking change with other Common Lisp implementations. That may or may not be the right thing to do in a particular situation. But given that users can clearly see the difference between representations from the outside, I'm confused as to why the nature of the change is in question.
 
-## A Conclusion That Doesn't
+## <a name="a-conclusion-that-doesnt"></a>A Conclusion That Doesn't
 
 There really isn't a good one for me.
 
@@ -113,6 +113,7 @@ The reason I decided to pull down the `nix` version of SBCL and test out `for-al
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Sat-Feb-21-103325EST-2015"></a>[|back|](#note-Sat-Feb-21-103325EST-2015) - In the context of Common Lisp, at least. I'd fully expect that kind of conceptual separation in Haskell, ML, or a member of the ML family. But if I pick up Common Lisp, I'm very deliberately *not* picking up any of those tools. And *here*, it's kind of preposterous that such a distinction should be the default.
 
 2 - <a name="foot-Sat-Feb-21-103350EST-2015"></a>[|back|](#note-Sat-Feb-21-103350EST-2015) - Some would say, "detect previously undetected errors", but I'm not convinced there aren't false positives in the mix.

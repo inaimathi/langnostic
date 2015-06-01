@@ -53,6 +53,7 @@ The thing that ended up surprisingly helping is the fact that `CodeMirror`s curs
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Thu-Aug-14-173707EDT-2014"></a>[|back|](#note-Thu-Aug-14-173707EDT-2014) - Well, the next `cl-notebook`-related thing on my plate. I'm quite likely to cut over to [AOSA work](https://github.com/Inaimathi/500lines/blob/master/event-driven-web-server/writeup.md) for the next while, but you know what I mean dammit.
 
 2 - <a name="foot-Thu-Aug-14-173713EDT-2014"></a>[|back|](#note-Thu-Aug-14-173713EDT-2014) - This ended up hanging Firefox a few times in testing before I figured out what to do about it. If you're wondering, the `stream` thing holds "most annoying".

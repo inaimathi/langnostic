@@ -1,6 +1,6 @@
 This is going to be another three-part blog. Maybe 3.5, I'll see how it goes. You may want to leave after parts 1 or 2.
 
-### web-mote
+### <a name="webmote"></a>web-mote
 
 I've been working on a tiny little utility to marginally improve my life in an almost insignificant way.
 
@@ -14,7 +14,7 @@ Ok. Compiling and inserting that took almost as long as writing the actual code.
 
 Next step: figuring out how to [control the TV](http://superuser.com/questions/198709/cheap-simple-way-to-turn-tv-on-off-using-computer-and-or-windows-meda-center-rem) through wifi (though early research is not encouraging).
 
-### fingerquotes open
+### <a name="fingerquotes-open"></a>fingerquotes open
 
 This was just sort of depressing.
 

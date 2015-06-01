@@ -35,6 +35,7 @@ Such is development sometimes, I suppose.
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Sat-Nov-30-122522EST-2013"></a>[|back|](#note-Sat-Nov-30-122522EST-2013) - If you *are* going to have other active transformations, using the `setAttribute` method would overwrite those, which is why it's a bad idea.
 
 2 - <a name="foot-Sat-Nov-30-122530EST-2013"></a>[|back|](#note-Sat-Nov-30-122530EST-2013) - if you *are* doing that, I should point out that the only reason I went the `try`/`catch` route here is that both `=>>` and `=set-attribute` take either an element or a set of elements as their first argument, and I wanted `=translate` to do the same. Since you probably won't have the same situation, you're likely better off with `if`/`else`.

@@ -1,6 +1,6 @@
 Just as a heads up, this piece is brief reflection followed by dinner. No programming information, except perhaps metaphorically.
 
-### Short Ramble
+### <a name="short-ramble"></a>Short Ramble
 
 I'm sitting at home alone, sipping tea and listening to the almost-silence of the city with light [cello overtones](http://www.youtube.com/watch?v=dZn_VBgkPNY). My wife went to the cottage for a couple of weeks and took our kid with her, so the apartment is relatively peaceful for the first time in, oh, about a year. Now that I think about it, this is the first time in about seven or eight years that I'm spending any serious alone-time.
 
@@ -12,7 +12,7 @@ Or rather, I started, then discovered that it was too hard to take myself seriou
 
 And having run smack into my own snarky sense of self-doubt, it became clear that it would be more fun to be doing something other than sitting here. I was going to head over to the local [Pho](http://en.wikipedia.org/wiki/Pho) place for food, but lets put these hands to good use.
 
-### Almost Literate Cooking
+### <a name="almost-literate-cooking"></a>Almost Literate Cooking
 
 I've got a tag on this blog called `[almost-literate-programming](http://langnostic.blogspot.ca/search/label/Almost%20Literate%20Programming)`. It's not what I write most because it takes quite a bit of effort to slice a program thinly and accurately enough to label its insides for others' consumption, but it's up in the top five<a name="note-Sun-Jun-09-213650EDT-2013"></a>[|1|](#foot-Sun-Jun-09-213650EDT-2013). I'm going to try something similar here.
 
@@ -142,6 +142,7 @@ See you next time.
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Sun-Jun-09-213650EDT-2013"></a>[|back|](#note-Sun-Jun-09-213650EDT-2013) - If you don't count the language-specific tags, anyways.
 
 2 - <a name="foot-Sun-Jun-09-213654EDT-2013"></a>[|back|](#note-Sun-Jun-09-213654EDT-2013) - Store-bought, as it happens, but nothing's stopping you from making your own<a name="note-Sun-Jun-09-213708EDT-2013"></a>[|3|](#foot-Sun-Jun-09-213708EDT-2013).

@@ -2,7 +2,7 @@ So I got a [new keyboard](http://elitekeyboards.com/products.php?sub=topre_keybo
 
 All told, it ran me something in the area of $250. Not sure I consider it worth it, but I've only really typed on it for a solid day so far, so that's probably not enough experience to make a call about it. So far, my impression is that it *is* an improvement over the Cherry MX blues I've tried, but not quite ~$150 worth of improvement. If you've got some cash burning a hole in your pocket, and a need for more comfortable typing, I can heartily recommend it to you. It's very comfy, the Topre keys feel great, there's dip-switch support for swapping the Caps Lock and left Ctrl keys<a name="note-Sat-Aug-10-172026EDT-2013"></a>[|1|](#foot-Sat-Aug-10-172026EDT-2013). It also costs quite a bit less than the [HHK2](http://elitekeyboards.com/products.php?sub=pfu_keyboards,hhkbpro2&pid=pdkb400wns), which I would totally order if someone dumped a million dollars on me tomorrow, but as it stands, $400 is out of my price-range for a keyboard.
 
-### Forthlike
+### <a name="forthlike"></a>Forthlike
 
 Nothing serious here, just some thinking and playing I've been doing.
 
@@ -214,6 +214,7 @@ It's a pretty featureful little toy for three hours of work. I may come back to 
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Sat-Aug-10-172026EDT-2013"></a>[|back|](#note-Sat-Aug-10-172026EDT-2013) - As well as a replacement keycap for your Caps Lock, if you go that route.
 
 2 - <a name="foot-Sat-Aug-10-172030EDT-2013"></a>[|back|](#note-Sat-Aug-10-172030EDT-2013) - Though using Lisp to implement something not unlike Forth feels a little bit like cheating.

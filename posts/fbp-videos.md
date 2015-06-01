@@ -16,6 +16,7 @@ There were no videos from the second meetup<a name="note-Wed-Nov-13-164000EST-20
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Wed-Nov-13-164000EST-2013"></a>[|back|](#note-Wed-Nov-13-164000EST-2013) - We basically had a giant whiteboarding session.
 
 2 - <a name="foot-Wed-Nov-13-164003EST-2013"></a>[|back|](#note-Wed-Nov-13-164003EST-2013) - We've got Paul T. talking about visual compilation, and Jo'sh talking about the [Drakon](http://drakon-editor.sourceforge.net/) editor.

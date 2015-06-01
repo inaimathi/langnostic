@@ -4,7 +4,7 @@ Ok, this isn't actually all Erlang. In fact, by line-count, it's a Postscript pr
 
 What I'm doing isn't quite the [LP that Knuth advocates](http://www.literateprogramming.com/) because it doesn't self-extract, share space with the executable source, or make use of variable labels to automatically update certain portions. However, it still gains me considerable reflective clarity about what the goal of the program is, and it hopefully conveys the essence to whoever happens to be reading. With that out of the way...
 
-### Generating Barcodes
+### <a name="generating-barcodes"></a>Generating Barcodes
 
 As you may have noticed from the above links, there already exists a [Postscript-based barcode generator](https://code.google.com/p/postscriptbarcode/) which I'm going to use pretty shamelessly in order to generate bitmap barcodes of various descriptions. Taking a look at the [actual code](https://code.google.com/p/postscriptbarcode/downloads/detail?name=barcode-2012-04-26.ps) for that generator should make it obvious that you probably *don't* want to just echo the entire system every time you need to generate something<a name="note-Tue-May-15-220424EDT-2012"></a>[|1|](#foot-Tue-May-15-220424EDT-2012). We'll get to that though, lets start from the system side first. This is what a `.app` declaration looks like in Erlang
 
@@ -507,7 +507,7 @@ This is a set of exported functions to let outside modules easily interact with 
 
 Whew! At the risk of pulling a Yegge, this piece is turning out *a lot* longer than I though it was going to be. Lets get it wrapped up quickly.
 
-### Nitrogen
+### <a name="nitrogen"></a>Nitrogen
 
 [Nitrogen](http://nitrogenproject.com/) is an Erlang web framework I've been playing with. I won't explain it in depth, just use it to show you how you'd go about invoking the above program for realsies. In fact, here's a `nitrogen/rel/nitrogen/site/src/index.erl` that will call out to `ps_barcode` to generate a barcode based on user input and let them download the bitmap and Postscript file:
 
@@ -597,6 +597,7 @@ It's actually just a minimally modified version of the default `index.erl` file 
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Tue-May-15-220424EDT-2012"></a>[|back|](#note-Tue-May-15-220424EDT-2012) - The complete file is 17111 lines, and we really only need about 800-1200 at the outside to generate a single specific barcode.
 
 2 - <a name="foot-Tue-May-15-220604EDT-2012"></a>[|back|](#note-Tue-May-15-220604EDT-2012) - Incidentally, I didn't do this first. I sort of wish I had in retrospect, because it would have saved me some dicking around with `erl`, but I actually wrote the code first, then wrote the above based on it. Also incidentally, a lot of it doesn't seem like much of it will change on a project-by-project basis. That tells me that we're either working with the wrong abstractions, or there are tricky things you can do at this stage that I haven't yet grasped. It also tells me that I should probably write some generation scripts for it.

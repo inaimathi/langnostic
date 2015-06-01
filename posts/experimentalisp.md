@@ -1,6 +1,6 @@
 So [here's](https://github.com/Inaimathi/experimentalisp) something I poured a few days into so far. It's because I'm curious about a few things, and it seemed like a good idea at the time. Here's what I've found out so far:
 
-## Manual Memory Management Sucks Balls
+## <a name="manual-memory-management-sucks-balls"></a>Manual Memory Management Sucks Balls
 
 In [a previous piece](/article?name=write-myself-a-scheme.html), I mentioned that a C implementation of a simple LISP ran something like 1600 lines of code. Firstly, that 1600 lines still has some odd corners; the finished implementation is going to be closer to 2k. Secondly, the vast majority of it concerns itself with memory layout. It turns out that just cutting out memory management, and relying on the underlying platforms' ability to optimize tail calls gets rid of most of the complexity.
 
@@ -25,7 +25,7 @@ and lest you say "Well of course it's more concise to implement a LISP *in* a LI
 
 Granted, the [Racket](racket-lang.org/) version currently has a slight edge on features, but when I get around to experimenting heavily with reader macros, I'll have to re-implement most of the built-in reader to support them properly. At that point we'll be in a situation where a LISP-in-Racket is about as verbose as a LISP-in-Haskell, so it's not just that my substrate has s-expressions this time. The situation supports an off-handed comment I heard that most of the hard work of a Scheme-like is in the memory manager, and in making sure tail calls are optimized properly.
 
-## Partials And Rest Args Might Get Along
+## <a name="partials-and-rest-args-might-get-along"></a>Partials And Rest Args Might Get Along
 
 Still speculative, since I haven't gotten around to mixing them yet, but here's what we've got in the Racket implementation
 
@@ -160,7 +160,7 @@ Now. I'm not sure this is the correct model for partials. That's sort of the poi
 
 you *could* do `((foo 5) 6)`, or `((foo 5) 6 7 8 9 10)` or even `(foo 5 6 7 8 9 10)`. You just couldn't do `((foo 5 6) 7 8 9 10)` because `(foo 5 6)` is already a complete application, and will therefore be evaluated to its result before getting the rest of the arguments passed<a name="note-Fri-Dec-12-094216EST-2014"></a>[|1|](#foot-Fri-Dec-12-094216EST-2014).
 
-## Fexprs Are Surprisingly Easy
+## <a name="fexprs-are-surprisingly-easy"></a>Fexprs Are Surprisingly Easy
 
 It's about a four-line change to a `fexpr`-less scheme interpreter to add in `fexpr` support. You already saw them in scheme up above, in the exp-apply function. So lets take a look at the Haskell version, just to keep you on your toes
 
@@ -192,7 +192,7 @@ If you're applying a `Fexpr` to some arguments, you're going to pass it the **un
 
 This *isn't* [what macros are](http://axisofeval.blogspot.ca/2010/07/whats-phase-separation-and-when-do-you.html). The main difference being that macros literally don't exist at run time. Which is why they're overall more efficient, and why you have problems when you try to `(apply and {args})` in most LISPs.
 
-## LISP Interpreters are Fundamentally Effectful
+## <a name="lisp-interpreters-are-fundamentally-effectful"></a>LISP Interpreters are Fundamentally Effectful
 
 Lets take a closer look at that Haskell implementation of `apply`
 
@@ -296,6 +296,7 @@ Stay tuned I guess?
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Fri-Dec-12-094216EST-2014"></a>[|back|](#note-Fri-Dec-12-094216EST-2014) - It might be possible to do even better by doing a type inference pass first, actually. At that point, you'd know that in the expression `((foo 5 6) 7 8 9 10)`, the `(foo 5 6)` has to be callable, since it's being called with more arguments, so you might be able to finangle that as well. I'm just not at all sure you could get that level of insight in anything but the simplest examples.
 
 2 - <a name="foot-Fri-Dec-12-094240EST-2014"></a>[|back|](#note-Fri-Dec-12-094240EST-2014) - The [Forth](https://github.com/chengchangwu/jonesforth/blob/master/jonesforth.S#L166-L225) one, in case you were curious.

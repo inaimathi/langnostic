@@ -2,7 +2,7 @@ Fuck it.
 
 I can't show you the insides, but I can damn well talk about it. And I kinda have to, because there are already a few things that surprised me while writing my own LISP in C implementation, and a couple of things I need to make decisions on before making more progress.
 
-### It's Easier Than You Think
+### <a name="its-easier-than-you-think"></a>It's Easier Than You Think
 
 Seriously.
 
@@ -22,7 +22,7 @@ See, if you discount leading `-` signs, you can pretty much write a full LISP re
 
 Unless it's acceptable that users can't enter negative number literals, you have to deal with this ambiguity. I *don't* think it's acceptable, but the only way it would be was if we had a specific negation procedure. And *that* semi-leads us into part one of what I'm considering right now.
 
-### The ROI of Variadic Functions
+### <a name="the-roi-of-variadic-functions"></a>The ROI of Variadic Functions
 
 In the vast majority<a name="note-Mon-Dec-01-211224EST-2014"></a>[|2|](#foot-Mon-Dec-01-211224EST-2014) of LISP interpreters available today, you can do this:
 
@@ -52,7 +52,7 @@ It's worth noting that even this basic kind of composition feels mildly restrict
 
 Optional arguments are useful in that they allow you to punch your future self *directly in the mouth* during the prototyping phases of most projects. And I've sort of been trying to avoid being too hard on future me lately. He's got enough problems. So it wouldn't particularly hurt to lose those. Anywhere you could put an optional argument, you could instead put a keyword argument. And *those* are worth their weight in gold in terms of maintaining compatibility with future instances of the same function. However, I can sort of imagine a system wherein you *could* implicitly partially apply key args<a name="note-Mon-Dec-01-211345EST-2014"></a>[|4|](#foot-Mon-Dec-01-211345EST-2014), so I'm unsure that the features can't coexist. I'll let you know how it goes, I guess.
 
-### Part Two
+### <a name="part-two"></a>Part Two
 
 I mentioned earlier that contemplating the `rest`-args vs. implicit partial application dichotomy was *part one* of the things I'm considering. Here's another:
 
@@ -86,7 +86,7 @@ If I go route 1, suddenly checks against these symbols get expensive<a name="not
 
 Route 2 has the property that the definition of memory gets incidentally cumbersome. Suddenly there are a bunch more names I need to keep around outside of the scope of regular memory, and I need to make sure to mark each of them on every garbage collector pass. Woo. Not only that, but it suddenly gets really tricky to have a local variable named `quote`, and outright *dangerous* to have one named `unquote` or `splice`, because they'll share symbol identity with the built ins and behave radically differently in certain contexts.
 
-### Part Three
+### <a name="part-three"></a>Part Three
 
 I've been reading up on [Standard ML](http://sml-family.org/) lately. I think I have to learn it. If for no reason other than that the most vocal ML critics tend to be ML developers and designers, and that's something I have to respect. One of the papers linked from that SML page is entitled ["A Critique of Standard ML"](http://sml-family.org/papers/Appel-critique-SML.pdf), written by [Andrew Appel](https://en.wikipedia.org/wiki/Andrew_Appel), and goes over some of the positive and negative points with the Standard ML language.
 
@@ -116,6 +116,7 @@ That, possibly along with some comments about `quote`/`unquote`/`splice` impleme
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Mon-Dec-01-211220EST-2014"></a>[|back|](#note-Mon-Dec-01-211220EST-2014) - And equivalent operations for non-stream structures you want to read from.
 
 2 - <a name="foot-Mon-Dec-01-211224EST-2014"></a>[|back|](#note-Mon-Dec-01-211224EST-2014) - I can't say "all", both because I'm sure there's an experimental LISP out there that doesn't let you, *and* because if you read far enough into this article, you'll realize that I'm basically proposing to build such a LISP. Still, every Common Lisp and Scheme implementation, as well as AFAIK most of the mongrels have the same behavior.

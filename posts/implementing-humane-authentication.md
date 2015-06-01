@@ -171,7 +171,7 @@ Finally, `fresh-passphrase` does the job of calling `random-words`, concatenatin
 
 That's it. Again, what I see here is reasonable security.
 
-### Thoughts
+### <a name="thoughts"></a>Thoughts
 
 On the one hand, you don't get to salt passphrase hashes. Which means that if anyone manages to trick a user of this auth system into revealing their ciphertexts, they'll have a mildly easier time cracking the result. And, since every passphrase is unique, they can knock out some tiny number of possibilities as they go. You also can't easily change your hashing tactic in-flight. Hypothetically, if you chose the iterated `:sha256` approach from above, and it then turned out that clever people found ways to compromise that hash, you wouldn't be able to switch your tactics on a live system easily, the way you could with a user-name-oriented system. You *would* be able to increase the number of hashings fairly easily; just modify your `hash` to do more iterations, and modify your registered users' passwords to make up the difference.
 
@@ -183,4 +183,5 @@ The only other downsides seem to be that you can't choose a passphrase, and that
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Sat-Dec-14-125727EST-2013"></a>[|back|](#note-Sat-Dec-14-125727EST-2013) -  *Because* it's a hash table, and I don't bother doing any kind of locking, the system you see specified here very likely won't do for any multi-threaded use-cases. You can either add locks, or go the whole nine and replace that hash table with an external database, but I don't need either to see the basic properties of the system, so I didn't implement them.

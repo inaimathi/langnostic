@@ -30,6 +30,7 @@ Steven... I disagree. And I won't be adopting your thought framework until you c
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Sat-Aug-11-153625EDT-2012"></a>[|back|](#note-Sat-Aug-11-153625EDT-2012) - If you take a look at the [HN](http://news.ycombinator.com/item?id=4365255), [/.](http://developers.slashdot.org/story/12/08/10/1250231/software-engineering-has-its-own-political-axis-from-conservative-to-liberal) and [G+](https://plus.google.com/110981030061712822816/posts/KaSKeg4vQtz) discussions, you'll already see people conflating the political meanings with the proposed software-oriented labels. Less so on slashdot, where most seem to simply dismiss the point of view, but there's a comment on the Google Plus page that reads 
 
   Dynamic typing has been shown through research to reduce maintainability compared to static typing. 

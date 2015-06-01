@@ -8,7 +8,7 @@ Well, I'm not going to say "[delivered](https://github.com/Inaimathi/clomments)"
 
 I won't try to go over any of the code, that was through [the github link](https://github.com/Inaimathi/clomments), in case you missed [it](https://github.com/Inaimathi/clomments), but I want to formalize a little of my thought process on where this actually needs to go to be a real competitor, just so that I can remember when I go back to work on it this weekend.
 
-### The Idea
+### <a name="the-idea"></a>The Idea
 
 Is, simply enough, to offload the comment system for a given page to a third party server. Either so that the maintainer of that page doesn't have to fart around with databases, or for that extra performance kick (since the first server no longer needs to serve up dynamic content at all), or because software as a service is in again, I really don't know. 
 

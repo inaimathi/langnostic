@@ -24,6 +24,7 @@ I was also going to talk a little bit about fact bases, and the inherent strengt
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Tue-Nov-26-232106EST-2013"></a>[|back|](#note-Tue-Nov-26-232106EST-2013) - Har har, aren't I droll.
 
 2 - <a name="foot-Tue-Nov-26-232113EST-2013"></a>[|back|](#note-Tue-Nov-26-232113EST-2013) - Except for UI purposes, obviously. The various selection/manipulation layers are going to have distinct visual cues that rely on color, but I don't count these as part of the diagram proper, even though they may be visually associated.

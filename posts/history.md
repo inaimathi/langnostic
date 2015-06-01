@@ -106,6 +106,7 @@ I'll let you know if I figure anything out.
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Thu-Oct-02-222843EDT-2014"></a>[|back|](#note-Thu-Oct-02-222843EDT-2014) - In fact, if I wanted to *really* generalize `newEvent`, it would instead have the signature `newEvent :: Show b => Archive a b -> a -> Event b -> (Event b -> IO ()) -> IO a`. Which would then let you do some mildly crazy things. Like, for instance, using this with the [Haste compiler](http://haste-lang.org/) to set up a client-side database that sends off write requests via [Ajax](http://hackage.haskell.org/package/haste-compiler-0.2.99/docs/Haste-Ajax.html). Left as an exercise for the reader, or perhaps a mildly bored future self.
 
 2 - <a name="foot-Thu-Oct-02-224232EDT-2014"></a>[|back|](#note-Thu-Oct-02-224232EDT-2014) - Assuming they were ok with the assumption, of course.

@@ -4,7 +4,7 @@ I think.
 
 I'm not actually sure because I've been under enough stress on enough different fronts lately that I'm not sure I can reckon time accurately, other than to sequence it. This isn't going to contain any kind of big insight; I'm thinking about various [macro-expansion](https://github.com/Inaimathi/cl-notebook) and [edge-detection](https://github.com/Inaimathi/edgy)-related things, but I'm saving the interesting details for their own articles once the relevant work is *"done"* rather than merely *"in progress"*. The following is just a quick brain-dump of stuff that's been on my mind lately.
 
-## Dead Bitmaps 2: Rise of the Ellipses
+## <a name="dead-bitmaps-rise-of-the-ellipses"></a>Dead Bitmaps 2: Rise of the Ellipses
 
 I'm starting to think about ellipse finding. And, at the urging of some members of the <a name="note-Tue-Nov-25-111814EST-2014"></a>[|1|](https://groups.google.com/forum/#!forum/toronto-haskell">Toronto Haskell User Group</a>, shape finding in general. The pre-beta cut of the code which will find an ellipse in a region is [up at github](https://github.com/Inaimathi/edgy/blob/master/ShapeDetection.hs). Essentially, we take a region, find its center, plot an ellipse based on that[](#foot-Tue-Nov-25-111814EST-2014), and check perimeter coordinates at ~10 degree intervals. If we get three consecutive misses, or 10 total misses<a name="note-Tue-Nov-25-111818EST-2014)[|2|](#foot-Tue-Nov-25-111818EST-2014), we can discount that region as an ellipse and go do our regular line-detection routine on it.
 
@@ -18,7 +18,7 @@ It's surprising to me that this seems to be standard practice in computer vision
 
 It feels like there should be a better way. Like it should be possible to sieve meaning directly out of a color map, without having an expectation of what you'll see there. But if pressed, I confess I couldn't tell you how.
 
-## Garbage Collection
+## <a name="garbage-collection"></a>Garbage Collection
 
 Having studied a few tracers<a name="note-Tue-Nov-25-111822EST-2014"></a>[|3|](#foot-Tue-Nov-25-111822EST-2014), it's at once obvious why they emerged in Lisp systems, why Lisp had the reputation of being slow to begin with, and why the "everything is a list" myth continues despite its factual incorrectness. It turns out that if you commit to a one-size-fits-all data structure<a name="note-Tue-Nov-25-111842EST-2014"></a>[|4|](#foot-Tue-Nov-25-111842EST-2014), decide that you don't care at all about data locality<a name="note-Tue-Nov-25-111848EST-2014"></a>[|5|](#foot-Tue-Nov-25-111848EST-2014), and don't optimize anything, you can write a working tracer in just over 300 lines of C. I can't see a generational or copying approach pushing this past about 500 or 600 lines. You wouldn't want to try doing any kind of high-performance computing this way, but if your primary concern is security<a name="note-Tue-Nov-25-111852EST-2014"></a>[|6|](#foot-Tue-Nov-25-111852EST-2014) this starts looking like a pretty good idea.
 
@@ -26,7 +26,7 @@ The problem is, contiguous memory vectors are *really good* for performance, and
 
 The point being: the naive way of building tracers plays exactly to Lisp's conceptual tropes, and gives you "slow" code. "Duh", when you think about it.
 
-## Composability and Cost Models
+## <a name="composability-and-cost-models"></a>Composability and Cost Models
 
 Conflicts I've observed between the Haskell and ML communities are about
 
@@ -54,12 +54,13 @@ As far as I know, the closest anyone's ever gotten to the first is Common Lisp's
 
 So I'm going to read through the linked papers, and see if I can understand the situation for myself. As always, I'll let you know how it goes.
 
-## Hal Abelson chats with the CompSci Cabal
+## <a name="hal-abelson-chats-with-the-compsci-cabal"></a>Hal Abelson chats with the CompSci Cabal
 
 This was fucking awesome. <a name="note-Tue-Nov-25-111906EST-2014"></a>[|9|](https://github.com/CompSciCabal">We</a>'re winding down reading the final chapters of [SICP](http://mitpress.mit.edu/sicp/full-text/book/book.html), also known as "Abelson and Sussman", and [Dann](https://github.com/dxnn) managed to get Hal Abelson to talk to us about what went into the book, what he thinks about CompSci teaching evolution over the past few decades, how building language interpreters helps you think about problems, and some of the things that surprised him about the industry. It was interesting enough that I don't think I could do it justice in a mere writeup, so I won't<a href="#foot-Tue-Nov-25-111906EST-2014). Just wanted to mention it as an excellent highlight.
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Tue-Nov-25-111814EST-2014"></a>[|back|](#note-Tue-Nov-25-111814EST-2014) - Later cuts will plot multiple ellipses with some tolerance and look for any complete ones, or alternately check a particular radius around each point.
 
 2 - <a name="foot-Tue-Nov-25-111818EST-2014"></a>[|back|](#note-Tue-Nov-25-111818EST-2014) - Actual thresholds subject to change.

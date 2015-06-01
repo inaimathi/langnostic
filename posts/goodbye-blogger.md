@@ -68,4 +68,5 @@ Now the only thing I have to do is figure out what I'm doing to get the hell awa
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Wed-May-28-112820EDT-2014"></a>[|back|](#note-Wed-May-28-112820EDT-2014) - This was a picture of a bike lock that I had hotlinked from the manufacturer's site. No, I don't feel bad about it, my blog never got anywhere near enough views to make this an issue.

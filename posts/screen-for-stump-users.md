@@ -22,7 +22,7 @@ Bottom line; I don't need a desktop environment anymore. I'm good with the plain
 
 I've been using [GNU Screen](http://www.gnu.org/s/screen/) as a way of deploying Lisp applications, but looking over the [keybindings](http://www.gnu.org/software/screen/manual/html_node/Default-Key-Bindings.html) and `man` page, it looks like it can serve as a respectable alternative to a tiling window manager.
 
-### Screen WM
+### <a name="screen-wm"></a>Screen WM
 
 The default control combination is `C-a` instead of `C-t`, and the keys are significantly different, and you can't extend it in Lisp<a name="note-Thu-Oct-06-114732EDT-2011"></a>[|4|](#foot-Thu-Oct-06-114732EDT-2011), but it looks like a fairly simple `.screenrc` file can turn it into Stump-Lite. Here's a quick breakdown, assuming the default bindings:
 

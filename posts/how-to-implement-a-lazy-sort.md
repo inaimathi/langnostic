@@ -8,7 +8,7 @@ It has certain characteristics which seem intrinsic to sorts that prevent it fro
 
 The end result is a sort function that defers a lot of its work, and does save you a lot of time if you only happen to want the first bit of a list sorted, *and* it even saves you a little bit of time if you want to run several lazy functions in succession on its output, but it doesn't quite do enough to get the label "lazy" without a massive asterisk next to it.
 
-### How to implement a lazy* sort
+### <a name="how-to-implement-a-lazy-sort"></a>How to implement a lazy* sort
 
 First up, here's the Python code.
 
@@ -146,7 +146,7 @@ Oh, before anyone gets the wrong idea
 
 My stupid little heapsort implementation isn't meant to showcase how slow Python is or anything like that. It's a learning exercise to show how you'd go about implementing a deferred sort in principle, not go into the nuts-and-bolts tuning process that comes once you've got your algorithm and data structures down. In other words, see it as a direct comparison of a shitty sort to the equivalent-except-lazy shitty sort.
 
-### Second verse, same as the first
+### <a name="second-verse-same-as-the-first"></a>Second verse, same as the first
 
 Except with more parentheses. And I actually try to think through the problem rather than mindlessly parroting back an algorithm outline pilfered from Wikipedia.
 
@@ -392,6 +392,7 @@ And that's that. As long as the Heap Property is respected, the next item by wha
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Thu-May-02-214518EDT-2013"></a>[|back|](#note-Thu-May-02-214518EDT-2013) - I don't incidentally, both the Python and Common Lisp code I'm going to show you use [generators](http://wiki.python.org/moin/Generators). That is, side-effect-dependent lazy sequences with the restriction that you can only traverse them once, mostly as a result of those side-effects.
 
 2 - <a name="foot-Thu-May-02-214521EDT-2013"></a>[|back|](#note-Thu-May-02-214521EDT-2013) - I've been saying "heapsort", though that's strictly speaking not the case. What you need for a lazy* sort is an intermediate structure that

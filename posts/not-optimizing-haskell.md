@@ -46,7 +46,7 @@ the filename of the profiling output."
 
 Those functions are both now part of my [ha-custom](https://github.com/Inaimathi/emacs-utils/blob/master/ha-custom.el) mode. The big one takes a Haskell file, compiles it to a tempfile with the appropriate flags, runs the result with the other appropriate flags, and returns the name of the profiling output file. The little function takes the current buffer and runs it through the big one, then opens the result in a new window. That should make it a bit easier to actually do the profiling.
 
-### Actually Profiling Haskell
+### <a name="actually-profiling-haskell"></a>Actually Profiling Haskell
 
 We started with pretty much the same thing as the Lisp code. And, I'll strip the printing elements again for the purposes of this exercise; we're not interested in how inefficient it is to actually produce a grid based on our model of the world.
 
@@ -167,7 +167,7 @@ lifeStep.inR       Main      2.9    0.0
 
 Granted, `inRange` is on the map as a cost center, but this shaved ~28 seconds off the final run time, I'm gonna call that fair enough. Given the numbers we were posting yesterday, I'm almost tempted to call this good enough. Lets see where it all goes, shall we? Step size of
 
-### 50
+### <a name=""></a>50
 
 ```
         Fri Dec 14 22:06 2012 Time and Allocation Profiling Report  (Final)
@@ -190,7 +190,7 @@ lifeStep.inR       Main      3.4    0.0
 
 We've seen 5000 already, so
 
-### 50 000
+### <a name=""></a>50 000
 
 ```
         Fri Dec 14 22:07 2012 Time and Allocation Profiling Report  (Final)
@@ -211,7 +211,7 @@ lifeStep.inSize    Main        3.8    6.0
 lifeStep.inR       Main        2.4    0.0
 ```
 
-### 5 000 000
+### <a name=""></a>5 000 000
 
 ```
         Fri Dec 14 22:37 2012 Time and Allocation Profiling Report  (Final)
@@ -336,7 +336,7 @@ main = printLife 50 gosperGliderGun
 
 Ok, lets rev this sucker up.
 
-### 50
+### <a name=""></a>50
 
 ```
         Fri Dec 14 22:29 2012 Time and Allocation Profiling Report  (Final)
@@ -355,7 +355,7 @@ count       Main      3.5    0.8
 life        Main      2.0    3.9
 ```
 
-### 5000
+### <a name=""></a>5000
 
 ```
         Fri Dec 14 22:32 2012 Time and Allocation Profiling Report  (Final)
@@ -503,6 +503,7 @@ Oh. And heal up.
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Fri-Dec-14-232656EST-2012"></a>[|back|](#note-Fri-Dec-14-232656EST-2012) -  (by the way, this makes clear that whatever the performance comparisons come down to, the gridless version has a more elegant notation)
 
 2 - <a name="foot-Fri-Dec-14-232729EST-2012"></a>[|back|](#note-Fri-Dec-14-232729EST-2012) -  (though the limited-size version and the gridded competitor will be checked in)

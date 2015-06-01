@@ -68,7 +68,7 @@ res
 
 Don't worry; there's a way around this which I'll discuss later. After the event, I made a few refinements and got it up to
 
-### The Second Crack
+### <a name="the-second-crack"></a>The Second Crack
 
 ```rebol
 REBOL []
@@ -180,7 +180,7 @@ res
 
 Anyhow, it technically runs. As long as you don't nest `map` or `frequency` calls. After a trip over to the [Rebol/Red chat room on SO](http://chat.stackoverflow.com/rooms/291/rebol-and-red) for some quick review by actual rebollers<a name="note-Sat-Jul-27-122340EDT-2013"></a>[|3|](#foot-Sat-Jul-27-122340EDT-2013), I got to
 
-### The Third Crack
+### <a name="the-third-crack"></a>The Third Crack
 
 ```rebol
 REBOL []
@@ -315,7 +315,7 @@ In order to get the behavior you'd probably expect from plain `append`, you have
 > --Hostile Fork
 
 
-### Afermath
+### <a name="afermath"></a>Afermath
 
 So that's that. I didn't get to a working solution yet, because this script doesn't compare two hands to determine a winner (or a draw), and it doesn't handle the aces-low edge case, but I'll leave those as an exercise for the reader. It'll tell you what hand you have, and it can elegantly read the specified input. At the language level, REBOL3 is interesting. And the community is both enthusiastic and smart. And I really hope the r2/3 transition gives them the excuse to clean up the few counter-intuitive things that slipped in over time. It's enough that I'm making an addition to the logo bar, which I don't do lightly<a name="note-Sat-Jul-27-122350EDT-2013"></a>[|4|](#foot-Sat-Jul-27-122350EDT-2013).
 
@@ -323,6 +323,7 @@ This series of tinkering had no particular cause. I was just playing around with
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Sat-Jul-27-122302EDT-2013"></a>[|back|](#note-Sat-Jul-27-122302EDT-2013) - Using `[poke](http://www.rebol.com/r3/docs/functions/poke.html)`, in case you're curious.
 
 2 - <a name="foot-Sat-Jul-27-122315EDT-2013"></a>[|back|](#note-Sat-Jul-27-122315EDT-2013) - What The Fuck You Fucker, Why Would You Ever Type That?

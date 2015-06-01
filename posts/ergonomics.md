@@ -12,11 +12,11 @@ There's this little slide-out sub-tray for the mouse, but since I have a tiny ke
 
 The only complaint I have is that Fellowes are fucking liars. In fact, *anyone* that tells you their keyboard tray has "easy installation" is a fucking liar, and you can tell them I said so. It was a pain in the ass. Granted, in this case it was worth it for the extra space and long-term comfort I got out of it, but there was significant short-term *dis*comfort.))
 
-### (define (office-follow-up)
+### <a name="define-officefollowup"></a>(define (office-follow-up)
 
 '(Almost done configuring my dev environment for work. It's been bearable for a few days actually, so I've managed to get some work done at least, but there's still kinks here and there. The current plan is to get everything I need together in one place (and for the record, it's about twice as much as the documentation would have me believe I need), then create a bootable flash-drive with a dev-environment shell script to take care of everything other than the OS installation. I should be able to announce a dev-environment-on-a-stick (with your choice of editor) next week.))
 
-### (define (update-emacs)
+### <a name="define-updateemacs"></a>(define (update-emacs)
 
 '(I'm still updating my .emacs and associated files. The other day, I finally got off my ass and installed [nXhtml mode](http://ourcomments.org/Emacs/nXhtml/doc/nxhtml.html). Which I'm not using right now, incidentally, I prefer the vanilla html-mode for my everyday editing, but nXhtml provides a lot of much-needed functionality for editing PHP, JSP and mixed HTML/JS/CSS files (I try to minimize that last group, but you still run across them sometimes).
 

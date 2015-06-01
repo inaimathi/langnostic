@@ -25,7 +25,7 @@ You'll note that I only managed the tiny benchmark for MySQL, and it's absent fr
 
 So lets do a rundown.
 
-### Obvious
+### <a name="obvious"></a>Obvious
 
 
 -   The vast majority of time spent inserting a user goes to generating the `scrypt` hash. This is obvious because of the huge difference between inserting an item and inserting a user. And, really, this is what you want in a real-world scenario. It should take fairly significant resources to try a password so as to make brute-forcing them a poor option, but in hindsight I could have saved myself a lot of time and compute by cutting that portion of user insertion across the board for benchmarking purposes.
@@ -35,7 +35,7 @@ So lets do a rundown.
 -   AcidState is an absolute fucking monster. The benchmarks it loses, it loses narrowly<a name="note-Sat-Mar-09-134319EST-2013"></a>[|1|](#foot-Sat-Mar-09-134319EST-2013), but the benchmarks it wins, it wins by an 8x or larger margin. Take special note that while the other engines bench in the high single/low double digit milliseconds, Acid consistently posts list and select numbers in the low double-digit *micro*seconds. Granted, insertion speed goes down a bit based on corpus size, but selection speed is always the same range of extremely low numbers. That's excellent for web applications, which tend to have a usage profile of "rare-ish insertions coupled with large and common lookups". It performs suspiciously well on selects. Well enough that I went back to GHCi and tried `mapM (getUserAcid acid) [40000..40050]` and `mapM_ (getUserAcid acid) [40000..45000]` on the large corpus, just to make sure it wasn't recording thunk time instead of actual result time. It isn't. An IxSet lookup is actually just that fast.
 
 
-### Not-So Obvious
+### <a name="notso-obvious"></a>Not-So Obvious
 
 There isn't as big a difference in code size as I was expecting. Honestly, I thought AcidState would be much chunkier than the competition, but it only turns out to be the longest by about 10 lines. This might be because I was determined to work with Haskell-style type declarations in each of the models. The reasoning there was that I'd typically be wanting to pull out data then convert it to some external data format after the fact<a name="note-Sat-Mar-09-134323EST-2013"></a>[|2|](#foot-Sat-Mar-09-134323EST-2013), so getting a record in a canonical typed format was going to happen sooner or later anyway. This ends up working hardest against MongoDB, where conversion from very loosely-typed k/v pairs ends up looking something like
 
@@ -62,7 +62,7 @@ MongoDB really *really* doesn't mesh with the Haskell way of doing things. I alr
 
 Finally, a hidden advantage that AcidState and to a lesser extent SQLite have is ease of deployment. The other engines all require some degree of setup beyond coding. MySQL needs an installed, running, properly configured server, with appropriate databases and users created, and your program needs to use the appropriate credentials when communicating. MongoDB needs an installed, running server<a name="note-Sat-Mar-09-134340EST-2013"></a>[|5|](#foot-Sat-Mar-09-134340EST-2013). SQLite just requires that the deployment machine have `libsqlite3.so` or `sqlite3.dll` as appropriate. You need to create your tables the first time, but that's it. AcidState doesn't even require that much. All you need to make sure of is that you have the AcidState Haskell library installed when you're compiling your program. The resulting binary has no external deps whatsoever, so you can just run it on any machine of the appropriate architecture and platform. Personally, I'd be willing to give up non-trivial amounts of performance for a simplified setup process, so I'm quite happy that the easiest DB to work with from that perspective is also benching at or near the top for everything, at every corpus size.
 
-### Code Notes
+### <a name="code-notes"></a>Code Notes
 
 That's all my thoughts on results; if that's all you were here for, you can safely disregard the rest of the article.
 
@@ -169,7 +169,7 @@ I don't think this adds too much overhead to user insertion, since the Mongo doc
 
 Now, to be fair, while the field is tilted slightly towards `HDBC`, the *task* actually favors noSQL data stores because of how `Account`s and `Item`s relate to one another. Where I'd have to pull some `JOIN` trickery in a relational database, a mere `IxSet` lookup gives me the same effect with AcidState, and a recursively nesting `Document` type does it for Mongo.
 
-### Next Steps
+### <a name="next-steps"></a>Next Steps
 
 What I'd really like at this point is some peer review. Either refinements to the tasks, or implementations for other database back-ends<a name="note-Sat-Mar-09-134353EST-2013"></a>[|6|](#foot-Sat-Mar-09-134353EST-2013), or data from different machines/environments, or general comments on approach/results. It would also be nice if someone did benchmarks with a large enough corpus that the entire thing didn't fit in memory. Remember, the question I'm trying to answer here is "How well does AcidState stack up against other data storage options in Haskell", and at this point the answer looks to be "It destroys them and pisses on the ashes". If that's not your experience, or if I missed some approach or edge case in my testing, it would be nice to find out before I start outright recommending it to everyone.
 
@@ -177,6 +177,7 @@ And that error checking is something I'll have to leave to the internet.
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Sat-Mar-09-134319EST-2013"></a>[|back|](#note-Sat-Mar-09-134319EST-2013) - Except that MongoDB is significantly better at item insertion for data sets in the ~1k user range.
 
 2 - <a name="foot-Sat-Mar-09-134323EST-2013"></a>[|back|](#note-Sat-Mar-09-134323EST-2013) - Probably JSON, for most of my purposes.

@@ -327,6 +327,7 @@ And that's that. Granted, the *implementation* is a bit more complicated than ju
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Thu-Apr-10-000043EDT-2014"></a>[|back|](#note-Thu-Apr-10-000043EDT-2014) - Almost always using the question-mark-prefix notation for logic variables for some reason. I'm not sure what the approach gains or loses you yet. I guess in the case of miniKanren, it gains you the ability to unify on vectors since there's no ambiguity, and it might make it easier to read the resulting programs, but I'm not banking on that.
 
 2 - <a name="foot-Thu-Apr-10-000046EDT-2014"></a>[|back|](#note-Thu-Apr-10-000046EDT-2014) - Though do go over Norvig's version to see a dissection of the common bugs.

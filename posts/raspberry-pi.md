@@ -44,6 +44,7 @@ Next order of business, getting a Haskell and a Common Lisp running on it, getti
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Sun-Sep-30-225547EDT-2012"></a>[|back|](#note-Sun-Sep-30-225547EDT-2012) - That's changed by now, obviously, and it's theoretically possible to buy n of them rather than just one per customer, though I've yet to test this theory.
 
 2 - <a name="foot-Sun-Sep-30-225551EDT-2012"></a>[|back|](#note-Sun-Sep-30-225551EDT-2012) - Canadian dollars.

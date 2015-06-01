@@ -47,6 +47,7 @@ I don't know the answers to any of these questions. It's thorny as fuck, and the
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Fri-Apr-13-012416EDT-2012"></a>[|back|](#note-Fri-Apr-13-012416EDT-2012) - It could probably work on all patents, but I'm still working under the assumption that a certain portion of non-computational patents actually achieve the goal of protecting inventors. Feel free to convince me otherwise.
 
 2 - <a name="foot-Fri-Apr-13-012524EDT-2012"></a>[|back|](#note-Fri-Apr-13-012524EDT-2012) - Internationally or not

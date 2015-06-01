@@ -6,7 +6,7 @@ The process of actually putting together an `.app` file and corresponding `_app.
 
 I guess this actually might be the result of being spoiled by Common Lisp's "lets handle everything from the REPL!" attitude<a name="note-Tue-May-08-175811EDT-2012"></a>[|5|](#foot-Tue-May-08-175811EDT-2012). If `true`, that's a very good reason to get out of paren-land for a little while to see what's happening with other toolchains; [overspecialization](http://tvtropes.org/pmwiki/pmwiki.php/Main/CripplingOverspecialization)<a name="note-Tue-May-08-175818EDT-2012"></a>[|6|](#foot-Tue-May-08-175818EDT-2012) is not a desirable thing.
 
-### Demystifying "Hot Code Swapping"
+### <a name="demystifying-hot-code-swapping"></a>Demystifying "Hot Code Swapping"
 
 This is a phrase I hear pretty often [in context with Erlang](http://www.youtube.com/watch?v=OpYPKBQhSZ4), and I want to tackle it because it's typically presented as this big mysteriously awesome language feature. I get the feeling it's supposed to impress people that have never worked with anything more dynamic than [Tomcat](http://tomcat.apache.org/), because those of us working with Lisp/Python/PHP/etc. are pretty used to the idea of pushing an update without restarting the server we're pushing it at. There are complications, of course, if you want to keep existing requests valid, for example, you need to deal with server rollover. The Erlang way solves that particular problem, so I can see why it would be put together like this, it's just really annoying seeing it presented as secret sauce when it's almost too simple to be considered a language feature.
 
@@ -93,7 +93,7 @@ Eshell V5.9.1  (abort with ^G)
 
 As you can see, on the next run through the loop, your process calls `nice_callback:handle` rather than `example_callback:handle`. No magic, no tricks, and no "hot-code-swapping" language feature. Just organize your system appropriately and this feature emerges.
 
-### Pid ! {switch, you_are_mr_bear}
+### <a name="pid-switch-youaremrbear"></a>Pid ! {switch, you_are_mr_bear}
 
 Skip the rest if you've heard [this one](http://c2.com/cgi/wiki?RubberDucking) before. Article's over early for you, you get to go home. Yay.
 
@@ -109,6 +109,7 @@ Even though it's an urban legend, and sounds incredibly silly, it works *really*
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Tue-May-08-175711EDT-2012"></a>[|back|](#note-Tue-May-08-175711EDT-2012) - As evidenced by the fact that it comes with its own built-in, fairly extensive Emacs modes.
 
 2 - <a name="foot-Tue-May-08-175721EDT-2012"></a>[|back|](#note-Tue-May-08-175721EDT-2012) - The Erlang equivalent of `asdf:load-system`, `applications:load`, seems to assume that you've already manually compiled your `.erl`s to `.beam`s rather than doing it automatically.

@@ -7,7 +7,7 @@ So I've been going to this [Coding Dojo](http://www.meetup.com/Toronto-Coding-Do
 
 For the past two weeks, we've been (unsuccessfully so far, but no one is about to give up yet) trying to run through the poker hand kata in Clojure. Half the point here is trying out the language, and I've successfully procrastinated until they got a fantastic, standardized build system going so that I don't have to fuck around installing libraries by hand, which seems like it'll be very gratifying after the bunch of time spent in the Erlang world lately.
 
-### Installing Clojure
+### <a name="installing-clojure"></a>Installing Clojure
 
 [Clojure the debian package](http://packages.debian.org/sid/devel/clojure) is actually not in the free repos. You *can* `apt-get install clojure`, but only after [adding `contrib` *and* `non-free`](http://wiki.debian.org/Clojure) to your `sources.list`, which I don't particularly want to do. In case you haven't noticed yet, I'm the sort of person who occasionally runs `vrms`, just to make sure. It turns out though, that the [Clojure build tool](http://packages.debian.org/unstable/java/leiningen) can handle the task of installing the language for you, and provide faux-quicklisp/quickproject functionality *and* **is** in the free repos as of [`wheezy`](http://www.debian.org/releases/wheezy/). So, one
 
@@ -50,7 +50,7 @@ Given that I'm a professional Common Lisper these days, I had exactly zero chanc
 
 After all that, `run-lisp` in a Clojure buffer will start up a Clojure REPL, and the keyboard shortcuts I'm used to from `common-lisp-mode` will more or less work as before. `clojure-run-test` is mind-numbingly slow, and I don't get completions or arglist hints, but it's good enough for a start.
 
-### Trying Clojure
+### <a name="trying-clojure"></a>Trying Clojure
 
 The first thought that struck me was "Wait a minute, this looks a hell of a lot like Scheme". And really, that turns out to be pretty on the money, from what I can see so far at least. **Clojure is a JVM Scheme with curlies, brackets, an Arc-esque obsession with counting characters needed in the source code, and heavy emphasis on immutability.** That was bolded because, if you're in a hurry, you can basically stop reading now. If I were to offer advice about whether to learn it or not, I'd say
 
@@ -117,6 +117,7 @@ You can define inline tests too, if you want, but it's probably better to keep t
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Thu-Aug-23-161334EDT-2012"></a>[|back|](#note-Thu-Aug-23-161334EDT-2012) - Though there is some overlap.
 2 - <a name="foot-Thu-Aug-23-161338EDT-2012"></a>[|back|](#note-Thu-Aug-23-161338EDT-2012) - Which is actually a lot less painful with functional programming in general than it seemed to be for the various Java/PHP teams I've had the pleasure of UI-ing for.
 

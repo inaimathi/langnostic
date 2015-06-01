@@ -102,6 +102,7 @@ Content-Disposition: inline
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Tue-Apr-17-162650EDT-2012"></a>[|back|](#note-Tue-Apr-17-162650EDT-2012) - Though it does show you a useful example of how to put an attachment in a sent email.
 
 2 - <a name="foot-Tue-Apr-17-162701EDT-2012"></a>[|back|](#note-Tue-Apr-17-162701EDT-2012) - As I did initially.

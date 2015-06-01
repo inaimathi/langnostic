@@ -1,6 +1,6 @@
 I'll get the interesting tech stuff out of the way first, then write about one thing I don't want to miss, and a personal journal entry. Also, I'll probably be a little scarce around here over the next while. The why of it will hopefully be obvious when I get to it.
 
-## Pipes and Multi-Line REPLs
+## <a name="pipes-and-multiline-repls"></a>Pipes and Multi-Line REPLs
 
 Before we begin, be aware that I'm not trying to teach you about Pipes. I'm just showing you a use case. If you want the full tutorial and explanation, go check out [this](http://hackage.haskell.org/package/pipes-4.0.0/docs/Pipes-Tutorial.html) and possibly [this](https://hackage.haskell.org/package/pipes-concurrency-2.0.1/docs/Pipes-Concurrent-Tutorial.html). The documentation attached to this project is anomalously understandable.
 
@@ -243,7 +243,7 @@ Which prints a prompt of "EXP>> ", flushes `stdout` so that the prompt is actual
 
 This is a pretty useful use for `Pipe`s, but I get the feeling that the interesting stuff really happens over in [`Pipes.Concurrent`](https://hackage.haskell.org/package/pipes-concurrency-2.0.1/docs/Pipes-Concurrent-Tutorial.html). Where you can fork pipelines off into multiple directions, then merge disparate outputs up again later on. I can think of one or two uses to put that to.
 
-## The Toronto Computer Science Reading Group
+## <a name="the-toronto-computer-science-reading-group"></a>The Toronto Computer Science Reading Group
 
 Also known as the [Comp-Sci Cabal](https://github.com/CompSciCabal) just finished up reading through [SICP](https://en.wikipedia.org/wiki/Structure_and_Interpretation_of_Computer_Programs). And we made ourselves these
 
@@ -255,7 +255,7 @@ Then we had a ceremony wherein we handed them out to the four of us who finished
 
 As a side-note, only 10 of the pins remain unclaimed, so if you want one, read SICP, do one of the last five exercises in the book, then find me in meatspace before they run out. Post-pinning, we sat down and reflected on what we had learned late into the night. Ok, it was only 'till around 10 or so, but we're old, and some of us had to travel. I loved every minute of it. It was, hands down, the highlight of the last half-year or so for me.
 
-## Journal
+## <a name="journal"></a>Journal
 
 So I'm about to have another son. The second of two.  We've picked out a name, but aren't telling anyone 'till he's here. *You* won't get to know in any case, unless you know me in real life. I'm mildly worried, which is only natural, I guess. It was more or less the same thing last time. I'm hoping both my wife and my new offspring make it through ok. And I'm hoping I do well raising him. Which is going to be hard, given that I don't have a clear metric for what it means to "do well" in this context. I think it has something to do with giving him the tools to interact well with human societies, but again "well" is ill defined. I think *that* has something to do with making sure he learns to contribute in a positive-sum way. It's something I'll have cause to think about carefully in the next little while, in between helping my wife with the recovery, looking after my existing heir, and maybe getting some day-job work done in the meantime.
 

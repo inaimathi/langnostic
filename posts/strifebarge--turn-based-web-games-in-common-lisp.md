@@ -432,6 +432,7 @@ If you feel like poking around the codebase for your own education, or for the p
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Mon-Feb-20-223207EST-2012"></a>[|back|](#note-Mon-Feb-20-223207EST-2012) - Which fires a single shot on the specified space and passes the turn.
 
 2 - <a name="foot-Mon-Feb-20-223214EST-2012"></a>[|back|](#note-Mon-Feb-20-223214EST-2012) - Which is what failed `assert`ions do.

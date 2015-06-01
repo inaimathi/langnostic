@@ -563,6 +563,7 @@ Ok. I'm going to sleep. I was *going* to do a similar writeup using the [Haskell
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Thu-Dec-13-133118EST-2012"></a>[|back|](#note-Thu-Dec-13-133118EST-2012) - Which is a huge topic in its own right, and involves things like hand-optimizing memory cache interactions for minimum fall-through and various other low-level, machine oriented optimizations.
 
 2 - <a name="foot-Thu-Dec-13-133125EST-2012"></a>[|back|](#note-Thu-Dec-13-133125EST-2012) - We're optimizing for time because space tends to be cheap, and running things fast is fun.

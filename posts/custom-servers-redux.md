@@ -16,6 +16,7 @@ The only really funny part is that, now that I've thought it through, implementi
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Sat-Nov-09-184009EST-2013"></a>[|back|](#note-Sat-Nov-09-184009EST-2013) - And most of *those* require that the session be associated with a particular, already-instantiated game table, but optimizing for that seems like it would be going too far.
 
 2 - <a name="foot-Sat-Nov-09-184013EST-2013"></a>[|back|](#note-Sat-Nov-09-184013EST-2013) - When someone who *just* wants to watch rather than play first checks out a table.

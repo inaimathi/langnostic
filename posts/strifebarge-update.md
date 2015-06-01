@@ -659,6 +659,7 @@ Sounds like this'll actually keep me busier than I expected.
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Sat-Mar-03-111456EST-2012"></a>[|back|](#note-Sat-Mar-03-111456EST-2012) - That'd be a meatspace, belligerent network of trust. The idea being that if you can get n people who certainly aren't cooperating to vouch for Alice face-to-face, your odds are better than if you merely had n of Alice's random online social contacts do the same.
 
 2 - <a name="foot-Sat-Mar-03-111752EST-2012"></a>[|back|](#note-Sat-Mar-03-111752EST-2012) - And don't really help you much in the general case, unless you're assuming that you'll always be able to trace a line from your direct contacts to the other party, or you're assuming belligerence.

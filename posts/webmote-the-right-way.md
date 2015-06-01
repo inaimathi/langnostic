@@ -507,6 +507,7 @@ Keep in mind that this is half the total goal. Next time, we'll see exactly how 
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Sat-Oct-06-194031EDT-2012"></a>[|back|](#note-Sat-Oct-06-194031EDT-2012) - It would actually have been even more complicated than that, because it wouldn't have been enough to naively run `$("button").click(...)` again. That would put duplicate events on every button that wasn't replaced. I'd have gotten into the situation of either targeting just the new button separately, incurring code duplication, or writing the setup function in such a way that it unbound the click event for all buttons first, then re-bound them. That's ... inelegant.
 
 2 - <a name="foot-Sat-Oct-06-194416EDT-2012"></a>[|back|](#note-Sat-Oct-06-194416EDT-2012) - Not for the first time.

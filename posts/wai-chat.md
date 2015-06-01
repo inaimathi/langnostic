@@ -138,6 +138,7 @@ I really wish someone else had written this before I started thinking about it..
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Tue-Apr-16-133808EDT-2013"></a>[|back|](#note-Tue-Apr-16-133808EDT-2013) - No, still not [Yesod](http://www.yesodweb.com/). Feel perfectly free to use it if that's your thing, but I'd still recommend [Happstack](http://www.happstack.com/page/view-page-slug/1/happstack) if you absolutely, positively *need* a framework..
 
 2 - <a name="foot-Tue-Apr-16-133913EDT-2013"></a>[|back|](#note-Tue-Apr-16-133913EDT-2013) - Which I assume is reasonably efficient, since it's one of Haskell's [basic concurrency constructs](http://www.haskell.org/ghc/docs/latest/html/libraries/base/Control-Concurrent-Chan.html).

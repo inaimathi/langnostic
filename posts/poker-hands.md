@@ -275,6 +275,7 @@ I was going to say a few proper words comparing the approaches and languages her
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Tue-Aug-28-182259EDT-2012"></a>[|back|](#note-Tue-Aug-28-182259EDT-2012) - Heads up if you were planning on joining us, by the way, they're holding [a poll](http://www.meetup.com/Toronto-Coding-Dojo/polls/620482/) on what day next weeks' meeting should be held. If you weren't there yet, and your reason was "I'm not free that day", you may want to give your opinion a voice.
 
 2 - <a name="foot-Tue-Aug-28-182537EDT-2012"></a>[|back|](#note-Tue-Aug-28-182537EDT-2012) - There's also a bit of incidental complexity around displaying the winners after that, that I'll ignore for now.

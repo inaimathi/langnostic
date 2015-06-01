@@ -356,6 +356,7 @@ Possibly the most interesting thing about this solution for me is that, since it
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Sun-Jun-02-232557EDT-2013"></a>[|back|](#note-Sun-Jun-02-232557EDT-2013) -Which, judging by the responses I get whenever I ask for comments on my Haskell code, is somewhere between grossly impolite and crime-against-[humanatee](http://i.imgur.com/YfUwh.jpg).
 
 2 - <a name="foot-Sun-Jun-02-232606EDT-2013"></a>[|back|](#note-Sun-Jun-02-232606EDT-2013) -Which it hits, in my opinion.

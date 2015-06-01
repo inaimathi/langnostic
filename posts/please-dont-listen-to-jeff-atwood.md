@@ -28,6 +28,7 @@ Begin to understand how to think precisely, and communicate clearly with entitie
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Thu-May-17-200708EDT-2012"></a>[|back|](#note-Thu-May-17-200708EDT-2012) - As a Lisp programmer at a small Toronto company, just in case my bias wasn't obvious enough already.
 
 2 - <a name="foot-Fri-May-18-100011EDT-2012"></a>[|back|](#note-Fri-May-18-100011EDT-2012) -  (better known as [SICP](http://mitpress.mit.edu/sicp/))

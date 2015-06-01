@@ -30,6 +30,7 @@ The difference is that you're probably used to it being specified in the surroun
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Thu-May-24-134853EDT-2012"></a>[|back|](#note-Thu-May-24-134853EDT-2012) - It actually doesn't matter what your language is; everything short of Erlang, and some experimental/domain-specific languages built to break this particular assumption, make it.
 
 2 - <a name="foot-Thu-May-24-134901EDT-2012"></a>[|back|](#note-Thu-May-24-134901EDT-2012) - Which is not in and of itself bad, the bad part is that the sysadmin is meant to pick up the slack manually.

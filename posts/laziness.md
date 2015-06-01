@@ -2,7 +2,7 @@ I've gotten some questions about what, exactly, [laziness](http://en.wikipedia.o
 
 Short answer: **it saves you space and time**.
 
-## Space
+## <a name="space"></a>Space
 
 Really, this should be obvious, but if we're going through this, lets do it properly. Here are some lists
 
@@ -68,7 +68,7 @@ Granted the second set looks more complicated, except for the Haskell line, but 
 
 That's basic stuff, it should be pretty obvious. Less obvious, but more significant, is how this saves you time.
 
-## Time
+## <a name="time"></a>Time
 
 By its lonesome, it actually doesn't.
 
@@ -131,6 +131,7 @@ I'll be honest, I was *also* going to talk about my latest thoughts on the squar
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Mon-Apr-29-130749EDT-2013"></a>[|back|](#note-Mon-Apr-29-130749EDT-2013) - A note on functional, lazy sorts, because I was wondering about this both back when tuning the Haskell version of Life and as I was re-visiting it for today's feature. The way that lazy sorts seem to work is basically by using a destructured [heapsort](http://en.wikipedia.org/wiki/Heapsort). Specifically, if you take a look at [this pseudocode](http://en.wikipedia.org/wiki/Heapsort#Pseudocode), what's happening is that a lazy sort runs `heapify` right away and passes up the first element, then pulls out the next element each time it's asked for one. That results in `On` performance for finding the first element (which as far as I'm aware is what you'd have to do in order to get the "nextest" element in the general case anyway), followed by `O(log n)` performance on looking up each next element. That's good because it means you don't have to do it all at once, and it means that if you only want the first 5 sorted elements of a list of 10000, you get to avoid most of the work. On the other hand, note that this *doesn't* save you much memory, if any; you still need to store that heap for the whole list, even if you only want the first few chunklets.
 
 2 - <a name="foot-Mon-Apr-29-130806EDT-2013"></a>[|back|](#note-Mon-Apr-29-130806EDT-2013) - Which is why I did this for the first pass of that program, not realizing that Haskell's lazy-by-default outlook would *also* make it about as efficient as it could be.

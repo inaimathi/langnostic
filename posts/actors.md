@@ -1,6 +1,6 @@
 Two things this time. First...
 
-### ...An Admission
+### <a name="an-admission"></a>...An Admission
 
 ![](http://2.bp.blogspot.com/-FYMRLJ4dw-c/UU0D-CbvKxI/AAAAAAAAAPU/Qlo2W9wmc6I/s1600/vrms-output.png)
 
@@ -8,13 +8,13 @@ I'm weak.
 
 It turns out there are exactly two things I'm willing to run non-free software for, and one is wifi access<a name="note-Fri-Mar-22-212851EDT-2013"></a>[|1|](#foot-Fri-Mar-22-212851EDT-2013). Another other option is of course, buying an [Atheros wifi card](https://www.thinkpenguin.com/gnu-linux/penguin-wireless-n-usb-req-antennas), which I intend to do eventually but don't have the spare $100 right at this very moment. Lets move on and say no more about this.
 
-### Actors
+### <a name="actors"></a>Actors
 
 I've been on vacation for a little while now, which finally gave me the chance to get back into some Common Lisp<a name="note-Fri-Mar-22-212856EDT-2013"></a>[|2|](#foot-Fri-Mar-22-212856EDT-2013). You know, since I've mostly been hacking Python at work for the past five months or so. Specifically, I got to do some long-overdue thinking on [that Actors library I forked](https://github.com/Inaimathi/Common-Lisp-Actors) forever and a fucking day ago.
 
 The big problem with actors as they're implemented here is that, while they don't care where their messages come from, they very much *do* care where their messages go. To be fair, this seems to be a very common implementation, and not limited to cl-actors, so I don't think it's worth holding against the author. What it does is force you to choose between three fairly shitty alternatives for composeability:
 
-## 1, Message Targets
+## <a name="message-targets"></a>1, Message Targets
 
 Define a communication convention whereby a piece of the message is going to specify the actor that it needs to be passed to next.
 
@@ -43,7 +43,7 @@ The problem here is that you're setting up a situation where each sender is goin
          └──> actor-E ──> actor-F
 ```
 
-## 2. Globals
+## <a name="globals"></a>2. Globals
 
 The Erlang equivalent is "[registered processes](http://www.erlang.org/doc/reference_manual/processes.html#id82815)"; you define a global name which will refer to your actor instance, and any other actors that need to interact with it use that global name.
 
@@ -64,7 +64,7 @@ The Erlang equivalent is "[registered processes](http://www.erlang.org/doc/refer
 
 The problem has moved from the last line to the second line. This approach requires you to re-write pieces of every non-leaf actor if you want to use them in a new context. Ideally, an actor wouldn't have care where its messages go, or at least it wouldn't have to care about it until after it's instantiated. That would let you increase the isolation of your components, thereby giving you more and easier opportunities for code reuse.
 
-## 3. Local State
+## <a name="local-state"></a>3. Local State
 
 Instead of manually specifying targets, make the actor track its targets with a piece of local state. You'd then have to pass targets in along with the other initialization parameters.
 
@@ -90,7 +90,7 @@ The two problems with this are complexity and definition dependencies. Complexit
 
 The other problem is apparent in the change among those two `defparameter` lines. Note that `*greeter*` is now defined second, and that this isn't an accident. If you did it the other way around, you'd discover that `*printer*` must be defined in order for it to be specified as a message target.It may be a minor annoyance, but I prefer to avoid those where I can.
 
-### The Solution?
+### <a name="the-solution"></a>The Solution?
 
 As far as I can see, oh and thanks to [Paul Tarvydas](https://github.com/guitarvydas) for pointing me in this direction, it's to separate the actors from their call chains. That is, define an actor as essentially a queue, a thread and a function that returns some value given some message, then introduce an external mechanism by which to get that return value to the next node in the network. What we really want to be able to do is something like
 
@@ -162,7 +162,7 @@ so, instead of just `apply`ing `behavior` to each message, we get the result and
 
 I should note that you don't have to decide to use only one of `send`/`link` here; even with the connection system working<a name="note-Fri-Mar-22-212925EDT-2013"></a>[|4|](#foot-Fri-Mar-22-212925EDT-2013) there are use cases where you really do want a manual `send` in an actor body. To be fair, most of those use cases seem to be places where you wouldn't really want to use actors in the first place, but I've reserved judgment and left in both options in the interests of flexibility.
 
-### Still ToDo
+### <a name="still-todo"></a>Still ToDo
 
 I've already mentioned separating out the send pattern for an actor so that you can have more flexibility in deciding targets. Although, to be fair, I'm not *entirely* sure whether that's the best approach; it might be possible to implement different behaviors by just specifying different network shapes rather than by complicating actors further. I'll think on it, and probably solicit some advice from people smarter than I am.
 
@@ -179,6 +179,7 @@ Anyhow, in the meanwhile, what I've got here is a trivially composeable actor sy
 
 <hr />
 ##### Footnotes
+
 1 - <a name="foot-Fri-Mar-22-212851EDT-2013"></a>[|back|](#note-Fri-Mar-22-212851EDT-2013) - The other is vintage gaming. Which doesn't pollute my main machine, but I do have a desktop set up at home which has a virtual Win XP machine where I installed a bunch of games from the golden age of fantasy gaming; copies of [Icewind Dale 2](http://www.planetbaldursgate.com/iwd2/), [Planescape Torment](http://www.amazon.com/Planescape-Torment-Pc/dp/B00002EPZ2), [Baldur's Gate 2](http://web.archive.org/web/20000815213945/http://www.interplay.com/bgate2/), and [Dungeon Keeper](http://en.wikipedia.org/wiki/Dungeon_Keeper).
 
 2 - <a name="foot-Fri-Mar-22-212856EDT-2013"></a>[|back|](#note-Fri-Mar-22-212856EDT-2013) - And a bunch of sketching, but this isn't the place for that. If you're interested, go to [my deviantart](http://inaimathi.deviantart.com/) instead, I'll be uploading a new batch shortly.

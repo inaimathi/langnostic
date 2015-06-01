@@ -15,4 +15,5 @@ Famous last words, right?
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Sun-Dec-01-230324EST-2013"></a>[|back|](#note-Sun-Dec-01-230324EST-2013) - I'm still trying to iron out kinks; in particular there seems to be some kind of character encoding issue left in the way that I just can't get my head around. I'll be [asking on SO](http://stackoverflow.com/questions/20320540/serving-static-files-with-common-lisp) shortly.

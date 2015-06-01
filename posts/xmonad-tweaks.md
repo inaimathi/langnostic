@@ -131,6 +131,7 @@ withFilePrompt prompt directory fn = do
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Mon-Oct-21-121457EDT-2013"></a>[|back|](#note-Mon-Oct-21-121457EDT-2013) - Granted, because the boot time on that machine is something like 5 minutes instead of the 12 seconds I'm used to waiting, Hibernate is a goddamn necessity, but I digress.
 
 2 - <a name="foot-Mon-Oct-21-121501EDT-2013"></a>[|back|](#note-Mon-Oct-21-121501EDT-2013) - Ideally, I'd just be using hibernate, but there are some issue. I've upgraded my ram since installing the OS, which means that my `swap` partition isn't big enough to store a memory dump, and I can't seem to resize it with `gparted`, with or without `swapoff`/`swapon` magic. Luckily, I've had a larger hard drive waiting for me to crack open the box and configure it to my liking, so I'll just do that this week rather than procrastinating. In the meantime though, I'm `suspend`ing instead.

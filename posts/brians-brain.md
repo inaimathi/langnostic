@@ -246,6 +246,7 @@ That's that. Hope you learned something.
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Sat-Aug-16-231431EDT-2014"></a>[|back|](#note-Sat-Aug-16-231431EDT-2014) - But don't worry, we're still going through everything.
 
 2 - <a name="foot-Sat-Aug-16-231436EDT-2014"></a>[|back|](#note-Sat-Aug-16-231436EDT-2014) - Which is the only reason I need `Typeable` imported in this project.

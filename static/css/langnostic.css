@@ -11,6 +11,9 @@ body { width: 100%; margin:0px; padding: 0px; font-family: sans-serif; }
 .top-menu a { color: #FFF; }
 .top-menu a:hover { color: #999; }
 
+.content img { margin: auto; display: block; }
+.content code { background-color: #EEE; padding: 1px 3px; }
+
 .post-nav { font-weight: bold; color: #CC0606; }
 .post-nav a { margin-bottom: 10px; color: #CC0606; }
 .post-nav a:hover { color: #999; }

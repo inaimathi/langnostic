@@ -2,7 +2,7 @@ Ok, so I've been coding something for the past little while in between [thinking
 
 It doesn't have a `[quicklisp](http://www.quicklisp.org/beta/)` installation package yet, so I've written a basic `.asd` and chucked it up onto [my github](https://github.com/Inaimathi/conduits) in the meantime.
 
-### More Square Thoughts
+### <a name="more-square-thoughts"></a>More Square Thoughts
 
 I haven't been actively working on this, just sort of letting it percolate at the back of my mind while other stuff is going on. Having taken a closer look at [the original solution for 1..4](http://oeis.org/A224239/a224239_4.jpg), and imagining how its author went about getting it, it looks like we might be able to cut a lot of placements out of the process if we picked a representation that was easy to `reflect` and `rotate`. Then the actual solution would look something like
 

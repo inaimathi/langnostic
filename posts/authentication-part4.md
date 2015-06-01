@@ -24,7 +24,7 @@
 
 Gentlemen...
 
-### BEHOLD!
+### <A NAME="BEHOLD"></A>BEHOLD!
 
 ```erlang
 -module(rsa_auth).
@@ -374,7 +374,7 @@ That's the code down. The interaction, once you've registered and if you're goin
 
 Assuming it was done correctly, you should then be logged in. The automatic version is going to have to wait for some sleep.
 
-### How Is This Better Than Passwords?
+### <a name="how-is-this-better-than-passwords"></a>How Is This Better Than Passwords?
 
 I don't fucking know, something. Oh, wait, yeah it is. In three specific ways.
 
@@ -390,6 +390,7 @@ Ok, that's it. Automated version coming soon, and good night.
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Sat-Jun-23-012959EDT-2012"></a>[|back|](#note-Sat-Jun-23-012959EDT-2012) -  Ok, that's not true; we're missing two pieces, both critical in practice but borderline irrelevant for the theory.
 
 The first one is **bi-directional authentication**. That would be pretty simple to implement from our perspective; all we'd need to do is sign the secret as it's being sent out. Doing so would let our user verify that they're talking to the server they expect rather than an eavesdropper or phisher. This overlaps slightly with SSL, but doesn't prevent a site from using both, and is so straightforward if you're already using this model that you may as well.

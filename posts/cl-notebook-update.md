@@ -6,7 +6,7 @@ That's a history slider. Which I've been talking about all over the place, but a
 
 By the way, this is the main thing I wanted to experiment with using `cl-notebook`. I mean, yes, literate programming, and yes easy-to-use CL editor, and *yes* multi-user editing, but that's all commentary. The real thing I've been trying to get at from the beginning is total history tracking. If you've talked to me about it in real life, my pitch has consistently been something like "I don't want to lose any data ever again". It's why I use a particular, [hand-rolled storage system](https://github.com/Inaimathi/fact-base), and why I have fervently insisted on append-only operations.
 
-### Qualitative Differences
+### <a name="qualitative-differences"></a>Qualitative Differences
 
 I remember [a talk](https://www.youtube.com/watch?v=4XpnKHJAok8) that Linus Torvalds gave at Google, in which he compared `git` to centralized systems like `[svn](https://subversion.apache.org/)` and `[cvs](http://savannah.nongnu.org/projects/cvs)`. The claim was that cheap branches didn't just let you make more branches, but that they completely changed your behavior during the development process. You could suddenly throw up per-feature and experimental branches, do some prospective development, then merge if it amounted to anything or drop if it didn't. I'm sure those of you who still remember using `svn` agree this was a big step forward. One of the companies I worked at early on used `svn` for source control and merging/branching can only be described as an ordeal. It was a feat reserved for the veteran programmers on the team, it basically took two days or so at the end of every cycle, and it usually sapped some time from any developers that were involved in contiguous or overlapping functionality. Because any file that was touched by more than one human would have to be manually reconciled by a human. Every once in a while, the network connection to our central repo would crap out during one of these operations, and then the *real* fun would begin.
 
@@ -16,7 +16,7 @@ I think there's a second one between "ridiculously cheap branches" and, effectiv
 
 Not sure, obviously, that's why I'm running the experiments, but it seems that if you really wanted to, you could turn the current workflow on its head.
 
-### Workflow
+### <a name="workflow"></a>Workflow
 
 Here's how you work with `git`, or any distributed, externally mediated history system:
 
@@ -40,7 +40,7 @@ Not bad. And it certainly beats any *centralized*, externally mediated history s
 
 I'm not going to talk about merging separate timelines, because I haven't thought about it thoroughly enough, but it doesn't seem impossible. The important part of the above comparison is that tracking full history frees you from having to know when a thing you're about to do will turn out to be much harder than expected. It'll be tracked regardless, so you can gracefully back out of any big changes you make in the meantime.
 
-### Interaction
+### <a name="interaction"></a>Interaction
 
 You can see the basic interaction in [that video](https://vimeo.com/102799084) above. To summarize:
 
@@ -54,7 +54,7 @@ That last item is still the subject of some internal debate, by the way. Do I wa
 
 It sounds expensive, but this project has repeatedly taught me that very expensive sounding things might still be cheap enough to do a few hundred times per second. The question really, is how do I manage those forks. I still don't have a good idea for how to do that properly, so I think I'll stick to the current implementation for the time being, but I'm still thinking.
 
-### Other Changes
+### <a name="other-changes"></a>Other Changes
 
 Some other stuff had to be changed here. Two main things, really.
 
@@ -64,7 +64,7 @@ Second, I've sat down and put `fact-base:change!` to good use all over the place
 
 Oh, I also added a `tag!` function to `fact-base`, but haven't used it or thought about it very hard yet. I probably will before too long, but one thing at a time.
 
-### Next Steps
+### <a name="next-steps"></a>Next Steps
 
 I think what I've got is close enough to real-time for human purposes. Doing much better would involve a lot of low-level, fiddly work and the sorts of synchronization problems I really don't feel the need to tackle. Especially since the final payoff would be pretty minimal. I'm still missing a bunch of what I consider basic editor features, such as s-expression navigation, automatic indentation, good autocompletion and argument hinting. And given that this is meant to be a Common Lisp development system, it's also missing integration with a few key libraries, namely `[quicklisp](http://www.quicklisp.org/beta/)` and `[buildapp](http://www.xach.com/lisp/buildapp/)`.
 
@@ -72,6 +72,7 @@ So I think it's about time I tackled all of that.
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Thu-Aug-07-115203EDT-2014"></a>[|back|](#note-Thu-Aug-07-115203EDT-2014) - Slide the slider, change the value of the text box.
 
 2 - <a name="foot-Thu-Aug-07-115206EDT-2014"></a>[|back|](#note-Thu-Aug-07-115206EDT-2014) - Specifically, if you fork a book, then look into the forks' history, at some point it will intentionally have the same title as its parent.

@@ -8,7 +8,7 @@ It's not an unreasonable way of going about things, but Angular does it better; 
 
 Lets go through some before and after shots of web-mote for illustrative purposes. Specifically, lets take a look at the controls, since that's the simpler piece. Incidentally, I'm not claiming that this is the most elegant code either before or after. I just want to show you the structural and philosophical differences between approaches.
 
-### Before
+### <a name="before"></a>Before
 
 First, the relevant HTML markup
 
@@ -123,7 +123,7 @@ $(document).ready(function() {
 
 That's that. Like I said, this isn't the most elegant code I've ever written. If I really put my mind to it, I might be able to shave off ten lines or so, and clarify my intent in a couple of places, but I think it would be pretty difficult to do *much* better without fundamentally changing the approach.
 
-### After
+### <a name="after"></a>After
 
 HTML markup first
 
@@ -246,6 +246,7 @@ And I'll be [using it](http://angularjs.org/) where I can from now on.
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Thu-Dec-27-100616EST-2012"></a>[|back|](#note-Thu-Dec-27-100616EST-2012) -  (re-ordering complex elements is really the only one I've observed; stuff that's too complex to do like [this](http://jsfiddle.net/g/hKYWr/), but where you still need to pass the current order of some set of UI elements back to the server for persistence. As I said already, [angular-ui](http://angular-ui.github.com/) does it just fine for simple constructs, but for anything more complicated, the Angular solution is ~30-lines of sub-module, where the DOM-traversal solution is a mere 5)
 
 2 - <a name="foot-Thu-Dec-27-100622EST-2012"></a>[|back|](#note-Thu-Dec-27-100622EST-2012) -  (the `$http.post` function *doesn't* do the jQuery thing of encoding an object as `POST` parameters. The default behavior is to dump the parameter object to a JSON string and pass that to the server as a post body. I could actually see that being the easier approach if you had perfect control of the server, since that would let you do some not-exactly-HTTP processing on the incoming structure. If you're using a pre-built one, though, you're probably stuck doing something manual and annoying like this

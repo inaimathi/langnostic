@@ -18,7 +18,7 @@ I'm not sure the `tools.nrepl` line is strictly necessary, but figured I might a
 
 And that's basically it. At that point, you can run `cider-jack-in` to get a `SLIME`-like interactive REPL running<a name="note-Sun-Apr-19-220141EDT-2015"></a>[|1|](#foot-Sun-Apr-19-220141EDT-2015). They're not exactly the same, notably the debugger and stack-trace in `cider`isn't *nearly* as interactive or useful as the one in `SLIME`, but you still get minibuffer argument hints and a macroexpander. If it weren't for the fact that `lein repl` takes something on the order of 5 seconds to start up, switching over from CL would be completely painless<a name="note-Sun-Apr-19-220152EDT-2015"></a>[|2|](#foot-Sun-Apr-19-220152EDT-2015).
 
-## History
+## <a name="history"></a>History
 
 I mentioned a little while ago that I'm thinking about full-history data-stores. I've already kind of implemented [one](https://github.com/Inaimathi/fact-base), though it is tightly bound to a particular data-structure, and I've done [a bit of experimenting with a generalization](https://github.com/Inaimathi/cl-history). Having set up Clojure, I was inspired to do a bit more playing around.
 
@@ -126,12 +126,13 @@ history.core>
 
 This is a pretty stupid example, all things considered, but it illustrates how you'd go about putting together a minimally functional, history-aware data-structure. In reality, you'd declare your table to be an [`atom`](http://clojure.org/atoms) or [`agent`](http://clojure.org/agents), and declare a `change` function that updates its state with `new-event`. This is the main use-case I'm considering, so it might be prudent to just make that the default behavior of the library.
 
-## Minor Notes
+## <a name="minor-notes"></a>Minor Notes
 
 First impressions are really, *really* good. As [I've said before](/article?name=recommendations.html), I like Clojure. My impression of it is that it takes takes the best parts of Scheme and Common Lisp and runs with them. [`lein`](http://leiningen.org/) comes with basically all the stuff I like out of [`asdf`](https://common-lisp.net/project/asdf/), [`quicklisp`](http://www.quicklisp.org/) and [`quickproject`](http://www.xach.com/lisp/quickproject/), with the added perks of [good documentation](http://leiningen.org/#docs) *and* built-in consideration for [unit testing](https://github.com/technomancy/leiningen/blob/stable/doc/TUTORIAL.md#tests). The *only* complaint I have is the annoying startup delay whenever I do `lein something`. In particular, the `lein test` command takes long enough that I'm not sure I'd want to pipe it through `entr` keyed on `.clj` file changes. I'll let you know how it goes once I've done some real work with it.
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Sun-Apr-19-220141EDT-2015"></a>[|back|](#note-Sun-Apr-19-220141EDT-2015) - If you run that inside a Clojure project directory, the REPL will also automatically load said project and enter its namespace.
 
 2 - <a name="foot-Sun-Apr-19-220152EDT-2015"></a>[|back|](#note-Sun-Apr-19-220152EDT-2015) - Incidentally, I thought this was to do with my Free Software bent, because the OpenJDK has the reputation of being slower than the Oracle equivalent. I asked a friend who uses the non-Free version, and he confirmed that the REPL just plain takes a while to start up. Not sure how to feel about that; `M-x slime` sets up an interactive REPL in about a second at the outside, and gives feedback on progress in the meanwhile.

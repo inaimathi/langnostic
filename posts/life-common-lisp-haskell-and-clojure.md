@@ -372,6 +372,7 @@ Ok, that's my lunch hour up, I'm heading back to work. Hopefully I get some *act
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Thu-Dec-06-114334EST-2012"></a>[|back|](#note-Thu-Dec-06-114334EST-2012) - Registration is closed, but it's apparently fine to just show up if you're [in the area](https://guestlistapp.com/events/130467).
 
 2 - <a name="foot-Thu-Dec-06-114414EST-2012"></a>[|back|](#note-Thu-Dec-06-114414EST-2012) - They actually reduce to between one and three simpler rules, depending on how you look at it, but we'll talk about that later.

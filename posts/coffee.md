@@ -77,6 +77,7 @@ I kinda like it.
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Thu-Mar-08-234036EST-2012"></a>[|back|](#note-Thu-Mar-08-234036EST-2012) - As an aside here, I have to note that I seem to have no patience left for languages without good package managers. I'm pretty sure this is a new development because I've done some work in Erlang, and there's this vague memory kicking around my head of a time before [quicklisp](http://www.quicklisp.org/), but there you have it. Luckily, npm is pretty good and getting better fast.
 
 2 - <a name="foot-Thu-Mar-08-234046EST-2012"></a>[|back|](#note-Thu-Mar-08-234046EST-2012) - Having done heavy development in jQuery, and some playing with [Rhino](http://www.mozilla.org/rhino/) and Jaxer back when those "were new" and "existed" respectively.

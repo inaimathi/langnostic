@@ -2,31 +2,31 @@ I need a short break here. It's nowhere near done yet, not even the pieces I wan
 
 For the past couple of days, I've been busy working on writing a replacement for [rebol.el](http://www.rebol.com/tools/rebol.el) and running into some not altogether unexpected headaches. The file I just linked you hasn't been updated since about 2001, and doesn't include a license block. After attempting to contact its current host and getting no response, I just went ahead and started from scratch. I had a few goals from the outset:
 
-## Proper Highlighting
+## <a name="proper-highlighting"></a>Proper Highlighting
 
 The current `rebol.el` was put together for REBOL2, and thus lacks highlighting for certain symbols that have been introduced since. The one that sticks out most in my mind is the symbol `funct`, which you saw semi-humorously higlighted as `funct` in the third section [last time](http://langnostic.blogspot.ca/2013/07/rebol-without-cause.html).
 
-## Jump-To-Definition
+## <a name="jumptodefinition"></a>Jump-To-Definition
 
 Some kind of binding in a mode that lets you jump to the file and line of the definition of a given symbol. Not entirely sure what the interaction there is going to be, probably just a key-binding that jumps for the `thing-at-point`. This one looks like it would be pretty simple to pull off actually; when a file is loaded, record the position of any assignments in it. Assignments are simple to find, since there's exactly one way to do it, and it involves adding a single-character suffix to whatever word you're assigning.
 
-## REPL
+## <A NAME="REPL"></A>REPL
 
 There isn't a `run-rebol`, in the style of `run-python` or `run-lisp`, and I'd like one.
 
-## Send Region
+## <a name="send-region"></a>Send Region
 
 Fairly self-explanatory. Or maybe not? In Lisp modes, there's typically a binding to evaluate the current s-expression, either `C-c C-c` or `C-M-x`. When you hit it, the effect is to evaluate the surrounding block into the REPL. There isn't a `send-region` command in the current `rebol-mode`, probably because they don't directly implement an in-Emacs-REPL, but since I want the second, I'd also like the first.
 
-## Documentation Display
+## <a name="documentation-display"></a>Documentation Display
 
 Just a simple, straight-forward way to display help about a particular symbol in a separate buffer. Nothing fancy, move along. Ok, in a future edition, it would be nice if the return text was all [linkified](http://www.gnu.org/software/emacs/manual/html_node/elisp/Clickable-Text.html) and [highlighted](https://www.gnu.org/software/emacs/manual/html_node/elisp/Text-Properties.html#Text-Properties) so that you could click/`&lt;Ret>` through docs, but that can wait.
 
-## Source Display
+## <a name="source-display"></a>Source Display
 
 This one might be a bit more functional. You see, you can use the `[source](http://www.rebol.com/r3/docs/functions/source.html)` function to get a source dump of almost<a name="note-Fri-Aug-02-000908EDT-2013"></a>[|1|](#foot-Fri-Aug-02-000908EDT-2013) any REBOL3 word. It may or may not be useful at all, but it would be pretty cool to build a buffer that would let you load such `source` output, change it, then send it back to the REPL when you save.
 
-## Argument Hints
+## <a name="argument-hints"></a>Argument Hints
 
 If you've used things like [SLIME](http://common-lisp.net/project/slime/), you'll appreciate this one. As you're typing, a summary of the arguments to the thing you're typing shows up in the minibuffer. This is trivial in Lisp, because of the way everything is parenthesized pretty consistently. It turns out to be quite a headache in REBOL3, and basically necessitates interacting with some sort of running runtime system. Here's an example, pretend these are all actual REBOL words:
 
@@ -42,7 +42,7 @@ Assuming that pipe represents my cursor, what should the mode display in your mi
 
 until you run out of words to check. Another open question is: how far back should the mode look for relevant symbols? For the moment, I've settled on "To the beginning of the previous block, or the first assignment, whichever comes first", but that's probably not the best approach to take.
 
-### Where I've Got So Far
+### <a name="where-ive-got-so-far"></a>Where I've Got So Far
 
 At the moment, I'm about a quarter of the way there by my reckoning. And I've run into some issues, both expected and unexpected. The mode as currently posted [here](https://github.com/Inaimathi/r3-mode), implements proper highlighting, a basic REPL, a basic documentation display, a basic source display, and a hacked-together `send-region`. I've already gone through the problems with argument hinting in an almost-purely whitespace-delimited language; there was only one completely unexpected problem and two little gotchas I ran into. Lets start small:
 
@@ -137,6 +137,7 @@ Cheers.
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Fri-Aug-02-000908EDT-2013"></a>[|back|](#note-Fri-Aug-02-000908EDT-2013) - Before you ask, yes, it's entirely possible to get the `source` of `source`. The only words you can't introspect on in this way are `native!`s, which are implemented in C rather than REBOL.
 
 2 - <a name="foot-Fri-Aug-02-000919EDT-2013"></a>[|back|](#note-Fri-Aug-02-000919EDT-2013) - As a note to self, I'm going to have to re-write pieces of it. Both for speed, and because I'm repeating blocks for each condition. That needs to be a mini-dsl instead of manual code.

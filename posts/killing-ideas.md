@@ -25,4 +25,5 @@ For people engaging in serious tool-using or tool-building discussion, this sens
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Sat-Sep-20-123850EDT-2014"></a>[|back|](#note-Sat-Sep-20-123850EDT-2014) - Or, in fact, that you should fully understand all ideas. This has been impossible for quite a while. Just keep in mind that it's vanishingly unlikely that you already understand all good ideas, or that all ideas you already understand are good. I have no idea how you're supposed to decide what other ideas you should learn. But focusing only on ones that are very easy to learn given your existing body of experience seems like it would have all the problems of a [greedy search](http://en.wikipedia.org/wiki/Greedy_algorithm#Cases_of_failure).

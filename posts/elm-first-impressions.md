@@ -10,7 +10,7 @@ This works pretty well, except for one thing: Elm has a [built-in reader macro f
 
 and then run `two-mode-mode` whenever you're editing `.elm` files. The end result is that, whenever you enter a `markdown` block with your cursor, your major mode will automatically change to `markdown-mode`, and change back to `haskell-mode` when you leave. There *has* to be a better solution than this, probably involving one of the other [Multiple Modes modules](http://www.emacswiki.org/emacs/MultipleModes), and I'll put some thought into it when I get a bit of time.
 
-### Installation/Basics
+### <a name="installationbasics"></a>Installation/Basics
 
 Installing is ridiculously easy. If you've ever installed a module for Haskell, you won't have trouble. It's just `cabal update; cabal install elm elm-server`. Do the `update` first, like it says there; the language hasn't reached `1.0` status as of this writing, which means that it's quite likely there will be significant changes by the time you get around to following these instructions.
 
@@ -20,7 +20,7 @@ If you're like me though, you prefer to use static files for your actual front-e
 
 Enough with the minutia though. Really, I'm here to give you a paragraph or two on what I think about the language.
 
-### What I think about the Language
+### <a name="what-i-think-about-the-language"></a>What I think about the Language
 
 The usual disclaimers apply.
 
@@ -44,6 +44,7 @@ I'll let you know how it goes.
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Mon-Jun-17-232836EDT-2013"></a>[|back|](#note-Mon-Jun-17-232836EDT-2013) - Which I'm pretty sure will eventually be addressed. I particularly miss full sections and `where`, though you'd think the multi-line function declarations would be the biggest gap.
 
 2 - <a name="foot-Mon-Jun-17-232840EDT-2013"></a>[|back|](#note-Mon-Jun-17-232840EDT-2013) - For no reason I could see, `:` is Elm's type annotation operator, while `::` is Elm's `cons`. It's precisely the opposite in Haskell, and buys little enough that I hereby formally question the decision. Similar reasoning seems to apply to the operator `&lt;|`, which seems to do exactly the same thing as Haskells' `$`, except that it's twice as long.

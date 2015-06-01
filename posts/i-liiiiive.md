@@ -4,7 +4,7 @@ I'm well aware that I've been away from the blog for about a month at this point
 
 Anyhow; now that my mind is a-twirl, my new spawn is home again, and my nose has shed the traditional chitinous exoskeleton of the winter season, lets take a look at what I've been thinking about.
 
-## Putting my Parens where my Mouth Is
+## <a name="putting-my-parens-where-my-mouth-is"></a>Putting my Parens where my Mouth Is
 
 `[cl-notebook](https://github.com/Inaimathi/cl-notebook)` got a bit more work thrown at it. One or two minor issues fixed, and we've got a working macroexpander now. That's basically it in terms of work *on* it. As for work *with* it, I've started writing an HTML5 edition of Lemonade Stand, and I'm thinking about a few other web games/creativity toys. Its shaken out a few obvious features that I'd want from a proper IDE, and a few obvious bugs that I need to squish. Including, but not limited to:
 
@@ -22,7 +22,7 @@ And since we're on the subject of `cl-notebook`, why is this [still a pre-beta](
 
 One of the other things I've been doing, which will eventually get its own write-up as soon as I get it running well enough to call a decent proof-of-concept, is thinking about [history in general](https://github.com/Inaimathi/cl-history#cl-history) and [*concurrent* history](https://github.com/Inaimathi/cl-distributed/blob/master/cl-distributed.lisp) in particular. One of the things that came about as a result of those experiments is a more thorough development of the idea of [history-aware data stores](https://github.com/Inaimathi/cl-history/blob/master/cl-history.lisp). Or rather, the first part of said development. And along with the fact that our [existing storage approach](https://github.com/Inaimathi/fact-base) for notebooks is causing [some issue](https://github.com/Inaimathi/cl-notebook/pull/1)s, this has me reconsidering the on-disk file format. A related issue is the on-disk size of [chart cells](https://github.com/Inaimathi/cl-notebook#-back-end). Recent [experiments with delta storage](https://github.com/Inaimathi/cl-distributed/blob/master/cl-distributed.lisp) have me thinking of ways to mitigate that.
 
-## Audio Sequencer
+## <a name="audio-sequencer"></a>Audio Sequencer
 
 Back to creativity toys, [this](http://173.255.226.138/sequencer-demo/basic-sequencer.html) is the single most annoying one I'm likely to actively try to develop.
 
@@ -208,7 +208,7 @@ Which seemed to work, as far as GHC is concerned. No compiler-time errors, and i
 
 It seems that [the last time I got `haste` running](http://stackoverflow.com/questions/27392814/too-much-recursion-error-with-basic-haste-use/27407077#27407077), I did so in a brief shining moment between major library changes while that was *actually* possible rather than *theoretically* possible.
 
-## Installation Frustration
+## <a name="installation-frustration"></a>Installation Frustration
 
 So `haste` won't compile, either from source or from `cabal`. According to the comments I've gotten on [this question](http://stackoverflow.com/questions/27596988/trouble-booting-haste), I should use [`cabal` sandboxes](http://coldwa.st/e/blog/2013-08-20-Cabal-sandbox.html). Sounds fine in theory. In practice, that page I just linked you to starts with the section title "Building Cabal from git". Fine I guess. That version of `cabal`<a name="note-Thu-Jan-22-113008EST-2015"></a>[|2|](#foot-Thu-Jan-22-113008EST-2015) installs libraries that demand a newer version of `network`. Including some dependencies of `haste`. That newer version of `network` has split apart `network-uri`, which apparently means that [libraries expecting the old interface are SOL for a while](https://github.com/jgm/gitit/issues/447)<a name="note-Thu-Jan-22-113011EST-2015"></a>[|3|](#foot-Thu-Jan-22-113011EST-2015).
 
@@ -218,7 +218,7 @@ After messing around with that for a little while, I did a quick search for SML-
 
 So I think that's it for now. I'm going to take a serious break from both languages<a name="note-Thu-Jan-22-113028EST-2015"></a>[|5|](#foot-Thu-Jan-22-113028EST-2015) for the next little while. Hopefully, by the time I get around to doing a fresh install of [Jessie Beta 2](https://www.debian.org/devel/debian-installer/News/2014/20141005), the respective language libraries have their shit relatively sorted and I can get back to just writing code that can actually work anywhere.
 
-## Environments and Methods
+## <a name="environments-and-methods"></a>Environments and Methods
 
 Last thing for this edition, I swear. Some small pieces of work have been done on [experimentaLISP](https://github.com/Inaimathi/experimentalisp), but I've mostly been thinking about it. Which is mildly disappointing from my perspective, given that this is supposed to be my experimental staging grounds. The particular thing I'm thinking about is methods. Which is actually to say, "how do you make operations generic over several types in something approaching a sane way?" The obvious way of doing it is pretty straight-forward:
 
@@ -239,6 +239,7 @@ No idea which of these approaches, if any, I'll actually end up taking. I just w
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Thu-Jan-22-112909EST-2015"></a>[|back|](#note-Thu-Jan-22-112909EST-2015) - Though, oddly, not in a raw SBCL prompt, where an interrupt is signalled as an `sb-sys:interactive-interrupt`.
 
 2 - <a name="foot-Thu-Jan-22-113008EST-2015"></a>[|back|](#note-Thu-Jan-22-113008EST-2015) - Or maybe it's not `cabal`, but some completely irrelevant hackage change.

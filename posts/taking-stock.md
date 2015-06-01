@@ -6,7 +6,7 @@ Anyway, I think I've decided where I'm going with my computing environment, and 
 
 Tweaks first, while they're still fresh in my mind
 
-### caps-lock swap
+### <a name="capslock-swap"></a>caps-lock swap
 
 I've actually pulled out the parts of my setup scripts that automate this, since the process seems to change every time I actually do a setup. Sometimes I have to fuck around with `/etc/default/keyboard`, sometimes it involves setting other arcane options. This time, I had to add
 
@@ -20,15 +20,15 @@ add Control = Control_L
 
 to my `.xmodmaprc`, and then `xmodmap .xmodmaprc` to my `.xinitrc`.
 
-### volume control
+### <a name="volume-control"></a>volume control
 
 I have no idea why, but every installation of debian I've done so far has had volume muted by default. Usually, I don't even notice this because it's easy to right-click on the GNOME volume control and fix it. The rare times that I set up a media-capable machine with no desktop environment, there is no such option. Typically, I run `aumix` and unmute the master volume, but that package seems to have been obsoleted. It still installs properly through `aptitude`, but errors when you try to run it (complaining that it can't find `mixer`, which was apparently removed a little while ago). This time out, I had to install `alsa` and use `alsamixer` to get sound back.
 
-### quicklisp
+### <a name="quicklisp"></a>quicklisp
 
 Using this has streamlined my lisp workflow enough that I've just sort of started thinking of it as a standard feature of a computer, rather than something I have to install. Luckily, since Xach has the beta file at a consistent URI, this *is* something that's scriptable.
 
-### rc files
+### <a name="rc-files"></a>rc files
 
 `.emacs` is the least of it. I currently have one of each
 
@@ -44,7 +44,7 @@ Using this has streamlined my lisp workflow enough that I've just sort of starte
 
 I've also got a `.clisprc`, but all it contains is the quicklisp hook, so it doesn't really count. Between these and my growing `.emacs.d`, it's about high time I sit down and put together a basic `~/` git repository so that I can just do a checkout instead of trying to remember all the various files I need.
 
-### Things I Use Constantly (Really)
+### <a name="things-i-use-constantly-really"></a>Things I Use Constantly (Really)
 
 emacs
 [chromium](http://www.chromium.org/)/[conkeror](http://www.conkeror.org/)/[lynx](http://lynx.browser.org/) (depending on whether I've got a mouse to hand and/or feel like starting up X)
@@ -55,7 +55,7 @@ wicd-curses
 sbcl/clisp
 erlang
 
-### Things I Use Most Days
+### <a name="things-i-use-most-days"></a>Things I Use Most Days
 
 mplayer
 thunar
@@ -68,7 +68,7 @@ liferea (which I have to admit, I'm not entirely sold on, but newsticker.el is t
 epdfview
 rsync
 
-### Things I Use Some Days
+### <a name="things-i-use-some-days"></a>Things I Use Some Days
 gnupg
 cifs
 [libre-office](http://www.libreoffice.org/download/)
@@ -79,7 +79,7 @@ imagemagick
 [get_flash_videos](http://code.google.com/p/get-flash-videos/)
 pacpl
 
-### Things I Use Very Rarely
+### <a name="things-i-use-very-rarely"></a>Things I Use Very Rarely
 
 ruby
 klavaro (still at ~75 wpm, incidentally)

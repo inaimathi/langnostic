@@ -1,6 +1,6 @@
 Before I get to the actual article, there was enough interest in the sparse-array solution to [Life](http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) this past [Saturday](https://guestlistapp.com/events/130467) that I've added them to the [appropriate Rosetta Code page](http://rosettacode.org/wiki/Conway%27s_Game_of_Life) and my [GitHub](https://github.com/Inaimathi/life). Sadly, the only solutions up are [python](https://github.com/Inaimathi/life/blob/master/life.py), [common lisp](https://github.com/Inaimathi/life/blob/master/life.lisp), [haskell](https://github.com/Inaimathi/life/blob/master/life.hs) and [clojure](https://github.com/Inaimathi/life/blob/master/life.clj). The [Prolog](http://www.swi-prolog.org/) attempt my partner and I made during the event wasn't completed, and I never actually got to try [Forth](http://www.gnu.org/software/gforth/). I might get around to doing some thinking with those; I'll keep you posted.
 
-### Global Day of Code Retreat
+### <a name="global-day-of-code-retreat"></a>Global Day of Code Retreat
 
 Was pretty goddamn awesome. For some reason, I became known as "the Haskell guy", despite the fact that I am nowhere even approaching mastery<a name="note-Mon-Dec-10-161221EST-2012"></a>[|1|](#foot-Mon-Dec-10-161221EST-2012). The attempts I made were
 
@@ -16,7 +16,7 @@ As I said, I was *going* to try Forth, but Dann, the only one willing to partner
 
 My general impression of the event was extremely positive, and I'll certainly be attending the [monthly-ish](http://www.meetup.com/Toronto-Code-Retreat/#calendar), smaller version if I can. The only big surprise I got was how few people actually use functional programming in the course of their work. I sort of assumed that the thought process wouldn't be outright alien, but I seemed to be one of a very small group that did it with any regularity. Oh well I guess; if you want light to be seen, take it into dark places. For my partners' part, they were either eager to learn, or to refresh their memory.
 
-### Web Mote and Angular.js
+### <a name="web-mote-and-angularjs"></a>Web Mote and Angular.js
 
 You haven't heard much about [Web-Mote](https://github.com/Inaimathi/web-mote) lately, and that's mainly because I've been porting it to [Angular.js](http://angularjs.org/), saving myself *quite* a few lines of code in the process. You may remember that [I called all the JS-MVC frameworks shit](http://langnostic.blogspot.ca/2012/09/js-frameworks.html) a little while ago. While my distaste for the needless OO-modeling that permeates most of them remains intact, a fellow Lisping web-developer told me to give [Angular](http://angularjs.org/) another try without reading their [godawful, over-engineered tutorial](http://docs.angularjs.org/tutorial/).
 
@@ -174,6 +174,7 @@ Add that to the massive list of things I need to keep you posted about, I guess.
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Mon-Dec-10-161221EST-2012"></a>[|back|](#note-Mon-Dec-10-161221EST-2012) - But give me ten years or so.
 
 2 - <a name="foot-Mon-Dec-10-161300EST-2012"></a>[|back|](#note-Mon-Dec-10-161300EST-2012) - Where we actually discuss many things of interest to functional programmers, not just Common Lisp.

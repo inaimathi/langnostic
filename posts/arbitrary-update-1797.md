@@ -18,4 +18,5 @@ Still alive, still working, will have somewhat ass-kicking stuff up shortly. Ish
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Wed-Jun-25-225755EDT-2014"></a>[|back|](#note-Wed-Jun-25-225755EDT-2014) - After which I will hopefully understand in more detail where and how light-speed limits come into play.

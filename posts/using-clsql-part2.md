@@ -692,6 +692,7 @@ Tune In Next Time (heh heh) For:
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Mon-Jul-16-233541EDT-2012"></a>[|back|](#note-Mon-Jul-16-233541EDT-2012) - The other is put together a downloadable archive so that other Lispers can install your package through `asdf-install`, but we'll discuss that later.
 
 2 - <a name="foot-Mon-Jul-16-233557EDT-2012"></a>[|back|](#note-Mon-Jul-16-233557EDT-2012) - So that when someone else is using your package, they can go to one consistent place to see all the symbols you're exporting and including. I tend to put conf variables there too if there aren't very many of them, but they should probably be in their own `conf.lisp` file.

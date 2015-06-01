@@ -1,12 +1,12 @@
 There's not much going on, but I figured I'd keep you in the loop anyhow.
 
-## Shameless Advertising
+## <a name="shameless-advertising"></a>Shameless Advertising
 
 We've got [SICPv2 starting](https://github.com/CompSciCabal/SMRTYPRTY/wiki/Reading-Schedule!-SICP-Mark-II) at the Toronto Computer Science Reading Group. Or rather, it started last week. Anyway, when we did this the first time, a few people found out about it three-quarters of the way through, and expressed sentiments like "I wish I found out about this when you were starting out". It was enough people that they've managed to organize a second round. And, yes, if there are 9 or fewer core group members, we'll totally be handing these out:
 
 ![](/static/img/cabal-badge.png)
 
-## `wik`
+## <a name="wik"></a>`wik`
 
 [Last time](/article?name=nix-update.html), I mentioned getting `nix`-the-package-manager up and running on my machine. And I mentioned setting up a Haskell environment with it. What I didn't mention is that some Haskell libraries are currently failing to install. As of this writing, that seems to include all of the Haskell web-frameworks other than [`scotty`](http://hackage.haskell.org/package/scotty) and [`snap`](http://snapframework.com/). [`Yesod`](http://www.yesodweb.com/) and [`happstack`](http://www.happstack.com/) both error at compilation time with some odd type failures that I don't know enough about to diagnose. The specific problem I had this week involved that last one, which also happens to be the server used internally by [`gitit`](http://gitit.net/).
 
@@ -658,7 +658,7 @@ def is_hidden(path):
     return path.startswith(".")
 ```
 
-## `entr`
+## <a name="entr"></a>`entr`
 
 As a complete aside, writing `wik` was the first time I used [`entr`](http://entrproject.org/) seriously. Because editing the above, especially those templates, required a lot of server restarting, eventually I just started up a separate terminal running
 
@@ -668,11 +668,11 @@ ls *py static/css/*css | entr -r python main.py ~/wiki-data
 
 which started up my server, and killed/restarted it each time I saved any `.py` or `.css` files I was working on. It's pretty useful having this sort of thing automated, though it doesn't *quite* do what I want for `C` development. Really, what I'd want there is something more like [`hsandbox`](https://github.com/niemeyer/hsandbox.git), but running on a file I specified. That's something I may put some work into at some point soon.
 
-## Khan Academy
+## <a name="khan-academy"></a>Khan Academy
 
 Something I've been seriously meaning to get into is some basic math. It's surprising, and somewhat embarrassing, how long I've gone without doing that. So this past week, I finally registered an account over at <a name="note-Sun-Mar-01-220102EST-2015"></a>[|5|](https://www.khanacademy.org">Khan Academy</a> and plowed through the [Combinatorics/Probability lessons](https://www.khanacademy.org/math/probability/probability-and-combinatorics-topic) as well as I could. It still feels like I need to practice and study more, but I have a less shaky grasp of [n-choose-k](http://en.wikipedia.org/wiki/Combination) problems than I used to. I'm not prepared to swear by the information yet, given that I haven't battle-tested it at this point, but I can tentatively recommend the lessons<a href="#foot-Sun-Mar-01-220102EST-2015). They certainly help retention over the moderate term.
 
-## Finally
+## <a name="finally"></a>Finally
 
 I was going to mention the recent Cabal memory-management-fest, in which the current core members got together to discuss the implementations they'd spent the week building. Mine's up <a name="note-Sun-Mar-01-220114EST-2015"></a>[|6|](https://github.com/CompSciCabal/SMRTYPRTY/blob/master/experiments/inaimathi/memory-management/g.c">here</a>, while Scott's are over [here](https://github.com/CompSciCabal/SMRTYPRTY/tree/master/experiments/scott/garbage_collector), and dann hasn't posted anything yet as far as I know. I *was* going to go over each of those, but this piece is already quite a bit longer than I was expecting. Fuck, also, I've been putting some work into exercises for [Learn Lisp the Hard Way.](https://github.com/LispTO/llthw/tree/master/book) At the moment, I'm just working on [section 1-04](https://github.com/LispTO/llthw/blob/master/book/1-04-0-lists.md), but I'm hoping to claw some time together over the next couple of weeks. It's an interesting effort, and I guess technically the second book I've contributed to<a href="#foot-Sun-Mar-01-220114EST-2015). I can't wait to see what kind of impact it has.
 
@@ -683,6 +683,7 @@ Given that the above just gives you some minor thumbnails, and doesn't include a
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Sun-Mar-01-215910EST-2015"></a>[|back|](#note-Sun-Mar-01-215910EST-2015) - It does not, as of this writing, do that recursively, but probably should. Note to self.
 
 2 - <a name="foot-Sun-Mar-01-215914EST-2015"></a>[|back|](#note-Sun-Mar-01-215914EST-2015) - Ignoring the potential `OSError` thrown if the directory still has something in it.

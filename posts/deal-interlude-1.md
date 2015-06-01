@@ -1,12 +1,12 @@
 Just a heads up: you won't see any of the below code checked into [the Deal repo](https://github.com/Inaimathi/deal) quite yet. And [production](http://deal.inaimathi.ca/) still uses the [nginx PushStream module](https://github.com/wandenberg/nginx-push-stream-module) for its asynchronous needs, and will continue to do so either until I finish enough of the other tasks to pull back enough time to re-structure its server, or until the contest ends and I no longer have to worry about making fast forward progress. Once I get around to it though, yes the real, actual Deal server is going to use this approach. It'll still use nginx as a reverse proxy to make sure static files are being served as fast as possible, but it won't rely on external SSE machinery longer than it has to. Not that the machinery's bad, mind you. It just complicates deployment more than I'd like.
 
-### Why and When
+### <a name="why-and-when"></a>Why and When
 
 Lets just get this out of the way. Yes, there [already exist](http://weitz.de/hunchentoot/) some [pretty](http://www.cliki.net/araneida) good [general-purpose](https://github.com/orthecreedence/wookie) web servers written in Common Lisp. The reason you'd build your own is if you had a very particular purpose in mind. If you're out to host a vanilla web site, or a traditional stateless, HTML-emitting web application, you'd already have your bases covered. But imagine you were building an application that had a heavy focus on JSON-interaction and session-tracking, with built-in support for SSEs. Say for the sake of argument, [something like](https://github.com/Inaimathi/strifebarge) a [web-game](https://github.com/Inaimathi/deal). You probably *could* make one of the existing things work for you. If you tried hard enough, and were willing to hack in support for one or two things<a name="note-Sun-Sep-15-225241EDT-2013"></a>[|1|](#foot-Sun-Sep-15-225241EDT-2013). But as you can see by reading the [`define-handler` mini-language](https://github.com/Inaimathi/deal/blob/master/define-handler.lisp) I put together for Deal, using a general purpose server for such a specific task incurs complexity penalties that you could completely sidestep by building something minimal and specialized.
 
 That's the point at which I'd start aiming for a goal like this. When using the existing, tested, reasonably-performing options is introducing conceptual and deployment complexity into my project. And, just in case you [missed it](https://github.com/Inaimathi/deal#installation), it is.
 
-### Gotchas
+### <a name="gotchas"></a>Gotchas
 
 HTTP is old. A child of [the mid-ninties](http://www.w3.org/Protocols/HTTP/1.0/spec.html). There are people alive and programming professionally today who were born after it was created. Lisp is [a bit](http://en.wikipedia.org/wiki/Common_Lisp) older. And I can only assume no one working on its standardization knew how big the web would actually get, so they made a couple choices that must have made sense to them, but that will annoy the fuck out of you if you need to generate valid HTTP responses from a CL application.
 
@@ -35,7 +35,7 @@ I'm not committed yet, and may just go with defining all of the above. The `crlf
 
 That out of the way, lets spend just a moment discussing...
 
-### The Approach
+### <a name="the-approach"></a>The Approach
 
 As far as I can tell, there are two legitimate approaches to building an async server in Common Lisp.
 
@@ -46,7 +46,7 @@ As far as I can tell, there are two legitimate approaches to building an async s
 
 I'm taking that second approach in this article, but you can use the same theory to construct a `cl-async`-based equivalent without too much trouble.
 
-### Now Then
+### <a name="now-then"></a>Now Then
 
 We're building a toy example. The simplest async server that can possibly be constructed while remaining worthy of the name. We're going to have three applicable handlers:
 
@@ -476,6 +476,7 @@ What you don't see above is an implementation of sessions, or very many performa
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Sun-Sep-15-225241EDT-2013"></a>[|back|](#note-Sun-Sep-15-225241EDT-2013) - Of the three I linked, Araneida has been superseded by Hunchentoot, Hunchentoot works on a thread-per-request model so you'd need to add SSE/websockets/what-have-you support, and Wookie doesn't have sessions (or very good performance, apparently) out of the box.
 
 2 - <a name="foot-Sun-Sep-15-225259EDT-2013"></a>[|back|](#note-Sun-Sep-15-225259EDT-2013) - And currently have [questions](https://groups.google.com/a/chromium.org/forum/#!topic/chromium-dev/qcDiw-QP4RE) lodged with the [Chromium devs](https://groups.google.com/a/chromium.org/forum/#!forum/chromium-dev), as well [as SO](http://stackoverflow.com/a/18819542/190887). We'll see what comes of it, I suppose.

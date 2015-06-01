@@ -1,6 +1,6 @@
 This has been one hell of a month, mostly for non-technical reasons, but I think I need to discuss some of them regardless. The following is a journal-style entry, so skip it if you're here for any kind of language discussion.
 
-### Specialization
+### <a name="specialization"></a>Specialization
 
 Firstly, you may have noticed that I've been hacking Erlang lately. It's verbose, it's obtuse, it works at bizarre cross-purposes with itself, but it has endeared itself to me for reasons I've [already discussed](http://langnostic.blogspot.ca/2012/05/assumptions.html). It's not too clear to me why I have this drive to try new languages, and it's not entirely clear whether it gives me an edge or dulls it in the end. It feels like I'm making reasonable progress and gaining perspective on the process of expressing processes precisely, and maybe that's enough. The root of the chain is this bias I have against overspecialization, which may or may not be an evolutionary vestige, but it doesn't seem to have hurt me yet. It seems intuitively obvious that I'd want to avoid the situation where I don't have the right tools for a job, and that means keeping a lot of them around. Admittedly, I haven't practiced this in real life, but cognitive tools don't take up space, and are always at my call, so it's much easier to justify.
 
@@ -8,7 +8,7 @@ I've had conversations with quite a few people I respect that go the other way. 
 
 That *can't* be the correct approach, regardless of how powerful an individual language is.
 
-### Make
+### <a name="make"></a>Make
 
 The Erlang play I've engaged in has forced me to take a serious look at [`make`](http://www.gnu.org/software/make/manual/make.html). I mentioned a while ago that I reach for [Ruby](http://www.ruby-lang.org/en/) whenever I need to do almost any small bit of scripting. Until about a week ago, this included deployment scripts. It never really occurred to me that `make` was good for something other than compiling C projects, but taking a closer look, it seems like it can do quite a bit. It has conditionals, loops and functions, and it deals with command line arguments a lot more gracefully than scripts in typical general-purpose languages.
 
@@ -44,7 +44,7 @@ inaimathi@hermaeus:~/project$ make |```
 
 That's going to get more convenient the more clients we start supporting. I'm not going to go through the full `make` syntax; it's fairly self explanatory and [docs](http://www.gnu.org/software/make/manual/make.html) exist in any case. A definition looks like that `define..endef` block, calling a function looks like `$(call fn, arg1, arg2, ...)`, the `exclude` line shows you what a variable looks like, and the bit that looks like `$(foreach ...)` is a loop. That should be enough for pretty much anything you need to do with the tool.
 
-### Music
+### <a name="music"></a>Music
 
 I had a fit of OCD the other day, and decided to finally organize my music library to prevent my phone from reporting
 
@@ -115,6 +115,7 @@ It's really odd how the peripheral pieces of my identity are the ones that cause
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Sat-May-26-230305EDT-2012"></a>[|back|](#note-Sat-May-26-230305EDT-2012) - `wc -l` says `deploy.rb` was 56, while the actual `Makefile` clocks in at 20.
 
 2 - <a name="foot-Sat-May-26-230331EDT-2012"></a>[|back|](#note-Sat-May-26-230331EDT-2012) - "Artist" is in quotes because I actually use it to group playlists, rather than Artists in the usual sense.

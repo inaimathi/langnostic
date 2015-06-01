@@ -316,6 +316,7 @@ Wish me luck.
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Thu-Jun-19-203346EDT-2014"></a>[|back|](#note-Thu-Jun-19-203346EDT-2014) - The projected sum of the history states before the first one you keep in memory.
 
 2 - <a name="foot-Thu-Jun-19-203349EDT-2014"></a>[|back|](#note-Thu-Jun-19-203349EDT-2014) - Or the in-memory `delta` as appropriate.

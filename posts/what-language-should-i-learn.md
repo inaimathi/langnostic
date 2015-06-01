@@ -1,6 +1,6 @@
 I've seen this question pop up on various forums with disturbing frequency lately. Enough that I just wrote this so that I can link people to it instead of typing the advice out each time. The stuff I cover here has already been touched on in [a post called Self Titled](http://langnostic.blogspot.ca/2012/02/self-titled.html). Go read that if you want more perspective on my opinion, but it's fairly long so I need to put something shorter and more accessible together.
 
-### A Better Question
+### <a name="a-better-question"></a>A Better Question
 
 is "What do I want to do with my programming skills?"
 
@@ -10,7 +10,7 @@ That's it, you can go.
 
 Pretend the rest of this article doesn't exist.
 
-### If You're Still Reading
+### <a name="if-youre-still-reading"></a>If You're Still Reading
 
 your goal is to push the bleeding edge of Comp Sci/IT forward, and you have your work cut out for you.
 
@@ -26,12 +26,13 @@ You need a thorough understanding of compilers, which you can get by putting a f
 
 Learning to program is not a thing you [pick up in seven days](http://norvig.com/21-days.html), and you could do a lot worse than to start by reading [that article](http://norvig.com/21-days.html). Just make sure to also disabuse yourself of the idea that you do it by picking one language and sticking to that.
 
-## TL DR
+## <A NAME="TL-DR"></A>TL DR
 
 So, in case you skipped directly to this line, the short answer is **"all of them, and that's just for starters"**. Good luck; I'll see you on the other side.
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Thu-Mar-14-155452EDT-2013"></a>[|back|](#note-Thu-Mar-14-155452EDT-2013) -"Blub has an inactive community" or "Blub's community is principally composed of assholes" *are* valid arguments against *using* a language. But keep in mind that you can still learn a lot by understanding a language that assholes use, or that very few people decided to use. Also, keep in mind that the metrics related to these arguments are relative and necessarily personal; if you're close friends with five or six people who use [Io](http://iolanguage.org/), then it really doesn't matter much what the rest of the world is doing.
 
 2 - <a name="foot-Thu-Mar-14-155656EDT-2013"></a>[|back|](#note-Thu-Mar-14-155656EDT-2013) - If the price-tag scares you, I should mention that there's a way to get a softcover edition for something like $40, but it doesn't include the same exercise sections or cover and is printed on pretty shitty stock. That's what I ended up doing, and mine's still in one piece even after a few years, but I can't find the link to that deal anymore even though one of the customer images is that edition of the book..

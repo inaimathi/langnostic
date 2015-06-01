@@ -10,7 +10,7 @@ Still, we've got a good starting point to look at in terms of putting a running 
 
 Now then, the bad stuff.
 
-### Bad Stuff
+### <a name="bad-stuff"></a>Bad Stuff
 
 The Erlang deployment process is really beginning to annoy the fuck out of me.
 
@@ -26,6 +26,7 @@ I did learn a lot about concurrency outside of the lock/mutex world, and I appre
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Mon-Aug-20-123316EDT-2012"></a>[|back|](#note-Mon-Aug-20-123316EDT-2012) - If that was your thing.
 
 2 - <a name="foot-Mon-Aug-20-123321EDT-2012"></a>[|back|](#note-Mon-Aug-20-123321EDT-2012) - Read it before hacking on it, and get my permission if you want to use the system under another license.

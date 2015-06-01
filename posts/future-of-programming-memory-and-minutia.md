@@ -1,18 +1,18 @@
 Fairly boring update time. I still haven't really had enough time to tear into the next real article I've got planned, but its been long enough that I need to release mental steam.
 
-### Future of Programming
+### <a name="future-of-programming"></a>Future of Programming
 
 So [this](https://vimeo.com/97623064) is a thing. I'm not sure how I feel about it since it was a zero-edit, one sitting walk-through of a still very incomplete version of [`cl-notebook`](https://github.com/Inaimathi/cl-notebook), but at least it's a thing. I recently submitted it to John Edwards et als' [Future of Programming workshop](http://www.future-programming.org/call.html) where, I guess, I'm hoping to get in as a token "blast from the past" entry. The funny part is that even if I get selected to participate at these conferences, there's no way in hell I could go. My passport is somewhat out of date, and I've got a family to care for and a job to do here. Hopefully they've got a remote option I guess?
 
 Someone just sort of mentioned the thing off-hand, and I immediately assumed from the title that this was just a mechanism by which to get more feedback on particular programming projects you were working on. Presenting to [this crowd](https://thestrangeloop.com/) isn't something I thought was part of the deal.
 
-### Memory
+### <a name="memory"></a>Memory
 
 So it turns out that the memory management landscape I briefly mused about [last time](/article?name=arbitrary-update-932.html) is even simpler than I thought. Because "tracers" and "refernce counters" [turn out to be duals](http://www.cs.virginia.edu/~cs415/reading/bacon-garbage.pdf). You can either follow that link to the paper, or [this one](https://www.youtube.com/watch?v=XtUtfARSIv8) to the [Papers We Love](https://www.youtube.com/channel/UCoj4eQh_dZR37lL78ymC6XA) video explaining it. Both elucidate wonderfully.
 
 So there isn't even five different ways of approaching memory, there's four.
 
-### HTTP On Windows...
+### <a name="http-on-windows"></a>HTTP On Windows...
 
 ...is a sack of balls. It's especially a sack of balls in Lisp (or leastwise SBCL), which tries to be clever about how to parse incoming line-endings. Let me back up a bit first.
 
@@ -81,7 +81,7 @@ Backtrace:
 
 It's because there's no non-blocking way to grab a `byte` out of a stream. There *is* such a way to grab a `char`, but that doesn't help in this situation. Anyway, the end result of all of this is that ugly little hack that makes the line-ending check conditional on execution platform.
 
-### [`fact-base`](https://github.com/Inaimathi/fact-base) changes
+### <a name="factbase-changes"></a>[`fact-base`](https://github.com/Inaimathi/fact-base) changes
 
 Two changes I'd been considering for a while got pushed recently.
 

@@ -23,7 +23,7 @@ Reading material on the subject includes one [pretty good statement of the probl
 
 At the high-level, there's two ways of doing this (which could, and probably should, be combined):
 
-## Prove that you can read this
+## <a name="prove-that-you-can-read-this"></a>Prove that you can read this
 
 1. The server sends the user a random ~64 byte code, encrypted with the users' public key
 1. The user decrypts the key and sends back the plain-text
@@ -31,7 +31,7 @@ At the high-level, there's two ways of doing this (which could, and probably sho
       - If it does, that code is revoked and the user is given access.
       - If it doesn't, boot the fucker
 
-## Prove that you can sign this
+## <a name="prove-that-you-can-sign-this"></a>Prove that you can sign this
 
 1. The server sends the user a random ~64 code
 1. The user signs that plain-text and sends the result back
@@ -56,7 +56,7 @@ The [forever hack](http://www.codinghorror.com/blog/2007/05/phishing-the-forever
 
 In other words, if we could solve that UI problem in a semi-automated way, this would be an altogether better way of doing web authentication.
 
-### The Plan
+### <a name="the-plan"></a>The Plan
 
 I actually intend to build this, because having such a system would be a good thing from my perspective personally, as well as for web security in general. If no one's done it before, I guess I may as well take a crack at it. The steps are already outlined above
 

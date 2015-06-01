@@ -77,7 +77,7 @@ FACT-BASE>
 
 If `unify` tries to work on these same terms, but `?a` is already bound to `:foo`, it can do nothing but fail. Yes, you could unbind a particular variable, but that's skipping ahead a bit. Backtracking is dealt with at a different level than straight-up unification. In fact...
 
-## How `for-all` Works
+## <a name="how-forall-works"></a>How `for-all` Works
 
 Here's how `for-all` works.
 
@@ -135,4 +135,5 @@ Hopefully, that clarified more than it confused.
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Tue-Jun-17-201209EDT-2014"></a>[|back|](#note-Tue-Jun-17-201209EDT-2014) - And don't worry if this set includes you; it included me too, until I spent three weeks or so hitting my head against it repeatedly.

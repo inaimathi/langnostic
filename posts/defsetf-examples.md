@@ -29,7 +29,7 @@ Restarts:
 
 There are two ways of fixing this.
 
-### If You Don't Need CLOS Support
+### <a name="if-you-dont-need-clos-support"></a>If You Don't Need CLOS Support
 
 For instance, if your `lookup` is a function rather than a method, you can get away with doing something like this
 
@@ -105,7 +105,7 @@ Backtrace:
   ...
 ```
 
-### If You Need CLOS Support
+### <a name="if-you-need-clos-support"></a>If You Need CLOS Support
 
 Then you'll need to define a `setf` generic. In the example we've been using, you could do the following:
 

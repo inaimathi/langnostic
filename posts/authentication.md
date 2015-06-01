@@ -534,6 +534,7 @@ For next time, I'll be putting together an extension to this that does public-ke
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Sat-Jun-09-121258EDT-2012"></a>[|back|](#note-Sat-Jun-09-121258EDT-2012) - Such as MD5 and SHA1. Note that using these, for example, in the way that [git](http://git-scm.com/book/en/Git-Internals-Git-Objects) does isn't a huge deal, since that's merely supposed to be a consistency check and not a security feature.
 
 2 - <a name="foot-Sat-Jun-09-121448EDT-2012"></a>[|back|](#note-Sat-Jun-09-121448EDT-2012) - Surprise, surprise.

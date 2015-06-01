@@ -2,13 +2,13 @@ So you may have noticed that I took down that <a name="note-Sun-Apr-05-173817EDT
 
 Anyway, the transformation process is sufficiently advanced that I can talk about it now.
 
-## Why Wiki?
+## <a name="why-wiki"></a>Why Wiki?
 
 Because it's simple enough to put together in a weekend or so, has enough tricky edges that it'll take me through most of the potential sore-points of a new language, and it's still vaguely entertaining to try.
 
 Also, `gitit` still doesn't compile properly via `nix`, so I may actually find myself in the situation of *using* this toy project for something.
 
-## What Wiki?
+## <a name="what-wiki"></a>What Wiki?
 
 My goals here are minimal:
 
@@ -20,7 +20,7 @@ My goals here are minimal:
 
 I'm pointedly not worried about other markup dialects, nor am I worrying about exporting the data as anything other than `.md` files (or naively as a `git` repo). That still gets you through a lot of what you'll need out of a language. Even a project as minimal as this will force me to interact with command-line argument parsing, executing external commands, file I/O, markdown parsing, HTML templating and serving HTTP.
 
-## How Wiki?
+## <a name="how-wiki"></a>How Wiki?
 
 To start with, the project page is [here](https://github.com/Inaimathi/wik). I don't intend to take this one down, and even though this is an entirely toy project, literate patches welcome.
 
@@ -353,7 +353,7 @@ func (w *Wiki) Local(path string) (string, error) {
 
 Effectively, we've got two arguments. A `Wiki` pointer named `w`, and a `string` named `path`. And we've got Two return values, a `string` and an `error`<a name="note-Sun-Apr-05-180610EDT-2015"></a>[|5|](#foot-Sun-Apr-05-180610EDT-2015). A call to this looks like `aWiki.Local("some/path/here")`, and that `aWiki` part will be implicit first argument, as in most languages with object systems. Incidentally, there's no multiple dispatch here. You can't do something like `func (a *Foo, b *Bar) MethodName(baz string) ...`, and will get a compile-time error if you try.
 
-## Golang, First Impressions
+## <a name="golang-first-impressions"></a>Golang, First Impressions
 
 This is slightly lighter fare than my usual semi-literate programming articles, mainly because I really want to get to a summary of my first impressions of the language. And I get the feeling that it'll get too long if I do the usual deep-dive into every single function and method. A lot of it is pretty self-explanatory anyhow, and most of it comes with inline comments besides. If you were looking for an in-depth syntax primer, I thoroughly recommend [`x in y where x=go`](http://learnxinyminutes.com/docs/go/)
 
@@ -377,6 +377,7 @@ Hopefully it's obvious that none of these are such horrific downsides that I'd s
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Sun-Apr-05-173817EDT-2015"></a>[|back|](#note-Sun-Apr-05-173817EDT-2015) - No, that doesn't go anywhere.
 
 2 - <a name="foot-Sun-Apr-05-173822EDT-2015"></a>[|back|](#note-Sun-Apr-05-173822EDT-2015) - Which, as I [now know](http://stackoverflow.com/questions/29213429/checking-if-a-file-is-in-a-given-directory), actually has links into the source implementation of the `func`s in question. Specifically, each subsection heading is a link that takes you to the point in source where its definition begins..

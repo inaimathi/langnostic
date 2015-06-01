@@ -14,6 +14,7 @@ Yes, it's [currently more work](http://langnostic.blogspot.ca/2012/06/authentica
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Fri-Nov-16-162606EST-2012"></a>[|back|](#note-Fri-Nov-16-162606EST-2012) - Whichever `SHA-2` you like, it doesn't matter for the purposes of this exercise.
 
 2 - <a name="foot-Fri-Nov-16-162610EST-2012"></a>[|back|](#note-Fri-Nov-16-162610EST-2012) - Slow, as both of those articles note, is actually what we want in a password hashing function. So while that may sound like a dig, it's not.

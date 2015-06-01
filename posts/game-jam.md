@@ -2,7 +2,7 @@ The first part is a journal of thoughts as they were happening, so try not to la
 
 * * *
 
-### April 23
+### <a name="april-"></a>April 23
 
 I did the first public facing push of this code-base at about 4:00 am my time today, and then curled up into bed. When I got up at 10:30, there was already a bug report waiting for me. Not off to a spectacular start...
 
@@ -10,7 +10,7 @@ The problem turned out to be how cl-css handles file compilation. Specifically, 
 
 This is what I meant. When I'm making a directory, I really just want a place to put some specific file. Abstracting the basic directory creation means that I don't have to special-case the situation where multiple nested directories are required, and I also don't need to worry about checking whether the directory exists before creating it. Elegant. Maybe this is a good start. Day 1 and I'm already learning something.
 
-### April 24
+### <a name="april-"></a>April 24
 
 I went pretty batshit on the code-base today, removing anything that looked like an unnecessary additional step. I'd been keeping the model and view as separate as possible because of an assumption that there would be some sort of SQL database involved in the game eventually. I may still need to switch to one at some point, so the move might come back to bite me in the ass, but the barriers got broken down. Mostly it was intermediate functions all over the place that slightly simplified the next set of intermediate functions<a name="note-Sat-Apr-30-024740EDT-2011"></a>[|2|](#foot-Sat-Apr-30-024740EDT-2011). Things like `planet-info` and `inventory` which took model structs and returned `plists` instead. To be fair, that actually did help at some point; since there doesn't seem to be a way to map over a `struct`, it was very easy to dump an entire `plist` into the view with a `loop`.
 
@@ -18,7 +18,7 @@ Anyway, I made the decision during my shower that I'm keeping the `struct` appro
 
 Finally, markets behave differently now. Instead of static prices, each market generates a new price from the `*tradegoods*` and averages (By which I mean "gets the arithmetic mean of") that with its current price. It just makes sure that markets tend to stabilize over time, while hopefully keeping enough fluctuations to make profit possible.
 
-### April 25
+### <a name="april-"></a>April 25
 
 Changed up a lot more of the system. Today, I focused on the `purchase!`/`convey!` end of things rather than the basic model. Basically, captains now have a copy of the planet they take with them and merge transactions back later. As I mentioned yesterday, this isn't a measure to make sure that no more product leaves a planet than absolutely should. In fact, I'm tempted to make deficit exports an explicit mechanic, upping the price of a good fairly substantially if it slides into the negatives. That would also play off a tweak I want to make to the `market-produce!` function. Namely, generating `(+ 4d20-30 (/ productivity tech-level))` instead of the current `(+ 2d20 (/ productivity tech-level))` to allow goods to be consumed as well as created by planets<a name="note-Sat-Apr-30-025032EDT-2011"></a>[|3|](#foot-Sat-Apr-30-025032EDT-2011).
 
@@ -26,13 +26,13 @@ Today's lesson<a name="note-Sat-Apr-30-025041EDT-2011"></a>[|4|](#foot-Sat-Apr-3
 
 [Break time to remodel my kitchen. Did a bit of light view coding, but nothing interesting to report.]
 
-### April 28
+### <a name="april-"></a>April 28
 
 Spent today mainly on the UI end. Making it pretty-ish and squashing a few display bugs I came across. Still not happy with the default theme, but it's all I'll have time for in a week. I did make an effort to completely disconnect it from all other code, so others can theoretically just push a folder of images+theme.css to add a new one. The entire experience was a bit surreal; in the middle of using GIMP to do some graphic design work, I found myself embroiled in a conversation on Reddit about how GIMP is not good enough to do design work. Since the best argument I read was "But, I **like** Photoshop!" I'll stick with the free<a name="note-Sat-Apr-30-025452EDT-2011"></a>[|6|](#foot-Sat-Apr-30-025452EDT-2011) version, thank you.
 
 Part of that UI tweaking mentioned above was adding jQuery and jQuery UI to the codebase. I didn't want to have to tell people to go download it themselves, and there's really nothing that needs to be done other than putting them in the correct directories. The downside is that this is now considered a Javascript project by GitHub. Which, ok, I guess is true by character count, but it still feels inaccurate.
 
-### April 29
+### <a name="april-"></a>April 29
 
 I realized earlier today that my time's officially up for this little project<a name="note-Sat-Apr-30-025551EDT-2011"></a>[|7|](#foot-Sat-Apr-30-025551EDT-2011). Technically, time ran out about an hour ago, but I kinda got into the swing of things and decided to finish one last TODO before doing a final check-in for the event and collecting my thoughts. That ended up taking more time than I thought it would, but it really was my own fault for giving into indecision for so long. The game looks passable, it plays nicely, doesn't seem to blow up<a name="note-Sat-Apr-30-025613EDT-2011"></a>[|8|](#foot-Sat-Apr-30-025613EDT-2011) and is actually pretty fun<a name="note-Sat-Apr-30-025631EDT-2011"></a>[|9|](#foot-Sat-Apr-30-025631EDT-2011). I really shouldn't have picked out something this ambitious for a week I knew I'd be occupied, but hey. Such is life, I guess. I'll keep working on it for as long as I can stand to look at the code-base, but for the moment, it's done.
 

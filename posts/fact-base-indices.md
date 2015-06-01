@@ -2,11 +2,11 @@ Got through a late-night programming binge, followed by more of the same on my l
 
 Before we get to discussing any code, lets back up and discuss the idea of an `index` for a moment.
 
-### The Idea of an `index`
+### <a name="the-idea-of-an-index"></a>The Idea of an `index`
 
 An `index` in this context is an extra layer on top of our fact storage engine that keeps track of what we've put in/taken out in a way that makes certain things easier to look up. It's easier for fact-bases than it is for relational databases. Since every fact is made up of three components<a name="note-Tue-Mar-25-150529EDT-2014"></a>[|3|](#foot-Tue-Mar-25-150529EDT-2014), all we have to do is keep an index by one or two slots. What we're basically looking to do is a really fast lookup of some subset of all facts in a base based on one or two of those keys<a name="note-Tue-Mar-25-150535EDT-2014"></a>[|4|](#foot-Tue-Mar-25-150535EDT-2014). The way I've chosen to do it, after some advice from friends who've used systems something like this, is by maintaining hash tables<a name="note-Tue-Mar-25-150538EDT-2014"></a>[|5|](#foot-Tue-Mar-25-150538EDT-2014) in memory that give you shortcuts to some specified indices. We're trading space<a name="note-Tue-Mar-25-150541EDT-2014"></a>[|6|](#foot-Tue-Mar-25-150541EDT-2014) for time<a name="note-Tue-Mar-25-150544EDT-2014"></a>[|7|](#foot-Tue-Mar-25-150544EDT-2014).
 
-### The Post-Explanation Version
+### <a name="the-postexplanation-version"></a>The Post-Explanation Version
 
 This was a much different article initially; I was going to discuss some bone-headed intermediate states for this code before getting to the "final"<a name="note-Tue-Mar-25-150547EDT-2014"></a>[|8|](#foot-Tue-Mar-25-150547EDT-2014). It ended up looking like a stupid idea in this particular instance because the previous versions weren't things I'd consider running after having thought through it a bit more. 
 
@@ -163,6 +163,7 @@ And that's that. You've got a quick run-through of how this works out in practic
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Tue-Mar-25-150513EDT-2014"></a>[|back|](#note-Tue-Mar-25-150513EDT-2014) - Granted, because "what I'm up to" at this point "an almost trivial semi-anonymous forum for a local meetup group", and "an almost trivial notebook-style REPL for common lisp", that's true of almost any data storage technique ever, but still. The naive, index-less storage was giving [cl-kanren](https://github.com/Inaimathi/cl-kanren-trs)<a name="note-Tue-Mar-25-150519EDT-2014"></a>[|2|](#foot-Tue-Mar-25-150519EDT-2014) a bit more trouble than I wanted it to when I pushed the stored entry count past 10000 or so. Which is not satisfactory. So yeah, this index is basically a search-space optimization for my database traversals. I'll let you know how it goes.
 
 2 - <a name="foot-Tue-Mar-25-150519EDT-2014"></a>[|back|](#note-Tue-Mar-25-150519EDT-2014) - Which I'll also have to talk about before long, if for no reason other than to get some ideas out of my head temporarily.

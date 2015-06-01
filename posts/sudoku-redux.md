@@ -1,6 +1,6 @@
 I was in a particularly blah mood today, so I decided to sharpen my teeth on a problem I had half-solved from earlier. Solving Sudoku in Haskell. The code for the solution is up at [the appropriate github](https://github.com/Inaimathi/sudoku/blob/master/sudoku.hs).
 
-### Interlude
+### <a name="interlude"></a>Interlude
 
 Before we get to the actual code though, do you remember [that page](http://www.haskell.org/haskellwiki/Sudoku) I linked, chock full of Sudoku solvers written in Haskell? Well, there aren't as many there as I thought. About half the links from that page actually lead to 404 pages of various intricacies instead of to the examples they promise. The ones you can see source for are all there, but that's really all you can guarantee.
 
@@ -14,7 +14,7 @@ Also, I'll have to take it back.
 
 That's false. Specifically, once I sat down to actually read *read* the examples there instead of just flipping through them, I got caught by [one that I passed over the first time](http://web.math.unifi.it/users/maggesi/haskell_sudoku_solver.html). The code actually on the Haskellwiki page is even shorter than that, but it does it by omitting the type declarations, which is borderline cheating in Haskell. It took me an embarrassingly long time to understand the approach in my bones, so I'll go over it in depth in a [follow-up article](http://langnostic.blogspot.ca/2013/06/sudoku-reredux.html) just in case I'm not the only one.
 
-### Sudoku
+### <a name="sudoku"></a>Sudoku
 
 
 >   So all [these people](http://www.haskell.org/haskellwiki/Sudoku) are using Haskell to commit sudoku? Oh what a world...

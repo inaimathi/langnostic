@@ -8,6 +8,8 @@ import (
 	"time"
 )
 
+const CacheLimit = time.Minute
+
 type Post struct {
 	Id int
 	Title string
@@ -35,7 +37,7 @@ func MkArchive(fname string) (*Archive, error) {
 }
 
 func (arc *Archive) Reload() error {
-	if time.Minute > time.Since(arc.lastChecked) {
+	if CacheLimit > time.Since(arc.lastChecked) {
 		return nil
 	}
 	

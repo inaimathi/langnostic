@@ -220,6 +220,7 @@ But you should be able to use [it in its current state](https://github.com/Inaim
 
 * * *
 ##### Footnotes
+
 1 - <a name="foot-Thu-Nov-29-163338EST-2012"></a>[|back|](#note-Thu-Nov-29-163338EST-2012) - That's the RasPi video player; it's more primitive than `mplayer`, works specifically on the RasPi hardware, and can only really play a few different kinds of video, but the upside is that it can do surprisingly smooth HD output. So we really *want* to use it if at all possible.
 
 2 - <a name="foot-Thu-Nov-29-163503EST-2012"></a>[|back|](#note-Thu-Nov-29-163503EST-2012) - Which is where we keep the files we still need to play.

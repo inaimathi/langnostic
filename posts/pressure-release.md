@@ -2,7 +2,7 @@ So I've been running around studying [this](http://www.hindawi.com/journals/tswj
 
 I'm not giving up. That doesn't happen. Which is why I've been scarce in the various [places](https://github.com/Inaimathi/cl-notebook) you [might](https://github.com/Inaimathi/clomments) expect [me](http://langnostic.inaimathi.ca/) to [be](https://github.com/Inaimathi/500lines/tree/master/event-driven-web-server) right now. At the very least, I'm solving that second-last one with another disjointed random thoughts update.
 
-## FBP and Graph Theory
+## <a name="fbp-and-graph-theory"></a>FBP and Graph Theory
 
 I've had this thought in my head for a while, though I'm sure I'm nowhere near the first one, and since I've been reading up on various graph-related problems and representations, it seems like a good time to note it in passing. My team is mostly composed of Lispers, and entirely composed of dynamic typing fans (Yes, yes, I know, [not a real distinction](http://existentialtype.wordpress.com/2014/04/21/bellman-confirms-a-suspicion/), but you know what I mean...), so I thought it might be fun to give this a quick think from the other perspective.
 
@@ -35,13 +35,13 @@ type Network = Graph Part String
 
 This is pretty accurate as far as I can tell. Actual code left as an exercise for the reader, or perhaps a future self, but the signatures are giving me some ideas about what to do with our system. We can't quite do the most obvious things, like flatten out a network, because it would break some of the expected timing characteristics, but I'm sure there's something I'll be able to cook up that'll be sufficiently cool with this approach. Even if it's just a more effective way to explain what we're actually doing.
 
-## Common Lisp Sort Bites Hard
+## <a name="common-lisp-sort-bites-hard"></a>Common Lisp Sort Bites Hard
 
 [This](http://stackoverflow.com/questions/25021832/np-complete-appetizers-bug) is sort of embarrassing. You can see the details there if you like, but the short version is that it slipped my mind that `sort` was destructive, and this led to one of the most difficult-to-diagnose bug I've been on the receiving end of. This is something I've [already bitched about](/article?name=recommendations.html), but thought I was past the point of tripping over.
 
 That'll learn me, I guess.
 
-## Other Tries
+## <a name="other-tries"></a>Other Tries
 
 [Last time](/article?name=vacation-2014.html), I put up a [trie](https://en.wikipedia.org/wiki/Trie) implementation in Common Lisp. Here's some more:
 
@@ -183,7 +183,7 @@ class Trie:
 
 I'm not going through them step-by-step, because it's the same data structure you saw last time, and it's fairly self-explanatory once you understand the underlying point, but I still wanted to think around it clearly enough to translate the concept to other languages. The same notes on language difference from last time still apply here. Python, Haskell and Common Lisp have very different characteristics. And Clojure seems to be somewhere in between of Haskell and Common Lisp. By the way, don't judge the Clojure version too harshly. I'm nowhere near a `.clj`-wizard yet, and this particular trie implementation was more or less live-coded at the last [Toronto Clojure Users Group](https://github.com/ClojureTO) meeting. Fun to write, but probably neither optimal nor idiomatic, nor respecting Clojure module conventions.
 
-## Binomial Heaps
+## <a name="binomial-heaps"></a>Binomial Heaps
 
 This one isn't even on the reading list, as I mentioned, but it's interesting enough that I had to sink a few hours into it. What can I say, I'm weak to minimal invariants and logarithmic performance.
 
