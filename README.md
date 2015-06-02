@@ -9,3 +9,5 @@
 
 - `BGG Data Sifting`, `cl-notebook Thoughts` and `cl-notebook introductory thoughts` all have issues with the translation-from-markdown approach. Figure out what to do about this (also, `cl-notebook` obviously needs an export-to-markdown feature)
 - Go through the archives and deal with any images you've got lying around
+- Fix formatting on all quotes (they need two spaces at the end to prevent from wrapping)
+- Make UL styles consistent (you've got `-   foo` in some places, and it should be just `- foo`)

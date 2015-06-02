@@ -1,6 +1,6 @@
 So I got something in the mail a week ago.
 
-![](http://3.bp.blogspot.com/-_dZWVAjpTUc/TiR8OGmUoXI/AAAAAAAAAHg/HUd_8aYl0OY/s1600/kindle.jpg)
+![](/static/img/kindle.jpg)
 
 Ok, not in the mail, UPS delivered it in their usual, careless manner, but I'm not talking about that right now.
 

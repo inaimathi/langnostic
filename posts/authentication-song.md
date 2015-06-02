@@ -13,7 +13,7 @@
 > Use RSA to guarantee it...
 
 
-![](http://1.bp.blogspot.com/-uUDlwvS-FBs/T9azbYufEnI/AAAAAAAAAMI/Bb0m79FEK0o/s400/wonka.jpg)
+![](/static/img/wonka.jpg)
 
 Ok, that's quite enough of that. There are reasons I don't consider myself a writer, and bullshit like this is right up there.
 

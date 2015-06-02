@@ -11,7 +11,7 @@ So I [put together](https://github.com/Inaimathi/fact-base/blob/b2d1dd7e9ecf0e62
 
 I'd get this:
 
-<div class="separator" style="clear: both; text-align: center;">[![](http://3.bp.blogspot.com/-skfIm7YsL5k/U0nsL2LGF0I/AAAAAAAAAa0/cMH3fMBXtZM/s400/slime-eval-screen.png)](http://3.bp.blogspot.com/-skfIm7YsL5k/U0nsL2LGF0I/AAAAAAAAAa0/cMH3fMBXtZM/s1600/slime-eval-screen.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;)</div>
+![](/static/img/slime-eval-screen.png)
 
 You may have noticed that this *isn't* an animated gif. It hangs there for something on the order of thirty seconds, more if profiling is on, and then returns the expected result. So that won't really do. There's some interesting points I'll talk about later, that have to do with clause order and the underlying operations. But, even though this is probably the worst way to write this particular query, it should return in under a second.
 

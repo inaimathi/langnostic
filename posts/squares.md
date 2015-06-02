@@ -2,7 +2,7 @@ I know I posted earlier, but this has to come out of my head. And I don't think 
 
 So...
 
-![](http://3.bp.blogspot.com/-eWsJGvfVlxU/UYKctpq40WI/AAAAAAAAAQc/sllRUlJBDGs/s320/square-zones.png)
+![](/static/img/square-zones.png)
 
 That's what I'm thinking.
 

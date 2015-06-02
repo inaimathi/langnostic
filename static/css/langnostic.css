@@ -11,8 +11,10 @@ body { width: 100%; margin:0px; padding: 0px; font-family: sans-serif; }
 .top-menu a { color: #FFF; }
 .top-menu a:hover { color: #999; }
 
-.content img { margin: auto; display: block; }
+.content img { margin: auto; display: block; max-width: 80%; }
 .content code { background-color: #EEE; padding: 1px 3px; }
+.content blockquote { font-style: oblique; font-family: serif; background-color: #EEE; padding: 10px; border-left: 20px solid #CCC; }
+.content pre code { padding: 10px; }
 
 .post-nav { font-weight: bold; color: #CC0606; }
 .post-nav a { margin-bottom: 10px; color: #CC0606; }

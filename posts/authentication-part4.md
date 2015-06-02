@@ -1,26 +1,26 @@
-> Authentication
-> Authentication
-> Authentication!
+> Authentication  
+> Authentication  
+> Authentication!  
 > 
-> Authentication
-> Authentication
-> Authentication
-> Authentication
+> Authentication  
+> Authentication  
+> Authentication  
+> Authentication  
 > 
-> Authentication
-> Authentication
-> Authentication
+> Authentication  
+> Authentication  
+> Authentication  
 > 
-> Authentication
-> Authentication
-> Authentication
+> Authentication  
+> Authentication  
+> Authentication  
 > 
-> Authentication
-> Authentication
-> Authentication
-> Authenticatiooooooooooon! 
+> Authentication  
+> Authentication  
+> Authentication  
+> Authenticatiooooooooooon!  
 
-[![](http://2.bp.blogspot.com/-ARP_ZvBk5gs/T-VXY9tnIeI/AAAAAAAAAMY/FCQwATrk51A/s400/imaginationland-guy.jpg)](http://2.bp.blogspot.com/-ARP_ZvBk5gs/T-VXY9tnIeI/AAAAAAAAAMY/FCQwATrk51A/s1600/imaginationland-guy.jpg" imageanchor="1" style="margin-left:1em; margin-right:1em)
+![](/static/img/imaginationland-guy.jpg)
 
 Gentlemen...
 

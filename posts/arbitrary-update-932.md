@@ -19,14 +19,12 @@ What I'm trying to express there is a change in an existing record. It's mildly 
 
 ### <a name="memory"></a>Memory
 
-<div class="separator" style="clear: both; text-align: center;">[![](http://2.bp.blogspot.com/-_XA44rwzGFY/U3wQ89SF9HI/AAAAAAAAAbQ/jqj_W1u7qNA/s320/thinkin-bout-memory-management.png)](http://2.bp.blogspot.com/-_XA44rwzGFY/U3wQ89SF9HI/AAAAAAAAAbQ/jqj_W1u7qNA/s1600/thinkin-bout-memory-management.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;)</div>
+![](/static/img/thinkin-bout-memory-management.png)
 
 Whatever language you're currently using, managing memory is something that you're ultimately doing. Whether it's manually, or through various schemes that do it on your behalf. The ultimate goal of all of these approaches is twofold:
 
-
--   make sure that a new allocation doesn't clobber a chunk of memory that's still being used by something
--   make sure that you never build up enough memory junk that you can't allocate a new block when you need to
-
+- make sure that a new allocation doesn't clobber a chunk of memory that's still being used by something
+- make sure that you never build up enough memory junk that you can't allocate a new block when you need to
 
 The general approaches seem to be
 

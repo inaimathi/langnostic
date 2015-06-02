@@ -2,7 +2,7 @@ Two things this time. First...
 
 ### <a name="an-admission"></a>...An Admission
 
-![](http://2.bp.blogspot.com/-FYMRLJ4dw-c/UU0D-CbvKxI/AAAAAAAAAPU/Qlo2W9wmc6I/s1600/vrms-output.png)
+![](/static/img/vrms-output.png)
 
 I'm weak.
 

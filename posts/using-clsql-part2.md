@@ -526,8 +526,7 @@ That should be that. If you head over to your browser now, you should be able to
 .clear { clear: both; }
 ```
 
-<div class="separator" style="clear: both; text-align: center;">
-[![](http://2.bp.blogspot.com/-qU147pH5zPM/UATg2fR2x7I/AAAAAAAAAM4/fRIUHMXIjW0/s400/screenshot1--png.png)](http://2.bp.blogspot.com/-qU147pH5zPM/UATg2fR2x7I/AAAAAAAAAM4/fRIUHMXIjW0/s1600/screenshot1--png.png" imageanchor="1" style="margin-left:1em; margin-right:1em)</div>
+![](/static/img/cl-chan--screenshot1--png.png)
 
 Whew!
 
@@ -577,8 +576,7 @@ also, we need to modify the validation functions on our formlets.
 
 That should do it.
 
-<div class="separator" style="clear: both; text-align: center;">
-[![](http://1.bp.blogspot.com/-qhR0VkwefIs/UATg_V4ZYII/AAAAAAAAANE/0ayt87bw3Y4/s400/screenshot2--jpg.png)](http://1.bp.blogspot.com/-qhR0VkwefIs/UATg_V4ZYII/AAAAAAAAANE/0ayt87bw3Y4/s1600/screenshot2--jpg.png" imageanchor="1" style="margin-left:1em; margin-right:1em)</div>
+![](/static/img/cl-chan--screenshot2--jpg.png)
 
 We implemented JPGs ahead of GIFs because it's much closer to the PNG scaling we already did, but note the number of differences there.
 
@@ -652,8 +650,7 @@ and the appropriate formlet changes. In fact, we'd really better pull out the im
 
 And that's that.
 
-<div class="separator" style="clear: both; text-align: center;">
-[![](http://4.bp.blogspot.com/-jcFZLcKMghI/UAThMhMrZMI/AAAAAAAAANQ/eN9lz926y4A/s400/screenshot3--gif.png)](http://4.bp.blogspot.com/-jcFZLcKMghI/UAThMhMrZMI/AAAAAAAAANQ/eN9lz926y4A/s1600/screenshot3--gif.png" imageanchor="1" style="margin-left:1em; margin-right:1em)</div>
+![](/static/img/cl-chan--screenshot3--gif.png)
 
 You'll notice that the GIF resizing process is a lot more complicated than what we had to do for PNGs or JPGs. That's because GIFs are potentially animated, so the Lisp library that handles them treats them as streams of images. That allows for better frame control, but it does mean that we need to
 

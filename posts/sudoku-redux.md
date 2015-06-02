@@ -23,7 +23,7 @@ That's false. Specifically, once I sat down to actually read *read* the examples
 
 
 
->   ![](http://1.bp.blogspot.com/-eR5Pg9u57mQ/UavANet8-bI/AAAAAAAAARI/Tg_L_pAnp38/s320/oh-you-spj.jpeg)
+>   ![](/static/img/oh-you-spj.jpeg)
 >   
 > -Inaimathi
 

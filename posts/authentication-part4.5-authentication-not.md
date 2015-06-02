@@ -1,9 +1,9 @@
-> We don't need authentication
-> We don't need access control
-> No dark sarcasm in the network
-> Servers leave them kids alone
+> We don't need authentication  
+> We don't need access control  
+> No dark sarcasm in the network  
+> Servers leave them kids alone  
 
-![](http://1.bp.blogspot.com/-AleAPVWOuC8/UAJKXcTHtLI/AAAAAAAAAMo/NjK9gnKf4ac/s400/pink-floyd.jpg)
+![](/static/img/the-wall.jpg)
 
 ## <a name="housekeeping"></a>Housekeeping
 
