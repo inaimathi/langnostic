@@ -23,8 +23,8 @@ content = """
 """
 ```
 
-> EDIT:
->   For comparison, here's the equivalent parenscript
+> EDIT:  
+>   For comparison, here's the equivalent parenscript  
 > ```lisp
 > (ps
 >   ;;; function definition
@@ -40,7 +40,7 @@ content = """
 >     (who-ps-html (:div :id "content" 
 >                        (:span :class "quote" "Blah!")))))
 > ```
-> Mon, 12 Mar, 2012
+> Mon, 12 Mar, 2012  
 
 That surprisingly terse block of Coffee Script expands out to
 

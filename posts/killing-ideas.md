@@ -11,8 +11,8 @@ So maybe I'm feeling more curmudgeonly than usual because of a combination of sh
 
 We're not talking about [intuition](http://dictionary.reference.com/browse/intuition), which is a property of minds or humans or both. We're talking about the intuitiveness of an interface/language/tool, conceptual or otherwise. The fuzzy thing that most people mean when they say that something is Intuitive©™ is that they could pick it up and use it without having to learn how first. I'm guilty of having said things like this too, but the more I think about it, the more I'm forced to come to the conclusion that the entire concept is poorly reasoned. To paraphrase Zach Weinersmith:
 
-> You had to be *trained* not to shit yourself. And it took *years*. 
-> --[SMBC 3207](http://www.smbc-comics.com/?id=3207#comic)
+> You had to be *trained* not to shit yourself. And it took *years*.   
+> --[SMBC 3207](http://www.smbc-comics.com/?id=3207#comic)  
 
 If we're talking about using a high technology, anything that involves a screen, a keyboard and/or some software, we're at or near the top floor of a tower of such deeply counter-intuitive and unnatural behaviors and concepts that you can't possibly use them without having learned how. The only thing you can vary is *when* you learn; which means that "intuitive", in the context I'm concerned with today really means "I've already learned this, and it was so long ago that I've forgotten the pain of the process". This meaning is the only one that would let anyone, *anywhere*, ***ever*** declare that a spreadsheet-like interface would be more intuitive to non-programmers. Or that C++ is more intuitive than Haskell. Or, conversely, that Haskell is more intuitive than any other programming language.
 

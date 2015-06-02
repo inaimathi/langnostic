@@ -348,8 +348,8 @@ This concludes the part of this post wherein I talk about implementation details
 
 Near the beginning of this piece, I said
 
-...this is probably the worst way to write this particular query...
-> --Inaimathi
+> ...this is probably the worst way to write this particular query...  
+> --Inaimathi  
 
 referring to
 

@@ -249,10 +249,10 @@ parse_encoder_meta (Name, Body, [DefArgs, Example], {A, R, S}) ->
 
 This is not the most elegant function. In fact, now that I look at it, it seems like I could fairly easily replace that `{A, R, S}` tuple with a list accumulator. 
 
-> EDIT:
-> Turns out there was a reason I did it this way; we need this data to be in the order of Renderers, Required, Suggested, but the order they're parsed in is actually Required, Suggested, Renderers (also, some components have no requirements, and some have no suggestions). The ordering is confusing enough that I just decided to keep it explicit.
-> 
-> Wed, 16 May, 2012
+> EDIT:  
+> Turns out there was a reason I did it this way; we need this data to be in the order of Renderers, Required, Suggested, but the order they're parsed in is actually Required, Suggested, Renderers (also, some components have no requirements, and some have no suggestions). The ordering is confusing enough that I just decided to keep it explicit.  
+>   
+> Wed, 16 May, 2012  
 
 What we're doing here is breaking apart an `encoder` block, and pulling out
 

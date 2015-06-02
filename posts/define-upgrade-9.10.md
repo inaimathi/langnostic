@@ -97,10 +97,10 @@ $('#something').click(function () {
 
 In these cases, parenthesis highlighting (which also highlights [] and {}) is critical for making sure you close them all properly, and in the right order. You could probably do it by hand without help, but I wouldn't envy you that task.
 
-> EDIT: After upgrading my desktop, I went to upgrade my other machines to 9.10. The HP Mini 1035nr upgrade was not seamless. Almost, but not quite. I had to run 
->
+> EDIT: After upgrading my desktop, I went to upgrade my other machines to 9.10. The HP Mini 1035nr upgrade was not seamless. Almost, but not quite. I had to run   
+>  
 > ```shell
 > sudo apt-get install --reinstall bcmwl-kernel-source
 > ```
->
->to enable the wireless card.
+>  
+>to enable the wireless card.  

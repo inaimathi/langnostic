@@ -10,9 +10,9 @@ If you really just want the audio and slides, you can get the relevant files rig
 
 There were no videos from the second meetup<a name="note-Wed-Nov-13-164000EST-2013"></a>[|1|](#foot-Wed-Nov-13-164000EST-2013), and there won't be any from today<a name="note-Wed-Nov-13-164003EST-2013"></a>[|2|](#foot-Wed-Nov-13-164003EST-2013). We're basically trying to figure out how to pay for them; one idea I'm looking into is getting a monthly kickstarter going to let the market decide if there's enough interest to produce videos for a given month. I'm not sure how much advance notice we'll need, or how far we can actually plan out talks, but I'll keep you posted.
 
-> EDIT:
-> Torrents are now [up along with the audio and presentation materials](http://173.255.226.138/Toronto%20FBP%20Group/meeting-1/). If you do end up downloading these, please seed as long as you can.
-> Thu, 14 Nov, 2013
+> EDIT:  
+> Torrents are now [up along with the audio and presentation materials](http://173.255.226.138/Toronto%20FBP%20Group/meeting-1/). If you do end up downloading these, please seed as long as you can.  
+> Thu, 14 Nov, 2013  
 
 * * *
 ##### Footnotes

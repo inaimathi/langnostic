@@ -40,8 +40,8 @@ If I had this function, I could simply
 
 ```
 
-> EDIT: I was severely under-optimistic here; the **ideal** situation would be to have a function that does
->
+> EDIT: I was severely under-optimistic here; the **ideal** situation would be to have a function that does  
+>  
 > ```lisp
 > (lambda (s i |t| o k)
 >   (when (= (+ (digits->number i s) (digits->number i |t|)) (digits->number o k))

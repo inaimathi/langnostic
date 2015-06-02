@@ -1,16 +1,16 @@
-> Type your name, click "login",
-> Now count to three
-> 
-> Come with me and you'll be
-> In a world of pure authentication
-> Take a look and you'll see
-> Into web authorization
-> We'll commence with a glance
-> at classic watchword authentication
-> Where we'll try for complete explanation
-> 
-> If you wish real security
-> Use RSA to guarantee it...
+> Type your name, click "login",  
+> Now count to three  
+>   
+> Come with me and you'll be  
+> In a world of pure authentication  
+> Take a look and you'll see  
+> Into web authorization  
+> We'll commence with a glance  
+> at classic watchword authentication  
+> Where we'll try for complete explanation  
+>   
+> If you wish real security  
+> Use RSA to guarantee it...  
 
 
 ![](/static/img/wonka.jpg)

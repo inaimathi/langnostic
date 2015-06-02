@@ -109,19 +109,19 @@ To paraphrase [Ben Darwin](https://github.com/bcdarwin) and [Albert Lai](http://
 
 As it happens, they managed to convince me of this. Here's a paraphrase of the argument they used; maybe it'll work on you too.
 
-There are only two ways you'll ever want to export your type. You either want to export it as a black box, or you want to export it in a non-opaque way so that your users can see some or all of its implementation details. If you're going the black box route
-> 
+> There are only two ways you'll ever want to export your type. You either want to export it as a black box, or you want to export it in a non-opaque way so that your users can see some or all of its implementation details. If you're going the black box route  
+>   
 > ```haskell
-module Foo (YourTypeConstructor, apiFn, apiFn', apiFn''...) where ...
-```
-> 
-> then your users are *only* going to be interacting with your type through your API functions, which are already suitably annotated, and restricted to valid inputs, so there's no need to redundantly restrict the type. If you're going the non-opaque route<a name="note-Fri-Sep-26-113506EDT-2014"></a>[|1|](#foot-Fri-Sep-26-113506EDT-2014), 
-> 
+> module Foo (YourTypeConstructor, apiFn, apiFn', apiFn''...) where ...
+> ```
+>   
+> then your users are *only* going to be interacting with your type through your API functions, which are already suitably annotated, and restricted to valid inputs, so there's no need to redundantly restrict the type. If you're going the non-opaque route<a name="note-Fri-Sep-26-113506EDT-2014"></a>[|1|](#foot-Fri-Sep-26-113506EDT-2014),   
+>   
 > ```haskell
 > module Foo (YourTypeConstructor(..), apiFn, apiFn', apiFn''...) where ...
 > ```
-> 
-> then your users might ignore some or all of your API, and just use your structure. In doing so, they may find a purpose for it that *doesn't* require its elements to be members of `Ord`. In this case, you would be doing them a disservice by restricting your type declaration.
+>   
+> then your users might ignore some or all of your API, and just use your structure. In doing so, they may find a purpose for it that *doesn't* require its elements to be members of `Ord`. In this case, you would be doing them a disservice by restricting your type declaration.  
 
 And I'll buy that.
 

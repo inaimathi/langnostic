@@ -32,8 +32,8 @@ Sorry.
 
 All the alternatives seem worse. Having iron self-assurance in these situations would end with blaming a blameless component for the error and never actually figuring out what went wrong at any level even approaching a deep understanding. That's too high a price to pay for the small comfort of considering myself to be smarter than I am. There's a Stross quote that I particularly like, and I'm going to strip it of context for you here
 
-To never harbor self-doubt is poison for the soul, and these aliens want to inflict their certainties upon us.
-> ---Sadeq, [Charles Stross](http://www.antipope.org/charlie/blog-static/)' [Accelerando](http://www.antipope.org/charlie/blog-static/fiction/accelerando/accelerando-intro.html)
+> To never harbor self-doubt is poison for the soul, and these aliens want to inflict their certainties upon us.  
+> ---Sadeq, [Charles Stross](http://www.antipope.org/charlie/blog-static/)' [Accelerando](http://www.antipope.org/charlie/blog-static/fiction/accelerando/accelerando-intro.html)  
 
 There's a bunch of ways you can read that, including literally in context where it refers to a specific group of actual aliens, but that's not what it means to me. My imbued meaning is: Doubt is the strongest elixir of knowledge available to me. It exacts a price on your sense of certainty, but in return lets you face the kind of complexity and understanding that would evade lesser analysis.
 

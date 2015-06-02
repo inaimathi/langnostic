@@ -310,10 +310,8 @@ Apparently the original author found that he was doing sequence splicing more th
 
 In order to get the behavior you'd probably expect from plain `append`, you have to run the refinement `/only`, which as far as I can tell, generally means "do what you actually wanted to do" on any function it's provided for. A guy calling himself [Hostile Fork](http://hostilefork.com/) [says it](https://docs.google.com/presentation/d/1pmDE7eNsZtFb3ey8KXvNz8RF21NXZeFqvDKfR5D-dI4/edit#slide=id.geceb89b9_0210) better than I could:
 
-
->   We don't tell someone to take out the garbage and then they shoot the cat if you don't say *"Oh...wait... I meant `ONLY` take out the garbage"*! The name `ONLY` makes no semantic sense; if it *did* make sense, then it's what should be done by the operation without any refinements!
-> --Hostile Fork
-
+>   We don't tell someone to take out the garbage and then they shoot the cat if you don't say *"Oh...wait... I meant `ONLY` take out the garbage"*! The name `ONLY` makes no semantic sense; if it *did* make sense, then it's what should be done by the operation without any refinements!  
+> --Hostile Fork  
 
 ### <a name="afermath"></a>Afermath
 

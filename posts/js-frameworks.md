@@ -2,8 +2,8 @@ So I've spent the past week or so working through some examples with the various
 
 While they do *get* in your way, the Javascript MVC movement is getting a couple of things profoundly right. Things I didn't really notice, or didn't think through all the way in the past, so I'm kind of shamefaced about having missed them, but they definitely seem like the *right* approach<a name="note-Sun-Sep-23-214859EDT-2012"></a>[|2|](#foot-Sun-Sep-23-214859EDT-2012). The reason I say
 
-> [The frameworks are] all shit 
-> --me
+> [The frameworks are] all shit   
+> --me  
 
 above is that none of them seem to be necessary to do the Right Thing©™<a name="note-Sun-Sep-23-214921EDT-2012"></a>[|3|](#foot-Sun-Sep-23-214921EDT-2012), and none of them seem to help much with the big detriments of the approach.
 

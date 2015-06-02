@@ -1,8 +1,8 @@
 I read a [question on SO](http://stackoverflow.com/questions/9286318/why-choose-lisp-for-a-project) the other day that asks "Why choose Lisp for a project?". It's was closed with an almost surprisingly swift consensus, but not before three answers were thrown in (and one accepted). And that's pretty good because, as far as I'm concerned, it's the wrong question. "Why choose a language for a project?" is closely related to a second question, which I'll let Peter Norvig describe the shape of:
 
-> I guess the way I look at it is; the best language to use is the one that you and your friends are most productive with. It just turned out that when Google was started, the four programmers that were there first were all C++ programmers, and they were very effective with that, and they kept going with it. 
-> 
-> --Peter Norvig, [Ask Me Anything](http://www.youtube.com/watch?v=hE7k0_9k0VA#t=03m10s)
+> I guess the way I look at it is; the best language to use is the one that you and your friends are most productive with. It just turned out that when Google was started, the four programmers that were there first were all C++ programmers, and they were very effective with that, and they kept going with it.   
+>   
+> --Peter Norvig, [Ask Me Anything](http://www.youtube.com/watch?v=hE7k0_9k0VA#t=03m10s)  
 
 I agree with his sentiments here. The language you should use when you're working on a professional project<a name="note-Thu-Feb-16-222424EST-2012"></a>[|1|](#foot-Thu-Feb-16-222424EST-2012) is one that your team knows and already thinks in. It would be a mistake for me, today, to start something serious up at the office using Smalltalk because I don't think in it naturally yet. Norvig's response to "What language should I choose?" begs a second question though, because if the best language is one you're already familiar with, then you need to ask
 

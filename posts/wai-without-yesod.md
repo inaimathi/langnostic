@@ -293,10 +293,10 @@ It's not expecting an account name and item ID to reference by. It's expecting a
 
 Really, I could have made one more general function along the lines of `editItem`, then called it for `need`, `got`, and separate handlers for `changeComment` and `changeCount`. In fact, that was officially a `note to self`.
 
-> EDIT:
-> 
-> The item-related section now reads
-> 
+> EDIT:  
+>   
+> The item-related section now reads  
+>   
 > ```haskell
 > needItem :: DB -> Account -> Item -> RES
 > needItem db user item = updateItem db user new
@@ -317,8 +317,8 @@ Really, I could have made one more general function along the lines of `editItem
 >   update' db $ ChangeItem user newItem
 >   resIxItems $ updateIx (itemName newItem) newItem (accountItems user)
 > ```
-> 
-> Sat, 09 Feb, 2013
+>   
+> Sat, 09 Feb, 2013  
 
 The way it's currently written, the most complex of the item-related handlers is `editItem`, and that's because it needs to optionally change the `comment`, `count` or both depending on what's passed in. This is the price you pay for automatic currying and maximally terse partials; those features don't share space well with optional/keyword/rest arguments. The result is that when you need the latter, you need to represent them as mandatory `Maybe` args, or as a custom type argument. We've already gone through an example of the first approach. You can see the second if you squint at `verifyPass` and `encryptPass`. Specifically, the second argument, `defaultParams` is of type `ScryptParams`, which is defined as
 

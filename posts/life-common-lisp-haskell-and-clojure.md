@@ -37,9 +37,9 @@ CL-USER>
 
 That output tells me that, for example, the `cell` `(2 . 2)` currently has two living neighbors since it's mentioned twice in that list. Common Lisp doesn't have a built-in `group` or similar, so I'm stuck `hash`ing things myself to collect those frequencies.
 
-> EDIT:
-> The original way of doing this (still shown below this edit) is inelegant. `gethash` takes an optional third argument, which it returns as a default value. Meaning that if you're looking to use a `hash-table` to keep count of stuff you can express that as
-
+> EDIT:  
+> The original way of doing this (still shown below this edit) is inelegant. `gethash` takes an optional third argument, which it returns as a default value. Meaning that if you're looking to use a `hash-table` to keep count of stuff you can express that as  
+  
 > ```lisp
 > (defun cells->cell-count-hash (cells)
 >   (let ((h (make-hash-table :test 'equal)))
@@ -48,7 +48,7 @@ That output tells me that, for example, the `cell` `(2 . 2)` currently has two l
 >        do (incf (gethash c h 0)))
 >     h))
 > ```
-> Sat, 22 Dec, 2012
+> Sat, 22 Dec, 2012  
 
 ```lisp
 (defun cells->cell-count-hash (cells)
@@ -125,15 +125,15 @@ neighbors (x, y) = filter (/=(x,y)) . concat $ map xs l
         xs dy = map (\dx -> (x + dx, y + dy)) l
 ```
 
-> EDIT:
->
-> And **then**, I remembered list comprehensions, which turn `neighbors` into a one-liner.
-> 
+> EDIT:  
+>  
+> And **then**, I remembered list comprehensions, which turn `neighbors` into a one-liner.  
+>   
 > ```haskell
 > neighbors (x, y) = [(x+dx, y+dy) | dx &lt;- [-1..1], dy &lt;- [-1..1], (dx,dy) /= (0,0)]
 > ```
-> 
-> Thu, 06 Dec, 2012
+>   
+> Thu, 06 Dec, 2012  
 
 Neighbors looks a bit different. As far as I know, there isn't a `loop` analogue available in Haskell, so I'm "stuck" composing the functional primitives. It ends up saving me about four lines of code, and that's typically the case when I transform a destructive function into a functional one, so I want to make it clear that that wasn't a complaint. Before we move on, let me just spotlight something
 
@@ -154,10 +154,10 @@ lifeStep cells = step cells
         viable _ = False
 ```
 
-> EDIT:
-
-> List comprehensions strike again, but don't buy quite as much clarity this time.
-
+> EDIT:  
+>  
+> List comprehensions strike again, but don't buy quite as much clarity this time.  
+>  
 > ```haskell
 > lifeStep :: [(Int, Int)] -> [(Int, Int)]
 > lifeStep cells = [head g | g &lt;- grouped cells, viable g]
@@ -166,8 +166,8 @@ lifeStep cells = step cells
 >         viable [c,_] = c `elem` cells
 >         viable _ = False
 > ```
-
-> Thu, 06 Dec, 2012
+>  
+> Thu, 06 Dec, 2012  
 
 You can see the simplified life rules again in the `viable` local function. If there are 3 neighbors a cell is viable, if there are 2 neighbors and the cell is already a member of the living then it's viable, otherwise it's not.
 
@@ -199,30 +199,30 @@ lifeStep cells = [head g | g &lt;- grouped cells, viable g]
 
 I was amazed the first time I wrote it too; those 6-lines-plus-type-signatures-and-import of Haskell do exactly the same thing as my Common Lisp program from earlier. The term is elegance, I think, since I can still understand it, but it's possible to disagree on these points. The next step obvious step was writing the display functions and test output. Which promptly more than doubled the line-count.
 
-> EDIT:
+> EDIT:  
+>  
+> I could probably use list comprehensions here too, but I don't care enough about the display code to optimize it.  
+> Thu, 06 Dec, 2012  
 
-> I could probably use list comprehensions here too, but I don't care enough about the display code to optimize it.
-> Thu, 06 Dec, 2012
-
-> EDIT:
-
-> Ok, dammit, *here*
-
+> EDIT:  
+>  
+> Ok, dammit, *here*  
+>  
 > ```haskell
 > showWorld :: [(Int, Int)] -> IO ()
 > showWorld cells = mapM_ putStrLn $ map cellStr groupedByY
 >   where groupedByY = [[fst c | c &lt;- cells, snd c == y] | y &lt;- range]
 >         cellStr xs = [if c `elem` xs then '#' else ' ' | c &lt;- range]
 >         range = worldRange cells
-
+>
 > worldRange cells = [least..greatest]
 >   where least = min x y
 >         greatest = max x' y'
 >         (x, y) = head cells
 >         (x', y') = last cells
 > ```
-
-> Thu, 06 Dec, 2012
+>  
+> Thu, 06 Dec, 2012  
 
 ```haskell
 showWorld :: [(Int, Int)] -> IO ()
@@ -337,38 +337,38 @@ Looking through the rest of the languages<a name="note-Thu-Dec-06-122721EST-2012
 
 Ok, that's my lunch hour up, I'm heading back to work. Hopefully I get some *actual* hacking done for the next installment and finally wrap up the authentication series. Though, to be fair, I guess it's more likely to be a write-up of my experience on [Saturday](https://guestlistapp.com/events/130467).
 
-> EDIT:
-
-> **Addendum**, because I hate myself. The Python version (minus display code). Woo.
-
+> EDIT:  
+>  
+> **Addendum**, because I hate myself. The Python version (minus display code). Woo.  
+>  
 > ```python
 > from collections import defaultdict
-
+>
 > glider = [(1, 0), (2, 1), (0, 2), (1, 2), (2, 2)]
 > blinker = [(1, 0), (1, 1), (1, 2)]
-
+>
 > def neighbors(cell):
 >     x,y = cell
 >     r = range(-1,2)
 >     return [(x+dx, y+dy) for dx in r for dy in r if not (dx, dy) == (0, 0)]
-
+>
 > def frequencies(cells):
 >     res = defaultdict(int)
 >     for cell in cells:
 >         res[cell] += 1
 >     return res
-        
+>
 > def lifeStep(cells):
 >     freqs = frequencies([n for c in cells for n in neighbors(c)])
 >     return [k for k in freqs if freqs[k]==3 or (freqs[k]==2 and k in cells)]
 > ```
+>  
+> Thu, 06 Dec, 2012  
 
-> Thu, 06 Dec, 2012
-
-> EDIT:
-
-> **Addendum the Second:** All code from this article (plus printing code for each language) now available [here](https://github.com/Inaimathi/life).
-> Sun, 09 Dec, 2012
+> EDIT:  
+>  
+> **Addendum the Second:** All code from this article (plus printing code for each language) now available [here](https://github.com/Inaimathi/life).  
+> Sun, 09 Dec, 2012  
 
 * * *
 ##### Footnotes

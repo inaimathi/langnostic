@@ -20,10 +20,9 @@ He gave this talk to an American audience, so he had to have a section with Good
 **Lightweight Processes Are Ok** - 
 
   
->     "... we've shown that you can do processes in the language, and we've shown there's no need for threads. Threads are intrinsically evil, and [shouldn't] be used. Threads were sort of this 'Oh my goodness, processes aren't efficient enough, so lets use this abomination to...' horrible things."
->     
-> -- Joe Armstrong
->   
+> "... we've shown that you can do processes in the language, and we've shown there's no need for threads. Threads are intrinsically evil, and [shouldn't] be used. Threads were sort of this 'Oh my goodness, processes aren't efficient enough, so lets use this abomination to...' horrible things."  
+>  
+> -- Joe Armstrong  
   
 For my part, I've got a half-written piece about `[cl-actors](https://github.com/naveensundarg/Common-Lisp-Actors)` sitting in my drafts folder. It's a pretty good, lightweight implementation of the [actor model](http://en.wikipedia.org/wiki/Actor_model) built on top of `[bordeaux-threads](http://common-lisp.net/project/bordeaux-threads/)`. And if you like the Erlang-style message passing, do give it a shot, but it doesn't quite do the same thing as Erlang manages. The threading model means you can't expect to reliably spawn thousands of `cl-actors` on a typical machine. For comparison, [the Pragmatic book](http://pragprog.com/book/jaerlang/programming-erlang) has an example on pg 149/150 wherein Joe removes the built-in safety limit of 32 767 processes and has Erlang spawn 200 000 without breaking a sweat<a name="note-Mon-Apr-30-005314EDT-2012"></a>[|5|](#foot-Mon-Apr-30-005314EDT-2012). That seems like at least part of the story behind those [mind-boggling benchmarks](http://www.sics.se/~joe/apachevsyaws.html) that you've all probably seen by now.
 

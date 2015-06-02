@@ -1,20 +1,17 @@
 The discussions around communities I frequent has recently touched on the idea of freedom; specifically, what it means in the context of software. We've moved past the [gratis vs libre](http://en.wikipedia.org/wiki/Gratis_versus_libre) confusion, thankfully, but there are still arguments about what "free" really means. Some are under the impression that in this context it means "I should be free to get my work done". That's a noble goal, but it misses the point somewhat. The sentiment behind that statement was [in defending PhotoShop](http://www.reddit.com/r/linux/comments/gywoj/adobe_and_linux_creative_suite_for_linux/) ("It shouldn't matter that I'm using proprietary software, the point is that it can do the job"). A fellow redditor puts it better than I could;
 
 
->   Software freedom is as much about choice as Lincoln's Emancipation Proclamation was about giving people the choice as to whether they wanted to retain slavery or not. Software freedom is about ending certain restrictive forms of software licensing and distribution which are harmful to the public and to technological progress in general. 
-> --[spiceweasel](http://www.reddit.com/user/spiceweasel)
+>   Software freedom is as much about choice as Lincoln's Emancipation Proclamation was about giving people the choice as to whether they wanted to retain slavery or not. Software freedom is about ending certain restrictive forms of software licensing and distribution which are harmful to the public and to technological progress in general.   
+> --[spiceweasel](http://www.reddit.com/user/spiceweasel)  
 
 
 Laced with the standard internet forum hyperbole, but it gets the point across. It's not about "freedom of choice", it's about some freedoms that are fundamental to the creation of software
 
-
-> 
-> - The freedom to run the program, for any purpose (freedom 0).
-> - The freedom to study how the program works, and change it to make it do what you wish (freedom 1). Access to the source code is a precondition for this.
-> - The freedom to redistribute copies so you can help your neighbor (freedom 2).
-> - The freedom to distribute copies of your modified versions to others (freedom 3). By doing this you can give the whole community a chance to benefit from your changes. Access to the source code is a precondition for this.
-> --[GNU Free Software Definition](http://www.gnu.org/philosophy/free-sw.html)
-
+> - The freedom to run the program, for any purpose (freedom 0).  
+> - The freedom to study how the program works, and change it to make it do what you wish (freedom 1). Access to the source code is a precondition for this.  
+> - The freedom to redistribute copies so you can help your neighbor (freedom 2).  
+> - The freedom to distribute copies of your modified versions to others (freedom 3). By doing this you can give the whole community a chance to benefit from your changes. Access to the source code is a precondition for this.  
+> --[GNU Free Software Definition](http://www.gnu.org/philosophy/free-sw.html)  
 
 These are important freedoms to programmers and to users who understand programs. I certainly wouldn't trade them for anything in my private life, which is why I've been trying like hell to make this a free software household with as few compromises as possible.
 
@@ -45,8 +42,8 @@ You have the right and freedom to study and change this immeasurably complex mac
 If you line this up with the argument about Freedom and PhotoShop, it's pretty obvious what's happening. Hell, Stallman knew exactly what's happening a while ago.
 
 
->   The public traded nominal freedoms that it was not in a position to exercise and in exchange got some benefit (the benefit of more books being written). So if you have something that you can't use at all and you trade it for something of some value to you, you have gained. Whether or not it's the best possible deal you could have made, that's another question, but at least it was a beneficial deal.
-> --Richard Stallman (in his [talk at University of Calgary](http://www.youtube.com/watch?v=SNBMdDaYhZA))
+>   The public traded nominal freedoms that it was not in a position to exercise and in exchange got some benefit (the benefit of more books being written). So if you have something that you can't use at all and you trade it for something of some value to you, you have gained. Whether or not it's the best possible deal you could have made, that's another question, but at least it was a beneficial deal.  
+> --Richard Stallman (in his [talk at University of Calgary](http://www.youtube.com/watch?v=SNBMdDaYhZA))  
 
 
 (The above was in reference to the establishment of copyright, but the principles still apply)

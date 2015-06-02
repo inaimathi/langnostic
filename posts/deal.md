@@ -1,7 +1,7 @@
 I already mentioned [Lisp In Summer Projects](http://lispinsummerprojects.org/) time, and called it
 
->...like a multi-month [NaNoWriMo](http://www.nanowrimo.org/) with parentheses instead of character development and sleep.
-> --Inaimathi
+>...like a multi-month [NaNoWriMo](http://www.nanowrimo.org/) with parentheses instead of character development and sleep.  
+> --Inaimathi  
 
 The project I picked out wasn't something I'd ever talked about here before. It was something [a friend](http://chillier17.deviantart.com/) of mine and I were thinking of putting together to make his hobby/job slightly easier. He makes tabletop games you see. Mostly card stuff, but potentially other tabletop stuff too, from what I gather. This is to be the running journal of my project as I'm writing it. I'm not too worried about it denting my motivation, because I don't intend to publish it until I'm done.
 

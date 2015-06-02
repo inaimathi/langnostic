@@ -28,10 +28,10 @@ I've already written a bit about **[wicd-curses](http://manpages.ubuntu.com/manp
 
 **[gtypist](http://www.gnu.org/software/gtypist/)** is a curses-based typing tutor that has effectively replaced klavaro for me. It's mildly more entertaining to run typing drills on surrealist, minimal poetry than it is to type out old newspaper articles. The only thing about it that rustles my jimmies is that it enforces hitting space twice after a period. Which is a thing I guess? Honestly it sounds like an [anachronistic](http://www.hanselman.com/blog/TheFloppyDiskMeansSaveAnd14OtherOldPeopleIconsThatDontMakeSenseAnymore.aspx) behavior that used to make sense back when actual humans used [actual typewriters](http://crashreboot.blogspot.ca/2009/04/your-word-processor-is-no-typewriter.html). Luckily, the lessons are contained in a set of conf files, so I'll be able to do something about this.
 
-> EDIT:
-> Aaaaand [bam](https://github.com/Inaimathi/gtypist-single-space). Enjoy.
-> 
-> Wed, 20 Jun, 2012
+> EDIT:  
+> Aaaaand [bam](https://github.com/Inaimathi/gtypist-single-space). Enjoy.  
+>   
+> Wed, 20 Jun, 2012  
 
 **[canto](http://codezen.org/canto/)** is a command-line based RSS feed reader. I complained about [liferea](http://liferea.sourceforge.net/) earlier for its complexity, and having taken a look at a number of feed readers (both GUI and CLI), that doesn't seem to be an uncommon feature. `canto`, by contrast is ridiculously simple; set up your `conf` file, and it'll track those feeds, pulling when you tell it to (every 5 minutes by default). The [example config](http://codezen.org/canto/config/#example-config) up at the project site is pretty extensive, but I've gotten on fine with a much more minimal setup:
 

@@ -48,9 +48,9 @@ However, I'd still be very loudly wondering why no one was working on either *re
 
 As far as I know, the closest anyone's ever gotten to the first is Common Lisp's [`loop`](http://www.gigamonkeys.com/book/loop-for-black-belts.html) macro. Which, when you think about it, is like a roll of duct tape where you'd really like lego-esque pieces. Also as far as I know, no other language even bothers going as far as `loop`, which tells me this might be widely considered a non-problem. The second is [causing](http://galois.com/wp-content/uploads/2014/08/pub_JL_NaturalSemanticsForLazyEvaluation.pdf) some [activity](http://www.vex.net/~trebla/haskell/lazy.xhtml). I'll admit I've read neither paper yet, but we're set to discuss it at the Toronto Haskell Users' group next month with the author of the first link, so I'll hopefully get it under my belt by then. I chatted him up about it a bit and his perspective is, spoiler warning:
 
->   It's not impossible to have a good cost model for lazy computation, it's just harder. I used to think it would just be different, and not harder, but I've come to realize it really is more difficult to reason about. Not impossible, no.
+>   It's not impossible to have a good cost model for lazy computation, it's just harder. I used to think it would just be different, and not harder, but I've come to realize it really is more difficult to reason about. Not impossible, no.  
 >   
-> -Albert Y. C. Lai, in converation
+> -Albert Y. C. Lai, in converation  
 
 So I'm going to read through the linked papers, and see if I can understand the situation for myself. As always, I'll let you know how it goes.
 

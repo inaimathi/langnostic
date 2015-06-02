@@ -4,9 +4,9 @@ We haven't solved it yet, but we're getting there. Half the point is getting to 
 
 We *were* supposed to have a dojo github page, but there doesn't seem to be a link going out from the meetup, and I can't find it after ten minutes of determined googling, so I can't point you to it. I have, however taken first stabs at the problem in three languages and want to go over the problem a bit.
 
-> EDIT:
-> Turns out the organizer is keeping the progress repos in [his GitHub profile](https://github.com/tlalexan).
-> Fri, 31 Aug, 2012
+> EDIT:  
+> Turns out the organizer is keeping the progress repos in [his GitHub profile](https://github.com/tlalexan).  
+> Fri, 31 Aug, 2012  
 
 Fundamentally, it's a sorting problem. We have cards, whose relevant properties are a `rank` and a `suit`. We have an ordered set of hand types, each of which have their own tie-braking method with other hands of the same type. The task, near as I can tell, is taking a pair of hands, figuring out their types, then sorting them to find out the winner<a name="note-Tue-Aug-28-182537EDT-2012"></a>[|2|](#foot-Tue-Aug-28-182537EDT-2012).
 

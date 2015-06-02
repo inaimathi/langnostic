@@ -10,13 +10,13 @@ The finale in particular was excruciating. Not that the animators and writers di
 
 So anyway, instead of
 
-Go watch ponies, they're quite good. 
+> Go watch ponies, they're quite good.   
 > -Inaimathi
 
 my recommendation now has to look something like
 
-Go watch ponies, they're quite good. But avoid episodes 10, 11, 12 and 13 of season 3. And actually, S3E3 and S3E4 weren't up to par either. And S3E9 has some annoyingly out of character behavior. And while otherwise excellent, the season 3 premiere foreshadows some interesting character development and story hooks that never got followed up on, so don't watch that unless you're ok with getting no closure at all. 
-> -Inaimathi
+> Go watch ponies, they're quite good. But avoid episodes 10, 11, 12 and 13 of season 3. And actually, S3E3 and S3E4 weren't up to par either. And S3E9 has some annoyingly out of character behavior. And while otherwise excellent, the season 3 premiere foreshadows some interesting character development and story hooks that never got followed up on, so don't watch that unless you're ok with getting no closure at all.   
+> -Inaimathi  
 
 That's ... less than a ringing endorsement, but I guess I'll stick around to see what they can pull off in season 4<a name="note-Sun-Feb-17-224008EST-2013"></a>[|2|](#foot-Sun-Feb-17-224008EST-2013). In the meantime, there are some fan projects that look really good<a name="note-Sun-Feb-17-224032EST-2013"></a>[|4|](#foot-Sun-Feb-17-224032EST-2013). [Slice of Life](http://sliceofponylife.tumblr.com/) is a tumblr based webcomic that honestly looks like what the next step for the official media *should* be; a simple, character-driven story of some minor characters introduced over the course of the first two seasons<a name="note-Sun-Feb-17-224036EST-2013"></a>[|5|](#foot-Sun-Feb-17-224036EST-2013). Also, there's [Turnabout Storm](http://www.youtube.com/playlist?list=PL347AD9B9E509804A), a fan-made FiM/Phoenix Wright crossover which treats both source series fairly respectfully. That might just be my wife's and my weird tastes showing, but we're both heavily invested.
 

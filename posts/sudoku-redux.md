@@ -7,9 +7,9 @@ Before we get to the actual code though, do you remember [that page](http://www.
 Also, I'll have to take it back.
 
 
->   The [appropriate Rosetta Code page](http://rosettacode.org/wiki/Sudoku) doesn't have any solutions that leave me gobsmacked by elegance the way that [the Clojure Game of Life](http://rosettacode.org/wiki/Conway%27s_Game_of_Life#Clojure) did.
+>   The [appropriate Rosetta Code page](http://rosettacode.org/wiki/Sudoku) doesn't have any solutions that leave me gobsmacked by elegance the way that [the Clojure Game of Life](http://rosettacode.org/wiki/Conway%27s_Game_of_Life#Clojure) did.  
 >   
-> -Inaimathi
+> -Inaimathi  
 
 
 That's false. Specifically, once I sat down to actually read *read* the examples there instead of just flipping through them, I got caught by [one that I passed over the first time](http://web.math.unifi.it/users/maggesi/haskell_sudoku_solver.html). The code actually on the Haskellwiki page is even shorter than that, but it does it by omitting the type declarations, which is borderline cheating in Haskell. It took me an embarrassingly long time to understand the approach in my bones, so I'll go over it in depth in a [follow-up article](http://langnostic.blogspot.ca/2013/06/sudoku-reredux.html) just in case I'm not the only one.
@@ -17,15 +17,15 @@ That's false. Specifically, once I sat down to actually read *read* the examples
 ### <a name="sudoku"></a>Sudoku
 
 
->   So all [these people](http://www.haskell.org/haskellwiki/Sudoku) are using Haskell to commit sudoku? Oh what a world...
+>   So all [these people](http://www.haskell.org/haskellwiki/Sudoku) are using Haskell to commit sudoku? Oh what a world...  
 >   
-> -Anonymous
+> -Anonymous  
 
 
 
->   ![](/static/img/oh-you-spj.jpeg)
+>   ![](/static/img/oh-you-spj.jpeg)  
 >   
-> -Inaimathi
+> -Inaimathi  
 
 
 Like I said, we did Sudoku solvers at the last Toronto Code Retreat. The group of three I worked in for the Haskell attempt came up with [this](https://github.com/Inaimathi/sudoku/blob/f3b442ce84b58cbe953817a4a96b2b5bfa4c0e5c/sudoku.hs). And I've since expanded that to a solver that works in the general case, although admittedly, *very slowly*<a name="note-Sun-Jun-02-173100EDT-2013"></a>[|1|](#foot-Sun-Jun-02-173100EDT-2013).

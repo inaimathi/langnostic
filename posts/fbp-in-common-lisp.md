@@ -35,8 +35,8 @@ The above is by far the most useful set of images I've got for understanding wha
 Before I go, I want to tackle this, because several people I've talked to have gotten tripped up in the comparison. Including me. I ended up deleting a few lines from this post that said
 
 
->   The underlying problem for my lack of "wow" reaction might actually be my usual languages. I'm *used* to thinking about streams moving between inter-connected, lazy processors. That's the main way I conceptualize Haskell. In fact, if you squint just a bit, it's the way you can conceptualize most functional programs, pure or not. 
-> --Inaimathi
+>   The underlying problem for my lack of "wow" reaction might actually be my usual languages. I'm *used* to thinking about streams moving between inter-connected, lazy processors. That's the main way I conceptualize Haskell. In fact, if you squint just a bit, it's the way you can conceptualize most functional programs, pure or not.   
+> --Inaimathi  
 
 
 The difference is that functional programming focuses on partial conceptual separation, whereas FBP takes the isolation concept a few steps further by enforcing *complete* conceptual separation as well as complete *temporal* separation. Here's the accompanying thought experiment, just to clarify what I mean by that.

@@ -47,9 +47,9 @@ First thing, and probably the most pressing, is that those nice highlighted code
 
 I pasted that block in from my code file, highlighted it, then typed `C-c C-p emacs-lisp-mode [ret]`, in case you were wondering. The result was that pretty block above. `region-to-code-block` and `region-to-inline-code` are actually the same function except for which insert they use, and I <b>would</b> factor that out if it ever got to the point that there needed to be a third function doing the same, but it doesn't seem worth it for just two functions.
 
-> EDIT:
-> Ok, ok goddammit. Here. They're simplified now.
-> 
+> EDIT:  
+> Ok, ok goddammit. Here. They're simplified now.  
+>   
 > ```lisp
 > (defun region-to-inline-code (code-mode)
 >   "HTMLize just the current region and wrap it in a <code> block"
@@ -69,8 +69,8 @@ I pasted that block in from my code file, highlighted it, then typed `C-c C-p em
 >     (funcall insert-fn)
 >     (insert result)))
 > ```
-> 
-> Sun, 27 Mar, 2011
+>   
+> Sun, 27 Mar, 2011  
 
 I uh, also put in an edit block function and a footnote manager<a name="note-Sun-Mar-27-013129EDT-2011"></a>[|1|](#foot-Sun-Mar-27-013129EDT-2011). The edit blocks are pretty self-explanatory; just a block with a date at the bottom to indicate when I did the thing. After a couple of definition macros<a name="note-Sun-Mar-27-013353EDT-2011"></a>[|2|](#foot-Sun-Mar-27-013353EDT-2011), it's actually a one-liner.
 
@@ -126,16 +126,16 @@ Even though it's a simple, and specific<a name="note-Sun-Mar-27-015109EDT-2011">
 
 I'm going to sleep now though; I'll leave those features for the next time I need a break from Common Lisp.
 
-> EDIT:
-> 
-> Ok, so it was actually slightly less than 5 minutes to get the code argument done; one line change did it (see if you can guess which one)
-> 
+> EDIT:  
+>   
+> Ok, so it was actually slightly less than 5 minutes to get the code argument done; one line change did it (see if you can guess which one)  
+>   
 > ```lisp
 > (when (fboundp code-mode) (funcall code-mode))
 > ```
-> 
-> The latest is now up [at github](https://github.com/Inaimathi/emacs-utils").
-> Sun, 27 Mar, 2011
+>   
+> The latest is now up [at github](https://github.com/Inaimathi/emacs-utils").  
+> Sun, 27 Mar, 2011  
 
 * * *
 ##### Footnotes

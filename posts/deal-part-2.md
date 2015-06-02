@@ -245,5 +245,7 @@ On the other hand, the complete back-end including `asd`s, config files and the 
 
 5 - <a name="foot-Sat-Sep-07-221236EDT-2013"></a>[|back|](#note-Sat-Sep-07-221236EDT-2013) - The assumption being that it should be able to support small custom servers, and that if someone wants to serve several thousand people, they should use a reverse proxy and serve static files that way anyhow.
 
-6 - <a name="foot-Sat-Sep-07-221240EDT-2013"></a>[|back|](#note-Sat-Sep-07-221240EDT-2013) - In case you were wondering, yes, I take the Yegge quote to heart. Large systems suck. This rule is 100% transitive. If you build one, *you* suck. 
-> -[SteveY](http://steve-yegge.blogspot.ca/2007/06/rich-programmer-food.html).
+6 - <a name="foot-Sat-Sep-07-221240EDT-2013"></a>[|back|](#note-Sat-Sep-07-221240EDT-2013) - In case you were wondering, yes, I take the Yegge quote to heart.
+
+> Large systems suck. This rule is 100% transitive. If you build one, *you* suck.   
+> -[SteveY](http://steve-yegge.blogspot.ca/2007/06/rich-programmer-food.html).  
