@@ -43,7 +43,7 @@ I just wanted to fix a couple of bugs with weird control characters showing up i
 
 ```
 
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://1.bp.blogspot.com/_aNhkzkd_Yww/TS9AHCoHBsI/AAAAAAAAAEw/zd6jfW6hJAo/s1600/progn-progn-everywhere.jpg">![](http://1.bp.blogspot.com/_aNhkzkd_Yww/TS9AHCoHBsI/AAAAAAAAAEw/zd6jfW6hJAo/s400/progn-progn-everywhere.jpg)</a>
+![](/static/img/progn-progn-everywhere.jpg)
 
 If you want to see the complete, non-elided code, check out [the project page]((elite-for-emacs-commander-fuel cmdr)). It's pretty much more of the same, with some odd byte/numeric indexing operations thrown in where they probably don't belong.
 

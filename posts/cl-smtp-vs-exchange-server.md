@@ -98,7 +98,7 @@ Content-Disposition: inline
 --_---------_2IQrElfHaDK71IdkZlEq5L3C0etr5t--
 ```
 
-![](http://3.bp.blogspot.com/-PpRdyt0CEdw/T43R3g2N3zI/AAAAAAAAAL8/JHDjwUqanEA/s400/themoreyouknow.jpg)
+![](/static/img/themoreyouknow.jpg)
 
 * * *
 ##### Footnotes

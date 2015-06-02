@@ -132,7 +132,7 @@ There's at least one thing there that should have set off definite alarms though
             (setq source-list (cdr source-list)))))
 ```
 
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/-6XK71tBvjp8/Ta7911tWDOI/AAAAAAAAAHE/RCFI3ygWKuI/s1600/My-mind-is-full-of-setq.jpg">![](http://2.bp.blogspot.com/-6XK71tBvjp8/Ta7911tWDOI/AAAAAAAAAHE/RCFI3ygWKuI/s400/My-mind-is-full-of-setq.jpg)</a>
+![](/static/img/My-mind-is-full-of-setq.jpg)
 
 The kind that designates a procedure built out of dead things, most of which you'd really rather not think about. 
 

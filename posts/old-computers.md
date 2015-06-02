@@ -8,37 +8,38 @@ For the moment though, I'm slightly less than insane for putting old machines to
 
 The first thing I had to do was remove a few unwanted items. 
 
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_aNhkzkd_Yww/TUoEUuxcQiI/AAAAAAAAAFc/s1-B7Ci2UsI/s1600/2011-02-01%2B23.47.27.jpg">![](http://3.bp.blogspot.com/_aNhkzkd_Yww/TUoEUuxcQiI/AAAAAAAAAFc/s1-B7Ci2UsI/s400/2011-02-01%2B23.47.27.jpg)</a>
+![](/static/img/old-machines-01.jpg)
 
 As committed as I am to reusing old machines, I've still got to admit that there's very little use today for a phone modem or floppy drive. They were fairly easy to remove; just a couple of mounting screws internally. What was slightly tougher was this plastic face-plate that covered the area next to the front-facing USB port; it was held in by a small, springy metallic assembly that I had to lever out with a Swiss army knife (I wanted another hard drive to go there).
 
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_aNhkzkd_Yww/TUoEi5QQD-I/AAAAAAAAAFk/dDdPMjX7xGg/s1600/metal-thing2.jpg">![](http://4.bp.blogspot.com/_aNhkzkd_Yww/TUoEi5QQD-I/AAAAAAAAAFk/dDdPMjX7xGg/s400/metal-thing2.jpg)</a>
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://1.bp.blogspot.com/_aNhkzkd_Yww/TUoEvtja50I/AAAAAAAAAFs/qBWD2KB1l3M/s1600/face-plate.jpg">![](http://1.bp.blogspot.com/_aNhkzkd_Yww/TUoEvtja50I/AAAAAAAAAFs/qBWD2KB1l3M/s400/face-plate.jpg)</a>
+![](/static/img/old-machines-02.jpg)
+
+![](/static/img/old-machines-03.jpg)
 
 Next up, I ripped out the 15GB drive it came with, popped in one of my 160GB ones and threw in that Ethernet card for good measure. Then I installed Ubuntu Server 10.10. It could have been Debian, but I wanted to try out the latest Ubuntu release, and there are some things I'd like to do with pacpl that don't seem to work on my Debian machine. The trade-off is that Emacs seems to misbehave out of the box on Ubuntu, but this isn't exactly going to be a development machine so that's ok. The only stuff that went on was [SSH server](http://www.openssh.com/), [GIT](http://git-scm.com/) and [Ruby](http://www.ruby-lang.org/en/) (my language of choice for quick and dirty scripting).
 
 Once the system was installed, the CD drive could come out (not about to install MS Word or any such nonsense; any other software that goes on this machine will come in through the network). That turned out to be easier said than done though; it was secured by screws on both sides, so I had to completely disassemble the box to get at it.
 
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_aNhkzkd_Yww/TUoFCAj_KgI/AAAAAAAAAF0/DRRURnMTrAk/s1600/2011-02-02%2B16.37.31.jpg">![](http://4.bp.blogspot.com/_aNhkzkd_Yww/TUoFCAj_KgI/AAAAAAAAAF0/DRRURnMTrAk/s400/2011-02-02%2B16.37.31.jpg)</a>
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_aNhkzkd_Yww/TUoFP1H3ScI/AAAAAAAAAF8/X53lnEGgAQ0/s1600/2011-02-02%2B16.37.41.jpg">![](http://3.bp.blogspot.com/_aNhkzkd_Yww/TUoFP1H3ScI/AAAAAAAAAF8/X53lnEGgAQ0/s400/2011-02-02%2B16.37.41.jpg)</a>
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_aNhkzkd_Yww/TUoFQDnK8AI/AAAAAAAAAGE/7bet0fYVJes/s1600/2011-02-02%2B16.37.58.jpg">![](http://3.bp.blogspot.com/_aNhkzkd_Yww/TUoFQDnK8AI/AAAAAAAAAGE/7bet0fYVJes/s400/2011-02-02%2B16.37.58.jpg)</a>
+![](/static/img/old-machines-04.jpg)
+![](/static/img/old-machines-05.jpg)
+![](/static/img/old-machines-06.jpg)
 
 The hard drive destined for the position was going to rattle in a slot that size, and while I don't plan to race this machine around the block or anything, it's probably better to be safe. A couple of [drive brackets](http://www.nextag.com/hard-drive-adapter-bracket/stores-html) made sure it would stay in place. Shop around if you plan on buying some, incidentally, I just put that link up because it was the first I found; there were actually a couple of braces lying around from my last case so I didn't need to order any. It also seems like you could improvise a set if you didn't feel like buying them.
 
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_aNhkzkd_Yww/TUoFo9MiBbI/AAAAAAAAAGU/WCLbmPxJ5ko/s1600/2011-02-02%2B17.15.10.jpg">![](http://2.bp.blogspot.com/_aNhkzkd_Yww/TUoFo9MiBbI/AAAAAAAAAGU/WCLbmPxJ5ko/s400/2011-02-02%2B17.15.10.jpg)</a>
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_aNhkzkd_Yww/TUoFoVpZ25I/AAAAAAAAAGM/-2cSQ24sBjA/s1600/2011-02-02%2B17.15.25.jpg">![](http://3.bp.blogspot.com/_aNhkzkd_Yww/TUoFoVpZ25I/AAAAAAAAAGM/-2cSQ24sBjA/s400/2011-02-02%2B17.15.25.jpg)</a>
+![](/static/img/old-machines-07.jpg)
+![](/static/img/old-machines-08.jpg)
 
 With everything hooked up, it was time to boot back into the machine.
 
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_aNhkzkd_Yww/TUoF2QYIPdI/AAAAAAAAAGc/DyrEqyf4NRQ/s1600/2011-02-02%2B17.21.42.jpg">![](http://2.bp.blogspot.com/_aNhkzkd_Yww/TUoF2QYIPdI/AAAAAAAAAGc/DyrEqyf4NRQ/s400/2011-02-02%2B17.21.42.jpg)</a>
+![](/static/img/old-machines-09.jpg)
 
 That in-congruent looking mesh plate covering the top drive is a spare from the same case that had the extra brackets. And yes, I named the machine "orphan". It seemed appropriate. Here's ls /dev, showing the new drives (still haven't formatted them, that'll be for next weekend).
 
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_aNhkzkd_Yww/TUoGEVL5z2I/AAAAAAAAAGk/fs4MVeiUSRw/s1600/2011-02-02%2B17.28.03.jpg">![](http://3.bp.blogspot.com/_aNhkzkd_Yww/TUoGEVL5z2I/AAAAAAAAAGk/fs4MVeiUSRw/s400/2011-02-02%2B17.28.03.jpg)</a>
+![](/static/img/old-machines-10.jpg)
 
 And that's it. I dropped it into a little wheel assembly that's been going unused since I got that mammoth tower for my main machine. It gives it a somewhat R2-D2 feel (this may be the start of an art project). 
 
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://1.bp.blogspot.com/_aNhkzkd_Yww/TUoGSfkn41I/AAAAAAAAAGs/EAjpAYEKy-g/s1600/2011-02-02%2B17.30.29.jpg">![](http://1.bp.blogspot.com/_aNhkzkd_Yww/TUoGSfkn41I/AAAAAAAAAGs/EAjpAYEKy-g/s400/2011-02-02%2B17.30.29.jpg)</a>
+![](/static/img/old-machines-11.jpg)
 
 I'll put together some scripts to copy out key directories from my other machines and that'll be that. I guess I could also use it as a full-out [NAS](http://www.newegg.ca/Store/SubCategory.aspx?SubCategory=124&name=Network-Storage-NAS) (ok, I technically am, but you know what I mean) or streaming server, but I'm not sure how far those 566MHz and 64MB of RAM are going to stretch. In any case, even with the slightly higher price/GB I had to pay for IDE drives, converting this old machine was much cheaper than shelling out for a pre-built.
 

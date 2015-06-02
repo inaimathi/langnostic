@@ -1,6 +1,6 @@
 I haven't actually had very much time to explore it yet, but the [Raspberry Pi](http://www.raspberrypi.org/) is officially out.
 
-![](http://3.bp.blogspot.com/-O8pUbLBk0Cw/UGkIZS_qZKI/AAAAAAAAAN4/PRsJfYyvlxc/s400/IMG_0026.JPG)
+![](/static/img/pi-1.jpg)
 
 "Officially", because it's been sort of a running joke with my friends that it hasn't been for the past while. The [two](http://www.alliedelec.com/lp/120626raso/?cm_mmc=Offline-Referral-_-Electronics-_-RaspberryPi-201203-_-World-Selector-Page) sites [that](http://downloads.element14.com/raspberryPi1.html?isRedirect=true) sold them had "Register your Interest" buttons, rather than the expected "Add To Cart" or "Buy Now"<a name="note-Sun-Sep-30-225547EDT-2012"></a>[|1|](#foot-Sun-Sep-30-225547EDT-2012), and while many told tales of the legendary owners of these boards, I had failed to meet one for quite a while.
 
@@ -16,9 +16,9 @@ dcfldd bs=4M if=2012-09-18-wheezy-raspbian.img of=/dev/mmcblk0
 
 And that was that. After getting the resulting cards into dat Pi, it booted flawlessly.
 
-![](http://3.bp.blogspot.com/-6dhJEe1XeG4/UGkIZ-6MqaI/AAAAAAAAAOE/GpOJJJGMw2Y/s400/IMG_0024.JPG)
+![](/static/img/pi-2.jpg)
 
-![](http://2.bp.blogspot.com/-f7hh4x3J6Uw/UGkIada5OUI/AAAAAAAAAOQ/JqRpt6z8XwQ/s400/IMG_0028.JPG)
+![](/static/img/pi-3.jpg)
 
 Like I said, haven't had much time to explore, but what I can tell you is that the Debian version
 
@@ -37,7 +37,7 @@ Anyway, like I said, not much time this weekend, between the various work work a
 
 In case you were wondering, I consider that a success
 
-![](http://1.bp.blogspot.com/-SSrUzdVLVtE/UGkJtXtU42I/AAAAAAAAAOo/LwpAMxVAHsE/s400/IMG_0036.JPG)
+![](/static/img/pi-4.jpg)
 
 Next order of business, getting a Haskell and a Common Lisp running on it, getting a ["case"](http://www.raspberrypi.org/archives/1310)<a name="note-Sun-Sep-30-225623EDT-2012"></a>[|8|](#foot-Sun-Sep-30-225623EDT-2012), and figuring out some sort of [portable input/output strategy](http://langnostic.blogspot.ca/2011/12/x220-and-unrelatedly-portable-keyboards.html).
 

@@ -1,6 +1,6 @@
 I just got 
 
-![](http://3.bp.blogspot.com/_aNhkzkd_Yww/S1XOPoAFXWI/AAAAAAAAAC4/0EIUrYs_510/s400/little+schemer.jpg)
+![](/static/img/little-schemer.jpg)
 
 through my company book-order (I also got [The Reasoned Schemer](http://mitpress.mit.edu/catalog/item/default.asp?ttype=2&tid=10663), but I want to finish the first one before I move on).
 
