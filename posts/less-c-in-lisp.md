@@ -2,11 +2,11 @@ It seems that I only ever get around to working on this pet project when I'm sic
 
 Anyway, moving on, I've been plaing around with the codebase for Elite for Emacs (and there's [a post around here somewhere](http://langnostic.blogspot.com/2011/01/c-in-lisp.html) that details some of the blunders  it contains). Today, I'm dealing with the next level up; not pointing out where primitives are being misused, but pointing out needless patterns where they don't belong and showing one way of composing them properly. Actually, now that I look at it, I'd better take a single pattern out and deconstruct it lest I bore the ever-living shit out of everyone, including me. I'm also not eliding anything this time, this is going to deal with specifics from the [Elite for Emacs 0.1](http://members.fortunecity.com/salkosuo/elite-for-emacs/0.10.0/index.html) codebase and how I'm thinking about re-implementing them.
 
-### <a name="describing-things"></a>Describing Things
+### <a name="describing-things" href="#describing-things"></a>Describing Things
 
 Actually, before I get to that one,
 
-### <a name="random-numbers"></a>Random Numbers
+### <a name="random-numbers" href="#random-numbers"></a>Random Numbers
 
 At a cursory examination, `elite-for-emacs-*.el` contains `myrand`, `randbyte`, `rand1` **and** `gen_rnd_number` (and no uses of the the built-in `rand` function). They may or may not do similar things. The author also insists on tracking his own random number seed in a global variable (and re-generating it with a function named `mysrand`). Here's a sample
 
@@ -34,7 +34,7 @@ I'm not sure why Lisp coders get stick for re-implementing infrastructure if **t
 
 Now then.
 
-### <a name="describing-things"></a>Describing Things
+### <a name="describing-things" href="#describing-things"></a>Describing Things
 
 Here's how Elite for Emacs generates planet descriptions.
 
@@ -257,7 +257,7 @@ In other words,
 
 All I have to make sure is that these get displayed along with the planet name and we're golden. This is the sort of elegance that Lisp is capable of when you go with the grain. ~140 lines of flaming death and side effects replaced by two recursive functions and a `plist` that succinctly and accurately signal the intent of the programmer. I wouldn't be particularly surprised if there's an even simpler way to accomplish the same thing, actually. 
 
-### <a name="naming-things"></a>Naming Things
+### <a name="naming-things" href="#naming-things"></a>Naming Things
 
 Planet names seem like they should be implemented the same way, given what they really are. In fact, I did just implement them as another grammar that depends on the same functions to unfold, but the original takes a different approach.
 
@@ -348,7 +348,7 @@ Well, seeing as I already put together a convention for unfolding components to 
 
 `string-capitalize` just makes sure it looks like a proper name (it's [a lisp primitive](http://www.lispworks.com/documentation/HyperSpec/Body/f_stg_up.htm#string-capitalize), so I won't define it here). The important part, which I'll likely cover in a future post, is that making things functional aids in composeability. The `setq` sequence from the original codebase has no hope of being reused anywhere because it intentionally grubs about in the surrounding state. If nothing else, the `expand-production` approach ensures that if I ever need a planet name in some other context, I can easily generate it. Also, as we've seen already, abstracting out the general pattern of "compose strings from a given pattern of components" easily pays for itself with even one instance of reuse.
 
-### <a name="my-sinister-purpose"></a>My Sinister Purpose
+### <a name="my-sinister-purpose" href="#my-sinister-purpose"></a>My Sinister Purpose
 
 The reason I've been picking away at this codebase isn't idle fancy<a name="note-Wed-Apr-20-111010EDT-2011"></a>[|5|](#foot-Wed-Apr-20-111010EDT-2011), or an intense hatred of Sami Salkosuo<a name="note-Wed-Apr-20-111105EDT-2011"></a>[|6|](#foot-Wed-Apr-20-111105EDT-2011). It's that I've been putting together a little web game based on it. It's still not done, mind you, but I'm going to try to put something together fairly soon for you to poke at (even if it's ugly as sin from the visual perspective to start with). If nothing else, I'm tossing the ported Common Lisp codebase up onto [my GitHub](https://github.com/Inaimathi) this weekend so that some other pedantic bore can pick apart a project I was just doing in my spare time. After two articles full of bitching about poor style and inelegant expression, it seems like it's only fair.
 

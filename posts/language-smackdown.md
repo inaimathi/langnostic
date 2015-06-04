@@ -27,7 +27,7 @@ A note for future presentations in this vein though:
 1.   Be prepared with the slides beforehand (anyone else would be able to blame PowerPoint, but this was the Linux User Group, so you don't get that luxury).
 
 
-### <a name="preliminary-impressions-of-smalltalk"></a>Preliminary Impressions of Smalltalk
+### <a name="preliminary-impressions-of-smalltalk" href="#preliminary-impressions-of-smalltalk"></a>Preliminary Impressions of Smalltalk
 
 I did briefly try to get into Pharo, but I found it annoying to say the least. This doesn't mean I won't keep trying; I had a negative initial reaction to pretty much every language I currently know and love. There are some definite initial concerns though, the biggest of which is that Pharo insists that you use its "Environment" (which is only really a big deal because of the way that environment is constructed). It's heavily mouse-dependent (in fact the intro text suggests you get yourself a three-button mouse with a scroll-wheel to get the most out of it), and it insists on handling its own windowing (which means if you got used to a [tiling](http://www.bluetile.org/) [window](http://www.nongnu.org/stumpwm/) [manager](http://www.winsplit-revolution.com/), you are so screwed. The gnu implementation is titled "The Smalltalk for those who can type", so at least I know I'm not alone. Minor concerns about image-based development include things like "How does source control work?" and "how do I use Pharo on a team?", but I'm sure those are resolved and I simply haven't dug deeply enough to have an idea of how yet.
 

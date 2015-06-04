@@ -1,6 +1,6 @@
 So this past Wednesday was the monthly [Toronto Haskell](https://github.com/HaskellTO/projects) User [Group](https://groups.google.com/forum/#!forum/toronto-haskell) meeting, and I used the opportunity to A) show off [my Langton's Ant implementation](https://github.com/CodeRetreatTO/projects/blob/master/2014-09-langtons-ant/rabraham-and-inaimathi.hs) to people that might be able to offer pointers and B) ask a question about types that I'd been thinking about. We'll handle those in reverse order, with a bit of exposition on the question.
 
-### <a name="splay-trees"></a>Splay Trees
+### <a name="splay-trees" href="#splay-trees"></a>Splay Trees
 
 Here's a Haskell implementation of a [Splay Tree](https://en.wikipedia.org/wiki/Splay_tree) not interesting enough to dwell on:
 
@@ -105,7 +105,7 @@ data Ord a => Tree a = Nod...
 
 To paraphrase [Ben Darwin](https://github.com/bcdarwin) and [Albert Lai](http://www.cs.toronto.edu/~trebla/personal/index.html),
 
-### <a name="you-dont-want-that"></a>You Don't Want That
+### <a name="you-dont-want-that" href="#you-dont-want-that"></a>You Don't Want That
 
 As it happens, they managed to convince me of this. Here's a paraphrase of the argument they used; maybe it'll work on you too.
 
@@ -127,7 +127,7 @@ And I'll buy that.
 
 So I don't really want a restricted `Tree`, I just want restricted manipulation functions, which I have. Case closed.
 
-### <a name="langtons-haskelly-ant-redux"></a>Langton's Haskelly Ant Redux
+### <a name="langtons-haskelly-ant-redux" href="#langtons-haskelly-ant-redux"></a>Langton's Haskelly Ant Redux
 
 I also ended up showing off [my ants implementation](/article?name=langtons-ant-writeup.html). I'm near the bottom in terms of Haskell skill-level at the group, so the explanation went quite quickly. The only part there was any confusion about was the admittedly over-complicated `animate` function. I mentioned that ideally, I'd want to write something like
 

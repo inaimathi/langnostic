@@ -8,7 +8,7 @@ It's not an unreasonable way of going about things, but Angular does it better; 
 
 Lets go through some before and after shots of web-mote for illustrative purposes. Specifically, lets take a look at the controls, since that's the simpler piece. Incidentally, I'm not claiming that this is the most elegant code either before or after. I just want to show you the structural and philosophical differences between approaches.
 
-### <a name="before"></a>Before
+### <a name="before" href="#before"></a>Before
 
 First, the relevant HTML markup
 
@@ -123,7 +123,7 @@ $(document).ready(function() {
 
 That's that. Like I said, this isn't the most elegant code I've ever written. If I really put my mind to it, I might be able to shave off ten lines or so, and clarify my intent in a couple of places, but I think it would be pretty difficult to do *much* better without fundamentally changing the approach.
 
-### <a name="after"></a>After
+### <a name="after" href="#after"></a>After
 
 HTML markup first
 

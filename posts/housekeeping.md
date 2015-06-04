@@ -1,10 +1,10 @@
 Just some quick housekeeping while I draft up my next proper piece.
 
-### <a name="clcwd"></a>cl-cwd
+### <a name="clcwd" href="#clcwd"></a>cl-cwd
 
 A friend of mine mentioned that he had to hack up `cl-git-fs` to make it export `cwd` and `with-cwd`. Which was surprising when I heard it, but really shouldn't have been. This is the sort of problem Common Lispers seem to solve by copy/pasting a few implementation-specific snippets into projects that need the functionality. That's not good enough for me. So, here's [`cl-cwd`](https://github.com/Inaimathi/cl-cwd); a library to get/manipulate/temporarily manipulate your current working directory in a cross-platform and cross-implementation way. Patches and bug reports welcome as always, and hopefully it's useful for you. I *haven't* gotten around to hacking the same components out of `cl-git-fs`, but I might eventually. Or, I might just use the `os` section of [UIOP](http://quickdocs.org/uiop/), which was only pointed out to me after I posted that `cl-cwd` repo. I'm not entirely sure what the right approach here is; are monolithic utility libraries preferable to very small, single-purpose packages? Not sure, but I kind of prefer the smaller, specific ones for my own purposes. Even though it never wastes enough resources to matter to me, it's deeply irritating on some level to include **all** of [`:alexandria`](http://www.cliki.net/Alexandria) and [`:anaphora`](http://www.cliki.net/Anaphora) for, essentially `with-gensyms`, `aif`, `awhen` and `alambda`.
 
-### <a name="factbase-updates-and-relevant-minutia"></a>`fact-base` updates and relevant minutia
+### <a name="factbase-updates-and-relevant-minutia" href="#factbase-updates-and-relevant-minutia"></a>`fact-base` updates and relevant minutia
 
 I've gotten some work done on [`fact-base`](https://github.com/Inaimathi/fact-base), which on reflection really should have been called `cl-triple-store`, with an eye on using it in production. We'll see if it actually happens, or if it just remains an idle fancy, but
 
@@ -17,7 +17,7 @@ Again, let me know if it's useful, or if it's sooooo-close-to-being-useful-if-it
 
 The only related piece of minutia is that I've found myself reading a lot about [miniKanren](http://minikanren.org/), [core.logic](https://github.com/clojure/core.logic) and [logic programming](https://en.wikipedia.org/wiki/Logic_programming) in general. I *think* it might be a really good way to query structures like these triple-stores I've been building lately. Also, it turns out [someone's already done most of the work of implementing that in CL](http://common-lisp.net/project/cl-kanren-trs/) for me, so I [forked it](https://github.com/Inaimathi/cl-kanren-trs) and added/changed the few chunklets I needed to. Matthew Swank, if you're reading this and care, let me know and I'll send you patches. I assumed you wouldn't care, since the copyright line said `2008`, but I might have been wrong.
 
-### <a name="editors"></a>Editors
+### <a name="editors" href="#editors"></a>Editors
 
 Someone finally sat down and walked me through the installation for [Light Table](http://www.lighttable.com/)<a name="note-Thu-Mar-20-195232EDT-2014"></a>[|3|](#foot-Thu-Mar-20-195232EDT-2014). I haven't been paying attention to the propaganda, so I'm not entirely sure exactly how this is going to revolutionize editing<a name="note-Thu-Mar-20-195235EDT-2014"></a>[|4|](#foot-Thu-Mar-20-195235EDT-2014), but it looks promising for a prototype. I was able to get to a productive-ish point with it within about an hour, and that's a high bar. I remember learning Emacs<a name="note-Thu-Mar-20-195237EDT-2014"></a>[|5|](#foot-Thu-Mar-20-195237EDT-2014) over the course of *weeks*.
 

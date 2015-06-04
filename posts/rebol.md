@@ -4,7 +4,7 @@ REBOL (pronounced the same as "rebel") is one that got mentioned a few times. An
 
 It's a fairly recent development, so this isn't one you can `apt-get install` quite yet. So, here's how you go about building it on Debian.
 
-### <a name="before-we-get-started"></a>Before We Get Started...
+### <a name="before-we-get-started" href="#before-we-get-started"></a>Before We Get Started...
 
 You'll obviously need `git` and `make` installed.
 
@@ -12,7 +12,7 @@ You'll obviously need `git` and `make` installed.
 apt-get install git make
 ```
 
-### <a name="then"></a>Then...
+### <a name="then" href="#then"></a>Then...
 
 ...you'll need to clone [the REBOL3 repo](https://github.com/rebol/r3).
 
@@ -22,7 +22,7 @@ git clone https://github.com/rebol/r3.git
 
 *And then* you'll need to download the `r3` binary from [this page](http://www.rebol.com/r3/downloads.html). If you're on an x86 linux machine, you have a choice of three depending on what version of `libc` you have installed. To find that out, run `ldd --version`<a name="note-Sat-Jul-20-204704EDT-2013"></a>[|1|](#foot-Sat-Jul-20-204704EDT-2013). Once you've go that, [unpack](https://github.com/Inaimathi/shell-ui/blob/master/python/unpack) it, and rename the new `r3` file to `r3-make`.
 
-### <a name="on-bit-machines"></a>On 32-bit machines...
+### <a name="on-bit-machines" href="#on-bit-machines"></a>On 32-bit machines...
 
 You're pretty much done. Enter
 
@@ -34,7 +34,7 @@ make      # compile REBOL
 
 After a minute or so, you should have a binary file called `r3` that you can add to your path as a REBOL3 interpreter.
 
-### <a name="on-bit-machines"></a>On 64-bit machines...
+### <a name="on-bit-machines" href="#on-bit-machines"></a>On 64-bit machines...
 
 ... you have a couple more things to do. Specifically, you need to run this as root<a name="note-Sat-Jul-20-204707EDT-2013"></a>[|2|](#foot-Sat-Jul-20-204707EDT-2013)
 
@@ -47,7 +47,7 @@ apt-get install libc6-dev-i386
 
 That will add the 32-bit versions of libc and some other libraries so that you can actually run the compilation step.
 
-### <a name="now-then"></a>Now Then
+### <a name="now-then" href="#now-then"></a>Now Then
 
 You can find the basic primer [here](http://www.rebol.com/rebolsteps.html), but the thing that most interests me about REBOL so far is its implementation and use of [parse](http://www.rebol.com/r3/docs/functions/parse.html), which you can see demonstrated [here](http://rebol-land.blogspot.ca/2013/03/rebols-answer-to-regex-parse-and-rebol.html), [here](http://rebol.com/docs/core23/rebolcore-15.html) and [here](http://recoding.blogspot.in/2013/02/looking-to-learn-something-new-try-rebol.html), though there have been changes between REBOL2 and REBOL3. You can find the appropriate Emacs mode [here](http://www.rebol.com/tools/rebol.el), and I'm already thinking of the changes I want to make to it. Other interesting documentation includes [the REBOL3 guide](http://www.rebol.com/r3/docs/guide.html), [the list of REBOL3 functions](http://www.rebol.com/r3/docs/functions.html) and [this SO answer](http://stackoverflow.com/a/14184638) which includes a quick REBOL3 CGI script, though really, anything in the [`rebol3` tag](http://stackoverflow.com/questions/tagged/rebol3) is pretty interesting.
 

@@ -66,7 +66,7 @@ Oh, actually, I also ended up making those handler changes mentioned last time. 
 
 That's it for changes to the front-end since last time, but let me share some random thoughts before going on to the server-side.
 
-### <a name="interlude-the-state-of-lisp-web-development-on-arm"></a>Interlude - The State of Lisp Web Development on ARM
+### <a name="interlude-the-state-of-lisp-web-development-on-arm" href="#interlude-the-state-of-lisp-web-development-on-arm"></a>Interlude - The State of Lisp Web Development on ARM
 
 My usual web development stack is [Hunchentoot](http://weitz.de/hunchentoot/) on top of [SBCL](http://www.sbcl.org/platform-table.html), which turns out to be a problem. You may have noticed that there's no ARM port in that SBCL link. Not "no Debian package", no port period. I guess I could technically grab the source, and laboriously `gcc` up my own, but I'm honestly neither patient nor smart enough to. [GCL doesn't play nice with quicklisp](http://savannah.gnu.org/support/?107611#discussion) which kind of makes that a non-starter for me regardless of how mind-bogglingly fast it claims to be, [CMUCL](http://packages.debian.org/sid/cmucl-source) requires [a working CMUCL system](http://xkcd.com/754/) to be built from source and isn't in the Wheezy repos, which leaves [CLISP](http://www.clisp.org/)<a name="note-Mon-Oct-08-140353EDT-2012"></a>[|2|](#foot-Mon-Oct-08-140353EDT-2012).
 
@@ -92,7 +92,7 @@ Anyway, the long and the short of it is that putting together a Common Lisp solu
 
 Which is why this first stab is written in Python, and a follow-up is probably going to be using Haskell rather than CL.
 
-### <a name="webmote-the-right-way-server-side"></a>WebMote the Right Way™© -- Server Side
+### <a name="webmote-the-right-way-server-side" href="#webmote-the-right-way-server-side"></a>WebMote the Right Way™© -- Server Side
 
 First off, have an updated tree
 

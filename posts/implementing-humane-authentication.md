@@ -171,7 +171,7 @@ Finally, `fresh-passphrase` does the job of calling `random-words`, concatenatin
 
 That's it. Again, what I see here is reasonable security.
 
-### <a name="thoughts"></a>Thoughts
+### <a name="thoughts" href="#thoughts"></a>Thoughts
 
 On the one hand, you don't get to salt passphrase hashes. Which means that if anyone manages to trick a user of this auth system into revealing their ciphertexts, they'll have a mildly easier time cracking the result. And, since every passphrase is unique, they can knock out some tiny number of possibilities as they go. You also can't easily change your hashing tactic in-flight. Hypothetically, if you chose the iterated `:sha256` approach from above, and it then turned out that clever people found ways to compromise that hash, you wouldn't be able to switch your tactics on a live system easily, the way you could with a user-name-oriented system. You *would* be able to increase the number of hashings fairly easily; just modify your `hash` to do more iterations, and modify your registered users' passwords to make up the difference.
 

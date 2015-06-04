@@ -4,7 +4,7 @@ Ok, this isn't actually all Erlang. In fact, by line-count, it's a Postscript pr
 
 What I'm doing isn't quite the [LP that Knuth advocates](http://www.literateprogramming.com/) because it doesn't self-extract, share space with the executable source, or make use of variable labels to automatically update certain portions. However, it still gains me considerable reflective clarity about what the goal of the program is, and it hopefully conveys the essence to whoever happens to be reading. With that out of the way...
 
-### <a name="generating-barcodes"></a>Generating Barcodes
+### <a name="generating-barcodes" href="#generating-barcodes"></a>Generating Barcodes
 
 As you may have noticed from the above links, there already exists a [Postscript-based barcode generator](https://code.google.com/p/postscriptbarcode/) which I'm going to use pretty shamelessly in order to generate bitmap barcodes of various descriptions. Taking a look at the [actual code](https://code.google.com/p/postscriptbarcode/downloads/detail?name=barcode-2012-04-26.ps) for that generator should make it obvious that you probably *don't* want to just echo the entire system every time you need to generate something<a name="note-Tue-May-15-220424EDT-2012"></a>[|1|](#foot-Tue-May-15-220424EDT-2012). We'll get to that though, lets start from the system side first. This is what a `.app` declaration looks like in Erlang
 
@@ -507,7 +507,7 @@ This is a set of exported functions to let outside modules easily interact with 
 
 Whew! At the risk of pulling a Yegge, this piece is turning out *a lot* longer than I though it was going to be. Lets get it wrapped up quickly.
 
-### <a name="nitrogen"></a>Nitrogen
+### <a name="nitrogen" href="#nitrogen"></a>Nitrogen
 
 [Nitrogen](http://nitrogenproject.com/) is an Erlang web framework I've been playing with. I won't explain it in depth, just use it to show you how you'd go about invoking the above program for realsies. In fact, here's a `nitrogen/rel/nitrogen/site/src/index.erl` that will call out to `ps_barcode` to generate a barcode based on user input and let them download the bitmap and Postscript file:
 

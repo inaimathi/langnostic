@@ -51,7 +51,7 @@ should more or less be equivalent to
 
 Except, you know, it should be smarter about using indices where it can. But that's a pretty straight-forward specification.
 
-### <a name="lookup-and-decideindex-changes-take-"></a>`lookup` and `decide-index` changes - take 1
+### <a name="lookup-and-decideindex-changes-take-" href="#lookup-and-decideindex-changes-take-"></a>`lookup` and `decide-index` changes - take 1
 
 The first thing I had to do was change `lookup` and `decide-index` a bit, because I wanted them to be mildly less naive. And yeah, I broke down and added some macrology to pull out all the repetition in the index-related functions. Turns out that was a good thing.
 
@@ -89,7 +89,7 @@ Short version is, the function now takes a `fact-base` in addition to an `a`, `b
 
 Actually, lets fix it right now.
 
-### <a name="lookup-and-decideindex-changes-take-"></a>`lookup` and `decide-index` changes - take 2
+### <a name="lookup-and-decideindex-changes-take-" href="#lookup-and-decideindex-changes-take-"></a>`lookup` and `decide-index` changes - take 2
 
 ```lisp
 (defmethod lookup ((state fact-base) &key a b c)
@@ -132,7 +132,7 @@ Say what you will about imperative programming; it's efficient. That's a single 
 
 With those modifications, I can pull some fancier crap in translating `for-all` calls into `loop`s. Specifically, I can do this:
 
-### <a name="this"></a>This
+### <a name="this" href="#this"></a>This
 
 ```lisp
 (defun goal->destructuring-form (goal &key (bindings (make-hash-table)))
@@ -344,7 +344,7 @@ I haven't yet put together an equivalent facility for the old `apply` keyword ar
 
 This concludes the part of this post wherein I talk about implementation details. The rest is just one or two interesting notes about traversals. If you're getting bored, or tired, this is a pretty good break-point for you.
 
-### <a name="traversal-notes"></a>Traversal Notes
+### <a name="traversal-notes" href="#traversal-notes"></a>Traversal Notes
 
 Near the beginning of this piece, I said
 

@@ -9,15 +9,15 @@ To be perfectly honest with you, Lisp wouldn't be my first choice for this. I me
 
 I'm not *too* worried. The only part of this system that capital N *needs* to be asynchronous is the SSE handler I'll be using for browser pushes, and I'm fairly confident I'll be able to tweak Hunchentoot slightly to offload those onto a single, dedicated thread rather than keeping each one running in its own.
 
-### <a name="the-approach"></a>The Approach
+### <a name="the-approach" href="#the-approach"></a>The Approach
 
 I want to battle-test some of my own ideas. Starting with the front-end/back-end separation I've been on about for a while, and continuing with some notions I've had about self-documenting APIs. To that end, `deal` is going to be a pair of projects. A game server implementation which will huddle behind [nginx](http://wiki.nginx.org/Main), deal with the application requests, and whose handler definitions are going to be simple enough to read that you'll be able to. And a reference-implementation of a web UI that will communicate with that server and do useful things in a browser.
 
 Now then, without further ado.
 
-### <a name="the-journal"></a>The Journal
+### <a name="the-journal" href="#the-journal"></a>The Journal
 
-## <a name="day-one"></a>Day One
+## <a name="day-one" href="#day-one"></a>Day One
 
 So here's the minimal amount of stuff we need to model in order to be a useful play-testing tool:
 
@@ -80,7 +80,7 @@ and have it mean `"give me the Integers thing-id, x, y, z and rot, and I'll give
 
 That's it for day one.
 
-## <a name="day-"></a>Day 3
+## <a name="day-" href="#day-"></a>Day 3
 
 I skipped one. In truth, this is a few days later, and I *have* been throwing hours/half-hours at the problem in the meantime, but getting no dedicated time down.
 
@@ -164,23 +164,23 @@ And it can.
 
 The other thing I'm finalizing is the `id` system. An earlier crack just had each component keep count of its contents and assign that as the next id. There are a few obvious problems with this. Firstly that it would result in duplicate `id`s sometimes. Secondly, unless I wanted to update the item `id` every time I moved the item, this would mean a global counter in `*server*`, which would mean a lock on the whole server any time anything changed play zones. The change I ended up making is just using `[gensym](http://www.lispworks.com/documentation/HyperSpec/Body/f_gensym.htm#gensym)`. Ordinarily, I wouldn't *but*: these `id`s don't need to be cryptographically random, they just need to be unique with respect to all other active `id`s. Of course, doing it this way is going to run me up against potential problems when I get to loading games from disk storage, but that's a pretty long way off. Anyhow, as a result, all the `foo-id` and `id` fields are now `keyword`s rather than `integer`s.
 
-## <a name="day-"></a>Day 4
+## <a name="day-" href="#day-"></a>Day 4
 
 First stab at the interface. And by "first stab", I mean "stupid basic interface that quote renders end-quote things by echoing them to console". It's nowhere near complete, but it's already enough to iron out a wrinkle or two. Specifically, I've had to go back through the model and change every `belongs-to` slot to expect an ID rather than a pointer to a `player`. It became obvious that this was necessary when I got memory-use warnings followed by a crash when I tried to "render" a card. `encode-json-to-string` doesn't like circular references, you see.
 
 Now that everything uses IDs, there's one semi-obvious good thing about it: it'll make putting together the front-end much easier. Because the IDs are now globally unique, I can use them as a `class` tag in the `DOM` to identify objects on the board. That'll let me update the state of a lot of things in the UI without having to re-render very much at all.
 
-## <a name="day-"></a>Day 6
+## <a name="day-" href="#day-"></a>Day 6
 
 I've been refining the model a bit to take into account some of the games I'll want to model for this project. There's also a slightly revised `define-handler` macro that stores information about any `handler`s it `define`s, which then gets served through the `list-handlers` handler. That'll make certain parts of the front-end easier to put together.
 
 Not much work other than that, sadly. I'm still moving forward in increments of an hour or half-hour at the outside. What I *have* been able to do is read through pieces of the [Hunchentoot](http://weitz.de/hunchentoot/) code to try figuring out how, exactly, to hack conditional SSE support to it. Near as I can tell, I'll need to define a `:before` method for [`handle-request`](https://github.com/edicl/hunchentoot/blob/master/acceptor.lisp#L563-L582) and then figure out how to let its call chain know not to terminate the appropriate socket stream. Something else has occurred to me though. Because there's really only one handler I'm going to need to be served asynchronously, *and* that handler will *only* serve up public information, a reasonably simple approach here might be to just off-load SSE serving to [something](http://hackage.haskell.org/package/warp) better [suited](http://hyber.org/server_sent_events.yaws) for [it](http://nic.ferrier.me.uk/blog/2012_08/elnode-nears-1-point-0), [specifically](https://github.com/ztellman/aleph). Yet another approach, since I'm considering [aleph](https://github.com/ztellman/aleph), is to just write the whole thing in Clojure to begin with...
 
-## <a name="fatherly-interlude"></a>Fatherly Interlude
+## <a name="fatherly-interlude" href="#fatherly-interlude"></a>Fatherly Interlude
 
 My son is at a stage where everything he gets his hands on automatically goes in his mouth. Food, toys, cats, carpet, the computer I got him to paw at. Everything. He's also gotten to teething, which seems to be a very painful experience judging from his vocal emissions.
 
-## <a name="day-"></a>Day 9
+## <a name="day-" href="#day-"></a>Day 9
 
 The past few days have been mostly prospective development and a little thought about secrecy. The end result is going to be some minor mechanical changes to how `id`s function, and they won't be shown for cards inside stacks.
 
@@ -197,7 +197,7 @@ The default for that situation is that no one should know what the card is, or h
 
 We don't actually need a central way of addressing a given `thing`. Or, at least, we don't yet, so I'm inclined to go for this second option. Remember, we generate `id`s through `gensym`, which is a pretty cheap computation as far as I know. We could, of course, keep our own global counter as part of `*server*`, but I'll see if that's necessary later. What I might want to do at the moment is name the function `make-id` just to make it a bit simpler to change if we end up needing to.
 
-## <a name="day-"></a>Day 10
+## <a name="day-" href="#day-"></a>Day 10
 
 I've been thinking about the SSE situation, and it occurred to me that since
 
@@ -210,7 +210,7 @@ I've been thinking about the SSE situation, and it occurred to me that since
 
 it wouldn't be a bad idea to off-load that particular handler onto nginx itself. The ideal situation would be one where I could just serve up a file per game as the "stream", then keep appending to it from within Deal. That *doesn't* seem to be trivially possible, but nginx *does* have an optional, production-ready [push_stream_module](https://github.com/wandenberg/nginx-push-stream-module) licensed under [GPL3](http://gplv3.fsf.org/). That's something to consider, since it would really only take a bit of configuration twiddling as opposed to actual code to get this up-and-running.
 
-## <a name="day-"></a>Day 12
+## <a name="day-" href="#day-"></a>Day 12
 
 Ok, I'm ignoring the SSE question for now; we don't really have any call for it until I get enough of a front-end together to support more than one player in any case. That's proceeding apace. I've been thinking about how to approach this task; should I abstract as much and as aggressively as possible, or should I keep it plain, straightforward and stupid? Typically, I go for the second option if I can help it at all, but I decided to go the opposite way this time. Here's a list of utilities I defined. Mostly thin wrappers around existing [jQuery](http://jquery.com/) constructs, and two *very* tasty pieces of syntactic sugar to help me define things.
 
@@ -345,18 +345,18 @@ I'm still considering having the macro itself add the declaration of `:id (self 
 
 That's that for now. Hopefully, I can 0.1 this thing fairly soon, and finally publish part one of this journal. I *was* going to wait 'till the end, but it looks like the complete document will be far too long to publish at once.
 
-## <a name="day-"></a>Day 37
+## <a name="day-" href="#day-"></a>Day 37
 
 Kind of a big jump this time. Haven't really had the chance to do stuff related to this project lately. My time's been getting filled with extremely interesting, lispy things that I'm unfortunately not allowed to tell you about. Yet. Hopefully, I can convince the correct humans to let me publish some or all of it in the near future.
 
 I've implemented the [session](http://weitz.de/hunchentoot/#sessions) system, which actually lets multiple people sit down at a single table and play together. That's basically it. I've been thinking about what I want the join/new-game interface to look like, but at this point that's all it'll have to be. An interface. The hard part is more or less done. There's one big architectural question I have to answer, and one big feature I need to properly implement, and then I can move on to the task of making the UI pretty, and maybe build some basic tools for deck construction as well as playing.
 
 
-#### <a name="the-big-architectural-decision"></a>The Big Architectural Decision
+#### <a name="the-big-architectural-decision" href="#the-big-architectural-decision"></a>The Big Architectural Decision
 
 Is whether to explicitly represent stacks in the final model. It *kind* of makes sense, given that you don't want anyone to know what cards actually get shuffled to, so it's possible to conceptualize "in a stack" as a state change for the card on the table. It still doesn't work that way in real life. You can take a bunch of cards and stack them, but you never lose the ability to interact with each of them individually. There might be one or two things that either view of the world enables or prohibits, but it also seems that it'd be pretty straight-forward to switch between them later if I wanted to. Maybe this is one I hold off on until I see a direct need.
 
-#### <a name="the-big-feature"></a>The Big Feature
+#### <a name="the-big-feature" href="#the-big-feature"></a>The Big Feature
 
 Is data pushing.
 
@@ -364,7 +364,7 @@ Fuck, I had vaguely hoped that in the year 2013, [this](http://langnostic.blogsp
 
 That's that. Once those are ironed out, I can finally post a one point oh and get people playing it. Oh, and get this piece published already so I can get on with the next one: taking it from "working" to "beautiful".
 
-## <a name="day-"></a>Day 38
+## <a name="day-" href="#day-"></a>Day 38
 
 So the trivial part of the feature is done. It seems that the nginx stream module is easy to set up and get running properly. I haven't restricted publishing rights to `localhost` yet, but I can't imagine that'll be much more difficult to configure. Now comes the slightly harder part: defining the infrastructure inside of `deal` to publish to these streams and get new arrivals up and running. The basics will look *something* like
 
@@ -385,7 +385,7 @@ Except that I think I'm going to make `move` itself a JSON object just to make i
 
 It also really, truly looks like it'll be both more performant and much easier than trying to re-write pieces of Hunchentoot to support asynchronous requests in certain contexts.
 
-## <a name="day-"></a>Day 41
+## <a name="day-" href="#day-"></a>Day 41
 
 I have no idea what happened, but I finally ended up getting a solid day to put stuff together for this project. As a result, I've got a pretty-much-playable edition sitting up on my server, waiting for a couple more edits before I unveil it, and this massive `Journal: Part One` I've had going. Right now, I'm in the guts of the `define-handler` mini-language, trying to get my pseudo-type-system to automatically solve the problems of argument bounding for me. That is, I want to be able to specify the min and max for various argument types and have it do the right thing. Specifically, I'd like to be able to specify minimum/maximum *values* for `:int`s, and minimum/maximum *lengths* for `:string`s.
 
@@ -404,7 +404,7 @@ What do I do with a string *longer* than I want? There's two reasonable-sounding
 
 Erring means chat messages get dropped, truncating means something goes out over the wire, even if it wasn't exactly what the user intended. Now that I think about it, it seems obvious that what you'd really want, as a user, is for the server to be hard-assed about it, but the front-end to tell you what's going on. In the interests of loose coupling, this means I actually want to specify that limitation in both places. Which works perfectly, because my server already emits the specifications for its handlers through [`/server-info` requests](https://github.com/Inaimathi/deal/blob/master/deal.lisp#L6-L12), and that will automatically include any mins/maxes I define in the relevant argument lines.
 
-## <a name="day-"></a>Day 42
+## <a name="day-" href="#day-"></a>Day 42
 
 Basically, finished a bunch of the UI changes I needed to make in order to get this into a playable state. Not quasi-playable, not semi-playable, just plain playable. You can actually go [here](http://deal.inaimathi.ca/static/index.html) and use it for realzies. I mean, it's not *enjoyable* yet, and there's a lot of basic functionality still missing<a name="note-Sun-Aug-25-220327EDT-2013"></a>[|5|](#foot-Sun-Aug-25-220327EDT-2013), but you can actually go there with a couple of friends, start a game of [crazy eights](http://en.wikipedia.org/wiki/Crazy_Eights) or [something](http://www.pagat.com/climbing/asshole.html), and have an excellent chance of finishing it before anything crashes. If anything crashes, incidentally, [do report that](https://github.com/Inaimathi/deal/issues?state=open). Or patch it and send me a pull request.
 

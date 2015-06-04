@@ -2,7 +2,7 @@ Just a heads up, this is probably going to be a fairly lame stream-of-consciousn
 
 You Have Been Warned©™
 
-### <a name="firstly"></a>Firstly
+### <a name="firstly" href="#firstly"></a>Firstly
 
 I swore not to make a multiprocessing joke about this, so I won't.
 
@@ -12,7 +12,7 @@ Raising him is going to be another can of worms altogether, especially if [Stros
 
 I've got a son, my wife lived, and they both seem happy and healthy. So... that went well.
 
-### <a name="secondly"></a>Secondly
+### <a name="secondly" href="#secondly"></a>Secondly
 
 Earlier this week, I bit the bullet and upgraded my laptop to the latest wheezy release. That's actually something I've been meaning to do for a while for various reasons, and my pack-rat data storage habits finally got me to the point where most of my admittedly meager 64GB hard drive was full. The installation routine is down pat by this point
 
@@ -30,13 +30,13 @@ cabal install hoogle hasktags
 
 I'm not *quite* finished yet. a couple other small items still need to be put together<a name="note-Sun-Nov-11-002932EST-2012"></a>[|1|](#foot-Sun-Nov-11-002932EST-2012), but that's a comfortably functioning if minimal development machine. There are a few changes from last time, but before we get to those,
 
-## <a name="i-need-to-brag-for-a-moment"></a>I need To Brag for a Moment
+## <a name="i-need-to-brag-for-a-moment" href="#i-need-to-brag-for-a-moment"></a>I need To Brag for a Moment
 
 [vrms screenshot]
 
 I *thought* that would end up being true for the very short term, seeing as the wireless drivers this machine uses are all blobs. Turns out that *not* installing those has done nothing but kept me from trawling Reddit for porn. My 3G kindle performs admirably when I need to take a look at some new piece of documentation, or just pull up a previously downloaded reference manual, my desk at work has three CAT5 jacks so I'm always on the wired network anyway, and Toronto libraries have wifi hot-spots *consistently* shitty enough that I've yet to `ping www.google.ca` successfully through one<a name="note-Sun-Nov-11-002942EST-2012"></a>[|2|](#foot-Sun-Nov-11-002942EST-2012). I'll stay disconnected for the short term, though I have no idea how long that'll remain the case. In the meanwhile, `rms would be proud`.
 
-## <a name="different-languages"></a>Different Languages
+## <a name="different-languages" href="#different-languages"></a>Different Languages
 
 **Ruby** and **Smalltalk** got left out again. I'm not particularly happy about either of those. I definitely wish that [Matz](http://en.wikipedia.org/wiki/Yukihiro_Matsumoto) had become more popular than [van Rossum](http://en.wikipedia.org/wiki/Guido_van_Rossum), but it seems that he hasn't. A little while ago I realized that I was reaching for Ruby and Python in roughly the same situations and, despite the fact that I like Ruby better, Python was coming out more often. That's because everyone in IT at the office has at least a cursory knowledge of Python<a name="note-Sun-Nov-11-002953EST-2012"></a>[|3|](#foot-Sun-Nov-11-002953EST-2012) and because Python comes with Debian. It would be nice if `python-setuptools` was also included by default, and if the language/community didn't have this anti-functional-programming stick up its' ass, but whatever I guess. I've got nothing against Smalltalk either, but of the languages I don't currently have installed, both `forth` and `prolog` are ahead on the "things to learn" list. On the other hand, I have been fooling around with RasPi recently, and that comes with a Squeak image, so I dunno. Maybe it jumps the queue at some point. It just probably won't be on my main machine.
 
@@ -52,7 +52,7 @@ I can see myself installing it somewhere other than my main machine, just to giv
 
 **Clojure** and **Haskell** are now part of the standard lineup, neither of which should surprise you if you've been following the blog at all. Both place emphasis on functional programming, laziness and composeability, but that's about where the similarities end. Clojure is one of Lisp's bastards; a dynamic, fully parenthesized, prefix-notated language running on a virtual machine with a heavy focus on Java interoperability. Haskell is a member of the ML family, which means a fanatic devotion to strong, static typing, a heavy emphasis on compile-time rather than run-time optimization, a complete lack of VM, plus a strong aversion to parenthesizing anything and the ability to vary fixedness based on context. I'm making an attempt to learn both over the next few months, and that will hopefully convince you that I take cognitive diversity seriously.
 
-## <a name="switching-wms-again"></a>Switching WMs. Again.
+## <a name="switching-wms-again" href="#switching-wms-again"></a>Switching WMs. Again.
 
 [Last time](http://langnostic.blogspot.ca/2012/06/fresh-install.html) I hopped back into StumpWM from XMonad. This time, I'm hopping back. It turns out that, just like there are a couple of small annoyances in XMonad that make Stump preferable, there are a couple of small annoyances in StumpWM that do the same for XMonad.
 
@@ -146,7 +146,7 @@ withFilePrompt prompt directory fn = do
   withCompletingPrompt prompt fs fn
 ```
 
-### <a name="finally"></a>Finally
+### <a name="finally" href="#finally"></a>Finally
 
 The main thing I've been kicking around is actually Haskell. I finally buckled down and went through most of the [Happstack Crash Course](http://www.happstack.com/docs/crashcourse/index.html)<a name="note-Sun-Nov-11-003620EST-2012"></a>[|8|](#foot-Sun-Nov-11-003620EST-2012), and it just about feels like I have a less tenuous grip on the language than I used to. After reading through the references available, hitting my head rather hard against the concept of monads, going through several tutorials, and attempting a few small programs of my own, it is possible for me to write a medium sized program in Haskell without pulling a reference text out every two minutes. That only took about three years. I'm not entirely sure whether the effort has been worth it in the direct sense, but I still stand by my prior assessment of the situation. Understanding a new mode of thinking about a problem *can not* be a waste of time. Even if it turns out to be less effective than another mode, or even outright incorrect, understanding the process will give you some insight. Either about the problem or about the current practitioners of its solutions or about your own cognitive assumptions.
 

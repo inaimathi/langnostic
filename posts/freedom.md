@@ -15,7 +15,7 @@ Laced with the standard internet forum hyperbole, but it gets the point across. 
 
 These are important freedoms to programmers and to users who understand programs. I certainly wouldn't trade them for anything in my private life, which is why I've been trying like hell to make this a free software household with as few compromises as possible.
 
-### <a name="freedom-huh"></a>Freedom?
+### <a name="freedom-huh" href="#freedom-huh"></a>Freedom?
 
 Now lets be honest from the other perspective. 
 
@@ -62,7 +62,7 @@ Second c) the team is going to be made up mostly of non-programmers, which sound
 
 There's an entirely other discussion to be had about the middling UI quality in projects that aren't of direct use to programmers, but I'm not getting into that one with this little sleep.
 
-### <a name="freedom"></a>Freedom!
+### <a name="freedom" href="#freedom"></a>Freedom!
 
 It's beginning to dawn on me that if you really support the idea of Free Software, you are also logically opposed to the idea of monolithic systems. That if your goal is to maximize the Freedom of users, you **can not** hand them many hundred thousand lines of code (with an optional several thousand pages of documentation) and be content that you did your job. That suggests some basic principles by which to build Free Software
 

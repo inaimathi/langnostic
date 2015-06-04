@@ -1,12 +1,12 @@
 I don't know why this keeps coming up lately, but it does. So, here we go:
 
-### <a name="my-recommendation"></a>My Recommendation
+### <a name="my-recommendation" href="#my-recommendation"></a>My Recommendation
 
 If you want to learn your first Lisp and already know something about the JVM<a name="note-Fri-Jan-24-105200EST-2014"></a>[|1|](#foot-Fri-Jan-24-105200EST-2014), you should learn [Clojure](http://clojure.org/)<a name="note-Fri-Jan-24-105205EST-2014"></a>[|2|](#foot-Fri-Jan-24-105205EST-2014). Otherwise, you should learn Scheme. Specifically, I recommend going the route that takes you through [Racket](http://racket-lang.org/)<a name="note-Fri-Jan-24-105208EST-2014"></a>[|3|](#foot-Fri-Jan-24-105208EST-2014), and possibly through [SICP](https://github.com/sarabander/sicp-pdf/raw/master/sicp.pdf) or [HTDP](http://htdp.org/).
 
 If you absolutely, positively must, I guess go ahead and learn Common Lisp.
 
-### <a name="why"></a>Why
+### <a name="why" href="#why"></a>Why
 
 Clojure the language, as opposed to the current, main, half-fused-with-JVM implementation, is cleaner and more consistent than Common Lisp, which should help you learn it more easily. I've gotten back talk about how there are lots more noobs learning Clojure, and as a result their libraries are in some disarray, and about the fact that the JVM is a sack of donkey balls you have to bite into every time you hit some sort of error<a name="note-Fri-Jan-24-105212EST-2014"></a>[|4|](#foot-Fri-Jan-24-105212EST-2014), and about the general Clojure community pre-disposition to fashion trends. All of which may or may not be true, but I'm specifically talking about *the language*, not its ecosystem or stalwarts. Now granted, all of Racket, Clojure and Common Lisp are
 

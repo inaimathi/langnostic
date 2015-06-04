@@ -1,6 +1,6 @@
 So I've officially been away from the keyboard long enough that I need to get some thoughts out. And I kind of want to avoid this blog becoming nothing but hasty [lists of interesting papers](https://github.com/CompSciCabal/SMRTYPRTY/wiki/What%27s-next%3F), accompanied by some out-of-context and ever-growing list of ToDo items. So, in no particular order...
 
-## <a name="new-blog-stuff"></a>New Blog Stuff
+## <a name="new-blog-stuff" href="#new-blog-stuff"></a>New Blog Stuff
 
 Like I mentioned [last time](/posts/blog-changes), this weekend I finally got around to making some much needed infrastructure changes around here. Really, I've been wanting to do this since it became obvious what a massive maintainability headache it is to use [fact-bases](https://github.com/Inaimathi/fact-base) for general storage. I *might* expand on that at some point. Short version is that it has a few very ugly drawbacks, not very many advantages, and [the most interesting of its advantages](https://github.com/Inaimathi/clj-history) is not intrinsic to `fact-base`s.
 
@@ -63,7 +63,7 @@ And we've got a global `map` of `string` (file name) to `Cached`. Ideally, I'd h
 
 That does a reasonable job of minimizing disk trips while still freeing me of the need to periodically restart the server. I suppose I *could* increase the amount of time a cached file remains fresh to a something on the order of a half-hour or so, but going to disk once a minute per resource doesn't sound *too* bad. I reserve the right to change my mind.
 
-## <a name="the-go-problem"></a>The Go Problem 
+## <a name="the-go-problem" href="#the-go-problem"></a>The Go Problem 
 
 You can read my first impressions at the end of [this piece](/posts/golang-wiki). I've hit a few road-bumps since, mostly dealing with modularity and re-usability issues, but there also seems to be a pretty big attitude problem in the `go` community. The modularity issues stem from `go`s' monomorphic type system, which ensures that while the language designers can define transparently polymorphic procedures like `len`, **you** definitely can't. The most annoying place I saw this is while wondering how to go about doing [`sortBy`](http://hackage.haskell.org/package/base-4.8.0.0/docs/Data-List.html#v:sortBy) in `go`. Short story, [it ain't pretty](https://gobyexample.com/sorting-by-functions). You need to define your own custom slice type, then define `Len`, `Swap` and `Less` methods on it, then call `sort.Sort` on your original list after coercing it to your custom type.
 
@@ -81,7 +81,7 @@ I understand that a statically, monomorphically typed language is going to have 
 
 Sigh.
 
-## <a name="new-places"></a>New Places
+## <a name="new-places" href="#new-places"></a>New Places
 
 Last bit, since I'm about to lose coherence; I recently started a new job. Instead of doing some odd R&D work inside of [Moneris](http://www.moneris.com/), I'll now be slinging Ruby and CoffeeScript (along with a few others of my choice) over at [500px](https://500px.com). Or rather, I've already been doing that for the past couple of weeks. It's honestly weird working in OS X again after all this time. Not least because I've since developed a taste for tiling window managers, and XMonad has no satisfying analogue over in Apple-world. But also because I'm still getting comfortable with the built-in keyboard shortcuts. I've finally had to buckle down and start using alternate `execute-extended-command` keybindings *(since the meta key is so hard to hit on the default Apple keyboards)*, and made use of [`auto-dim-other-buffers`](https://github.com/mina86/auto-dim-other-buffers.el) *(since our external monitors are so ginormous)*. I'm sure I'll need to make more changes in my workflow before too long.
 

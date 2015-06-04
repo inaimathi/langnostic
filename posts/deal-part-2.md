@@ -1,6 +1,6 @@
 This is part two of the journal for the [Deal project](https://github.com/Inaimathi/deal). [Part one](http://langnostic.blogspot.ca/2013/08/deal-journal-part-one.html) can be found [here](http://langnostic.blogspot.ca/2013/08/deal-journal-part-one.html).
 
-## <a name="day-"></a>Day 44
+## <a name="day-" href="#day-"></a>Day 44
 
 I've been pouring time into the thing, as you can see by taking a look at the code contribution graphs. I'm trying desperately to keep the JS as terse and understandable as possible, but I'm running into challenges all over the place. If I wasn't writing Lisp, I'd probably have given up by now. Which is not to say that its been *easy* in Lisp. Mistakes have been made and rolled back, rest assured, and I still need to take a second look at the SSE/chat system to make it as DRY as possible. I currently have a very similar structure repeating in three places, which means its time to factor that out.
 
@@ -58,7 +58,7 @@ The back-end isn't going to get any more complicated. In fact, now that I've got
 
 Tons of the features I wanted got put together in the last couple of days. The front-end is now good enough that I'm seriously considering starting in on the deck/board builder rather than adding more stuff. There's nice-to-haves, obviously, but nothing that'll outright prevent any game I can think of from being played.
 
-## <a name="day-"></a>Day 45
+## <a name="day-" href="#day-"></a>Day 45
 
 Didn't get as much work done as I was hoping today. The lack of sleep is finally taking its toll, I think. Hopefully I can catch up on some rest this weekend, then move on to the deck/setup editor, then get to polishing the fuck out of all of it. I did a bit of that. Little things like
 
@@ -95,9 +95,9 @@ inaimathi@lambda:~/projects/deal$
 
 We're at ~1500 lines, and not terribly likely to crack 2000, *and* we've got a pretty feature-full little play-testing tool to show for it.
 
-## <a name="day-ive-lost-track-and-actually-these-have-been-bullshit-for-a-while-its-august-st-though-so-maybe-i-just-start-counting-from-the-end-now-yeah-ok-lets-do-that"></a>Day I've lost track. And actually, these have been bullshit for a while. It's August 31st though, so maybe I just start counting from the end now? Yeah, ok, lets do that.
+## <a name="day-ive-lost-track-and-actually-these-have-been-bullshit-for-a-while-its-august-st-though-so-maybe-i-just-start-counting-from-the-end-now-yeah-ok-lets-do-that" href="#day-ive-lost-track-and-actually-these-have-been-bullshit-for-a-while-its-august-st-though-so-maybe-i-just-start-counting-from-the-end-now-yeah-ok-lets-do-that"></a>Day I've lost track. And actually, these have been bullshit for a while. It's August 31st though, so maybe I just start counting from the end now? Yeah, ok, lets do that.
 
-## <a name="t-minus-days"></a>T minus 30 days
+## <a name="t-minus-days" href="#t-minus-days"></a>T minus 30 days
 
 It's amazing what a little sleep will accomplish. I haven't written any more code, but I've got the shape of the deck/board editor in my head.
 
@@ -115,7 +115,7 @@ Also, because I'm not going to be serializing *everything* in these dumps<a name
 -   one that keeps everything. This is the one I'll be using to store logs and replays later. It needs *all* the information about a particular game, its result shouldn't be available until after a game is concluded, and the board should have an additional piece of data attached to describe its starting position.
 
 
-## <a name="t-minus-days"></a>T minus 29 days
+## <a name="t-minus-days" href="#t-minus-days"></a>T minus 29 days
 
 Something odd started going wrong recently, and I had to sit down to puzzle through it. It turned out to be an odd corner of how `cl-json` handles encoding `list`s. See, because a list might represent an `[alist](http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node153.html)`, a `[plist](http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node108.html)` or just a vanilla `[list](http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node149.html)`, there's ambiguity in terms of how to encode it. The way that this seems to be handled is with an error/backtrack strategy that tries each option and sees what it comes up with. The trouble with *that* when you're serializing things that look something like
 
@@ -171,11 +171,11 @@ That's still begging for some better syntax, of course. Its already bitten me on
 
 The other thing I managed to do was put together a very minimal little system for creating custom decks. Which means that after I hack in the intentionally limited game-state save/load feature, this will officially be a capable playtesting **and** prototyping tool. Wish me luck.
 
-## <a name="t-minus-days-wee-hours-of-the-morning"></a>T minus 28 days: wee hours of the morning
+## <a name="t-minus-days-wee-hours-of-the-morning" href="#t-minus-days-wee-hours-of-the-morning"></a>T minus 28 days: wee hours of the morning
 
 It's about 1:20 right now, and I managed to put a few more hours in. The latest [codebase up at github](https://github.com/Inaimathi/deal) has a working, if ugly, upload system. That is, while you're the only one in your game, you can set stuff up, save a `game.json` file, and load it up again later to replicate your earlier setup. It looks like the web hasn't been sitting still after all, by the way. Whereas the server-push situation still sucks a bag of donkey dongs, file uploading now sucks only a single such dong. Two at the outside. You can do [asynchronous file uploads fairly simply](http://stackoverflow.com/a/8758614), provided you're willing to live with only supporting HTML5 browsers, and trust me, I am. Having put that together, this is technically a finished playtesting/prototyping tool for tabletop card games. There's still a [bunch of polish](https://github.com/Inaimathi/deal/issues) I want to put on it, patches welcome by the by, and I still want to make a few things make slightly more sense, *and* I really want to make some parts of the tool prettier before I start promoting it publicly, but even [Deal as it stands](http://deal.inaimathi.ca/static/index.html) is now enough to do the prototype work which was ostensibly the point of the project.
 
-## <a name="t-minus-days"></a>T minus 23 days
+## <a name="t-minus-days" href="#t-minus-days"></a>T minus 23 days
 
 I just finished the single biggest commit since the start of this project. It... well, here, I'll just read you the log message.
 

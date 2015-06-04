@@ -21,13 +21,13 @@ Before I discuss this idea with my self, I have to disagree with two points. Fir
 
 With that our of the way, lets all don our white hats<a name="note-Tue-Dec-10-132022EST-2013"></a>[|6|](#foot-Tue-Dec-10-132022EST-2013), and imagine the proposed system in enough detail to implement it.
 
-### <a name="how-does-a-user-log-in"></a>How does a user log in?
+### <a name="how-does-a-user-log-in" href="#how-does-a-user-log-in"></a>How does a user log in?
 
 In the context of a web application, they've got one field to fill out, "passphrase", and one button to click, "Log In". The passphrase entered is then hashed and looked up in our user database; if it matches a passphrase hash we have on file, the user ID is retrieved and used to get the specified users' program state. We then continue along letting them do what they're actually here to do. In an ideal system, this authentication step would be entirely optional, allowing it to happen at the last possible moment, when a user needed to commit some piece of data to their server-side corpus.
 
 This is easily the biggest introduced weakness I see in the proposed system. Because we only have a passphrase to work with, we can only use either an unsalted hash, or a per-server "salt" to keep our passphrases out of plaintext. If we didn't, that user lookup based on the password would take a long time. Scaling at `On` with number of users, with some fairly ridiculous constants tacked on. That's dangerous, because we're suddenly gambling that the rest of the application our auth system is embedded in won't allow any injection attacks, or leak database information any other way. Granted, because we're guaranteed to have unique passwords, such a disclosure isn't as easy to take advantage of as it might be, but it's still a concern.
 
-### <a name="what-happens-when-the-user-enters-a-passphrase-that-isnt-currently-assigned"></a>What happens when the user enters a passphrase that isn't currently assigned?
+### <a name="what-happens-when-the-user-enters-a-passphrase-that-isnt-currently-assigned" href="#what-happens-when-the-user-enters-a-passphrase-that-isnt-currently-assigned"></a>What happens when the user enters a passphrase that isn't currently assigned?
 
 There are really only two reasonable possibilities:
 
@@ -37,13 +37,13 @@ There are really only two reasonable possibilities:
 
 Having thought about this for a bit, it becomes clear that there's only *one* reasonable possibility, and it's the first one.
 
-### <a name="how-does-the-registration-process-work"></a>How does the registration process work?
+### <a name="how-does-the-registration-process-work" href="#how-does-the-registration-process-work"></a>How does the registration process work?
 
 This might be context sensitive by application. For instance, [Deal](https://github.com/Inaimathi/deal) lets users play entirely anonymously. I can easily imagine a system wherein after 10 minutes of play time, a user just automatically got an in-game notice with a passphrase that would let them resume where they were. Because the server controls all the steps to a registration, it can happen behind the scenes with some game time effectively taking the place of a [Captcha](http://www.google.com/recaptcha). This could be used with any system that lets you start off anonymously; wikis, bulletin boards, forums, etc.
 
 That system, elegant as it might be from the implementation and usability side of things, wouldn't work for something like [GoGet](https://github.com/Inaimathi/goget). Where the only possible reason to use the application is to go back later and check what you put in the first time. In that situation, you'd want the usual up-front "Register" button that would do the Captcha thing to make sure you're not a robot<a name="note-Tue-Dec-10-132028EST-2013"></a>[|8|](#foot-Tue-Dec-10-132028EST-2013), and hand the user an account before they start doing stuff. Really, this might be re-designed too though; have the system start you off on a blank check-list, with an unobtrusive "Log In" form at the top of the page, with the added button "Save", which would register you and hand you a passphrase with which you could access the list you just made.
 
-### <a name="what-do-we-do-when-passphrase-exhaustion-occurs"></a>What do we do when passphrase exhaustion occurs
+### <a name="what-do-we-do-when-passphrase-exhaustion-occurs" href="#what-do-we-do-when-passphrase-exhaustion-occurs"></a>What do we do when passphrase exhaustion occurs
 
 Granted, 216 000 000 000 000 is a large number, but it's not infinite, which means some clever bastard out there is going to find a way to cut it in half a few times for the purposes of guessing. And it doesn't take very many halvings to get that down to a tractable level. We have to deal with this problem a good deal sooner than "passphrase exhaustion"; if we get to the point where all passphrases are assigned, an attacker suddenly gets access to an account no matter which possibility they guess. But if we did something naive like hand out 2-word passphrases until they ran out, then an attacker who registers and receives a 3-word passphrase would know that any 2-word combination of our dictionary words will give them access to an existing account. We'd really want to generate new passphrases well before we ran out; at something like 10% exhaustion at a guess. Or better yet, don't limit passphrase length to two words, make it `n` random words, where `n` is something like
 
@@ -54,7 +54,7 @@ Granted, 216 000 000 000 000 is a large number, but it's not infinite, which mea
 
 That should give attackers less purchase, and scale naturally with additional users.
 
-### <a name="what-have-we-got"></a>What Have We Got?
+### <a name="what-have-we-got" href="#what-have-we-got"></a>What Have We Got?
 
 Switching briefly over to my black hat, I can't see an attack on this system that would get you any traction above and beyond traditional password-based implementations<a name="note-Tue-Dec-10-132038EST-2013"></a>[|9|](#foot-Tue-Dec-10-132038EST-2013). That doesn't mean there isn't a way, of course. I'll present the idea to some discerning and devious thinkers to see what they can come up with. Otherwise, we've got some interesting properties here, mainly because the server-side is the one putting everything together. We have a passphrase system that
 

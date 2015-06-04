@@ -24,7 +24,7 @@
 
 Gentlemen...
 
-### <A NAME="BEHOLD"></A>BEHOLD!
+### <A NAME="BEHOLD" HREF="#BEHOLD"></A>BEHOLD!
 
 ```erlang
 -module(rsa_auth).
@@ -374,7 +374,7 @@ That's the code down. The interaction, once you've registered and if you're goin
 
 Assuming it was done correctly, you should then be logged in. The automatic version is going to have to wait for some sleep.
 
-### <a name="how-is-this-better-than-passwords"></a>How Is This Better Than Passwords?
+### <a name="how-is-this-better-than-passwords" href="#how-is-this-better-than-passwords"></a>How Is This Better Than Passwords?
 
 I don't fucking know, something. Oh, wait, yeah it is. In three specific ways.
 

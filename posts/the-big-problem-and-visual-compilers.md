@@ -18,7 +18,7 @@ There is another approach though. It doesn't necessarily solve all the problems,
 
 The approach is Visual Compilation. I like to call it "program injection" in contrast to "doc extraction", because the way it fundamentally works is by accepting a top-level flow diagram from you and using it to generate code. Like I said, it works surprisingly well. We've successfully used it to generate documentation that doesn't go stale, guaranteed<a name="note-Sun-Jun-29-120930EDT-2014"></a>[|1|](#foot-Sun-Jun-29-120930EDT-2014), and that's extremely useful in explaining the contents of the systems we're building, even to non-programmers. We use a particular approach called [Flow Based Programming](http://www.jpaulmorrison.com/fbp/) which lets us generate a particular set of control-flow primitives from a hierarchical diagram and fall through to three or four lines of code in some leaf components.
 
-### <a name="constraint-propagation"></a>Constraint Propagation
+### <a name="constraint-propagation" href="#constraint-propagation"></a>Constraint Propagation
 
 That's not intrinsically necessary though, depending on the underlying system you want to support. Consider the [constraint propagation system](http://mitpress.mit.edu/sicp/full-text/book/book-Z-H-22.html#%_sec_3.3.5) from [chapter 3 of SICP](http://mitpress.mit.edu/sicp/full-text/book/book-Z-H-19.html#%_chap_3). There's a very small set of primitives that describe `constraint`s, `probe`s and the `connector`s that span them. Any more complicated construct that you need, you build by composing the above<a name="note-Sun-Jun-29-120935EDT-2014"></a>[|2|](#foot-Sun-Jun-29-120935EDT-2014). This lends itself to simple visual compilation with no "leaf components" in the way that I meant above. The main point is that you can run these constraints in multiple directions. Unlike our FBP components, which have definite inputs and outputs, `constraint`s have multiple `connector`s, any of which might serve as input or output. If that sounds interesting, I encourage you to read that [SICP chapter](http://mitpress.mit.edu/sicp/full-text/book/book-Z-H-19.html#%_chap_3) I pointed you to. All I'm going to be doing is showing how you might go about generating code from the constraint diagrams they draw, rather than generating code by hand and separately producing documenting diagrams.
 
@@ -51,7 +51,7 @@ It's a Celsius to Faranheit temperature converter. The idea is that you can eith
 (celsius-fahrenheit-converter C F)
 ```
 
-### <a name="textual-representation"></a>Textual Representation
+### <a name="textual-representation" href="#textual-representation"></a>Textual Representation
 
 I'm working in Common Lisp rather than Scheme, so I've had to make some changes to the underlying system. You can check out my implementation [here](https://github.com/CompSciCabal/SMRTYPRTY/blob/master/experiments/inaimathi/sicp-constraints/sicp-constraints.lisp). The corresponding code targeting that implementation is:
 
@@ -80,7 +80,7 @@ I'm working in Common Lisp rather than Scheme, so I've had to make some changes 
 
 The only conceptual change I had to make that *isn't* related to the language shift is that all the constraint arguments are keyword args. This is in service of having an easier time ordering inputs later<a name="note-Sun-Jun-29-120943EDT-2014"></a>[|3|](#foot-Sun-Jun-29-120943EDT-2014). So the goal is to take something like that picture above, and emit something like that code in a reasonably simple, and completely automated manner. The hope is that the result will be more easily understood by readers, and certain to avoid getting stale. Step by step then, we need a drawing.
 
-### <a name="graphical-representation"></a>Graphical Representation
+### <a name="graphical-representation" href="#graphical-representation"></a>Graphical Representation
 
 Here's one created with `2dmacs`, the visual editor we use in Moneris' Web POS Development team. It's not yet open source, though we do have plans in that direction, so I can only show you its output rather than its innards.
 
@@ -410,7 +410,7 @@ As an aside, the reason behind using this data representation approach is that i
 
 Really, though, aside. The only reason I showed you that representation is so that the traversers and modifiers I'm *about* to show you can make some sense.
 
-### <a name="bridging-the-two"></a>Bridging the Two
+### <a name="bridging-the-two" href="#bridging-the-two"></a>Bridging the Two
 
 Before we get into the underlying mechanics of *how* it happens, here's *what* we want to happen:
 

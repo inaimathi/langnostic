@@ -6,7 +6,7 @@ Following the [upgrade_project](https://github.com/basho/rebar/tree/master/test/
 
 Ugh. Sorry, I had to vent for a bit there. Fuck this, I'm going back to Makefiles for the time being. I'll try rebar out again when my blood pressure lowers a bit.
 
-## <a name="was-that-all"></a>Was that all?
+## <a name="was-that-all" href="#was-that-all"></a>Was that all?
 
 Huh? Oh. No, I guess. I did also find [this](https://github.com/rvirding/lfe/blob/master/doc/user_guide.txt), which looks pretty badass. It's not exactly a Common Lisp or a Scheme. It's a purely functional, Lisp-2 with unhygenic macros that runs on top of the Erlang VM. It's about as officially supported as you can get, being made by [Robert Virding](http://rvirding.blogspot.ca/), and it gets rid of quite a few things I don't like about Erlang.
 

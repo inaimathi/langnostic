@@ -6,41 +6,41 @@ This time, I didn't pull punches, finding as many practical examples and tutoria
 
 So here are my first impressions<a name="note-Wed-Feb-01-221734EST-2012"></a>[|3|](#foot-Wed-Feb-01-221734EST-2012); I'm sure they'll change as I learn more about the language (and I fully intend to learn more about it)
 
-## <a name="it-passes-the-compaq-test"></a>It Passes The Compaq Test
+## <a name="it-passes-the-compaq-test" href="#it-passes-the-compaq-test"></a>It Passes The Compaq Test
 
 This thoroughly surprised me, because Smalltalk has a reputation for being brilliant and elegant but slow. I guess the people perpetuating this reputation mean "relative to C", because Seaside ran quite snappily off of a rather old machine with 256MB of ram. That was an "M". In fact, as I write this on that same ancient machine, I'm running Seaside in the background along with Slime and getting along perfectly well<a name="note-Wed-Feb-01-222417EST-2012"></a>[|4|](#foot-Wed-Feb-01-222417EST-2012).
 
-## <a name="it-has-source-control"></a>It Has "Source" Control
+## <a name="it-has-source-control" href="#it-has-source-control"></a>It Has "Source" Control
 
 The word source is quoted because it's an image-based system, but a module called [Monticello](http://wiki.squeak.org/squeak/1287) basically does for Smalltalk what `git` would do for other languages. I wouldn't mention this, except that I remember thinking about it last time, and several other people at the Smackdown expressed similar concerns. So if your main excuse for staying away from Smalltalk is "I don't want to give up source control", you no longer have an excuse.
 
-## <a name="fantastic-ide"></a>Fantastic IDE
+## <a name="fantastic-ide" href="#fantastic-ide"></a>Fantastic IDE
 
 And this is coming from someone who usually hates IDEs. This one actually fails to get in my way at most opportunities, provides useful information and completions when I need them, is intuitive *and* well documented internally and externally, and (most importantly) does not take longer than Emacs to load up<a name="note-Wed-Feb-01-224001EST-2012"></a>[|5|](#foot-Wed-Feb-01-224001EST-2012). For those of you working cross-platform, it's also fully skinnable and comes with themes appropriate for the big three OSes (each of which it runs on beautifully).
 
-## <a name="turtles-all-the-way-down"></a>Turtles All The Way Down
+## <a name="turtles-all-the-way-down" href="#turtles-all-the-way-down"></a>Turtles All The Way Down
 
 Everything is an object. *Everything* **is** an object. Signs of this show up in the way loops and conditionals are treated, as well as the complete construction of the system<a name="note-Wed-Feb-01-225456EST-2012"></a>[|7|](#foot-Wed-Feb-01-225456EST-2012). It's kind of an extension of the previous point, but I wanted to emphasize it. That fantastic environment I mentioned? It's built in Smalltalk. The main click-menu (called the World Menu) is actually represented in the image. You can head over to the class browser and find a class called `TheWorldMenu`. You can also Ctrl + right-click on any component of the menu to activate its halo and fuck with internal variables. You probably *shouldn't*, but you could. This level of introspection happens for almost<a name="note-Wed-Feb-01-224813EST-2012"></a>[|6|](#foot-Wed-Feb-01-224813EST-2012) every component and sub-component you can see. I imagine this is what it would feel like to work on a full-out lisp machine.
 
-## <a name="great-gui-toolkit"></a>Great GUI Toolkit
+## <a name="great-gui-toolkit" href="#great-gui-toolkit"></a>Great GUI Toolkit
 
 I reserve the right to change my mind since I've only gone through some very basic activities, but it looks like it would be very easy to put together desktop applications with Smalltalk. I'm not super clear on how you'd go about deploying them, but there [seem](http://forum.world.st/Desktop-application-with-Pharo-td3453812.html) to be [ways](http://code.google.com/p/pharo/wiki/HowToDeployAnApplication).
 
 That's the stuff that's attracted me. There's downsides too, of course, but they're not enough to give me pause. If you're just looking for an excuse not to try Smalltalk out, one of these should probably be enough.
 
-## <a name="no-respect-for-bedmas"></a>No Respect for BEDMAS
+## <a name="no-respect-for-bedmas" href="#no-respect-for-bedmas"></a>No Respect for BEDMAS
 
 All of the manuals are quite explicit about this too; the fact that everything is an object means that the expression `3 + 5 * 2` isn't actually an expression. It's two binary messages being sent to two `SmallInteger`s. That means that the only reasonable way to be consistent about it is to treat arithmetic strictly from the left; so that the expression above will actually evaluate to `16` rather than the expected `13` if you try it out.
 
-## <a name="mousecentric"></a>Mouse-Centric
+## <a name="mousecentric" href="#mousecentric"></a>Mouse-Centric
 
 This may actually be a pro for some people, but it's not for me. The environment expects you to do most things with the mouse<a name="note-Wed-Feb-01-233751EST-2012"></a>[|8|](#foot-Wed-Feb-01-233751EST-2012). There's a greater than usual amount of time spent dealing with objects and widgets, so I guess that might be fair, but look. If your window system doesn't let me move between windows without reaching for the rat, you're doing something wrong. Being already used to a tiling WM just makes it that much more annoying<a name="note-Wed-Feb-01-233848EST-2012"></a>[|9|](#foot-Wed-Feb-01-233848EST-2012). A lot of things *have* keyboard shortcuts, but not everything, and those things that don't are quite annoying. Not *exactly* annoying enough to jump over to [GNU Smalltalk](http://smalltalk.gnu.org/), but still.
 
-## <a name="odd-choice-of-string-delimiters"></a>Odd Choice of String Delimiters
+## <a name="odd-choice-of-string-delimiters" href="#odd-choice-of-string-delimiters"></a>Odd Choice of String Delimiters
 
 In Smalltalk `"foo"` is not the string foo. It's actually the *comment* foo. The string foo looks like `'foo'`. How do you put an apostrophe in a string? You don''t. You either escape it with a second quote, or you use typographers’ quotes. Now you know. I'm still not entirely sure why this decision was made though. It seems like pretty much any other comment delimiters would have made more sense.
 
-## <a name="wonky-keyboard-shortcuts"></a>Wonky Keyboard Shortcuts
+## <a name="wonky-keyboard-shortcuts" href="#wonky-keyboard-shortcuts"></a>Wonky Keyboard Shortcuts
 
 I'm putting this one at the bottom of the list because I'm convinced that there must be a way to change them that I just haven't discovered yet. By "wonky", I don't mean "it uses the wrong letter", I mean "who the fuck thought this was the correct behavior?". Things like not having Ctrl+backspace `backward-word-kill` (giving that honor to Shift+backspace for comical effect), *or* having Ctrl+x kill a line, but move forward doing it and keep the `\n` in place, **or** having Ctrl+Right move forward a word, but skip newlines so that moving your point to the last symbol of a line is just that little bit more annoying. Also in this category, things like having `(`, `'` and `"` auto-close themselves, but only about half the time and with a noticeable delay. Like I said, this isn't that huge a deal because I'm convinced that
 

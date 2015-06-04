@@ -4,7 +4,7 @@ Secondly, I ended up having to put together two front-ends; an Angular-based pag
 
 Thirdly, I [deployed it](http://goget.inaimathi.ca/). It doesn't run under HTTPS yet, so don't put in anything illegal or embarrassing, but that's a usable shopping list synchronizer which I intend to use. Let me know if you try it and anything explodes.
 
-### <a name="on-to-the-code"></a>On to the code!
+### <a name="on-to-the-code" href="#on-to-the-code"></a>On to the code!
 
 At the moment, I've got the [jQuery](http://jquery.com/) and [Angular](http://angularjs.org/) versions separated into different branches, but I'll merge them shortly and just provide each as a separate front-end<a name="note-Sat-Feb-16-205448EST-2013"></a>[|2|](#foot-Sat-Feb-16-205448EST-2013). On a scale this small, it turns out not to matter much how you write the interface. If you check out the line-count on both those front-ends, the reactive version saves about 10 lines of HTML and 15 of JavaScript. It stacks up in larger applications, and if there's an option to use less JS, I'll take it, but in this case, the elegant solution doesn't work, so whatever. Lets start with the HTML markup first. Here's the **Angular**
 

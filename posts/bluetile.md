@@ -2,7 +2,7 @@ Just a quick update this week; I intend to record my thoughts on Bluetile (and I
 
 To start with
 
-### <a name="why-a-tiling-wm"></a>Why a Tiling WM?
+### <a name="why-a-tiling-wm" href="#why-a-tiling-wm"></a>Why a Tiling WM?
 
 I actually get asked this at work, so I won't assume that you're automatically on-board with the idea of using a tiling window manager. The most common questions are "Why?" and "Isn't it hard learning all those keystrokes?" The second is the easier question, so I'll answer it first; yes. But a good window manager should let you adjust keybindings<a name="bluetilen1"></a>[|1|](#bluetilef1), and the point here is to make your environment fast, not so easy to learn that the office secretary could use your computer in a pinch.
 
@@ -24,7 +24,7 @@ Moving, sizing and adjusting is typically done in order to get maximum use of yo
 
 So that's why.
 
-### <a name="bluetile-really"></a>Bluetile (really)
+### <a name="bluetile-really" href="#bluetile-really"></a>Bluetile (really)
 
 That brings me to [Bluetile](http://www.bluetile.org/). I've been using [StumpWM](http://www.nongnu.org/stumpwm/) for my purposes, but I wanted to try out the competition. Bluetile is a derivative of [xmonad](http://xmonad.org/), the Haskell-based tiling WM, with an aim of being easy for beginners to get into. They do this, kind of ironically, by putting in mouse-oriented controls and by running on top of Gnome instead of standalone. That's pretty sweet, actually, and it seems to be fairly easy for beginners to get into. The trouble is that it doesn't do a very good job solving the problems I mentioned above (so while it's easy to get into, I doubt it would do a good job convincing beginners that tiling WMs are worth the trouble). First, it provides on-screen icons for navigation (each of which have keyboard counterparts, I'm just bemoaning the waste of screen space), and it keeps toolbars and gaps between windows so that you can still see your start bar and background. The gaps have no reason I can see; the toolbars are kept so that you can still click on windows and drag them around, which sort of defeats the purpose.
 

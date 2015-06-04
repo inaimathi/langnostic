@@ -4,7 +4,7 @@ That's the [Lenovo x220](http://shop.lenovo.com/us/laptops/thinkpad/x-series/x22
 
 Anyhow, this is the first time that I've configured my main machine without a desktop environment. I usually run either [XFCE](http://www.xfce.org/) or [GNOME](http://www.gnome.org/) under my window manager on my primary, and keep crazy things like [Screen-as-WM](http://langnostic.blogspot.ca/2011/10/screen-for-stumpwm-users-gnu-screen-as.html), and [odd `bash` replacements](http://langnostic.blogspot.ca/2012/01/how-close-can-you-get-to-lisp-machine.html) to my play boxes. Much as I hate to admit it, `x-window-system` is still a requirement at an office where you need to co-exist with MS users. Mainly for [PDF viewing](http://trac.emma-soft.com/epdfview/) and [documents/spreadsheets](http://www.libreoffice.org/download/), but it also helps to be able to do some [image](http://inkscape.org/) [editing](http://www.gimp.org/) if the situation calls for it.
 
-## <a name="window-manager"></a>Window Manager
+## <a name="window-manager" href="#window-manager"></a>Window Manager
 
 I decided to go with [StumpWM](http://stumpwm.org/) over [XMonad](http://xmonad.org/). The practical differences are minute. XMonad uses a workspace-based structure by default, whereas StumpWM treats windows individually<a name="note-Tue-Jun-12-210019EDT-2012"></a>[|1|](#foot-Tue-Jun-12-210019EDT-2012). Stump treats all windows equally, where XMonad has the concept of a master window in a given layout. StumpWM assumes `C-t` as the `mod` key, and supports Emacs-style chords out of the box. You can use [XMonad.Actions.Submap](http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Actions-Submap.html) to get *some* of the functionality back, but there are two places it falls short, and those have annoyed me enough to switch back over to the Lisp-based WM.
 
@@ -16,7 +16,7 @@ I suppose another solution could have been "get used to `Win` as your mod key", 
 
 So that's that; keeping my hands on the home row without sacrificing functionality is enough to drive me to another window manager.
 
-## <a name="other-installables"></a>Other Installables
+## <a name="other-installables" href="#other-installables"></a>Other Installables
 
 Other than the WM, I mentioned this was my first time going desktop-less. That produces one or two challenges, the big one being wireless. I'm using [`wicd-curses`](http://wicd.sourceforge.net/moinmoin/FAQ) to manage my connections, but that's actually the easy part. The x220 comes with one of three built-in wireless cards, and none of them like Debian very much. What I really ought to do is go out and buy a wifi card that supports free drivers, but in the meantime, this is the one place on my system where I use Debian's `contrib non-free` repos. I temporarily added them, and dropped them as soon as I was done installing `firmware-iwlwifi`, `firmware-ralink` and `firmware-realtek`.
 
@@ -41,7 +41,7 @@ apt-get install pacpl mplayer alsa imagemagick gimp inkscape conkeror chromium-b
 
 I haven't even bothered with databases or web servers yet, though I'm sure I'll have to eventually. I *did* grab a few applications from source just for the hell of it, and set up my usual utility scripts<a name="note-Tue-Jun-12-210928EDT-2012"></a>[|2|](#foot-Tue-Jun-12-210928EDT-2012), `quicklisp`, plus 7 or so `.*rc` files.
 
-## <a name="lineup-changes"></a>Lineup Changes
+## <a name="lineup-changes" href="#lineup-changes"></a>Lineup Changes
 
 There are a couple of big things I've changed, that you may have noticed, and one big thing I've changed that you definitely didn't. Most of it is pruning things that I've noticed I don't use. The languages I didn't bother installing this time include `haskell`<a name="note-Tue-Jun-12-210940EDT-2012"></a>[|3|](#foot-Tue-Jun-12-210940EDT-2012), `smalltalk`<a name="note-Tue-Jun-12-210947EDT-2012"></a>[|4|](#foot-Tue-Jun-12-210947EDT-2012), `node.js`<a name="note-Tue-Jun-12-210952EDT-2012"></a>[|5|](#foot-Tue-Jun-12-210952EDT-2012) and `ruby`<a name="note-Tue-Jun-12-210958EDT-2012"></a>[|6|](#foot-Tue-Jun-12-210958EDT-2012).
 

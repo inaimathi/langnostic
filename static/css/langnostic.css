@@ -11,6 +11,15 @@ body { width: 100%; margin:0px; padding: 0px; font-family: sans-serif; }
 .top-menu a { color: #FFF; }
 .top-menu a:hover { color: #999; }
 
+h1 { color: #CC0606; }
+h2 a, h3 a, h4 a, h5 a, h6 a { display:block; position: absolute; width: 10%; height: 26px; left: 0; }
+h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, h6 a:hover { 
+    background-image: url(/static/img/link-icon.png); 
+    background-repeat: no-repeat; 
+    background-size: auto 10px; 
+    background-position: 95% 50%;
+}
+
 .content img { margin: auto; padding: 10px; display: block; max-width: 80%; border: 1px solid #CC0606; }
 .content code { background-color: #EEE; padding: 1px 3px; }
 .content blockquote { font-style: oblique; font-family: serif; background-color: #EEE; padding: 10px; border-left: 20px solid #CCC; }
@@ -25,6 +34,5 @@ body { width: 100%; margin:0px; padding: 0px; font-family: sans-serif; }
 .tags-list li { list-style-type: none; display: inline-block; font-weight: bold; margin-right: 5px; }
 
 hr { border-color: #CC0606; background-color: #CC0606; display: block; clear: both; }
-h1 { color: #CC0606; }
 
 .tags { font-weight: bold; }

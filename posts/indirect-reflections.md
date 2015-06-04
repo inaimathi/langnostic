@@ -19,7 +19,7 @@ Hell, the only projects I've gotten to `done`, for some value of "done", are the
 
 So, given the track record of "things I talk about first" vs "things I put together first", you'll pardon me for keeping my latest exploits under my hat until I'm ready to pull the big red lever. Thing is, there's a component that I'm trying to assemble that has me unsure about direction, so sitting down and throwing those thoughts through the loopback interface seems like a good idea.
 
-### <a name="moderation"></a>Moderation
+### <a name="moderation" href="#moderation"></a>Moderation
 
 I've talked about this before, but not exactly in the same context. How do you moderate a system? Scratch that, how do you moderate a decentralized, public system with an eye for data transmission and potentially divisive discussions, in the light of recent-era copyright rules.
 
@@ -27,15 +27,15 @@ In totality, that offers some interesting challenges, even if no individual comp
 
 Ok, actually, lets step back a bit further, I've noticed another assumption that should probably be explained.
 
-### <a name="moderators"></a>Moderators
+### <a name="moderators" href="#moderators"></a>Moderators
 
 And that's probably not far enough.
 
-### <a name="authority-figures"></a>Authority Figures
+### <a name="authority-figures" href="#authority-figures"></a>Authority Figures
 
 Hmm. No, it's bigger than that too.
 
-### <a name="marketcapable-primates"></a>Market-Capable  Primates
+### <a name="marketcapable-primates" href="#marketcapable-primates"></a>Market-Capable  Primates
 
 Right, that's far enough back. I'll try to zoom back in as quickly as I can while at least giving some clues as to my thought process.
 
@@ -53,7 +53,7 @@ The perfect communication *forum*<a name="note-Fri-Aug-03-164459EDT-2012"></a>[|
 
 The ideal message profile is `(setf *noise* 0 *echo* #'unique-p *signal* #'not-echo-p)`
 
-### <a name="authority-figures"></a>Authority Figures
+### <a name="authority-figures" href="#authority-figures"></a>Authority Figures
 
 In order to ensure that a given *forum* approaches the ideal message profile, most of them vest power in authority figures. These figures tend to be present whether the *forum* has other ways of telling `*signal*` from `*noise*`, and I'll argue that the reason is largely because of that third category of message we've identified as being somewhat useful to **MCP**s. The power vested in these authority figures is largely censorship; they kill the `*noise*` that slips through whatever automated/cloud-based/crowd-sourced/buzzword-compliant system is in place to catch the bulk of it, and are expected to make judgment calls bout `*echo*`s. If a given topic is judged as being `*noise*`y, it's deleted, or its visibility is artificially reduced in some way.
 
@@ -61,7 +61,7 @@ Authority Figures in this context do a lot of their work behind closed doors, an
 
 Hmm. We'll actually need a detour on our way back.
 
-### <a name="echoes-and-shadows"></a>Echoes and [Shadows](http://en.wikipedia.org/wiki/Allegory_of_the_Cave)
+### <a name="echoes-and-shadows" href="#echoes-and-shadows"></a>Echoes and [Shadows](http://en.wikipedia.org/wiki/Allegory_of_the_Cave)
 
 The problem with `*echo*`s is precisely that they demand a judgment call. One human will take a look at the weekly [/r/lisp](http://www.reddit.com/r/lisp) argument about newLisp/Clojure/whatever-the-new-lisp-dialect-is and hit the spam button before she gets past the first sentence. Another will take a look at the exact same conversation, wonder why they've never heard about it before, and grumble quite loudly when [someone closes it](http://meta.stackoverflow.com/questions/61221/deleted-questions-archive). That grumble incurs a cost on the system, measured in citizen good-will; someone who had no idea about a particular discussion is effectively prevented from having it, or forced to have it somewhere else.
 
@@ -69,11 +69,11 @@ This is the best-case situation, mind you; Authority Figures that are doing thei
 
 That's the trouble with Authority Figure-based `*noise*` reducing systems; false positives and negatives in situations where you'd rather not have them if you can avoid it. The naive response is fine-graining that Authority.
 
-### <a name="moderators"></a>Moderators
+### <a name="moderators" href="#moderators"></a>Moderators
 
 Instead of having a set of Authority Figures for the whole community, [shard](http://www.reddit.com/) the [community](http://stackexchange.com/) and set up Moderators for each shard. That should reduce pressure on each Moderator, as well as allow them to work to their strengths by moderating communities centered around things they're more than baseline passionate about. The thing is, the output of this process is still *not* accurate sorting of message types. Moderators still commonly delete things for reasons other than objective merit. If you disagree, spend a few hours [here](http://www.reddit.com/r/SubredditDrama/)<a name="note-Fri-Aug-03-165449EDT-2012"></a>[|8|](#foot-Fri-Aug-03-165449EDT-2012).
 
-### <a name="moderation"></a>Moderation
+### <a name="moderation" href="#moderation"></a>Moderation
 
 And we're back. Based on the principles outlined above, it seems like the best way to avoid over-moderation-related costs on a community is to make sure that any actions moderators take are
 

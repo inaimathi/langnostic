@@ -10,7 +10,7 @@ Still, we've got a good starting point to look at in terms of putting a running 
 
 Now then, the bad stuff.
 
-### <a name="bad-stuff"></a>Bad Stuff
+### <a name="bad-stuff" href="#bad-stuff"></a>Bad Stuff
 
 The Erlang deployment process is really beginning to annoy the fuck out of me.
 

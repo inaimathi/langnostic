@@ -6,7 +6,7 @@ Don't worry if you missed it, that post may just have shatter the "most words" r
 
 It turns out that periodic notifications from the server are still a pain in the ass. Your options, as of almost-March 2012 are [Websockets](http://dev.w3.org/html5/websockets/), [Comet](http://en.wikipedia.org/wiki/Comet_(programming)) (aka Long Poll, aka (God help me) Reverse Ajax), [Ajax Polling](http://ajaxpatterns.org/Periodic_Refresh) and HTML5 [Server-Sent-Events](http://www.html5rocks.com/en/tutorials/eventsource/basics/).
 
-## <a name="websockets"></a>Websockets
+## <a name="websockets" href="#websockets"></a>Websockets
 
 seem to have gotten the most press, but have so far failed to materialize. If you're familiar with network programming<a name="note-Thu-Feb-23-154642EST-2012"></a>[|1|](#foot-Thu-Feb-23-154642EST-2012), this will be intuitive to you. Instead of relying on the standard request/response architecture of the web, a client and server do a handshake and establish something like a traditional, secure, bi-directional socket through which they can send each other data. In theory, that completely eliminates the need for any of the other methods. In practice, I'm not convinced.
 
@@ -16,11 +16,11 @@ The first place I heard of this concept was [way back when Joe Armstrong posted]
 
 In any case, this is a decent choice where you need true bi-directional communication, but it seems like implementing it here would cause me some unnecessary headaches, and I don't think turn-based games strictly require it.
 
-## <a name="comet"></a>Comet
+## <a name="comet" href="#comet"></a>Comet
 
 This is just a bending of the standard request/response protocol that the web is built out of. Usually, the client sends a request and the server responds to it right away, either with the requested information or an error code. "Comet" is a name for the situation where the server instead sits on the request until there's something new to send over, at which point it responds and the client immediately sends a new request that the server will respond to at its leisure. That's actually a pretty good option, except that I happen to be using a server<a name="note-Thu-Feb-23-154704EST-2012"></a>[|4|](#foot-Thu-Feb-23-154704EST-2012) that spawns a new thread per connection. In a Comet situation, this gets out of hand, because you essentially have a thread running *constantly* per user<a name="note-Thu-Feb-23-154716EST-2012"></a>[|5|](#foot-Thu-Feb-23-154716EST-2012). If I were running a single threaded server, this may be a better option, but as it stands, it seems like I'd have to do a *lot* more work for what I was hoping would be a simple project. So, no dice here either, sadly.
 
-## <a name="ajax-polling"></a>Ajax Polling
+## <a name="ajax-polling" href="#ajax-polling"></a>Ajax Polling
 
 I'm reasonably sure everyone who cares knows what this is by now. You have a specific page built to send out updates, and each client has code that looks something like
 
@@ -36,7 +36,7 @@ function updateFoo(){
 
 The end result being that you can fake bi-directional communication by just having the client poke the server repeatedly and integrate data from the responses as it goes. The only issue with this approach is the overhead; go ahead and take a look at [this breakdown of the process](http://en.wikipedia.org/wiki/XMLHttpRequest). Calling complexity aside<a name="note-Thu-Feb-23-154755EST-2012"></a>[|6|](#foot-Thu-Feb-23-154755EST-2012), by my count, a request ends up transferring twice and a bit the obvious amount of data involved<a name="note-Thu-Feb-23-154808EST-2012"></a>[|7|](#foot-Thu-Feb-23-154808EST-2012). Some issues also arise from naive use of the method, which I'll get into with the final option I considered.
 
-## <a name="serversentevents"></a>Server-Sent-Events
+## <a name="serversentevents" href="#serversentevents"></a>Server-Sent-Events
 
 are basically formalized, lightweight Ajax polling with a few small benefits. The bad part is that you're still basically instructing the client to poke the server at a given interval, but the response is structured differently. Something like 
 

@@ -8,7 +8,7 @@ So lately, I've been thinking about my work setup for hacking, and it occurs tha
 1.   The current "solution" is a base image (Windows with an unconfigured outlook, and printer drivers) which the dev then has to spend about a day (two or three the first time) prepping to get up and running. This leaves something to be desired. ))
 
 
-### <a name="define-pingemacs-"></a>(define (ping-emacs) (
+### <a name="define-pingemacs-" href="#define-pingemacs-"></a>(define (ping-emacs) (
 
 What, you thought I only got one per post?
 I haven't been doing any hardcore elisp hacking for the last few days, but I still make it a habit to eliminate inefficiencies. I ended up removing uniquify from my .emacs. It wasn't getting used (and I noticed a little note it came with to the effect that it has some slight conflicts with iswitchb mode, which I *do* make extensive use of). I also ripped out the option in smart-tab that has it use hippie-expand. It was much too overzealous in various places.

@@ -133,6 +133,7 @@ type Cached struct {
 }
 
 var mdCache = make(map[string]Cached)
+var LangnosticPolicy = bluemonday.UGCPolicy().AllowAttrs("name").OnElements("a")
 
 func ProcessMarkdown (mdFile string) ([]byte, error) {
 	cache, present := mdCache[mdFile]
@@ -152,7 +153,7 @@ func ProcessMarkdown (mdFile string) ([]byte, error) {
 	if err != nil { return nil, err }
 
 	unsafe := blackfriday.MarkdownCommon([]byte(f))
-	mdCache[mdFile] = Cached{bluemonday.UGCPolicy().SanitizeBytes(unsafe), time.Now(), stat.ModTime()}
+	mdCache[mdFile] = Cached{LangnosticPolicy.SanitizeBytes(unsafe), time.Now(), stat.ModTime()}
 	return mdCache[mdFile].contents, nil
 }
 

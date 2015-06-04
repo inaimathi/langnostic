@@ -1,4 +1,4 @@
-### <a name="deal-journal-interlude-three-being-a-brief-musing-on-session-mechanisms-and-their-implementation"></a>Deal Journal - Interlude Three -- Being a brief Musing on Session Mechanisms and Their Implementation
+### <a name="deal-journal-interlude-three-being-a-brief-musing-on-session-mechanisms-and-their-implementation" href="#deal-journal-interlude-three-being-a-brief-musing-on-session-mechanisms-and-their-implementation"></a>Deal Journal - Interlude Three -- Being a brief Musing on Session Mechanisms and Their Implementation
 
 I'm going to get to the reflections piece eventually, I swear. Or maybe I won't. Fuck I don't know.
 
@@ -6,7 +6,7 @@ Anyhow, sessions are things you'll need to deal with if you want to build any ki
 
 What they have to do is hand you some piece of data, and ask you to hand it back to them every time you visit. Usually this takes the form of a cookie, and if they've done their job sufficiently well, they can now take any bunch of requests they got with the same cookie and reasonably assume that it came from the same user.
 
-## <a name="how-well-is-sufficiently"></a>How Well is "Sufficiently"?
+## <a name="how-well-is-sufficiently" href="#how-well-is-sufficiently"></a>How Well is "Sufficiently"?
 
 Something should be obvious there. First, unless you're using SSL, that piece of state you've been handed is trivially sniffable. Which means that if you have a habit of logging into a server that doesn't make you use `https`, well, I hope you're not keeping anything *really* secret there. Second, unless your session state is pretty hard to guess, someone who wants to impersonate you probably can.
 
@@ -20,7 +20,7 @@ From a server operators' perspective, the `https` thing is easy. Just use SSL<a 
 
 And that's close enough to the specification of a [CSPRNG](http://en.wikipedia.org/wiki/Cryptographically_secure_pseudorandom_number_generator) that if we had one, we could just use it. The absolute simplest way to do that is to use a secure block cipher on a randomly initialized counter. As it happens, Common Lisp Has That©™.
 
-## <a name="generating-session-tokens-with-ironclad"></a>Generating Session Tokens with Ironclad
+## <a name="generating-session-tokens-with-ironclad" href="#generating-session-tokens-with-ironclad"></a>Generating Session Tokens with Ironclad
 
 So, basically what we need is for our server to generate a secret key<a name="note-Tue-Oct-15-222959EDT-2013"></a>[|6|](#foot-Tue-Oct-15-222959EDT-2013), then use that to encrypt the output of a counter, starting at some random point or possibly just modified by a random number.
 

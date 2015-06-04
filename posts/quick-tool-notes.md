@@ -1,4 +1,4 @@
-## <a name="hardware"></a>Hardware
+## <a name="hardware" href="#hardware"></a>Hardware
 
 This is a [thing](https://www.crowdsupply.com/purism/librem-laptop) now. And it wasn't for a very long time. I remember sitting down and honestly trying to figure out how I would go about getting a [Yeeloong](http://www.tekmote.nl/epages/61504599.sf/en_GB/?ObjectPath=/Shops/61504599/Products/CFL-003-B) to Toronto. Eventually concluding that my best bet would be to learn [Mandarin](https://en.wikipedia.org/wiki/Mandarin_Chinese), then hang out around Jiangsu-based chatrooms/IRC channels and try to to make friends. This seemed like more work than I could realistically do, so I didn't. Instead I've been piloting a Lenovo x220i and putting up with this
 
@@ -17,7 +17,7 @@ Anyhow. That [first link](https://www.crowdsupply.com/purism/librem-laptop) I pu
 
 To be clear, the goal here isn't "get a good deal on a laptop". This thing is going to cost me something like three or four hundred bucks above what I'd pay for a Lenovo piece. But. I'm committed enough to the idea of freedom in computation that I'll willingly pay that in order to subsidize a company with the same goals.
 
-## <a name="software"></a>Software
+## <a name="software" href="#software"></a>Software
 
 On the other side of the development coin, "purely functional" [build systems](http://nixos.org/nix/)/[package managers](http://www.gnu.org/software/guix/) are becoming a popular meme.
 

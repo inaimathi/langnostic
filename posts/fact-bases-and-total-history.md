@@ -4,7 +4,7 @@ The context was mildly different; we had this conversation in relation to the no
 
 The conversation touched on total-history data-structures, and their effects on performance and convenience. The end result is [this little project](https://github.com/Inaimathi/fact-base) I just put together over the course of half an afternoon.
 
-### <a name="let-me-back-up"></a>Let me back up...
+### <a name="let-me-back-up" href="#let-me-back-up"></a>Let me back up...
 
 Imagine a toy bank account.
 
@@ -29,7 +29,7 @@ stretching back from the beginning of the accounts' existence to `now`. This mea
 
 Bank accounts aren't the only things you can model this way; specifically, fact-bases can be usefully thought of in this manner.
 
-### <a name="now-then"></a>Now then...
+### <a name="now-then" href="#now-then"></a>Now then...
 
 It turns out that total-history structures give you some interesting properties and challenges.
 
@@ -39,7 +39,7 @@ Second, time-stamping becomes pretty critical. If you took a look at [that githu
 
 Still open decisions are how to go about storing deletion tokens, and when/how aggressively to prune history. A passable answer for the second is "never", so that's what I'm going with for the moment. The first one doesn't seem to have a right answer.
 
-### <a name="storing-deletion-tokens"></a>Storing deletion tokens...
+### <a name="storing-deletion-tokens" href="#storing-deletion-tokens"></a>Storing deletion tokens...
 
 The three approaches I can see off the top of my head are storing a deletion index, storing a deletion value, and storing a deletion template. I'm doing the third at the moment, though I'm not convinced it's the right approach. So lets start with that.
 
@@ -81,7 +81,7 @@ A deletion value token looks something like
 
 You apply this by going through the accumulated corpus and removing the first fact that matches it. Granted, it's slower in general (because applying it in general involves an arbitrary tree-compare), and it's more wasteful of disk space (because we have to store those arbitrary trees as well as comparing them with facts to remove). But. Depending on how strictly you enforce it, this one is more easily reversible, and it doesn't need `eval` either, since it's just storing a value.
 
-### <a name="wrapping-up"></a>Wrapping up...
+### <a name="wrapping-up" href="#wrapping-up"></a>Wrapping up...
 
 A couple of other thoughts I'd like to leave percolating:
 

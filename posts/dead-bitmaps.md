@@ -1,16 +1,16 @@
 I've been pouring some of my time into trying to [automatically translate bitmap images into richer flowchart representation](https://github.com/Inaimathi/EAF#eaf)<a name="note-Tue-Oct-28-230119EDT-2014"></a>[|1|](#foot-Tue-Oct-28-230119EDT-2014). What I want ultimately, is a way of going from an old-fashioned, hand-crafted line drawing to something that I could easily use to pull [this trick](/article?name=the-big-problem-and-visual-compilers.html). I don't quite have anything workable yet, but it feels like I'm making some progress regardless. Enough to blog about it for a bit, in any case.
 
-### <a name="high-level"></a>High Level
+### <a name="high-level" href="#high-level"></a>High Level
 
 I'm considering two very specific approaches at the moment, but there's a general direction I'm trying to go in. First and foremost, I want something that works, and don't care *too* much about purity or elegance. Which means I'm perfectly willing to cheat by introducing easy to handle out-of-band information. One thing I'm already considering, but won't reach for until I need it, is color-coding lines/arrows differently from shapes. So, for instance, anything red would be interpreted as lines while anything blue would be processed under the assumption that it represented shapes<a name="note-Tue-Oct-28-230122EDT-2014"></a>[|2|](#foot-Tue-Oct-28-230122EDT-2014).
 
 Secondly, I'm working with a very tight set of constraints on the source images I'm considering. These aren't going to be photographs. I admit, it would be cool to be able to draw a program in the sand, take a picture, and have it compile correctly, but that sounds ... hard. What I'll be dealing with to start with is going to be line drawings composed of primitive shapes, arrows and some sparse annotating text on a relatively uniform white background. Most of the work I've read on the subject of edge or feature detection has been aimed either at plain text nuder various transformations<a name="note-Tue-Oct-28-230127EDT-2014"></a>[|3|](#foot-Tue-Oct-28-230127EDT-2014), or at photographs<a name="note-Tue-Oct-28-230131EDT-2014"></a>[|4|](#foot-Tue-Oct-28-230131EDT-2014). The box and wire diagram area seems to be relatively unexplored.
 
-### <a name="thinning"></a>Thinning
+### <a name="thinning" href="#thinning"></a>Thinning
 
 The first approach I'm thinking about is thinning the image down to the minimal number of points it takes to represent. Once that's done, it should be possible to connect the dots at some threshold of proximity and generate the appropriate line/shape facts that we need in order to proceed further. And honestly, that's about as much thought as I've put into this approach. If you want details, check [the README scection](https://github.com/Inaimathi/EAF#thinning) and [`Ping.hs`](https://github.com/Inaimathi/EAF/blob/master/Ping.hs). I might come back to it if the other `Direction` proves fruitless, or hits some unseen roadblocks.
 
-### <a name="directional-mapping"></a>Directional Mapping
+### <a name="directional-mapping" href="#directional-mapping"></a>Directional Mapping
 
 This is the approach I've been considering and prototyping most vigorously. Mostly because it seems within striking distance of workable results in the very near future. At its most distilled form, this involves deciding the directional tendency of each pixel in the image. Each one might be one of the Cardinal directions (North/South or East/West), one of the Ordinal directions (NorthEast/SouthWest or NorthWest/SouthEast), or it might be contested<a name="note-Tue-Oct-28-230150EDT-2014"></a>[|6|](#foot-Tue-Oct-28-230150EDT-2014).
 

@@ -2,7 +2,7 @@ I've been thinking about this for a bit, and I'm honestly not sure I can underst
 
 In general, having Falsy things makes it easier to use the `if` statement, and not having them means getting more explicit code. With that in mind, here's the state of play across the spectrum.
 
-### <a name="haskell"></a>Haskell
+### <a name="haskell" href="#haskell"></a>Haskell
 
 doesn't take your shit. If you want to use `if` instead of pattern matching or guards, you're damn well going to pass it a `Bool`. 
 
@@ -57,7 +57,7 @@ foo list = handleN
 
 Finally, if you want to express "this computation can fail": be explicit about it and use a `Maybe`. Then handle the `Nothing` case, whether with a `>>=` or a `case` or a `do`. Haskell likes being explicit.
 
-### <a name="python"></a>Python
+### <a name="python" href="#python"></a>Python
 
 At the entirely other end of the spectrum is Python. It'll take your shit, interpreting `if` in a Pythonic™© way to mean the appropriate empty check in some contexts.
 
@@ -123,7 +123,7 @@ Nay!
 Yay!
 ```
 
-### <a name="javascript"></a>JavaScript
+### <a name="javascript" href="#javascript"></a>JavaScript
 
 does almost the same thing as Python, but adds `null`, `undefined` and `NaN` to the list of Falsy values, and considers empty sequences *other* than the empty string Truthy. That is,
 
@@ -150,7 +150,7 @@ undefined
 
 There are no tuples in JS, so it can't do anything there. I have no idea what the reasoning is otherwise though. I especially have no idea what would possess someone to think that making the empty array Truthy *and* the empty string Falsy, unless strings are actually implemented as linked lists underneath.
 
-### <a name="common-lisp"></a>Common Lisp
+### <a name="common-lisp" href="#common-lisp"></a>Common Lisp
 
 is middle-of-the road in this respect. It has a canonical `t` and `nil` as `True`/`False`, but `nil` also pulls double-duty as the empty list.
 
@@ -177,7 +177,7 @@ To a first approximation, it seems that the rationale here is "Sequences that yo
 
 Speaking of which...
 
-### <a name="scheme"></a>Scheme
+### <a name="scheme" href="#scheme"></a>Scheme
 
 ```scheme
 CHICKEN
@@ -213,7 +213,7 @@ nay!
 
 Scheme, or at least [Chicken Scheme](http://www.call-cc.org/), *doesn't* seem to treat anything but an actual `#f` as false. Which is mildly bizarre, because the recursion logic would actually make sense here. 
 
-### <a name="clojure"></a>Clojure
+### <a name="clojure" href="#clojure"></a>Clojure
 
 seems to do its usual and split the difference between Common Lisp and Scheme.
 
@@ -240,11 +240,11 @@ user=>
 
 That is, empty sequences are all Truthy, `false` is obviously `false`, and `nil` is a Falsy value that doesn't double as the empty list.
 
-### <a name="conclusion"></a>Conclusion
+### <a name="conclusion" href="#conclusion"></a>Conclusion
 
 Hah! You thought I was going to conclude something?
 
-### <a name="nonconclusion"></a>Non-Conclusion
+### <a name="nonconclusion" href="#nonconclusion"></a>Non-Conclusion
 
 Why is `nil` Falsy in Clojure? Why is `[]` Truthy but `""` Falsy in JavaScript? Why, if a language has already decided to support empty sequences and values as Falsy, is a sequence composed of nothing but Falsy values Truthy? Why give this treatment only to some sequences and container values?
 

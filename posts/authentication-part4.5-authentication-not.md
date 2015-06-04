@@ -5,7 +5,7 @@
 
 ![](/static/img/the-wall.jpg)
 
-## <a name="housekeeping"></a>Housekeeping
+## <a name="housekeeping" href="#housekeeping"></a>Housekeeping
 
 Despite the authentication theme, this update is probably going to be a mishmash of content, given how fast my head is spinning at the moment. First, I want to [bring](http://www.groklaw.net/article.php?story=20120712151437524) a couple [things](http://www.theatlantic.com/business/archive/2012/07/why-there-are-too-many-patents-in-america/259725/) to your attention. Not quite enough to earn this post the "Intellectual Property Bullshit" tag, but interesting nonetheless.
 
@@ -13,15 +13,15 @@ Also, before I move on, I polished up what I went over [last time](http://langno
 
 It's not done yet, two-factor auth coming rather soon, but the existing API isn't going to change at this point. I may put another layer on top just to simplify the external interface, and maybe make it easier to expose this system as a web-service, but that's about it.
 
-## <a name="not-authenticating"></a>Not Authenticating
+## <a name="not-authenticating" href="#not-authenticating"></a>Not Authenticating
 
 Before we go any further, lets take a look at some real-life systems to see how they handle the Authentication Problem. I doubt you'll be surprised.
 
-#### <A NAME="IRC"></A>IRC
+#### <A NAME="IRC" HREF="#IRC"></A>IRC
 
 This is the classic online communication protocol. In fact, if you like, we can go further.
 
-#### <a name="mail"></a>Mail
+#### <a name="mail" href="#mail"></a>Mail
 
 Not Email. Old mail. The original dead-tree protocol, just in case IRC wasn't quite classic enough for you. They have one very important thing in common; neither does any kind of authentication. A user in IRC chooses a username each time they log in to a session. They may choose a different name each time, and another user may choose a name that belonged to someone else last time. Likewise, mail doesn't authenticate. There are optional, unvalidated fields on every envelope where someone can put a not-necessarily-correct return address, but that's it. Bottom line, you really don't know who you're talking to. If you want to, you need to authenticate them some other way. Either you know their handwriting, or you're familiar with their word frequency, or maybe you've exchanged keys in the past so that you can now verify who they are, but the channel itself provides you with none of this information. Further, you have no real guarantee that a message you send makes it to your intended target, or that you're getting all messages addressed to you, or that they aren't being observed/tampered with even if they do eventually get where they're going.
 
@@ -29,7 +29,7 @@ These are the prototypical unsecured channels, and they still<a name="note-Sun-J
 
 The authentication system<a name="note-Sun-Jul-15-004834EDT-2012"></a>[|2|](#foot-Sun-Jul-15-004834EDT-2012) is nonexistent. Moving on.
 
-#### <a name="message-boards"></a>Message Boards
+#### <a name="message-boards" href="#message-boards"></a>Message Boards
 
 I'm not discussing forums yet. I'm instead referring to the [various](http://kusabax.cultnet.net/) [*aba](http://www.2chan.net/script/)/[*booru](http://danbooru.donmai.us/help/source_code)-descended boards. These typically don't use authentication either, except for the moderators. They do tend to have the common feature of "tripcodes". Basically, hashes with varying levels of security depending on implementation. They don't let you know who you're talking to either, but it's at least semi-possible to verify that a given series of tripped messages come from the same source.
 
@@ -37,17 +37,17 @@ Moderation mostly seems to take the form of deletion passwords. That is, there d
 
 The key takeaways here are twofold. First, non-authentication is the norm. It's not only conceivable but usual to have authentication between endpoints handled entirely separately from the intended communication channel. Second, it's unnecessary to enforce authentication for the purposes of communication or publishing. When you're posting content or sending messages back and forth, it's typically enough to verify that a given set of messages/articles all have the same source without necessarily verifying what that source is. Moving on. Again.
 
-#### <a name="wikis"></a>Wikis
+#### <a name="wikis" href="#wikis"></a>Wikis
 
 These sit between IRC and Forums in terms of authentication strength. Here, I'm talking about both actual <a name="note-Sun-Jul-15-004908EDT-2012"></a>[|4|](http://en.wikipedia.org/wiki/Wiki">wikis</a>, and systems like [Stackoverflow](http://stackoverflow.com/). The key is that there is a user account system<a href="#foot-Sun-Jul-15-004908EDT-2012), and it's not just for moderators, but it *is* optional. Anyone can view and contribute some sort of information, but there is an inner circle of trusted users that makes up a wiki's core community, and that core wields the really powerful brushes.
 
 The authentication that does exist is, by and large, the same password based stuff that gets used everywhere regardless of security. Some of them use <a name="note-Sun-Jul-15-004915EDT-2012"></a>[|5|](http://en.wikipedia.org/wiki/OpenID">OpenID</a>, which is a fantastic system in theory, but in practice seems to come down to a password system where four or five giant companies control the user databases for everyone<a href="#foot-Sun-Jul-15-004915EDT-2012). I think we can do better.
 
-#### <a name="forums"></a>Forums
+#### <a name="forums" href="#forums"></a>Forums
 
 We're talking about the standard [phpBB-style](http://www.phpbb.com/) forums, as well as stuff a-la [Reddit](http://www.reddit.com/) and various social/news sites. By and large, these maintain their own user systems. I'm not going to make a blanket statement like **none of them actually need your information to do the job they propose to**, but it's at least partially true. This is the next level of authentication above wikis; you can view information without an account, but contributing any effort at all to the target community requires a registration. An effort is made to have people associate their identity with one account by tracking post numbers, karma, badges, or some combination of the above. That doesn't mean it happens, and in practice, spammers tend to commonly have vast networks of identities at their disposal if the potential audience is big enough. Really, these systems don't require the level of authentication they tend to have. I'm inclined to be cynical about it and say that they only want to have some sort of user estimate in hand, but that may not be the case.
 
-#### <a name="transaction-authorities"></a>Transaction Authorities
+#### <a name="transaction-authorities" href="#transaction-authorities"></a>Transaction Authorities
 
 These are things like, oh, for example *your bank*. This isn't a publication system, there's a communication channel in place specifically to let you issue orders about resources that are ostensibly under your control. They tend not to use OpenID<a name="note-Sun-Jul-15-004937EDT-2012"></a>[|6|](#foot-Sun-Jul-15-004937EDT-2012), and they tend to [restrict passwords](http://me.veekun.com/blog/2011/12/04/fuck-passwords/) more than other organizations. These places have a vested, legitimate interest in knowing precisely who you are, keeping fake accounts as close to non-existent as possible, and having a traceable, consistent way of verifying where each command they're acting on came from.
 
@@ -59,7 +59,7 @@ The kicker here, the reason I get the feeling that these institutions are fine w
 
 In other words, "sure have your account, we're still calling you, or expecting you to come into a branch physically for the big stuff". I'm not entirely convinced this is a bad idea.
 
-## <a name="spectrum-summary"></a>Spectrum Summary
+## <a name="spectrum-summary" href="#spectrum-summary"></a>Spectrum Summary
 
 There's a huge number of different authentication strategies in use on the internet already. You can do most of what you need to without ever signing in to anything. There are a few things that require really strong, working security to do online. There are three potential reactions to this state of affairs.
 
