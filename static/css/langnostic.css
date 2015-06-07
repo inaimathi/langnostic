@@ -11,7 +11,8 @@ body { width: 100%; margin:0px; padding: 0px; font-family: sans-serif; }
 .top-menu a { color: #FFF; }
 .top-menu a:hover { color: #999; }
 
-h1 { color: #CC0606; }
+h1 { color: #CC0606; margin-bottom: 0px; }
+.posted { font-style: oblique; color: #AAA; display: block; font-size: small; text-align: right; margin-bottom: 10px;}
 h2 a, h3 a, h4 a, h5 a, h6 a { display:block; position: absolute; width: 10%; height: 26px; left: 0; }
 h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, h6 a:hover { 
     background-image: url(/static/img/link-icon.png); 
@@ -21,9 +22,8 @@ h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, h6 a:hover {
 }
 
 .content img { margin: auto; padding: 10px; display: block; max-width: 80%; border: 1px solid #CC0606; }
-.content code { background-color: #EEE; padding: 1px 3px; }
+.content p code { background-color: #EEE; padding: 1px 3px; }
 .content blockquote { font-style: oblique; font-family: serif; background-color: #EEE; padding: 10px; border-left: 20px solid #CCC; }
-.content pre code { padding: 10px; }
 
 .post-nav { font-weight: bold; color: #CC0606; }
 .post-nav a { margin-bottom: 10px; color: #CC0606; }

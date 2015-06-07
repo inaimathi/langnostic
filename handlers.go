@@ -99,7 +99,9 @@ func OldPostPage (arc *Archive) func (http.ResponseWriter, *http.Request) {
 // Rendering helpers
 func (arc *Archive) RenderPost(post Post) []byte {
 	body, _ := ProcessMarkdown(fmt.Sprintf("posts/%s.md", post.File))
-	title := fmt.Sprintf("<h1>%s</h1>", post.Title)
+	title := fmt.Sprintf("<h1>%s</h1><span class=\"posted\">%s</span>", 
+		post.Title, 
+		time.Unix(post.Posted, 0).Format("Jan 2, 2006 at 3:04pm (MST)"))
 	return Cat([]byte(title), body, arc.RenderPostLinks(post))
 }
 
