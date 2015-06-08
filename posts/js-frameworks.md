@@ -108,8 +108,8 @@ $(document).ready(function() {
 ```
 
 ```html
-&lt;ul id='collection-view'>&lt;/ul>
-&lt;div id='post-data'>&lt;/div>
+<ul id='collection-view'></ul>
+<div id='post-data'></div>
 ```
 
 And once you have all that in place, what you can do is drag the given elements around, and have returned a set of IDs in the order that they appear on the users screen! [Isn't that amazing!?](https://en.wikipedia.org/wiki/Sarcasm) I gave it the benefit of the doubt, and tried to fit the code into my head for about half an hour before [I realized something](http://jsfiddle.net/RK2GV/2/).
@@ -117,7 +117,7 @@ And once you have all that in place, what you can do is drag the given elements 
 ```javascript
 var util = {
     log : function (message) {
- $("#console").append(JSON.stringify(message)).append("&lt;br />");    
+ $("#console").append(JSON.stringify(message)).append("<br />");    
     }
 };
 
@@ -162,11 +162,11 @@ $(document).ready(function() {
 ```
 
 ```html
-&lt;ul id="rules-list">&lt;/ul>
-&lt;script id="tmp-list" type="text/x-handlebars-template">
-   &lt;li>&lt;span class="id" title="{{id}}">&lt;/span>{{name}} -- {{id}}&lt;/li>
-&lt;/script>
-&lt;div id="console">&lt;/div>
+<ul id="rules-list"></ul>
+<script id="tmp-list" type="text/x-handlebars-template">
+   <li><span class="id" title="{{id}}"></span>{{name}} -- {{id}}</li>
+</script>
+<div id="console"></div>
 ```
 
 There. That's a solution weighing in at under half the SLOC, which gives precisely zero fucks about MVC frameworks and accomplishes the same task. Incidentally, I include `underscore-min.js` and `backbone-min.js` in that fiddle link because this was refactored from the above [Java-style OOP soup](http://jsfiddle.net/7X4PX/4/), but I'm fairly certain that they're both unnecessary for this approach.
@@ -214,9 +214,9 @@ So back to **They're All Shit**. You'll notice that of the implications above, a
 The one extremely annoying thing each framework seems to do is try to layer additional object hierarchies on top of the DOM; an already existing object hierarchy that perfectly expresses the `view` end of an application. You're expected to maintain a view and a model tree in addition to that. I guess some people are already used to typing reams upon reams of code to perform basic tasks? And most of them [work at Google](http://angularjs.org/)? Ok, ok, maybe that's not entirely fair. It's certainly possible that the approach allows larger applications to be put together more easily, but I'm honestly not seeing it. Having taken in tutorials for [Ember](http://www.andymatthews.net/read/2012/03/07/Getting-Started-With-EmberJS), [Spine](https://github.com/maccman/spine.todos), [Backbone](http://coenraets.org/blog/2011/12/backbone-js-wine-cellar-tutorial-part-1-getting-started/), [Angular](http://docs.angularjs.org/tutorial/), and [Batman](http://batmanjs.org/alfred.html), the things they all have in common are:
 
 
--   getting a simple task done is a lot more complicated with framework code than without it
--   components built with frameworks are *less composeable* than components built without them
--   everyone really, *really*, ***really*** wants you to declare a tree of classes before you do anything
+- getting a simple task done is a lot more complicated with framework code than without it
+- components built with frameworks are *less composeable* than components built without them
+- everyone really, *really*, ***really*** wants you to declare a tree of classes before you do anything
 
 
 It seems like all of those would add up to significantly increase complexity in a larger project, and I sort of had this goofy idea that complexity is a thing we're trying to *reduce* when we reach for library code.

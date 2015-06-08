@@ -1,4 +1,4 @@
-So I've upgraded to [ubuntu 9.10](http://www.ubuntu.com/). They've put a lot of effort into making the UI more consistant, which is nice I guess. Also, it's shaved off a further four seconds from my startup routine; the system itself now starts up about 2 seconds faster, and they changed the login screen so that I can just hit &lt;ret> instead of typing in my user name (which saved the other two seconds).
+So I've upgraded to [ubuntu 9.10](http://www.ubuntu.com/). They've put a lot of effort into making the UI more consistant, which is nice I guess. Also, it's shaved off a further four seconds from my startup routine; the system itself now starts up about 2 seconds faster, and they changed the login screen so that I can just hit `<ret>` instead of typing in my user name (which saved the other two seconds).
 
 That's really not why I finally decided to ugrade though [this is](http://web.psung.name/emacs/setup.html). Ubuntu 9.20 has apt-get support for emacs 23, and I really didn't feel like going through a manual install from their [ftp site](http://ftp.gnu.org/pub/gnu/emacs/). That seems like something I'd have had to do in 1998, not 12 years after the fact.
 
@@ -34,13 +34,13 @@ My `.emacs` is getting fatter, by the way. Here's the latest evolution:
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode) '("\\.ss$" . scheme-mode))
 
 (add-hook 'php-mode-hook
-          (lambda () (define-key php-mode-map (kbd "&lt;tab>") (lambda () (interactive) (insert-char 9 1)))))
+          (lambda () (define-key php-mode-map (kbd "<tab>") (lambda () (interactive) (insert-char 9 1)))))
 
 (setq scroll-bar-mode-explicit t)
 (set-scroll-bar-mode `right)
 
-(global-set-key (kbd "&lt;f5>") 'eval-buffer)
-(global-set-key (kbd "&lt;f7>") 'call-last-kbd-macro)
+(global-set-key (kbd "<f5>") 'eval-buffer)
+(global-set-key (kbd "<f7>") 'call-last-kbd-macro)
 
 (global-set-key (kbd "C-w") (lambda () (interactive) (kill-buffer nil)))
 

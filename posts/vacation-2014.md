@@ -7,22 +7,22 @@ About six years ago, [SteveY](http://steve-yegge.blogspot.ca/) wrote up a post e
 This week, I finally got enough time together that I decided to sit down and plow through the first chunk of that reading list. This may brand me as an irredeemable nerd, but that was easily the most fun I've had in about five years. Not that I'm done yet, mind you. So far I've
 
 
--   brushed up on my [Big O](https://en.wikipedia.org/wiki/Big_O_notation), [tree traversal](http://rosettacode.org/wiki/Tree_traversal)/[rotation](https://en.wikipedia.org/wiki/Tree_rotation) and various sorts
--   implemented minimal hash tables
--   done a bit of reading on [NP-complete](https://en.wikipedia.org/wiki/NP-complete) problems and various graph storage techniques
--   done a lot of reading and thinking about, but not yet an implementation of, a [binomial heap](https://en.wikipedia.org/wiki/Binomial_heap)
--   implemented a minimal [trie](https://en.wikipedia.org/wiki/Trie)
+- brushed up on my [Big O](https://en.wikipedia.org/wiki/Big_O_notation), [tree traversal](http://rosettacode.org/wiki/Tree_traversal)/[rotation](https://en.wikipedia.org/wiki/Tree_rotation) and various sorts
+- implemented minimal hash tables
+- done a bit of reading on [NP-complete](https://en.wikipedia.org/wiki/NP-complete) problems and various graph storage techniques
+- done a lot of reading and thinking about, but not yet an implementation of, a [binomial heap](https://en.wikipedia.org/wiki/Binomial_heap)
+- implemented a minimal [trie](https://en.wikipedia.org/wiki/Trie)
 
 
 Those last two weren't even in the list. I was *supposed* to be reading up on [Red/Black trees](http://eternallyconfuzzled.com/tuts/datastructures/jsw_tut_rbtree.aspx) and [AVL trees](https://en.wikipedia.org/wiki/AVL_tree), but kept getting distracted by more interesting data structures. I've still got a lot to read up on. Specifically, I still need to:
 
 
--   implement a [quicksort](http://rosettacode.org/wiki/Sorting_algorithms/Quicksort) and [mergesort](http://rosettacode.org/wiki/Sorting_algorithms/Merge_sort)
--   actually get through Red+Black/AVL/[Splay tree](https://en.wikipedia.org/wiki/Splay_tree) implementations ([Finger trees](http://www.soi.city.ac.uk/~ross/papers/FingerTree.pdf)(PDF warning) also look interesting, but aren't strictly on the reading list)
--   do more graph-related reading and prototyping
--   Do some serious reading related to [NP-complete](https://en.wikipedia.org/wiki/NP-complete) problems
--   brush up on various basic math things (the ones specified in the article are [combinatorics](https://en.wikipedia.org/wiki/Combinatorics) and [probability](https://en.wikipedia.org/wiki/Probability))
--   lightly brush up on OS basics ([threads vs processes](http://stackoverflow.com/questions/200469/what-is-the-difference-between-a-process-and-a-thread) and [performance implications](http://stackoverflow.com/questions/807506/threads-vs-processes-in-linux), [concurrency constructs](http://stackoverflow.com/questions/2332765/lock-mutex-semaphore-whats-the-difference))
+- implement a [quicksort](http://rosettacode.org/wiki/Sorting_algorithms/Quicksort) and [mergesort](http://rosettacode.org/wiki/Sorting_algorithms/Merge_sort)
+- actually get through Red+Black/AVL/[Splay tree](https://en.wikipedia.org/wiki/Splay_tree) implementations ([Finger trees](http://www.soi.city.ac.uk/~ross/papers/FingerTree.pdf)(PDF warning) also look interesting, but aren't strictly on the reading list)
+- do more graph-related reading and prototyping
+- Do some serious reading related to [NP-complete](https://en.wikipedia.org/wiki/NP-complete) problems
+- brush up on various basic math things (the ones specified in the article are [combinatorics](https://en.wikipedia.org/wiki/Combinatorics) and [probability](https://en.wikipedia.org/wiki/Probability))
+- lightly brush up on OS basics ([threads vs processes](http://stackoverflow.com/questions/200469/what-is-the-difference-between-a-process-and-a-thread) and [performance implications](http://stackoverflow.com/questions/807506/threads-vs-processes-in-linux), [concurrency constructs](http://stackoverflow.com/questions/2332765/lock-mutex-semaphore-whats-the-difference))
 
 
 By the way, so you know in advance, this article is going to feel pretty disjointed; every five minutes or so I get interested enough in something I'm link-hunting for that I go read about it for fifteen minutes or so before resuming prose. Hopefully it's still comprehensible.
@@ -218,7 +218,7 @@ get hash key = lookup key bucket
           buckets = tblBuckets hash
 ```
 
-This is where we'll see possibly the biggest difference between the language approaches; if you look semi-closely, you'll notice that they have completely different return tendencies. I tried to follow the in-language style for each, so this is really more a reflection of the attitudes of the communities<a name="note-Sun-Jul-13-194420EDT-2014"></a>[|7|](#foot-Sun-Jul-13-194420EDT-2014). The Python version either finds the key it's looking for or throws a run-time exception. The Haskell variant returns a `Maybe`, which means its actual result will either be `Just &lt;some value>` or `Nothing`. Finally, the CL version returns a value or `NIL`, and returns a second value that specifies whether the first value represents a success. This is to disambiguate the situations where you might want to store `NIL` as a value in your table; if we didn't specify, you wouldn't know whether that represented "Found the value NIL at the specified key" or "Failed to find the specified key".
+This is where we'll see possibly the biggest difference between the language approaches; if you look semi-closely, you'll notice that they have completely different return tendencies. I tried to follow the in-language style for each, so this is really more a reflection of the attitudes of the communities<a name="note-Sun-Jul-13-194420EDT-2014"></a>[|7|](#foot-Sun-Jul-13-194420EDT-2014). The Python version either finds the key it's looking for or throws a run-time exception. The Haskell variant returns a `Maybe`, which means its actual result will either be `Just <some value>` or `Nothing`. Finally, the CL version returns a value or `NIL`, and returns a second value that specifies whether the first value represents a success. This is to disambiguate the situations where you might want to store `NIL` as a value in your table; if we didn't specify, you wouldn't know whether that represented "Found the value NIL at the specified key" or "Failed to find the specified key".
 
 I'm not sure how to feel about that difference.
 

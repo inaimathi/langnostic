@@ -642,7 +642,7 @@ Finally, `util` has grown quite a bit. Range has returned after being removed te
 The only really interesting piece here is `instance-to-id`, which takes a CLOS instance and returns a sufficiently-ambiguous string mostly useful as a DOM id. I initially had this implemented as
 
 ```lisp
-(regex-replace-all "[#&lt;>{} ]" (format nil "~a" instance))
+(regex-replace-all "[#<>{} ]" (format nil "~a" instance))
 ```
 
 instead, but found that a player can get too much information from that (though it did perform marginally better in profiling reports). Running it on a carrier would produce an id like `CARRIER100AABD943`, from which it's trivial to find out what kind of ship just got hit. The actual definition above instead returns `100AABD943` in the same situation. This is specific enough to unambiguously identify the DOM element for any JS function we need invoked, but it's general enough that a player probably can't get any useful, new information just by pulling down `update-map` and reading the output manually. I may change my mind on this later, by the by, since I'm already taking quite a few liberties with the rules, but it stays for now.
@@ -650,9 +650,9 @@ instead, but found that a player can get too much information from that (though 
 So that's *almost* that for the game itself. I still need to make `ship`s send out a "You sunk my..." message when they get taken down, and there's a few usability-related things I'd like to add to the client side (ok, yes, and there needs to be support for multiple games at once, as well as actually winning), but most of the remaining development actually needs to happen outside the game itself. I hinted at it earlier, but just to make it explicit, I still need to implement
 
 
--   A chat-room/lobby for people to start games up from (in-game chat might be nice too)
--   A leaderboard system to show off high scores (possibly with replays too)
--   A formalized way of automating games
+- A chat-room/lobby for people to start games up from (in-game chat might be nice too)
+- A leaderboard system to show off high scores (possibly with replays too)
+- A formalized way of automating games
 
 
 Sounds like this'll actually keep me busier than I expected.

@@ -70,15 +70,15 @@ Regardless of any other decision factors, the answer is almost by definition "be
 The big reasons **teams**<a name="note-Sun-Nov-10-173906EST-2013"></a>[|13|](#foot-Sun-Nov-10-173906EST-2013) pick a given technology include
 
 
--   how easy is it to hire people that know how to use this? (easier the better)
--   do we have existing code that we'll need to interface with? (if so, weigh whatever we used on that project favorably)
--   have we used any technologies in the past for similar purposes to what we're doing here? (if so, weigh those favorably)
+- how easy is it to hire people that know how to use this? (easier the better)
+- do we have existing code that we'll need to interface with? (if so, weigh whatever we used on that project favorably)
+- have we used any technologies in the past for similar purposes to what we're doing here? (if so, weigh those favorably)
 
 
 and the big one
 
 
--   if I choose this, and anything blows up, will I still be able to make the case to non-technical humans that it was the right choice? (if not, weigh it very unfavorably)
+- if I choose this, and anything blows up, will I still be able to make the case to non-technical humans that it was the right choice? (if not, weigh it very unfavorably)
 
 
 1, 2 and 3 mean that the more popular the language is, the more chance it has of getting entrenched<a name="note-Sun-Nov-10-173915EST-2013"></a>[|14|](#foot-Sun-Nov-10-173915EST-2013). 4 means the same, but this time "popular" means overall, not just within the tech community. A non-tech has heard the name "PHP" before, enough times to associate it with "the web" and "Facebook" and "Wordpress", but probably hasn't looked into it closely enough to catch complaints from developers<a name="note-Sun-Nov-10-173918EST-2013"></a>[|15|](#foot-Sun-Nov-10-173918EST-2013).

@@ -66,7 +66,7 @@ import Handlers
 routes :: DB -> SessionStore -> Request -> RES
 routes db session req = do
   let Just (sessionLookup, sessionInsert) = Vault.lookup session (vault req)
-  user &lt;- sessionLookup "user"
+  user <- sessionLookup "user"
   case pathInfo req of
     ("app":rest) -> 
       loggedInRoutes db user rest req
@@ -95,10 +95,10 @@ authRoutes db sLookup sInsert path req = do
 
 loggedInRoutes :: DB -> Maybe String -> [Text.Text] -> Request -> RES
 loggedInRoutes db maybeUserName path req = do
-  (params, _) &lt;- parseRequestBody lbsBackEnd req
+  (params, _) <- parseRequestBody lbsBackEnd req
   case maybeUserName of
     Just name -> do
-      maybeAccount &lt;- query' db $ AccountByName name
+      maybeAccount <- query' db $ AccountByName name
       case maybeAccount of
         Just user -> case path of
           ("item":rest) -> 
@@ -134,8 +134,8 @@ itemRoutes db user itemName path params = do
 
 ----- Server start
 main = do
-  session &lt;- Vault.newKey
-  store &lt;- mapStore_
+  session <- Vault.newKey
+  store <- mapStore_
   bracket (openLocalState initialDB) (createCheckpointAndClose) 
     (\db -> run 3000 . withSession store (fromString "SESSION") def session $ routes db session)
 
@@ -253,24 +253,24 @@ newItem db user name comment count =
 ----- Account Related
 changePassphrase :: DB -> Account -> String -> RES
 changePassphrase db user newPassphrase = do
-  new &lt;- liftIO . encryptPass defaultParams . Pass $ BS.pack newPassphrase
+  new <- liftIO . encryptPass defaultParams . Pass $ BS.pack newPassphrase
   update' db . UpdateAccount $ user { accountPassphrase = unEncryptedPass new }
   resOk user
 
 register :: DB -> InsertFN -> String -> String -> RES
 register db sessionInsert name passphrase = do
-  pass &lt;- liftIO . encryptPass defaultParams . Pass $ BS.pack passphrase
-  existing &lt;- query' db $ AccountByName name
+  pass <- liftIO . encryptPass defaultParams . Pass $ BS.pack passphrase
+  existing <- query' db $ AccountByName name
   case existing of
     Nothing -> do
-      acct &lt;- update' db . NewAccount name $ unEncryptedPass pass
+      acct <- update' db . NewAccount name $ unEncryptedPass pass
       sessionInsert "user" name
       resOk acct
     _ -> resError "User already exists"
 
 login :: DB -> InsertFN -> String -> String -> RES
 login db sessionInsert name passphrase = do 
-  res &lt;- query' db $ AccountByName name
+  res <- query' db $ AccountByName name
   case res of
     Just user -> case verifyPass defaultParams (Pass $ BS.pack passphrase) pass of
       (True, _) -> do
@@ -279,9 +279,11 @@ login db sessionInsert name passphrase = do
       _ -> resNO
       where pass = EncryptedPass $ accountPassphrase user
     _ -> resNO
+```
 
-&lt;p>The authentication functions are predictably complicated, but I'll get to them later. Take a look at the &lt;code>needItem&lt;/code> function.&lt;/p>
+The authentication functions are predictably complicated, but I'll get to them later. Take a look at the `needItem` function.
 
+```haskell
 needItem :: DB -> Account -> Item -> RES
 needItem db user item = do
   update' db $ ChangeItem user new
@@ -404,7 +406,7 @@ serveStatic subDir fName =
 
 withPostParams :: Request -> [BS.ByteString] -> ([String] -> RES) -> RES
 withPostParams req paramNames fn = do
-  (params, _) &lt;- parseRequestBody lbsBackEnd req
+  (params, _) <- parseRequestBody lbsBackEnd req
   withParams params paramNames fn
 
 withParams :: BSAssoc -> [BS.ByteString] -> ([String] -> RES) -> RES
@@ -419,17 +421,17 @@ withParams params paramNames fn =
 extractOptional :: BSAssoc -> [BS.ByteString] -> [Maybe String]
 extractOptional  params paramNames = map lookunpack paramNames
   where lookunpack k = do
-          res &lt;- lookup k params
+          res <- lookup k params
           return $ BS.unpack res
 
 extractParams :: BSAssoc -> [BS.ByteString] -> Maybe [String]
 extractParams params paramNames = do
-  res &lt;- allLookups params paramNames
+  res <- allLookups params paramNames
   return $ map BS.unpack res
 
 maybeRead :: Read a => Maybe String -> Maybe a
 maybeRead str = do
-  res &lt;- str
+  res <- str
   return $ read res
 
 allLookups :: Eq a => [(a, a)] -> [a] -> Maybe [a]
@@ -537,7 +539,7 @@ initialDB = GoGetDB { nextAccountId = AccountId 0, accounts = empty }
 ---------- Insertion Functions
 newAccount :: String -> ByteString -> Update GoGetDB Account
 newAccount name passphrase = do
-  db@GoGetDB{..} &lt;- get
+  db@GoGetDB{..} <- get
   let account = Account { accountId = nextAccountId
                         , accountName = name
                         , accountPassphrase = passphrase
@@ -550,37 +552,37 @@ newAccount name passphrase = do
 
 deleteItem :: Account -> Item -> Update GoGetDB ()
 deleteItem acct item = do
-  db@GoGetDB{..} &lt;- get
+  db@GoGetDB{..} <- get
   put $ db { accounts = updateIx (accountId acct) removed accounts }
     where removed = acct { accountItems = delete item (accountItems acct)}
 
 newItem :: Account -> Item -> Update GoGetDB ()
 newItem acct item = do
-  db@GoGetDB{..} &lt;- get
+  db@GoGetDB{..} <- get
   put $ db { accounts = updateIx (accountId acct) added accounts }
     where added = acct { accountItems = insert item (accountItems acct) }
 
 changeItem :: Account -> Item -> Update GoGetDB ()
 changeItem acct item = do
-  db@GoGetDB{..} &lt;- get
+  db@GoGetDB{..} <- get
   put $ db { accounts = updateIx (accountId acct) changed accounts }
     where changed = acct { accountItems = updateIx (itemName item) item (accountItems acct)}
 
 updateAccount :: Account -> Update GoGetDB ()
 updateAccount u = do
-  db@GoGetDB{..} &lt;- get
+  db@GoGetDB{..} <- get
   put $ db { accounts = updateIx (accountId u) u accounts }
 
 ---------- Query Functions
 getAccounts :: Query GoGetDB [Account]
 getAccounts = do
-  GoGetDB{..} &lt;- ask
+  GoGetDB{..} <- ask
   return $ toAscList (Proxy :: Proxy AccountId) accounts
 
 getAccount :: (Typeable a) => a -> Query GoGetDB (Maybe Account)
 -- separate so we can get accounts by something else at some point in the future
 getAccount ix = do
-  GoGetDB{..} &lt;- ask
+  GoGetDB{..} <- ask
   return $ getOne $ accounts @= ix
 
 accountByName :: String -> Query GoGetDB (Maybe Account)
@@ -625,7 +627,7 @@ Next, note the type of `accountPassphrase`. If you take a look at the `login` ha
 ```haskell
 login :: DB -> InsertFN -> String -> String -> RES
 login db sessionInsert name passphrase = do 
-  res &lt;- query' db $ AccountByName name
+  res <- query' db $ AccountByName name
   case res of
     Just user -> case verifyPass defaultParams (Pass $ BS.pack passphrase) pass of
       (True, _) -> do

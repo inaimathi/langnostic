@@ -12,8 +12,8 @@ Ideally (from the perspective of making the best choice possible), you'd choose 
 
 The trouble is, if you subscribe to the Norvig Awesome Language Theory, you come to the conclusion that either
 
--   your choice has been made for you quite a while ago, or
--   you should make your choice before even getting a team together (let alone deciding what you want to do)
+- your choice has been made for you quite a while ago, or
+- you should make your choice before even getting a team together (let alone deciding what you want to do)
 
 The first option happens if you're an `x` programmer, or if all your friends are `x` programmers<a name="note-Thu-Feb-16-222540EST-2012"></a>[|2|](#foot-Thu-Feb-16-222540EST-2012). That's not particularly interesting to me, given how I think about development, but I may come back to it later.
 
@@ -40,10 +40,10 @@ Norvig says (in effect): switch with your friends. Which may explain why people 
 A couple of days ago, my dad called me up. Apparently, he got a web design offer from a friend of his, but the requirements weren't exactly his field. What they meant was "Web UI Developer", and would I be interested? I asked for the specifics; it's a big company, I'd be working for a billing department somewhere, the pay was excellent, and the skill/experience requirements were
 
 
--   Javascript
--   Java
--   JSTL/JSP
--   Spring MVC Framework
+- Javascript
+- Java
+- JSTL/JSP
+- Spring MVC Framework
 
 
 This is the point where the language argument hit home for me. My dad isn't a programmer (he considers manual CSS/HTML to be too technical for him), and knows how much I make. So when I told him that I'd see if one of my friends wanted a Java Job because it really isn't my language, he was understandably confused.

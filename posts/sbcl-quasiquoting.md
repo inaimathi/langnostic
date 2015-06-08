@@ -107,8 +107,8 @@ There really isn't a good one for me.
 The reason I decided to pull down the `nix` version of SBCL and test out `for-all` is that my team at work was finding some odd bugs in testing. Those bugs had the same culprit of inconsistent tree representations. Luckily we do automated tests, and happened to do them on some prospective versions of CL in advance of an upgrade. In practice, what I'm finding is that they're leaning much more heavily to the implicit Option 3: don't use `SBCL 1.2.2+`, and migrate away from using earlier versions as we move forward. From what I understand, [LispWorks](http://www.lispworks.com/products/lispworks.html) is the current mind-share majority holder, which puts me in a mildly uncomfortable position as the resident [Free-Software](https://www.gnu.org/philosophy/free-sw.html)-using Lisper. Only mildly uncomfortable, because a close second choice seems to be a somewhat slower migration to Clojure, And [my opinion on it is well documented](/article?name=recommendations.html). I'm only woolgathering at this point though. We'll switch, or we won't, and at the end of the day our code will still work for the purposes to which we wish to put it. The only action items I get out of this are:
 
 
--   work up a comparison chart of the extant Common Lisp implementations, and see if there's another one that fits our needs
--   start building serious things with Clojure
+- work up a comparison chart of the extant Common Lisp implementations, and see if there's another one that fits our needs
+- start building serious things with Clojure
 
 
 * * *

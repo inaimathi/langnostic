@@ -15,10 +15,10 @@ Feel free to use scrapers or other aggregation techniques if you like, as long a
 Speaking of which, [`cl-notebook`](https://github.com/inaimathi/cl-notebook) now has pretty good support for [Quicklisp](http://www.quicklisp.org/beta/), and basic package management.
 
 
--   each notebook has its own package now. By default, named the same thing as the notebook itself
--   you can change the package definition by clicking on the notebook title and editing the code block that comes up
--   if you add new packages to the dependencies of your notebook, they're automatically installed and loaded
--   if they can't be installed or loaded for some reason, you get an error
+- each notebook has its own package now. By default, named the same thing as the notebook itself
+- you can change the package definition by clicking on the notebook title and editing the code block that comes up
+- if you add new packages to the dependencies of your notebook, they're automatically installed and loaded
+- if they can't be installed or loaded for some reason, you get an error
 
 
 I'm not entirely sure if this feature will stay exactly the same once we get to the beta. Mainly, I'm not sure what the appropriate course of action is on a package error. Do I just not register the new package? Do I register it, but use the default package for loading purposes instead? Do I load as much as possible of the specified package and just ignore the rest? In practice, I get the feeling this would be a very rare edge-case at best, but I think it pays to think about edge cases if you can.

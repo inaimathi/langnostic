@@ -320,8 +320,8 @@ step (World ants coords) = World newAnts newCoords
 test = World [(Ant 4 4 Up), (Ant 3 7 Left)] $ fromList []
 
 showWorld :: (Int, Int) -> World -> String
-showWorld (w, h) (World ants coords) = unlines [line y | y &lt;- [0..h]]
-    where line y = [charOf (x, y) | x &lt;- [0..w]]
+showWorld (w, h) (World ants coords) = unlines [line y | y <- [0..h]]
+    where line y = [charOf (x, y) | x <- [0..w]]
           antCells = map (\(Ant x y _) -> (x, y)) ants
           charOf cell
               | cell `elem` antCells = '+'
@@ -355,8 +355,8 @@ The functions just needed to use the right membership check, insertions and dele
 
 ```haskell
 showWorld :: (Int, Int) -> World -> String
-showWorld (w, h) (World ants coords) = unlines [line y | y &lt;- [0..h]]
-    where line y = [charOf (x, y) | x &lt;- [0..w]]
+showWorld (w, h) (World ants coords) = unlines [line y | y <- [0..h]]
+    where line y = [charOf (x, y) | x <- [0..w]]
           antCells = map (\(Ant x y _) -> (x, y)) ants
           charOf cell
               | cell `elem` antCells = '+'
@@ -640,8 +640,8 @@ step (World ants coords) = World newAnts newCoords
 
 ----- Pretty-print a world state
 showWorld :: (Int, Int) -> World -> String
-showWorld (w, h) (World ants coords) = unlines [line y | y &lt;- [0..h]]
-    where line y = [charOf (x, y) | x &lt;- [0..w]]
+showWorld (w, h) (World ants coords) = unlines [line y | y <- [0..h]]
+    where line y = [charOf (x, y) | x <- [0..w]]
           antCells = Map.fromList $ map (\(Ant x y dir) -> ((x, y), dir )) ants
           charDir Up = '&#8593;'
           charDir Right = '&#8594;'
@@ -683,8 +683,8 @@ import qualified Data.Map as Map
 ...
 
 showWorld :: (Int, Int) -> World -> String
-showWorld (w, h) (World ants coords) = unlines [line y | y &lt;- [0..h]]
-    where line y = [charOf (x, y) | x &lt;- [0..w]]
+showWorld (w, h) (World ants coords) = unlines [line y | y <- [0..h]]
+    where line y = [charOf (x, y) | x <- [0..w]]
           antCells = Map.fromList $ map (\(Ant x y dir) -> ((x, y), dir )) ants
           charDir Up = '&#8593;'
           charDir Right = '&#8594;'
@@ -717,15 +717,15 @@ animate delay size world steps = setTimeout delay $ recur world steps
 This doesn't quite do anything by itself, but when you combine it with [this minimal HTML page](https://github.com/CodeRetreatTO/projects/blob/master/2014-09-langtons-ant/rabraham-and-inaimathi.html)
 
 ```html
-&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  &lt;head>
-    &lt;script type="text/javascript" src="rabraham-and-inaimathi.js">&lt;/script>
-  &lt;/head>
-  &lt;body>
-    &lt;p id="generations">0&lt;/p>
-    &lt;pre id="world" style="background-color: #eee;">&lt;/pre>
-  &lt;/body>
-&lt;/html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <script type="text/javascript" src="rabraham-and-inaimathi.js"></script>
+  </head>
+  <body>
+    <p id="generations">0</p>
+    <pre id="world" style="background-color: #eee;"></pre>
+  </body>
+</html>
 ```
 
 what you get is [this](http://173.255.226.138/langtons-ants/rabraham-and-inaimathi.html).

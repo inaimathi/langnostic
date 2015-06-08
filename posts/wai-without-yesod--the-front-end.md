@@ -9,127 +9,127 @@ Thirdly, I [deployed it](http://goget.inaimathi.ca/). It doesn't run under HTTPS
 At the moment, I've got the [jQuery](http://jquery.com/) and [Angular](http://angularjs.org/) versions separated into different branches, but I'll merge them shortly and just provide each as a separate front-end<a name="note-Sat-Feb-16-205448EST-2013"></a>[|2|](#foot-Sat-Feb-16-205448EST-2013). On a scale this small, it turns out not to matter much how you write the interface. If you check out the line-count on both those front-ends, the reactive version saves about 10 lines of HTML and 15 of JavaScript. It stacks up in larger applications, and if there's an option to use less JS, I'll take it, but in this case, the elegant solution doesn't work, so whatever. Lets start with the HTML markup first. Here's the **Angular**
 
 ```html
-&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  &lt;head>
-    &lt;meta charset="UTF-8" />
-    &lt;title>GoGet - Because I Can't Be Expected to Remember This Shit&lt;/title>
-  &lt;/head>
-  &lt;body ng-app="goget">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>GoGet - Because I Can't Be Expected to Remember This Shit</title>
+  </head>
+  <body ng-app="goget">
     
-    &lt;div ng-controller="GoGetCtrl">
-      &lt;div ng-show="!user.loggedIn" class="user-form">
-        &lt;div ng-show="authError" class="error">{{authError}}&lt;/div>
-        &lt;input type="text" placeholder="User Name" ng-model="user.name" />
-        &lt;input type="password" placeholder="Passphrase" ng-model="user.passphrase" />
-        &lt;a class="register" ng-click="register(user.name, user.passphrase)">Register&lt;/a>
-        &lt;button class="btn login" ng-click="login(user.name, user.passphrase)">&lt;i class="icon-check">&lt;/i> Login&lt;/button>
-      &lt;/div>
+    <div ng-controller="GoGetCtrl">
+      <div ng-show="!user.loggedIn" class="user-form">
+        <div ng-show="authError" class="error">{{authError}}</div>
+        <input type="text" placeholder="User Name" ng-model="user.name" />
+        <input type="password" placeholder="Passphrase" ng-model="user.passphrase" />
+        <a class="register" ng-click="register(user.name, user.passphrase)">Register</a>
+        <button class="btn login" ng-click="login(user.name, user.passphrase)"><i class="icon-check"></i> Login</button>
+      </div>
         
-      &lt;ul ng-show="user.loggedIn" class="shopping-list">
-        &lt;li class="{{itm.status}}" ng-repeat="itm in itemList"
+      <ul ng-show="user.loggedIn" class="shopping-list">
+        <li class="{{itm.status}}" ng-repeat="itm in itemList"
             ng-mouseover="itm.hovered = true" ng-mouseout="itm.hovered = false">
-          &lt;span class="count">{{itm.count}}x&lt;/span> 
-          &lt;span class="name">{{itm.name}}&lt;/span> 
-          &lt;button class="btn" ng-click="got(itm.name)" ng-show="itm.status=='Need'">&lt;i class="icon-check">&lt;/i>&lt;/button>
-          &lt;button class="btn" ng-click="need(itm.name)" ng-show="itm.status=='Got'">&lt;i class="icon-exclamation-sign">&lt;/i>&lt;/button>
-          &lt;p class="comment" ng-show="itm.hovered">{{itm.comment}}&lt;/p>
-        &lt;/li>
-        &lt;li class="controls">
-          &lt;input type="text" placeholder="Item Name" ng-model="newItem.name" /> 
-          &lt;input type="text" placeholder="Comment" ng-model="newItem.comment" />
-          &lt;input type="text" placeholder="Count" ng-model="newItem.count">
-          &lt;button class="btn" ng-click="add(newItem.name, newItem.comment, newItem.count)">&lt;i class="icon-plus">&lt;/i>&lt;/button>
-        &lt;/li>
-      &lt;/ul>
-    &lt;/div>
+          <span class="count">{{itm.count}}x</span> 
+          <span class="name">{{itm.name}}</span> 
+          <button class="btn" ng-click="got(itm.name)" ng-show="itm.status=='Need'"><i class="icon-check"></i></button>
+          <button class="btn" ng-click="need(itm.name)" ng-show="itm.status=='Got'"><i class="icon-exclamation-sign"></i></button>
+          <p class="comment" ng-show="itm.hovered">{{itm.comment}}</p>
+        </li>
+        <li class="controls">
+          <input type="text" placeholder="Item Name" ng-model="newItem.name" /> 
+          <input type="text" placeholder="Comment" ng-model="newItem.comment" />
+          <input type="text" placeholder="Count" ng-model="newItem.count">
+          <button class="btn" ng-click="add(newItem.name, newItem.comment, newItem.count)"><i class="icon-plus"></i></button>
+        </li>
+      </ul>
+    </div>
 
-    &lt;!-- ------ -->
-    &lt;!-- Styles -->
-    &lt;!-- ------ -->
-    &lt;link rel="stylesheet" href="/static/css/bootstrap.min.css" type="text/css" media="screen" />
-    &lt;link rel="stylesheet" href="/static/css/bootstrap-responsive.min.css" type="text/css" media="screen" />
+    <!-- ------ -->
+    <!-- Styles -->
+    <!-- ------ -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/static/css/bootstrap-responsive.min.css" type="text/css" media="screen" />
 
-    &lt;link rel="stylesheet" href="/static/css/style.css" type="text/css" media="screen" />    
+    <link rel="stylesheet" href="/static/css/style.css" type="text/css" media="screen" />    
 
-    &lt;!-- ------- -->
-    &lt;!-- Scripts -->
-    &lt;!-- ------- -->
-    &lt;script src="/static/js/underscore-min.js" type="text/javascript">&lt;/script>
-    &lt;script src="/static/js/angular.min.js" type="text/javascript">&lt;/script>    
+    <!-- ------- -->
+    <!-- Scripts -->
+    <!-- ------- -->
+    <script src="/static/js/underscore-min.js" type="text/javascript"></script>
+    <script src="/static/js/angular.min.js" type="text/javascript"></script>    
     
-    &lt;script src="/static/js/goget.js" type="text/javascript">&lt;/script>
-  &lt;/body>
-&lt;/html>
+    <script src="/static/js/goget.js" type="text/javascript"></script>
+  </body>
+</html>
 ```
 
 and here's the **jQuery**
 
 ```html
-&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  &lt;head>
-    &lt;meta charset="UTF-8" />
-    &lt;title>GoGet - Because I Can't Be Expected to Remember This Shit&lt;/title>
-  &lt;/head>
-  &lt;body> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>GoGet - Because I Can't Be Expected to Remember This Shit</title>
+  </head>
+  <body> 
 
-    &lt;!-- templates -->
-    &lt;script id="tmp-item" type="text/x-handlebars-template">
-      &lt;li class="{{status}}">
-        &lt;span class="count">{{count}}x&lt;/span>
-        &lt;span class="name">{{name}}&lt;/span>
+    <!-- templates -->
+    <script id="tmp-item" type="text/x-handlebars-template">
+      <li class="{{status}}">
+        <span class="count">{{count}}x</span>
+        <span class="name">{{name}}</span>
         {{#controls this}}{{/controls}}
-        &lt;!-- &lt;p class="comment">{{comment}}&lt;/p> -->
-      &lt;/li>
-    &lt;/script>
+        <!-- <p class="comment">{{comment}}</p> -->
+      </li>
+    </script>
 
-    &lt;script id="tmp-item-controls" type="text/x-handlebars-template">
-      &lt;button class="btn" onclick="goget.{{fn}}(jQuery(this).siblings('.name').text())">&lt;i class="{{iconClass}}">&lt;/i>&lt;/button>
-    &lt;/script>
+    <script id="tmp-item-controls" type="text/x-handlebars-template">
+      <button class="btn" onclick="goget.{{fn}}(jQuery(this).siblings('.name').text())"><i class="{{iconClass}}"></i></button>
+    </script>
 
-    &lt;!-- body -->
-    &lt;div>
-      &lt;div class="user-form">
-        &lt;div class="error">&lt;/div>
-        &lt;input type="text" class="user-name" placeholder="User Name" />
-        &lt;input type="password" class="passphrase" placeholder="Passphrase" />
-        &lt;a class="register" onclick="util.applyToUser(goget.register)">Register&lt;/a>
-        &lt;button class="btn login" onclick="util.applyToUser(goget.login)">
-          &lt;i class="icon-check">&lt;/i> Login
-        &lt;/button>
-      &lt;/div>
+    <!-- body -->
+    <div>
+      <div class="user-form">
+        <div class="error"></div>
+        <input type="text" class="user-name" placeholder="User Name" />
+        <input type="password" class="passphrase" placeholder="Passphrase" />
+        <a class="register" onclick="util.applyToUser(goget.register)">Register</a>
+        <button class="btn login" onclick="util.applyToUser(goget.login)">
+          <i class="icon-check"></i> Login
+        </button>
+      </div>
 
-      &lt;ul class="shopping-list">
-      &lt;/ul>
-      &lt;ul class="shopping-list-controls">
-        &lt;li class="controls">
-          &lt;input type="text" class="name" placeholder="Item Name" /> 
-          &lt;input type="text" class="comment" placeholder="Comment" />
-          &lt;input type="text" class="count" placeholder="Count" value="1" />
-          &lt;button class="btn" onclick="util.applyToVals(goget.add, '.controls ', ['.name', '.comment', '.count'])">&lt;i class="icon-plus">&lt;/i>&lt;/button>
-        &lt;/li>
-      &lt;/ul>
-    &lt;/div>
+      <ul class="shopping-list">
+      </ul>
+      <ul class="shopping-list-controls">
+        <li class="controls">
+          <input type="text" class="name" placeholder="Item Name" /> 
+          <input type="text" class="comment" placeholder="Comment" />
+          <input type="text" class="count" placeholder="Count" value="1" />
+          <button class="btn" onclick="util.applyToVals(goget.add, '.controls ', ['.name', '.comment', '.count'])"><i class="icon-plus"></i></button>
+        </li>
+      </ul>
+    </div>
 
-    &lt;!-- ------ -->
-    &lt;!-- Styles -->
-    &lt;!-- ------ -->
-    &lt;link rel="stylesheet" href="/static/css/bootstrap.min.css" type="text/css" media="screen" />
-    &lt;link rel="stylesheet" href="/static/css/bootstrap-responsive.min.css" type="text/css" media="screen" />
+    <!-- ------ -->
+    <!-- Styles -->
+    <!-- ------ -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/static/css/bootstrap-responsive.min.css" type="text/css" media="screen" />
 
-    &lt;link rel="stylesheet" href="/static/css/style.css" type="text/css" media="screen" />    
+    <link rel="stylesheet" href="/static/css/style.css" type="text/css" media="screen" />    
 
-    &lt;!-- ------- -->
-    &lt;!-- Scripts -->
-    &lt;!-- ------- -->
-    &lt;script src="/static/js/underscore-min.js" type="text/javascript">&lt;/script>
-    &lt;script src="/static/js/handlebars.js" type="text/javascript">&lt;/script>    
-    &lt;script src="/static/js/jquery.min.js" type="text/javascript">&lt;/script>    
+    <!-- ------- -->
+    <!-- Scripts -->
+    <!-- ------- -->
+    <script src="/static/js/underscore-min.js" type="text/javascript"></script>
+    <script src="/static/js/handlebars.js" type="text/javascript"></script>    
+    <script src="/static/js/jquery.min.js" type="text/javascript"></script>    
     
-    &lt;script src="/static/js/goget.js" type="text/javascript">&lt;/script>
-  &lt;/body>
-&lt;/html>
+    <script src="/static/js/goget.js" type="text/javascript"></script>
+  </body>
+</html>
 ```
 
 There's a bunch of common boilerplate at the bottom and top that you can safely ignore. The meat begins at the `body` tag and stops at the block comment denoting the `Styles` section. The only real difference is that you can see some unfamiliar `util` calls and explicit templates in the jQuery version. Oh, the Angular version also controls its visibility explicitly through those `ng-show` attributes; the jQuery version relies on CSS to do the same. The actual differences are readily on display in the JS code though. First, Angular
@@ -302,12 +302,12 @@ So, in other words, there are three controls in the DOM somewhere, and I'd like 
 How do we do that in Angular?
 
 ```html
-        &lt;li class="controls">
-          &lt;input type="text" placeholder="Item Name" ng-model="newItem.name" /> 
-          &lt;input type="text" placeholder="Comment" ng-model="newItem.comment" />
-          &lt;input type="text" placeholder="Count" ng-model="newItem.count">
-          &lt;button class="btn" ng-click="add(newItem.name, newItem.comment, newItem.count)">&lt;i class="icon-plus">&lt;/i>&lt;/button>
-        &lt;/li>
+        <li class="controls">
+          <input type="text" placeholder="Item Name" ng-model="newItem.name" /> 
+          <input type="text" placeholder="Comment" ng-model="newItem.comment" />
+          <input type="text" placeholder="Count" ng-model="newItem.count">
+          <button class="btn" ng-click="add(newItem.name, newItem.comment, newItem.count)"><i class="icon-plus"></i></button>
+        </li>
 ```
 
 That's actually a snippet from the Angular-style HTML file, and only about 1/5th of it is responsible for the equivalent. Each of the inputs we care about has an `ng-model` property, and that we then just pass those models into `add`. If it worked where I needed it to, I wouldn't have bothered finding a better solution than this.

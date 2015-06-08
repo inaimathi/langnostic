@@ -8,5 +8,7 @@
 ## ToDo
 
 - `BGG Data Sifting`, `cl-notebook Thoughts` and `cl-notebook introductory thoughts` all have issues with the translation-from-markdown approach. Figure out what to do about this (also, `cl-notebook` obviously needs an export-to-markdown feature)
-- Make UL styles consistent (you've got `-   foo` in some places, and it should be just `- foo`)
-- Add title text to the images
+- Make OL styles consistent (you've got `1.   foo` in some places, and it should be just `1. foo`)
+- Properly number the OLs. You've still got a few that just start with consecutive `1.`s
+- Add title text to remaining images
+- Fix up one or two more images (grep for `![](`, and check the ones that don't start with a `/`)

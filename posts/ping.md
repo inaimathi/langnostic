@@ -8,11 +8,11 @@ The past little while has seen me refine my entry to [the Lisp In Summer Project
 
 I've started my new job, and it's fun so far. On a scale of `1` to `10`, the levels of paranoia and bureaucracy here are `Dilbert`, and apparently that's all I'll be able to tell you. Not that I ever blogged about the actual systems I was working on at my old job, but we're going to be doing some *very* interesting things here<a name="note-Thu-Jul-18-194952EDT-2013"></a>[|1|](#foot-Thu-Jul-18-194952EDT-2013) and I was looking forward to being able to talk about them. I won't though; anything past what I've already said could compromise some of my employers' IP, or at least run a significant risk of doing so, and no offense, but that risk isn't worth it for the sake of a hobby blog. So that's that.
 
--   We're doing R&D work
--   It involves embedded systems
--   It's very interesting
--   Lots of the locals are severely, sometimes paralyzingly, paranoid about security
--   It's sometimes necessary to requisition a requisition-form-requisition form
+- We're doing R&D work
+- It involves embedded systems
+- It's very interesting
+- Lots of the locals are severely, sometimes paralyzingly, paranoid about security
+- It's sometimes necessary to requisition a requisition-form-requisition form
 
 ...and you won't hear anything else about what I'm working on *at* work until I start working somewhere else.
 

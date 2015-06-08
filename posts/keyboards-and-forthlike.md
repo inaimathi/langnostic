@@ -79,8 +79,8 @@ Moving on...
   (println "")
   (if *stack*
       (loop for i from 0 for elem in *stack*
-         do (format t "&lt; ~a > :: ~a~%" i elem))
-      (format t "&lt; Empty stack >~%"))
+         do (format t "< ~a > :: ~a~%" i elem))
+      (format t "< Empty stack >~%"))
   (println ""))
 
 (def "`" (push! (pull!)))
@@ -97,7 +97,7 @@ Moving on...
 
 (def "=" (push! (bif (equal (pop!) (pop!)))))
 (def ">" (push! (bif (with-pop (b) (> (pop!) b)))))
-(def "&lt;" (push! (bif (with-pop (b) (&lt; (pop!) b)))))
+(def "<" (push! (bif (with-pop (b) (< (pop!) b)))))
 (def "not" (push! (if (string= (pop!) "false") "true" "false")))
 (def "and" (push! (with-pop! (a b) (bif (and (string= "true" a) (string= "true" b))))))
 (def "or" (push! (with-pop! (a b) (bif (or (string= "true" a) (string= "true" b))))))
@@ -153,7 +153,7 @@ And that's all.
 ```lisp
 (def "=" (push! (bif (equal (pop!) (pop!)))))
 (def ">" (push! (bif (with-pop (b) (> (pop!) b)))))
-(def "&lt;" (push! (bif (with-pop (b) (&lt; (pop!) b)))))
+(def "<" (push! (bif (with-pop (b) (< (pop!) b)))))
 (def "not" (push! (if (string= (pop!) "false") "true" "false")))
 (def "and" (push! (with-pop! (a b) (bif (and (string= "true" a) (string= "true" b))))))
 (def "or" (push! (with-pop! (a b) (bif (or (string= "true" a) (string= "true" b))))))
@@ -162,7 +162,7 @@ And that's all.
               (progn (pop!) (ev (pop!)))))
 ```
 
-The boolean functions all operate on the symbols `true` and `false`, represented here as strings. Those symbols include `=`, `>`, `&lt;`, `not`, `and`, `or` and `if`. The reason I'm not sure this is the best way to handle it is that it makes `true` and `false` pretty glaring exceptions to the basic rules of the language. Ideally, I'd have some way of designating a class of words that self-evaluate, and let the user play with them too. This is something I'm thinking about for an upcoming article, though I guess it's possible that I'm just taking it too seriously. Anyhow.
+The boolean functions all operate on the symbols `true` and `false`, represented here as strings. Those symbols include `=`, `>`, `<`, `not`, `and`, `or` and `if`. The reason I'm not sure this is the best way to handle it is that it makes `true` and `false` pretty glaring exceptions to the basic rules of the language. Ideally, I'd have some way of designating a class of words that self-evaluate, and let the user play with them too. This is something I'm thinking about for an upcoming article, though I guess it's possible that I'm just taking it too seriously. Anyhow.
 
 Ok, here's where this gets interesting.
 

@@ -582,9 +582,9 @@ We implemented JPGs ahead of GIFs because it's much closer to the PNG scaling we
 
 
 1.   the `width` and `height` arguments are ordered `y x` rather than `x y`
-1.   the `pathname` and `image` parameters to the write function are in a different order
-1.   the functions involved in reading/writing/resizing are named differently
-1.   the steps we need to take are in a different order because ch-image can't seem to read image files with no file extension. That means we copy the big one first, rename it, then read that instead of the original temp file
+2.   the `pathname` and `image` parameters to the write function are in a different order
+3.   the functions involved in reading/writing/resizing are named differently
+4.   the steps we need to take are in a different order because ch-image can't seem to read image files with no file extension. That means we copy the big one first, rename it, then read that instead of the original temp file
 
 
 Those are all small differences that you nevertheless need to get right if you don't want a face full of errors or odd results (like that screenshot above) when you start your board up. Before we tackle GIFs and that subtle bug, let me just point out that someone who picked our "Lazy Bastard" route earlier has saved themselves all of this trouble, and probably has higher quality previews to boot. But we're here to learn things, so we're going the hard way. Now then.
@@ -681,9 +681,9 @@ Note the change in the line starting with `:name`. Ok, I've had enough of this b
 Tune In Next Time (heh heh) For: 
 
 
--   finally getting to multiple boards!
--   walking through the lazy option in its entirety!
--   some better usability and UI, maybe!
+- finally getting to multiple boards!
+- walking through the lazy option in its entirety!
+- some better usability and UI, maybe!
 
 
 

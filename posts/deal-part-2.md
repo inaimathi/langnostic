@@ -15,8 +15,8 @@ Here are a couple of close-ups on things I already changed:
                (alt? (@ event alt-key))
                (ctrl? (@ event ctrl-key))
                (meta? (@ event meta-key))
-               (&lt;ret> 13) (&lt;esc> 27) (&lt;space> 32) 
-               (&lt;up> 38) (&lt;down> 40) (&lt;left> 37) (&lt;right> 39))
+               (<ret> 13) (<esc> 27) (<space> 32) 
+               (<up> 38) (<down> 40) (<left> 37) (<right> 39))
            (cond ,@(loop for (key body) on key/body-pairs by #'cddr
                       collect `((= (@ event which) ,(if (stringp key) `(chain ,key (char-code-at 0)) key)) ,body))))))))
 ```
@@ -63,9 +63,9 @@ Tons of the features I wanted got put together in the last couple of days. The f
 Didn't get as much work done as I was hoping today. The lack of sleep is finally taking its toll, I think. Hopefully I can catch up on some rest this weekend, then move on to the deck/setup editor, then get to polishing the fuck out of all of it. I did a bit of that. Little things like
 
 
--   the ability to shuffle
--   changed the thought process behind stacks<a name="note-Sat-Sep-07-221201EDT-2013"></a>[|1|](#foot-Sat-Sep-07-221201EDT-2013)
--   fixing some bugs that don't seem to have bitten yet, but would have in pretty short order
+- the ability to shuffle
+- changed the thought process behind stacks<a name="note-Sat-Sep-07-221201EDT-2013"></a>[|1|](#foot-Sat-Sep-07-221201EDT-2013)
+- fixing some bugs that don't seem to have bitten yet, but would have in pretty short order
 
 
 but nothing major.
@@ -110,9 +110,9 @@ Now, because a goal of this project is zero authentication, and because I want i
 Also, because I'm not going to be serializing *everything* in these dumps<a name="note-Sat-Sep-07-221214EDT-2013"></a>[|3|](#foot-Sat-Sep-07-221214EDT-2013), the complete system will actually need three different ways of outputting its internal data structures:
 
 
--   one that leaves out any private information, such as the contents of stacks, or the text on face-down cards. This one is already implemented as the `redact` method
--   one that keeps private information, but strips anything game-specific, such as IDs and `belongs-to` slots. This is what I'm discussing for the save feature; it should be possible to use these to instantiate a particular object or board in a different game. Not sure what to call it, but it's named `serialize` for the moment. Maybe `save` or something?
--   one that keeps everything. This is the one I'll be using to store logs and replays later. It needs *all* the information about a particular game, its result shouldn't be available until after a game is concluded, and the board should have an additional piece of data attached to describe its starting position.
+- one that leaves out any private information, such as the contents of stacks, or the text on face-down cards. This one is already implemented as the `redact` method
+- one that keeps private information, but strips anything game-specific, such as IDs and `belongs-to` slots. This is what I'm discussing for the save feature; it should be possible to use these to instantiate a particular object or board in a different game. Not sure what to call it, but it's named `serialize` for the moment. Maybe `save` or something?
+- one that keeps everything. This is the one I'll be using to store logs and replays later. It needs *all* the information about a particular game, its result shouldn't be available until after a game is concluded, and the board should have an additional piece of data attached to describe its starting position.
 
 
 ## <a name="t-minus-days" href="#t-minus-days"></a>T minus 29 days
@@ -181,7 +181,7 @@ I just finished the single biggest commit since the start of this project. It...
 
 ```
 16fb9532 * origin/master 
-         | Author: inaimathi &lt;inaimathi@lambda>
+         | Author: inaimathi <inaimathi@lambda>
          | Date:   Sat Sep 7 20:53:26 2013 -0400
          | 
          |     Easily the biggest commit yet
@@ -210,10 +210,10 @@ Minis now actually work. Ditto tablecloths. Which means you can now effectively 
 The big stuff that still needs to get done, as far as I'm concerned, is in order of priority
 
 
--   some UI-tweaking regarding the chat, tablecloths, dice interface, stacks (which are still ugly as sin) and deck editing
--   cookie-ing of custom decks
--   the ability to specify custom tablecloths and minis, and cookie-fying those too
--   a bunch of re-factoring and code contraction related to various wordy and common patterns that cropped up in deal-ui
+- some UI-tweaking regarding the chat, tablecloths, dice interface, stacks (which are still ugly as sin) and deck editing
+- cookie-ing of custom decks
+- the ability to specify custom tablecloths and minis, and cookie-fying those too
+- a bunch of re-factoring and code contraction related to various wordy and common patterns that cropped up in deal-ui
 
 
 that's basically it though. And all of those things deal with the front-end, which I've already mentioned, should really be thought of as "the reference UI implementation" rather than "the UI". The intent is for people to be able to put together their own specialized, possibly game-specific user interfaces, and run them against the same back-end server.
@@ -221,8 +221,8 @@ that's basically it though. And all of those things deal with the front-end, whi
 That's the elephant in the room at the moment, by the way. The server is currently [much, *much* harder to set up](https://github.com/Inaimathi/deal#installation) than I'd like. The main reason is the separation of SSEs from the rest of the application. Since that involves [a non-standard nginx module](https://github.com/wandenberg/nginx-push-stream-module), it means any potential user needs to compile their own `nginx`, then perform some non-trivial, and not-easily-automated setup before anything starts working. Ideally, that would all be handled by the application. Which means that, after the contest ends, I've got two options:
 
 
--   write a custom, high-performance asynchronous web server for Common Lisp
--   re-write the server-side of the application in a language that already has such a server. Most likely candidates being [Haskell](http://hackage.haskell.org/package/warp) and [Erlang](http://hyber.org/)
+- write a custom, high-performance asynchronous web server for Common Lisp
+- re-write the server-side of the application in a language that already has such a server. Most likely candidates being [Haskell](http://hackage.haskell.org/package/warp) and [Erlang](http://hyber.org/)
 
 
 Neither will be too much of a challenge.

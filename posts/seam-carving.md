@@ -10,9 +10,9 @@ Repeat this as necessary for additional scaling. Steps 1 is not *quite* primitiv
 
 Step two is the meat of the algorithm. It works like this:
 
--   start a new seam for each pixel in the first row of an image, tallying that pixels' cost
--   for each other row of pixels, add each pixel in the row to the seam with the lowest tallied cost among its adjacent seams
--   return all complete seams in ascending order of tallied cost
+- start a new seam for each pixel in the first row of an image, tallying that pixels' cost
+- for each other row of pixels, add each pixel in the row to the seam with the lowest tallied cost among its adjacent seams
+- return all complete seams in ascending order of tallied cost
 
 Each line eliminates some seams that continued from above; that's intentional, not accidental. We're not looking for all possible seams sorted by total cost, we want the seam with the lowest possible total cost *that's also cheaper at each step than its neighbors*.
 
@@ -66,7 +66,7 @@ freshSeams :: [Integer] -> [Seam]
 freshSeams ln = map (\(ix, w) -> Seam w [ix]) $ zip [1..] ln
 
 main :: IO ()
-main = do f &lt;- fmap lines $ readFile "scene.txt"
+main = do f <- fmap lines $ readFile "scene.txt"
           mapM_ putBlock [ f
                          , scaleBy f 10
                          , scaleBy f 30

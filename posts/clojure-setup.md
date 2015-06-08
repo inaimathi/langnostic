@@ -73,10 +73,10 @@ I mentioned a little while ago that I'm thinking about full-history data-stores.
 So, the idea is that an Archive is a thing with
 
 
--   An application function: a function that takes a state and an event, and returns the result of applying that event to that state
--   A zero: the starting state of this particular archive
--   Optionally, a history: the sequence of events that lead from its zero to its current state<a name="note-Sun-Apr-19-220159EDT-2015"></a>[|3|](#foot-Sun-Apr-19-220159EDT-2015)
--   Optionally, a file and some streams: places that we'll write any additional events we get<a name="note-Sun-Apr-19-220201EDT-2015"></a>[|4|](#foot-Sun-Apr-19-220201EDT-2015)
+- An application function: a function that takes a state and an event, and returns the result of applying that event to that state
+- A zero: the starting state of this particular archive
+- Optionally, a history: the sequence of events that lead from its zero to its current state<a name="note-Sun-Apr-19-220159EDT-2015"></a>[|3|](#foot-Sun-Apr-19-220159EDT-2015)
+- Optionally, a file and some streams: places that we'll write any additional events we get<a name="note-Sun-Apr-19-220201EDT-2015"></a>[|4|](#foot-Sun-Apr-19-220201EDT-2015)
 
 
 You make a new Archive by initializing some of the above points. You add an `event` to it by committing the `event`, then calling the application function on the Archives' current state. Load an Archive by opening a file, reading the Zero from it, then `reduce`ing the remainder of the records over said Zero with the application function. And that's that. If you wanted to see a previous state of the Archive, you'd just stop folding before you got to the last event.
@@ -100,23 +100,23 @@ That's how you would go about declaring a history-aware table. You'd use it by m
 
 ```clojure
 history.core> (make-history-table)
-{:into #&lt;core$eval7113$app__7114 history.core$eval7113$app__7114@58e793e4>, 
+{:into #<core$eval7113$app__7114 history.core$eval7113$app__7114@58e793e4>, 
  :state {}, :history (), :zero {}}
 
 history.core> (new-event (make-history-table) [:insert :test "test"])
-{:into #&lt;core$eval7113$app__7114 history.core$eval7113$app__7114@58e793e4>, 
+{:into #<core$eval7113$app__7114 history.core$eval7113$app__7114@58e793e4>, 
  :state {:test "test"}, 
  :history ([:insert :test "test"]), 
  :zero {}}
 
 history.core> (new-event (new-event (make-history-table) [:insert :test "test"]) [:insert :another-test "bleargh"])
-{:into #&lt;core$eval7113$app__7114 history.core$eval7113$app__7114@58e793e4>, 
+{:into #<core$eval7113$app__7114 history.core$eval7113$app__7114@58e793e4>, 
  :state {:another-test "bleargh", :test "test"}, 
  :history ([:insert :another-test "bleargh"] [:insert :test "test"]), 
  :zero {}}
 
 history.core> (new-event (new-event (new-event (make-history-table) [:insert :test "test"]) [:insert :another-test "bleargh"]) [:delete :test])
-{:into #&lt;core$eval7113$app__7114 history.core$eval7113$app__7114@58e793e4>, 
+{:into #<core$eval7113$app__7114 history.core$eval7113$app__7114@58e793e4>, 
  :state {:another-test "bleargh"}, 
  :history ([:delete :test] [:insert :another-test "bleargh"] [:insert :test "test"]), 
  :zero {}}

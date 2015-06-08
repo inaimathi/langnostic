@@ -1,12 +1,12 @@
 So, I may have to backtrack on what I was saying earlier. Specifically, I called `clisp` a toy shell, and I called the machine I'm currently typing this on a toy machine. I did this because, having just installed it and spent a grand total of five minutes poking around, I assumed
 
 
--   it wouldn't run some programs properly
--   my scripts would now be useless
--   cd wouldn't work
--   I'd lose tab completion on files
--   there would be no gains to offset all the losses
--   it would be a pain in the ass to use a regular shell when I hit the limits of `clisp`
+- it wouldn't run some programs properly
+- my scripts would now be useless
+- cd wouldn't work
+- I'd lose tab completion on files
+- there would be no gains to offset all the losses
+- it would be a pain in the ass to use a regular shell when I hit the limits of `clisp`
 
 
 It turns out that most of those don't apply. I did actually lose tab-completion when working with files, but that's it. Pretty much every program that I want to run typically<a name="note-Sun-Jan-29-015617EST-2012"></a>[|1|](#foot-Sun-Jan-29-015617EST-2012) works just as well from `clisp` as it does in `bash`, scripts run exactly the same as under a standard shell when you use `run-shell-command`, `cd` is actually a function defined in `clisp`s' `cl-user`, and when I need to run a regular bash for whatever reason `eshell` can pickup the slack.

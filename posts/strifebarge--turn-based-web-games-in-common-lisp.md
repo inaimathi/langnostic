@@ -103,8 +103,8 @@ Lets take a closer look at how the turn mechanism is approached. It actually sta
 The `assert` here makes sure of two things:
 
 
--   The game is waiting for at least one more player to join
--   You have not already joined a game
+- The game is waiting for at least one more player to join
+- You have not already joined a game
 
 
 As noted, if an `assert` statement fails, you get an error. If they both succeed, you are assigned a `player` record, stored in your `session`, to track who you are for the duration of the game<a name="note-Mon-Feb-20-223319EST-2012"></a>[|3|](#foot-Mon-Feb-20-223319EST-2012). This is relevant in two ways. Firstly, the `board` is displayed differently based on which `player` is looking;  we'll see more about this later, the only hint you get from this file is the call to `echo` in `show-game`.

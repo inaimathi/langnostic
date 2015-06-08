@@ -3,20 +3,20 @@ The *other* question mentioned last time was "How does [AcidState](http://acid-s
 My benchmarking method was basically to port the [GoGet](https://github.com/Inaimathi/goget) back-end to [HDBC](http://hackage.haskell.org/package/HDBC) and [MongoDB](https://github.com/selectel/mongodb-haskell), then see how each one does at
 
 
--   user insertion
--   user listing
--   item insertion
--   user querying
+- user insertion
+- user listing
+- item insertion
+- user querying
 
 
 All of this was done on a 64-bit Debian Wheezy machine running on top of a Core i3. Data for other platforms/architectures welcome, but I'm not going there myself. Without further ado:
 
 
--   [SM](http://173.255.226.138/report.html) - Starting with empty tables/collections and dealing with user #42
--   [MD](http://173.255.226.138/report-medium.html) - Starting with 1000 user records and dealing with user #789
--   [LG](http://173.255.226.138/report-large.html) - Starting with 50000 user records and dealing with user #42
--   [LG2](http://173.255.226.138/report-large2.html) - Starting with 50000 user records and dealing with user #45678
--   [LG-O](http://173.255.226.138/report-large-O.html) - Starting with 50000 user records and dealing with user #45678, compiled with `ghc -O --make` instead of just `ghc --make`
+- [SM](http://173.255.226.138/report.html) - Starting with empty tables/collections and dealing with user #42
+- [MD](http://173.255.226.138/report-medium.html) - Starting with 1000 user records and dealing with user #789
+- [LG](http://173.255.226.138/report-large.html) - Starting with 50000 user records and dealing with user #42
+- [LG2](http://173.255.226.138/report-large2.html) - Starting with 50000 user records and dealing with user #45678
+- [LG-O](http://173.255.226.138/report-large-O.html) - Starting with 50000 user records and dealing with user #45678, compiled with `ghc -O --make` instead of just `ghc --make`
 
 
 These are hosted on my own server because Blogger doesn't seem to like the Criterion markup. You'll find the same files in [the codebase](https://github.com/Inaimathi/haskell-profile/tree/master/results) if you prefer viewing local copies.
@@ -28,11 +28,11 @@ So lets do a rundown.
 ### <a name="obvious" href="#obvious"></a>Obvious
 
 
--   The vast majority of time spent inserting a user goes to generating the `scrypt` hash. This is obvious because of the huge difference between inserting an item and inserting a user. And, really, this is what you want in a real-world scenario. It should take fairly significant resources to try a password so as to make brute-forcing them a poor option, but in hindsight I could have saved myself a lot of time and compute by cutting that portion of user insertion across the board for benchmarking purposes.
--   The `ghc` optimization flag approximately halves most numbers, and improves AcidState lookups by about 5x.
--   MongoDB consistently outperforms all comers when it comes to user insertion, and performs very well on sub-insertion with small data-sets. The `$push` directive seems to be much faster than merely popping a new top-level record in, which I assume is why it manages to take about 1/3 the time of the next contender until we get up to the 50k corpus.
--   SQLite loses in every category at every corpus size, but not by as much as I was expecting. It's actually a pretty good little lightweight DB engine, assuming you don't need to support too many simultaneous requests or too much data.
--   AcidState is an absolute fucking monster. The benchmarks it loses, it loses narrowly<a name="note-Sat-Mar-09-134319EST-2013"></a>[|1|](#foot-Sat-Mar-09-134319EST-2013), but the benchmarks it wins, it wins by an 8x or larger margin. Take special note that while the other engines bench in the high single/low double digit milliseconds, Acid consistently posts list and select numbers in the low double-digit *micro*seconds. Granted, insertion speed goes down a bit based on corpus size, but selection speed is always the same range of extremely low numbers. That's excellent for web applications, which tend to have a usage profile of "rare-ish insertions coupled with large and common lookups". It performs suspiciously well on selects. Well enough that I went back to GHCi and tried `mapM (getUserAcid acid) [40000..40050]` and `mapM_ (getUserAcid acid) [40000..45000]` on the large corpus, just to make sure it wasn't recording thunk time instead of actual result time. It isn't. An IxSet lookup is actually just that fast.
+- The vast majority of time spent inserting a user goes to generating the `scrypt` hash. This is obvious because of the huge difference between inserting an item and inserting a user. And, really, this is what you want in a real-world scenario. It should take fairly significant resources to try a password so as to make brute-forcing them a poor option, but in hindsight I could have saved myself a lot of time and compute by cutting that portion of user insertion across the board for benchmarking purposes.
+- The `ghc` optimization flag approximately halves most numbers, and improves AcidState lookups by about 5x.
+- MongoDB consistently outperforms all comers when it comes to user insertion, and performs very well on sub-insertion with small data-sets. The `$push` directive seems to be much faster than merely popping a new top-level record in, which I assume is why it manages to take about 1/3 the time of the next contender until we get up to the 50k corpus.
+- SQLite loses in every category at every corpus size, but not by as much as I was expecting. It's actually a pretty good little lightweight DB engine, assuming you don't need to support too many simultaneous requests or too much data.
+- AcidState is an absolute fucking monster. The benchmarks it loses, it loses narrowly<a name="note-Sat-Mar-09-134319EST-2013"></a>[|1|](#foot-Sat-Mar-09-134319EST-2013), but the benchmarks it wins, it wins by an 8x or larger margin. Take special note that while the other engines bench in the high single/low double digit milliseconds, Acid consistently posts list and select numbers in the low double-digit *micro*seconds. Granted, insertion speed goes down a bit based on corpus size, but selection speed is always the same range of extremely low numbers. That's excellent for web applications, which tend to have a usage profile of "rare-ish insertions coupled with large and common lookups". It performs suspiciously well on selects. Well enough that I went back to GHCi and tried `mapM (getUserAcid acid) [40000..40050]` and `mapM_ (getUserAcid acid) [40000..45000]` on the large corpus, just to make sure it wasn't recording thunk time instead of actual result time. It isn't. An IxSet lookup is actually just that fast.
 
 
 ### <a name="notso-obvious" href="#notso-obvious"></a>Not-So Obvious
@@ -72,10 +72,10 @@ First, note that I'm making one connection and handing it to each function.
 
 ```haskell
 main = do
-  acid &lt;- openLocalState Acid.initialDB
-  mongo &lt;- Mongo.newConn
-  sqlite &lt;- Database.HDBC.Sqlite3.connectSqlite3 "GoGetDB"
---  mysql &lt;- Database.HDBC.MySQL.connectMySQL defaultMySQLConnectInfo
+  acid <- openLocalState Acid.initialDB
+  mongo <- Mongo.newConn
+  sqlite <- Database.HDBC.Sqlite3.connectSqlite3 "GoGetDB"
+--  mysql <- Database.HDBC.MySQL.connectMySQL defaultMySQLConnectInfo
   defaultMain 
     [ 
       benchBlock "AcidState" acid 
@@ -116,11 +116,11 @@ getAccounts conn = withCommit conn q
 getAccountBy conn column value = withCommit conn q
   where qString = "SELECT * FROM accounts WHERE " ++ column ++ " = ?"
         q conn = do
-          res &lt;- quickQuery' conn qString [toSql value]
+          res <- quickQuery' conn qString [toSql value]
           case res of
             [] -> return $ Nothing
             (u@[_, SqlByteString name, _]:rest) -> do
-              items &lt;- getAccountItems conn $ unpack name
+              items <- getAccountItems conn $ unpack name
               return $ Just $ accountFromSql u items
 
 accountByName :: Connection -> String -> IO (Maybe Account)
@@ -134,13 +134,13 @@ The MongoDB back-end does the same sort of thing
 
 ```haskell
 getAccounts pipe = do
-  res &lt;- run pipe $ find (select [] "accounts") >>= rest
+  res <- run pipe $ find (select [] "accounts") >>= rest
   return $ case res of
     Right accounts -> accounts
     _ -> []
 
 getAccountBy pipe property value = do
-  res &lt;- run pipe $ findOne $ select [property =: value] "accounts"
+  res <- run pipe $ findOne $ select [property =: value] "accounts"
   return $ case res of
     Right (Just acct) -> Just $ accountFromMongo acct
     _ -> Nothing
@@ -159,7 +159,7 @@ Thirdly, I used manual auto-incrementing for MongoDB
 ```haskell
 newAccount :: Val v => Pipe -> v -> v -> IO Account
 newAccount pipe name pass = do
-  Right ct &lt;- run pipe $ count $ select [] "accounts"
+  Right ct <- run pipe $ count $ select [] "accounts"
   let u = ["id" =: succ ct, "items" =: ([] :: [Database.MongoDB.Value]), "name" =: name, "passphrase" =: pass]
   run pipe $ insert "accounts" u
   return $ accountFromMongo u

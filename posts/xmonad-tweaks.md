@@ -6,8 +6,8 @@ The way you get a Debian machine to hibernate or suspend is with the appropriate
 
 ```haskell
 ...
-, ("C-t C-&lt;Delete>", spawn "pm-suspend")
-, ("C-t &lt;Delete>", spawn "pm-hibernate")
+, ("C-t C-<Delete>", spawn "pm-suspend")
+, ("C-t <Delete>", spawn "pm-hibernate")
 ...
 ```
 
@@ -30,8 +30,8 @@ The above defined, I can now bind super-user commands to Xmonad keystrokes
 
 ```haskell
 ...
-, ("C-t C-&lt;Delete>", sudoSpawn "pm-suspend")
-, ("C-t &lt;Delete>", sudoSpawn "pm-hibernate")
+, ("C-t C-<Delete>", sudoSpawn "pm-suspend")
+, ("C-t <Delete>", sudoSpawn "pm-hibernate")
 ...
 ```
 
@@ -56,14 +56,14 @@ import qualified XMonad.StackSet as S
 main = xmonad $ conf
        `additionalKeysP`
        [ ("C-t C-d C-b", withFilePrompt "Pic: " bgFolder setDesktopBackground)
-       , ("&lt;Print>", withFilePrompt "Name: " screenshotFolder capToFile)
+       , ("<Print>", withFilePrompt "Name: " screenshotFolder capToFile)
          
-       , ("C-t C-&lt;Delete>", sudoSpawn "pm-suspend")
-       , ("C-t &lt;Delete>", sudoSpawn "pm-hibernate")
+       , ("C-t C-<Delete>", sudoSpawn "pm-suspend")
+       , ("C-t <Delete>", sudoSpawn "pm-hibernate")
          
        , ("C-t p", spawn "dmenu_run")
        , ("C-t C-p", spawn "dmenu_run")
-       , ("C-t &lt;Return>", spawn "xterm")
+       , ("C-t <Return>", spawn "xterm")
        , ("C-t e", runOrRaise "emacs" (className =? "Emacs"))
        , ("C-t C-e", runOrRaise "emacs" (className =? "Emacs"))
        , ("C-t b", spawn "chromium --proxy-server=\"socks://localhost:9050\" --incognito")
@@ -81,7 +81,7 @@ main = xmonad $ conf
        , ("C-t C-k", windows S.swapUp)
        , ("C-t g", goToSelected defaultGSConfig)
          
-       , ("C-t C-&lt;Space>", sendMessage NextLayout)
+       , ("C-t C-<Space>", sendMessage NextLayout)
        , ("C-t C-h", sendMessage Shrink)
        , ("C-t C-l", sendMessage Expand)
          
@@ -122,7 +122,7 @@ withCompletingPrompt prompt completions fn =
   where comp = mkComplFunFromList completions
 
 withFilePrompt prompt directory fn = do
-  files &lt;- liftIO $ getDirectoryContents directory
+  files <- liftIO $ getDirectoryContents directory
   let fs = filter relevant files
       relevant f = '.' /= head f
   withCompletingPrompt prompt fs fn

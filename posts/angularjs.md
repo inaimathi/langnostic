@@ -33,139 +33,139 @@ you probably could have saved yourself a lot of code and headache by just pickin
 The "templating" in particular deserves special mention, though that's probably the wrong thought model to apply here. As the fellow Lisper explained, Angular gives you a [DSL](http://en.wikipedia.org/wiki/Domain-specific_language) for writing HTML front-ends. To illustrate, here's what the HTML component of the Handlebars/Backbone/jQuery version looked like
 
 ```html
-&lt;!DOCTYPE HTML&gt;
-&lt;html lang="en-US"&gt;
-  &lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;meta name="viewport" content="width=device-width" /&gt;
-    &lt;title&gt;WebMote&lt;/title&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
+<!DOCTYPE HTML>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width" />
+    <title>WebMote</title>
+  </head>
+  <body>
 
-    &lt;!-- --------- --&gt;
-    &lt;!-- Templates --&gt;
-    &lt;!-- --------- --&gt;
-    &lt;script id="tmp-folder" type="text/x-handlebars-template"&gt;
-      &lt;li class="{{type}}"&gt;
+    <!-- --------- -->
+    <!-- Templates -->
+    <!-- --------- -->
+    <script id="tmp-folder" type="text/x-handlebars-template">
+      <li class="{{type}}">
         {{#if buttons}}
-        &lt;button class="play btn" onclick="mote.play('{{path}}')"&gt;&lt;i class="icon-play"&gt;&lt;/i&gt;&lt;/button&gt;
-        &lt;button class="shuffle btn" onclick="mote.shuffle('{{path}}')"&gt;&lt;i class="icon-random"&gt;&lt;/i&gt;&lt;/button&gt;
+        <button class="play btn" onclick="mote.play('{{path}}')"><i class="icon-play"></i></button>
+        <button class="shuffle btn" onclick="mote.shuffle('{{path}}')"><i class="icon-random"></i></button>
         {{/if}}
-        &lt;a class="dir-link{{#unless buttons}} buttonless{{/unless}}" href="#navigate{{path}}"&gt;{{name}}&lt;/a&gt;
-      &lt;/li&gt;
-    &lt;/script&gt;
+        <a class="dir-link{{#unless buttons}} buttonless{{/unless}}" href="#navigate{{path}}">{{name}}</a>
+      </li>
+    </script>
 
-    &lt;script id="tmp-file" type="text/x-handlebars-template"&gt;
-      &lt;li class="{{type}}"&gt;
-        &lt;a class="file-link" href="javascript:void(0);" onclick="mote.play('{{path}}')"&gt;{{name}}&lt;/a&gt;
-      &lt;/li&gt;
-    &lt;/script&gt;
+    <script id="tmp-file" type="text/x-handlebars-template">
+      <li class="{{type}}">
+        <a class="file-link" href="javascript:void(0);" onclick="mote.play('{{path}}')">{{name}}</a>
+      </li>
+    </script>
 
-    &lt;script id="tmp-control" type="text/x-handlebars-template"&gt;
-      &lt;li class="{{cmd}}"&gt;
-        &lt;button class="btn" onclick="mote.command('{{cmd}}');"
+    <script id="tmp-control" type="text/x-handlebars-template">
+      <li class="{{cmd}}">
+        <button class="btn" onclick="mote.command('{{cmd}}');"
                 {{#if held}}
                 onmousedown="mote.hold('{{cmd}}');" onmouseup="mote.release();" onmouseout="mote.release();"
-                {{/if}}&gt;
-          &lt;i class="icon-{{cmd}}"&gt;&lt;/i&gt;
-        &lt;/button&gt;
-      &lt;/li&gt;
-    &lt;/script&gt;
+                {{/if}}>
+          <i class="icon-{{cmd}}"></i>
+        </button>
+      </li>
+    </script>
 
-    &lt;script id="tmp-control-block" type="text/x-handlebars-template"&gt;
-      &lt;ul&gt;
+    <script id="tmp-control-block" type="text/x-handlebars-template">
+      <ul>
         {{#each this}}
         {{#control-button this}}{{/control-button}}
         {{/each}}
-      &lt;/ul&gt;
-    &lt;/script&gt;
+      </ul>
+    </script>
     
-    &lt;!-- ---- --&gt;
-    &lt;!-- Body --&gt;
-    &lt;!-- ---- --&gt;
-    &lt;ul id="file-list"&gt;&lt;/ul&gt;
-    &lt;div id="controls"&gt;&lt;/div&gt;
+    <!-- ---- -->
+    <!-- Body -->
+    <!-- ---- -->
+    <ul id="file-list"></ul>
+    <div id="controls"></div>
     
-    &lt;!-- ------ --&gt;
-    &lt;!-- Styles --&gt;
-    &lt;!-- ------ --&gt;
-    &lt;link rel="stylesheet" href="css/custom-theme/jquery-ui-1.8.13.custom.css" type="text/css" media="screen" /&gt;
-    &lt;link rel="stylesheet" href="css/bootstrap.css" type="text/css" media="screen" /&gt;
-    &lt;link rel="stylesheet" href="css/bootstrap-responsive.css" type="text/css" media="screen" /&gt;
-    &lt;link rel="stylesheet" href="css/style.css" type="text/css" media="screen" /&gt;
+    <!-- ------ -->
+    <!-- Styles -->
+    <!-- ------ -->
+    <link rel="stylesheet" href="css/custom-theme/jquery-ui-1.8.13.custom.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/bootstrap.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/bootstrap-responsive.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
     
-    &lt;!-- ------- --&gt;
-    &lt;!-- Scripts --&gt;
-    &lt;!-- ------- --&gt;
-    &lt;script type="text/javascript" src="js/jquery.min.js"&gt;&lt;/script&gt;
-    &lt;script type="text/javascript" src="js/jquery-ui-1.8.13.custom.min.js"&gt;&lt;/script&gt;
-    &lt;script type="text/javascript" src="js/handlebars-1.0.rc.1.js"&gt;&lt;/script&gt;
-    &lt;script type="text/javascript" src="js/underscore-min.js"&gt;&lt;/script&gt;
-    &lt;script type="text/javascript" src="js/backbone-min.js"&gt;&lt;/script&gt;
+    <!-- ------- -->
+    <!-- Scripts -->
+    <!-- ------- -->
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.8.13.custom.min.js"></script>
+    <script type="text/javascript" src="js/handlebars-1.0.rc.1.js"></script>
+    <script type="text/javascript" src="js/underscore-min.js"></script>
+    <script type="text/javascript" src="js/backbone-min.js"></script>
 
-    &lt;script type="text/javascript" src="js/web-mote.js"&gt;&lt;/script&gt;
+    <script type="text/javascript" src="js/web-mote.js"></script>
 
-  &lt;/body&gt;
-&lt;/html&gt;
+  </body>
+</html>
 ```
 
 and *this* is what the exact same front-end looks like expressed in the Angular HTMLDSL
 
 ```html
-&lt;!DOCTYPE HTML&gt;
-&lt;html lang="en-US"&gt;
-  &lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;meta name="viewport" content="width=device-width" /&gt;
-    &lt;title&gt;WebMote&lt;/title&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
+<!DOCTYPE HTML>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width" />
+    <title>WebMote</title>
+  </head>
+  <body>
 
-    &lt;div ng-app&gt;
-      &lt;ul id="file-list" ng-controller="FileListCtrl"&gt;
-        &lt;li class="{{file.type}}" ng-repeat="file in filesList" ng-switch="file.buttons"&gt;
-          &lt;span ng-switch-when="true"&gt;
-            &lt;button class="play btn" ng-click="play(file.path)"&gt;&lt;i class="icon-play"&gt;&lt;/i&gt;&lt;/button&gt;
-            &lt;button class="shuffle btn" ng-click="shuffle(file.path)"&gt;&lt;i class="icon-random"&gt;&lt;/i&gt;&lt;/button&gt;
-            &lt;a class="dir-link" ng-click="play(file.path)"&gt;{{file.name}}&lt;/a&gt;
-          &lt;/span&gt;
-          &lt;a class="dir-link buttonless" ng-switch-default ng-click="play(file.path)"&gt;{{file.name}}&lt;/a&gt;
-        &lt;/li&gt;
-      &lt;/ul&gt;
-      &lt;div id="controls" ng-controller="CommandCtrl"&gt;
-        &lt;ul ng-repeat="controlsList in controlTree"&gt;
-          &lt;li ng-repeat="control in controlsList" class="{{control.cmd}}" ng-switch="control.held"&gt;
-            &lt;button class="btn" ng-switch-when="true" 
+    <div ng-app>
+      <ul id="file-list" ng-controller="FileListCtrl">
+        <li class="{{file.type}}" ng-repeat="file in filesList" ng-switch="file.buttons">
+          <span ng-switch-when="true">
+            <button class="play btn" ng-click="play(file.path)"><i class="icon-play"></i></button>
+            <button class="shuffle btn" ng-click="shuffle(file.path)"><i class="icon-random"></i></button>
+            <a class="dir-link" ng-click="play(file.path)">{{file.name}}</a>
+          </span>
+          <a class="dir-link buttonless" ng-switch-default ng-click="play(file.path)">{{file.name}}</a>
+        </li>
+      </ul>
+      <div id="controls" ng-controller="CommandCtrl">
+        <ul ng-repeat="controlsList in controlTree">
+          <li ng-repeat="control in controlsList" class="{{control.cmd}}" ng-switch="control.held">
+            <button class="btn" ng-switch-when="true" 
                     ng-mousedown="command(control.cmd); hold(control.cmd)"
-                    ng-mouseup="release()" ng-mouseleave="release()"&gt;
-              &lt;i class="icon-{{control.cmd}}"&gt;&lt;/i&gt;
-            &lt;/button&gt;
-            &lt;button class="btn" ng-switch-default ng-click="command(control.cmd)"&gt;
-              &lt;i class="icon-{{control.cmd}}"&gt;&lt;/i&gt;
-            &lt;/button&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
+                    ng-mouseup="release()" ng-mouseleave="release()">
+              <i class="icon-{{control.cmd}}"></i>
+            </button>
+            <button class="btn" ng-switch-default ng-click="command(control.cmd)">
+              <i class="icon-{{control.cmd}}"></i>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
     
-    &lt;!-- ------ --&gt;
-    &lt;!-- Styles --&gt;
-    &lt;!-- ------ --&gt;
-    &lt;link rel="stylesheet" href="css/bootstrap.css" type="text/css" media="screen" /&gt;
-    &lt;link rel="stylesheet" href="css/bootstrap-responsive.css" type="text/css" media="screen" /&gt;
-    &lt;link rel="stylesheet" href="css/style.css" type="text/css" media="screen" /&gt;
+    <!-- ------ -->
+    <!-- Styles -->
+    <!-- ------ -->
+    <link rel="stylesheet" href="css/bootstrap.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/bootstrap-responsive.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
     
-    &lt;!-- ------- --&gt;
-    &lt;!-- Scripts --&gt;
-    &lt;!-- ------- --&gt;
-    &lt;script type="text/javascript" src="js/jquery.min.js"&gt;&lt;/script&gt;
-    &lt;script type="text/javascript" src="js/angular.min.js"&gt;&lt;/script&gt;
-    &lt;script type="text/javascript" src="js/angular-resource.min.js"&gt;&lt;/script&gt;
+    <!-- ------- -->
+    <!-- Scripts -->
+    <!-- ------- -->
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/angular-resource.min.js"></script>
 
-    &lt;script type="text/javascript" src="js/mote.js"&gt;&lt;/script&gt;
+    <script type="text/javascript" src="js/mote.js"></script>
 
-  &lt;/body&gt;
-&lt;/html&gt;
+  </body>
+</html>
 ```
 
 What you don't see above is that the amount of JavaScript required for this new approach is easily 1/2 of what I needed to write to get comparable functionality with separate templating/routing/DOM libraries. Most of it, I get the feeling, is Angulars' use of [reactive programming](http://en.wikipedia.org/wiki/Reactive_programming), but I can't really be sure of that. Since I haven't done much testing yet, I also don't know what kind of performance hit I'm going to be taking by using such a transformative approach.

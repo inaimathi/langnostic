@@ -40,7 +40,7 @@ So, to make myself feel better, I'm profiling things. Specifically, the Common L
     (format t "~%")))
 
 (defun run-life (world-size steps cells)
-  (when (&lt; 0 steps)
+  (when (< 0 steps)
     (run-life world-size (- steps 1) (life-step cells))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; data related
@@ -72,7 +72,7 @@ So, to make myself feel better, I'm profiling things. Specifically, the Common L
 CL-USER> (load "life.lisp")
 T
 CL-USER> (in-package :life)
-#&lt;PACKAGE "LIFE">
+#<PACKAGE "LIFE">
 ```
 
 Remember to turn on profiling with `M-x slime-profile-package life`, and answer yes to the options it asks about.
@@ -92,7 +92,7 @@ Control stack guard page temporarily disabled: proceed with caution
 Control stack guard page temporarily disabled: proceed with caution
 Control stack guard page temporarily disabled: proceed with caution
 Control stack guard page temporarily disabled: proceed with caution
-; Evaluation aborted on #&lt;SB-KERNEL::CONTROL-STACK-EXHAUSTED {100F0230D3}>.
+; Evaluation aborted on #<SB-KERNEL::CONTROL-STACK-EXHAUSTED {100F0230D3}>.
 ```
 
 Ok, I guess that's not entirely unexpected. After all, `run-life` is still recursive, and Common Lisp doesn't guarantee tail-call optimization. Still, we probably got some pretty decent data, even from a failed attempt. `M-x slime-profile-report` says
@@ -116,8 +116,8 @@ overhead estimation parameters:
 
 
 1.   reduce the number of traversals of your corpus
-1.   reduce the time taken per traversal
-1.   eliminate sequential data dependencies and do more traversals at once through parallelism
+2.   reduce the time taken per traversal
+3.   eliminate sequential data dependencies and do more traversals at once through parallelism
 
 
 We won't be doing the third because the Game of Life problem doesn't inherently lend itself to it; you need to compute step N before you can compute step N+1, and that can't really be helped. We might be able to take advantage of parallelism in a couple of places *during* each step, but that tends to have its own costs associated and typically doesn't pay off except on very large data sets.
@@ -374,8 +374,8 @@ Pretty good right? All things considered? Before we go, lets take a look at how 
     (destructuring-bind (rows columns) dimensions
       (labels ((entry (row col)
                  "Return array(row,col) for valid (row,col) else 0."
-                 (if (or (not (&lt; -1 row rows))
-                         (not (&lt; -1 col columns)))
+                 (if (or (not (< -1 row rows))
+                         (not (< -1 col columns)))
                    0
                    (aref array row col)))
                (neighbor-count (row col &aux (count 0))
@@ -386,7 +386,7 @@ Pretty good right? All things considered? Before we go, lets take a look at how 
                        (incf count (entry r c))))))
                (live-or-die? (current-state neighbor-count)
                  (if (or (and (eql current-state 1)
-                              (&lt;=  2 neighbor-count 3))
+                              (<=  2 neighbor-count 3))
                          (and (eql current-state 0)
                               (eql neighbor-count 3)))
                    1

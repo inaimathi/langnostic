@@ -18,9 +18,9 @@ Assuming everything went well, the server can act on a successful authentication
 What just happened?
 
 
--   The user knows that the server they're communicating with has access to the private key they expect
--   The server knows that the user they're speaking to has access to the private key that corresponds to the user account asking for authentication
--   Finally, **critically**, neither has enough information to allow impersonation of the other
+- The user knows that the server they're communicating with has access to the private key they expect
+- The server knows that the user they're speaking to has access to the private key that corresponds to the user account asking for authentication
+- Finally, **critically**, neither has enough information to allow impersonation of the other
 
 
 There! That's the secret! Now you'll never fuck it up again!

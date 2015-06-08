@@ -11,9 +11,9 @@ Anyway, poking around is all very well, but I find that I really need a project 
 The second one is all the correct complaints about passwords and authentication that OpenID was supposed to almost solve, and that [SSH keys](http://linuxproblem.org/art_9.html) do solve for those of us lucky enough to be using SSH. The problems remaining are
 
 
--   Not every system uses OpenID (and even if they did, you still need to authenticate to your OpenID provider, most of whom use passwords :p)
--   The ones that don't use OpenID are the ones you want to be most secure (banks and such), and their password constraints make them the hardest to remember
--   The most secure thing to do is to come up with a separate password for every service and rotate them regularly, but this is hard to memorize
+- Not every system uses OpenID (and even if they did, you still need to authenticate to your OpenID provider, most of whom use passwords :p)
+- The ones that don't use OpenID are the ones you want to be most secure (banks and such), and their password constraints make them the hardest to remember
+- The most secure thing to do is to come up with a separate password for every service and rotate them regularly, but this is hard to memorize
 
 
 On top of that, there are a few things<a name="note-Tue-Dec-13-155549EST-2011"></a>[|4|](#foot-Tue-Dec-13-155549EST-2011) that can't be solved by OpenID or RSA keys. Just keep that problem in mind.
@@ -25,24 +25,24 @@ Putting it all together, and as usual, I'm almost 100% sure that I'm not even re
 It'll be something like the actual [teensy keyboard](http://www.pjrc.com/teensy/usb_keyboard.html) implementation, but bind each button to a sequence of N characters that get typed out whenever it's pushed. Here's what I came up with after a bit of fiddling (pardon the giant code block, C isn't quite as easy for me to express ideas in).
 
 ```c
-#include &lt;avr/io.h>
-#include &lt;avr/pgmspace.h>
-#include &lt;avr/interrupt.h>
-#include &lt;util/delay.h>
-#include &lt;string.h>
+#include <avr/io.h>
+#include <avr/pgmspace.h>
+#include <avr/interrupt.h>
+#include <util/delay.h>
+#include <string.h>
 #include "usb_keyboard.h"
 
-#define LED_CONFIG      (DDRD |= (1&lt;&lt;6))
-#define LED_ON          (PORTD &= ~(1&lt;&lt;6))
-#define LED_OFF         (PORTD |= (1&lt;&lt;6))
+#define LED_CONFIG      (DDRD |= (1<<6))
+#define LED_ON          (PORTD &= ~(1<<6))
+#define LED_OFF         (PORTD |= (1<<6))
 #define CPU_PRESCALE(n) (CLKPR = 0x80, CLKPR = (n))
 
 uint16_t idle_count=0;
 
 int key_from_char(char c){
-  if (c >= 'a' && c &lt;= 'z') return c - 93;
-  if (c >= 'A' && c &lt;= 'Z') return c - 61;
-  if (c >= '1' && c &lt;= '9') return c - 19;
+  if (c >= 'a' && c <= 'z') return c - 93;
+  if (c >= 'A' && c <= 'Z') return c - 61;
+  if (c >= '1' && c <= '9') return c - 19;
   if (c == '0') return 39; // 0 is low in ASCII, high in the USB key definition
  
   // there's no easy mapping between the other ASCII characters and 
@@ -90,14 +90,14 @@ int key_from_char(char c){
 }
 
 int modifier_from_char(char c){
-  if ((c >= 'A' && c &lt;= 'Z') ||
+  if ((c >= 'A' && c <= 'Z') ||
       c == 33 || c == 34 ||
-      (c >= 36 && c &lt;= 38) ||
+      (c >= 36 && c <= 38) ||
       c == 40 || c == 41 ||
       c == 58 || c == 60 ||
-      (c >= 62 && c &lt;= 64) ||
+      (c >= 62 && c <= 64) ||
       c == 94 || c == 95 ||
-      (c >= 123 && c &lt;= 126)) return KEY_SHIFT;
+      (c >= 123 && c <= 126)) return KEY_SHIFT;
   
   return 0;
 }
@@ -106,7 +106,7 @@ int8_t usb_keyboard_print(char *s){
   int s_len = strlen(s);
   int i;
 
-  for(i = 0; i &lt; s_len; i++){
+  for(i = 0; i < s_len; i++){
     usb_keyboard_press(key_from_char(s[i]), modifier_from_char(s[i]));
   }
 }
@@ -127,11 +127,11 @@ int main(void) {
     b = PINB;
     mask = 1;
 
-    for (i=0; i&lt;8; i++) {
+    for (i=0; i<8; i++) {
       if (((b & mask) == 0) && (b_previous & mask) != 0) {
-        usb_keyboard_print("abcdABCD1234!@#$%^&*()_+|~{}:\">?&lt;-=\\`[];',./");
+        usb_keyboard_print("abcdABCD1234!@#$%^&*()_+|~{}:\">?<-=\\`[];',./");
       }
-      mask = mask &lt;&lt; 1;
+      mask = mask << 1;
     }
 
     b_previous = b;

@@ -57,9 +57,9 @@ I can see myself installing it somewhere other than my main machine, just to giv
 [Last time](http://langnostic.blogspot.ca/2012/06/fresh-install.html) I hopped back into StumpWM from XMonad. This time, I'm hopping back. It turns out that, just like there are a couple of small annoyances in XMonad that make Stump preferable, there are a couple of small annoyances in StumpWM that do the same for XMonad.
 
 
--   StumpWM really *really* doesn't like floating windows. Far as I know, there isn't a way to detach one randomly, or do anything with one once its detached. The WM also occasionally throws errors when a program tries to put up an alert, like a file-save notification or print dialog. XMonad has yet to yell at me about that, and it elegantly deals with floating windows using the mouse<a name="note-Sun-Nov-11-003224EST-2012"></a>[|5|](#foot-Sun-Nov-11-003224EST-2012). 
--   Stump *still* crashes with GIMP. I vaguely hoped that the single-window mode would outright resolve that issue, but it hasn't. Sure you can now *run* the program, but attempting to open a file with it results in the WM becoming unresponsive to keyboard input<a name="note-Sun-Nov-11-003257EST-2012"></a>[|6|](#foot-Sun-Nov-11-003257EST-2012). XMonad has no such problems, and being that I occasionally like to draw things, I'd prefer my window manager to not explode while loading drawing tools. Even apart from the specific GIMP problem, I've found StumpWM to crash more in general than XMonad does<a name="note-Sun-Nov-11-003302EST-2012"></a>[|7|](#foot-Sun-Nov-11-003302EST-2012).
--   Taking screenshots using `import` caused some odd errors. It would very occasionally crash the WM, and very frequently create a black rectangle rather than a screenshot of the appropriate screen area. I normally *wouldn't* put this down to the window manager, except that I haven't observed the effect in XMonad, XFCE or Gnome.
+- StumpWM really *really* doesn't like floating windows. Far as I know, there isn't a way to detach one randomly, or do anything with one once its detached. The WM also occasionally throws errors when a program tries to put up an alert, like a file-save notification or print dialog. XMonad has yet to yell at me about that, and it elegantly deals with floating windows using the mouse<a name="note-Sun-Nov-11-003224EST-2012"></a>[|5|](#foot-Sun-Nov-11-003224EST-2012). 
+- Stump *still* crashes with GIMP. I vaguely hoped that the single-window mode would outright resolve that issue, but it hasn't. Sure you can now *run* the program, but attempting to open a file with it results in the WM becoming unresponsive to keyboard input<a name="note-Sun-Nov-11-003257EST-2012"></a>[|6|](#foot-Sun-Nov-11-003257EST-2012). XMonad has no such problems, and being that I occasionally like to draw things, I'd prefer my window manager to not explode while loading drawing tools. Even apart from the specific GIMP problem, I've found StumpWM to crash more in general than XMonad does<a name="note-Sun-Nov-11-003302EST-2012"></a>[|7|](#foot-Sun-Nov-11-003302EST-2012).
+- Taking screenshots using `import` caused some odd errors. It would very occasionally crash the WM, and very frequently create a black rectangle rather than a screenshot of the appropriate screen area. I normally *wouldn't* put this down to the window manager, except that I haven't observed the effect in XMonad, XFCE or Gnome.
 
 
 I'm prepared to make peace with the fact that `C-t` has to be an exclusively window-manager keystroke, and I've changed my keymap a bit to mitigate the second-class status of chorded mod keys. Specifically, I've bound any repetitive keystrokes to `C-t C-[key]` rather than `C-t [key]`. It doesn't *entirely* solve the problem, but using `hold C + t h t h t h t h t h` to resize windows is still preferable to `C+t h C+t h C+t h C+t h C+t h`. Speaking of configs
@@ -81,11 +81,11 @@ import qualified XMonad.StackSet as S
 main = xmonad $ conf { modMask = mod4Mask }
        `additionalKeysP`
        [ ("C-t C-d C-b", withFilePrompt "Pic: " bgFolder setDesktopBackground)
-       , ("&lt;Print>", withFilePrompt "Name: " screenshotFolder capToFile)
+       , ("<Print>", withFilePrompt "Name: " screenshotFolder capToFile)
          
        , ("C-t p", spawn "dmenu_run")
        , ("C-t C-p", spawn "dmenu_run")
-       , ("C-t &lt;Return>", spawn "xterm")
+       , ("C-t <Return>", spawn "xterm")
        , ("C-t e", runOrRaise "emacs" (className =? "Emacs"))
        , ("C-t b", spawn "chromium --proxy-server=\"socks://localhost:9050\"")
          
@@ -98,7 +98,7 @@ main = xmonad $ conf { modMask = mod4Mask }
        , ("C-t C-k", windows S.swapUp)
        , ("C-t g", goToSelected defaultGSConfig)
          
-       , ("C-t C-&lt;Space>", sendMessage NextLayout)
+       , ("C-t C-<Space>", sendMessage NextLayout)
        , ("C-t C-h", sendMessage Shrink)
        , ("C-t C-l", sendMessage Expand)
        
@@ -140,7 +140,7 @@ withCompletingPrompt prompt completions fn =
         
 withFilePrompt :: String -> String -> (String -> X ()) -> X ()
 withFilePrompt prompt directory fn = do
-  files &lt;- liftIO $ getDirectoryContents directory
+  files <- liftIO $ getDirectoryContents directory
   let fs = filter relevant files
       relevant f = '.' /= head f
   withCompletingPrompt prompt fs fn

@@ -131,9 +131,9 @@ To do that, we extend the environment of this partials' operator and bind the ar
 ~/projects/experimentalisp $ racket -t experimentalisp.rkt -m
 experimentalisp 0.001
  Base env:
- (#hash((cdr . #&lt;primitive>) (+ . #&lt;primitive>) (print . #&lt;primitive>) (/ . #&lt;primitive>) (- . #&lt;primitive>) (* . #&lt;primitive>) (the-env . #&lt;primitive>) (cons . #&lt;primitive>) (= . #&lt;primitive>) (car . #&lt;primitive>)))
+ (#hash((cdr . #<primitive>) (+ . #<primitive>) (print . #<primitive>) (/ . #<primitive>) (- . #<primitive>) (* . #<primitive>) (the-env . #<primitive>) (cons . #<primitive>) (= . #<primitive>) (car . #<primitive>)))
 EXP>> (+ 2)
-#&lt;partial>
+#<partial>
 
 EXP>> ((+ 2) 4)
 6

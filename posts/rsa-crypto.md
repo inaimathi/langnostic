@@ -11,21 +11,21 @@ I'm not even getting into *signature* formats, which are ... interesting. In a n
 Here's a list of things I've tried putting together that didn't work:
 
 
--   Using GPG to generate keys, reading them with Erlang and verifying incoming GPG signatures.
--   Using SSH to generate keys, reading them with Erlang and verifying incoming GPG/OpenSSL-generated signatures.
--   Using SSH to generate keys, converting them to PEM format and calling OpenSSL to sign and verify.
--   Using OpenSSL to generate keys, then using Erlang to sign and verify<a name="note-Thu-Jun-14-205337EDT-2012"></a>[|3|](#foot-Thu-Jun-14-205337EDT-2012)
--   Using OpenSSL to generate keys, and calling OpenSSL to sign and verify<a name="note-Thu-Jun-14-205341EDT-2012"></a>[|4|](#foot-Thu-Jun-14-205341EDT-2012).
--   Using OpenSSL to generate keys, using OpenSSL to sign messages and [M2Crypto](http://chandlerproject.org/bin/view/Projects/MeTooCrypto) to verify<a name="note-Thu-Jun-14-205407EDT-2012"></a>[|5|](#foot-Thu-Jun-14-205407EDT-2012).
+- Using GPG to generate keys, reading them with Erlang and verifying incoming GPG signatures.
+- Using SSH to generate keys, reading them with Erlang and verifying incoming GPG/OpenSSL-generated signatures.
+- Using SSH to generate keys, converting them to PEM format and calling OpenSSL to sign and verify.
+- Using OpenSSL to generate keys, then using Erlang to sign and verify<a name="note-Thu-Jun-14-205337EDT-2012"></a>[|3|](#foot-Thu-Jun-14-205337EDT-2012)
+- Using OpenSSL to generate keys, and calling OpenSSL to sign and verify<a name="note-Thu-Jun-14-205341EDT-2012"></a>[|4|](#foot-Thu-Jun-14-205341EDT-2012).
+- Using OpenSSL to generate keys, using OpenSSL to sign messages and [M2Crypto](http://chandlerproject.org/bin/view/Projects/MeTooCrypto) to verify<a name="note-Thu-Jun-14-205407EDT-2012"></a>[|5|](#foot-Thu-Jun-14-205407EDT-2012).
 
 
 The options that did work:
 
 
--   Using OpenSSL to generate keys, then using M2Crypto to sign and verify<a name="note-Thu-Jun-14-205415EDT-2012"></a>[|6|](#foot-Thu-Jun-14-205415EDT-2012).
--   Using OpenSSH to generate keys, then using M2Crypto to sign and verify
--   Using M2Crypto to generate keys, sign and verify messages<a name="note-Thu-Jun-14-205420EDT-2012"></a>[|7|](#foot-Thu-Jun-14-205420EDT-2012)
--   Using GPG to generate keys, sign and verify messages<a name="note-Thu-Jun-14-205425EDT-2012"></a>[|8|](#foot-Thu-Jun-14-205425EDT-2012).
+- Using OpenSSL to generate keys, then using M2Crypto to sign and verify<a name="note-Thu-Jun-14-205415EDT-2012"></a>[|6|](#foot-Thu-Jun-14-205415EDT-2012).
+- Using OpenSSH to generate keys, then using M2Crypto to sign and verify
+- Using M2Crypto to generate keys, sign and verify messages<a name="note-Thu-Jun-14-205420EDT-2012"></a>[|7|](#foot-Thu-Jun-14-205420EDT-2012)
+- Using GPG to generate keys, sign and verify messages<a name="note-Thu-Jun-14-205425EDT-2012"></a>[|8|](#foot-Thu-Jun-14-205425EDT-2012).
 
 
 Just as an example, here's how to use M2Crypto to make a round-trip with OpenSSL-generated PEM keys<a name="note-Thu-Jun-14-205517EDT-2012"></a>[|9|](#foot-Thu-Jun-14-205517EDT-2012).
@@ -82,7 +82,7 @@ If you want it sent to standard out for whatever reason, just omit `--output mes
 $ gpg --decrypt message.gpg
 Daring Do and the Griffon's Goblet
 gpg: Signature made [timestamp] using RSA key ID [GPG ID of the RSA key]
-gpg: Good signature from "inaimthi &lt;[inaimathis.email&#64;mailinator.com](mailto:inaimathis.email&#64;mailinator.com)>"
+gpg: Good signature from "inaimthi <[inaimathis.email&#64;mailinator.com](mailto:inaimathis.email&#64;mailinator.com)>"
 $ 
 ```
 

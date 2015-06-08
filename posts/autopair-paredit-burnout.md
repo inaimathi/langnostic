@@ -15,8 +15,8 @@ Specifically, highlighting a region to parenthesize it produced an extraneous cl
 
 (defun custom-paredit-mode ()
   (progn (paredit-mode +1) 
-         (define-key paredit-mode-map (kbd "&lt;C-left&gt;") 'backward-sexp)
-         (define-key paredit-mode-map (kbd "&lt;C-right&gt;") 'forward-sexp)))
+         (define-key paredit-mode-map (kbd "<C-left>") 'backward-sexp)
+         (define-key paredit-mode-map (kbd "<C-right>") 'forward-sexp)))
 
 (dolist (mode *paredit-modes*)
   ;; Activate paredit and deactivate autopair in lisp modes
@@ -48,9 +48,9 @@ In theory, language users have an out because we can technically build a "just-r
 This is the effect of having a single quarter wherein I
 
 
--   had a child. I mean, my wife *had* him, but I still lost plenty of sleep as a result.
--   got sick enough that I couldn't exercise for a good week and a half.
--   went through the holiday garbage typical of the season.
+- had a child. I mean, my wife *had* him, but I still lost plenty of sleep as a result.
+- got sick enough that I couldn't exercise for a good week and a half.
+- went through the holiday garbage typical of the season.
 
 
 Any one of those could probably put me in a funk on its own. The combination, as well as the evil fucking grey winter that's just descending on Toronto streets, is enough to explain the mood and then some. So I mean, that's that. I was planning on starting another project or two in the next little while, but all things considered, maybe I owe myself a bit of relaxation for a change. Metaphorically spin down the drives and kick my feet up, at least 'till I get the chance to get a good sprint or two and a few winks in.

@@ -16,21 +16,21 @@ Prelude> yayNay False
 "Nay!"
 Prelude> yayNay []
 
-&lt;interactive>:4:8:
+<interactive>:4:8:
     Couldn't match expected type `Bool' with actual type `[a0]'
     In the first argument of `yayNay', namely `[]'
     In the expression: yayNay []
     In an equation for `it': it = yayNay []
 Prelude> yayNay ""
 
-&lt;interactive>:5:8:
+<interactive>:5:8:
     Couldn't match expected type `Bool' with actual type `[Char]'
     In the first argument of `yayNay', namely `""'
     In the expression: yayNay ""
     In an equation for `it': it = yayNay ""
 Prelude> yayNay 0
 
-&lt;interactive>:6:8:
+<interactive>:6:8:
     No instance for (Num Bool)
       arising from the literal `0'
     Possible fix: add an instance declaration for (Num Bool)
@@ -90,7 +90,7 @@ I'm not sure how to feel about that. On the one hand, yes, empty checks are easi
 ```python
 >>> import Queue
 >>> Queue.Queue()
-&lt;Queue.Queue instance at 0x2837518>
+<Queue.Queue instance at 0x2837518>
 >>> yayNay(Queue.Queue())
 'Yay!'
 >>> 
@@ -196,8 +196,8 @@ Error: unbound variable: nil
 
         Call history:
 
-        &lt;syntax>          (yay-nay nil)
-        &lt;eval>    (yay-nay nil) &lt;--
+        <syntax>          (yay-nay nil)
+        <eval>    (yay-nay nil) <--
 #;3> (yay-nay '())
 yay!
 #;4> (yay-nay (list))

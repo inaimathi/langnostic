@@ -64,10 +64,10 @@ error: build of &#8216;/nix/store/ihx7hcmpa10fpl73mwwrck65zpjgrmlr-haskell-gitit
 Given that literally all I needed at the time was
 
 
--   a wiki
--   with `markdown` syntax
--   that's easy to install
--   and tracks all history
+- a wiki
+- with `markdown` syntax
+- that's easy to install
+- and tracks all history
 
 
 I just said "fuck it" and built my own. It's not generally the sort of thing I do, but judged that it would be a lot more fun and somewhat easier than installing [Mediawiki](https://www.mediawiki.org/wiki/MediaWiki) and its [`markdown` plugin](http://www.mediawiki.org/wiki/Extension:MarkdownSyntax). And I think I happened to be right in this case; the whole thing took about two hours or so, plus a half hour of cosmetic changes for *very* mild ease-of-use.
@@ -217,48 +217,48 @@ class EditAPI(tornado.web.RequestHandler):
 ##### Cosmetics
 def main_template(path, contents):
     return """
-    &lt;html&gt;
-      &lt;head&gt;
-        &lt;link rel="stylesheet" href="/static/css/wiki.css" type="text/css" media="screen" /&gt;
-      &lt;/head&gt;
-      &lt;body&gt;
+    <html>
+      <head>
+        <link rel="stylesheet" href="/static/css/wiki.css" type="text/css" media="screen" />
+      </head>
+      <body>
         {0}
-        &lt;div id="content"&gt;{1}&lt;/div&gt;
-      &lt;/body&gt;
-    &lt;/html&gt;
+        <div id="content">{1}</div>
+      </body>
+    </html>
     """.format(breadcrumbs(path), contents)
 
 def edit_template(path, contents):
     return main_template(path, """
-    &lt;form action="/api/edit/{0}" method="POST"&gt;
-      &lt;textarea id="new_contents" name="new_contents"&gt;{1}&lt;/textarea&gt;
-      &lt;textarea id="commit_message" name="commit_message"&gt;&lt;/textarea&gt;
-      &lt;input type="submit" value="Submit" /&gt;
-    &lt;/form&gt;""".format(path, contents))
+    <form action="/api/edit/{0}" method="POST">
+      <textarea id="new_contents" name="new_contents">{1}</textarea>
+      <textarea id="commit_message" name="commit_message"></textarea>
+      <input type="submit" value="Submit" />
+    </form>""".format(path, contents))
 
 def create_template(path):
     return main_template(path, """
-    &lt;p&gt;Page '{0}' not found.&lt;/p&gt;
-    &lt;form action="/api/create/{0}" method="POST"&gt;
-       &lt;input type="submit" value="Create" /&gt;
-    &lt;/form&gt;
+    <p>Page '{0}' not found.</p>
+    <form action="/api/create/{0}" method="POST">
+       <input type="submit" value="Create" />
+    </form>
     """.format(path))
 
 def view_template(path, contents):
     return main_template(path, """
-    &lt;div class="controls"&gt;
-       &lt;form action="/api/delete/{0}" method="POST"&gt;
-          &lt;input type="submit" value="Delete" /&gt;
-       &lt;/form&gt;
-       &lt;a href="/edit/{0}"&gt;Edit&lt;/a&gt;
-    &lt;/div&gt;
+    <div class="controls">
+       <form action="/api/delete/{0}" method="POST">
+          <input type="submit" value="Delete" />
+       </form>
+       <a href="/edit/{0}">Edit</a>
+    </div>
     {1}
     """.format(path, contents))
 
 def list_template(path):
     fs = file_list(path)
-    LIs = "".join(["""&lt;li&gt;&lt;a href="/{0}"&gt;{1}&lt;/a&gt;&lt;/li&gt;""".format(p, name) for (name, p) in fs])
-    UL = "&lt;ul&gt;{0}&lt;/ul&gt;".format(LIs)
+    LIs = "".join(["""<li><a href="/{0}">{1}</a></li>""".format(p, name) for (name, p) in fs])
+    UL = "<ul>{0}</ul>".format(LIs)
     return main_template(path, UL)
 
 def file_list(path):
@@ -271,9 +271,9 @@ def file_list(path):
 
 def breadcrumbs(path): 
     if path == "":
-        return """&lt;div class="breadcrumbs"&gt;home&lt;/div&gt;"""
+        return """<div class="breadcrumbs">home</div>"""
     s = re.split(r"[/\\]", path)
-    template = """&lt;div class="breadcrumbs"&gt;&lt;a href="/"&gt;home&lt;/a&gt;/{0}&lt;/div&gt;"""
+    template = """<div class="breadcrumbs"><a href="/">home</a>/{0}</div>"""
     if len(s) == 1:
         return template.format(s[0])
     elif len(s) == 2 and s[0] == "":
@@ -283,7 +283,7 @@ def breadcrumbs(path):
         for end in xrange(1, len(s)):
             elem = s[end-1].strip("/\\")
             link = "/" + ("/".join(s[0:end]))
-            res.append("""&lt;a href="{0}"&gt;{1}&lt;/a&gt;""".format(link, elem))
+            res.append("""<a href="{0}">{1}</a>""".format(link, elem))
         return template.format("/".join(res) + "/" + s[-1])
 
 def is_dir(path):
@@ -312,7 +312,7 @@ settings = {
 app = tornado.web.Application(urls, **settings)
 WIKI_ROOT = "."
 if __name__ == "__main__":
-    if len(sys.argv) &gt; 1:
+    if len(sys.argv) > 1:
         WIKI_ROOT = sys.argv[1]
     print "Starting in", WIKI_ROOT
     app.listen(4848)
@@ -393,10 +393,10 @@ def edit_page(path, contents, message="Minor edit", wiki="."):
 Having seen the previous three functions, it should be perfectly obvious how we go about editing an existing page. Sing along this time.
 
 
--   Check it's in the repo, one two
--   Apply the given changes, three four
--   Commit the file, five six,
--   Raise an error if it doesn't exist, seven eight
+- Check it's in the repo, one two
+- Apply the given changes, three four
+- Commit the file, five six,
+- Raise an error if it doesn't exist, seven eight
 
 
 Now for the internals.
@@ -545,7 +545,7 @@ As you can see, the URL dispatch table pairs a `regex` to a particular handler c
 app = tornado.web.Application(urls, **settings)
 WIKI_ROOT = "."
 if __name__ == "__main__":
-    if len(sys.argv) &gt; 1:
+    if len(sys.argv) > 1:
         WIKI_ROOT = sys.argv[1]
     print "Starting in", WIKI_ROOT
     app.listen(4848)
@@ -559,15 +559,15 @@ The last bit we need to go over is the code defining our basic cosmetic template
 ```python
 def main_template(path, contents):
     return """
-    &lt;html&gt;
-      &lt;head&gt;
-        &lt;link rel="stylesheet" href="/static/css/wiki.css" type="text/css" media="screen" /&gt;
-      &lt;/head&gt;
-      &lt;body&gt;
+    <html>
+      <head>
+        <link rel="stylesheet" href="/static/css/wiki.css" type="text/css" media="screen" />
+      </head>
+      <body>
         {0}
-        &lt;div id="content"&gt;{1}&lt;/div&gt;
-      &lt;/body&gt;
-    &lt;/html&gt;
+        <div id="content">{1}</div>
+      </body>
+    </html>
     """.format(breadcrumbs(path), contents)
 ```
 
@@ -576,9 +576,9 @@ The `main_template` contains the basic `html`/`head`/`body` tags, and expects to
 ```python
 def breadcrumbs(path): 
     if path == "":
-        return """&lt;div class="breadcrumbs"&gt;home&lt;/div&gt;"""
+        return """<div class="breadcrumbs">home</div>"""
     s = re.split(r"[/\\]", path)
-    template = """&lt;div class="breadcrumbs"&gt;&lt;a href="/"&gt;home&lt;/a&gt;/{0}&lt;/div&gt;"""
+    template = """<div class="breadcrumbs"><a href="/">home</a>/{0}</div>"""
     if len(s) == 1:
         return template.format(s[0])
     elif len(s) == 2 and s[0] == "":
@@ -588,7 +588,7 @@ def breadcrumbs(path):
         for end in xrange(1, len(s)):
             elem = s[end-1].strip("/\\")
             link = "/" + ("/".join(s[0:end]))
-            res.append("""&lt;a href="{0}"&gt;{1}&lt;/a&gt;""".format(link, elem))
+            res.append("""<a href="{0}">{1}</a>""".format(link, elem))
         return template.format("/".join(res) + "/" + s[-1])
 ```
 
@@ -597,28 +597,28 @@ I found it kind of odd that *this* was the most complicated single procedure in 
 ```python
 def edit_template(path, contents):
     return main_template(path, """
-    &lt;form action="/api/edit/{0}" method="POST"&gt;
-      &lt;textarea id="new_contents" name="new_contents"&gt;{1}&lt;/textarea&gt;
-      &lt;textarea id="commit_message" name="commit_message"&gt;&lt;/textarea&gt;
-      &lt;input type="submit" value="Submit" /&gt;
-    &lt;/form&gt;""".format(path, contents))
+    <form action="/api/edit/{0}" method="POST">
+      <textarea id="new_contents" name="new_contents">{1}</textarea>
+      <textarea id="commit_message" name="commit_message"></textarea>
+      <input type="submit" value="Submit" />
+    </form>""".format(path, contents))
 
 def create_template(path):
     return main_template(path, """
-    &lt;p&gt;Page '{0}' not found.&lt;/p&gt;
-    &lt;form action="/api/create/{0}" method="POST"&gt;
-       &lt;input type="submit" value="Create" /&gt;
-    &lt;/form&gt;
+    <p>Page '{0}' not found.</p>
+    <form action="/api/create/{0}" method="POST">
+       <input type="submit" value="Create" />
+    </form>
     """.format(path))
 
 def view_template(path, contents):
     return main_template(path, """
-    &lt;div class="controls"&gt;
-       &lt;form action="/api/delete/{0}" method="POST"&gt;
-          &lt;input type="submit" value="Delete" /&gt;
-       &lt;/form&gt;
-       &lt;a href="/edit/{0}"&gt;Edit&lt;/a&gt;
-    &lt;/div&gt;
+    <div class="controls">
+       <form action="/api/delete/{0}" method="POST">
+          <input type="submit" value="Delete" />
+       </form>
+       <a href="/edit/{0}">Edit</a>
+    </div>
     {1}
     """.format(path, contents))
 ```
@@ -630,8 +630,8 @@ The last template we've got is
 ```
 def list_template(path):
     fs = file_list(path)
-    LIs = "".join(["""&lt;li&gt;&lt;a href="/{0}"&gt;{1}&lt;/a&gt;&lt;/li&gt;""".format(p, name) for (name, p) in fs])
-    UL = "&lt;ul&gt;{0}&lt;/ul&gt;".format(LIs)
+    LIs = "".join(["""<li><a href="/{0}">{1}</a></li>""".format(p, name) for (name, p) in fs])
+    UL = "<ul>{0}</ul>".format(LIs)
     return main_template(path, UL)
 
 def file_list(path):

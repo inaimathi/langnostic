@@ -28,19 +28,19 @@ fState comps = case comps of
                  _  -> {string = (head comps), selectionStart=0, selectionEnd=0}
 
 esc = Keyboard.isDown 27
-ctrlSpace = dropRepeats . lift and &lt;| combine [Keyboard.ctrl, Keyboard.space]
+ctrlSpace = dropRepeats . lift and <| combine [Keyboard.ctrl, Keyboard.space]
 
 empty : Signal Element
-empty = sampleOn (merge Keyboard.enter esc) . fst &lt;| Input.field "Enter text"
+empty = sampleOn (merge Keyboard.enter esc) . fst <| Input.field "Enter text"
 
 completeElem : Signal Element
-completeElem = lift ((Input.fields Input.emptyFieldState).field id "Enter text") . sampleOn ctrlSpace . lift fState &lt;| lift completions content
+completeElem = lift ((Input.fields Input.emptyFieldState).field id "Enter text") . sampleOn ctrlSpace . lift fState <| lift completions content
 
 completions : String -> [String]
-completions partial = if | 0 &lt; String.length partial -> filter (String.startsWith partial) wordList
+completions partial = if | 0 < String.length partial -> filter (String.startsWith partial) wordList
                          | otherwise          -> []
 
-main = lift2 above (merges [field, completeElem, empty]) . lift asText &lt;| lift completions content
+main = lift2 above (merges [field, completeElem, empty]) . lift asText <| lift completions content
 
 --- Dummy data
 wordList : [String]
@@ -67,36 +67,36 @@ Module and import declarations. Nothing to see here, move along.
 fState : [String] -> Input.FieldState
 fState comps = case comps of
                  [] -> {string = "", selectionStart=0, selectionEnd=0}
-                 _  -> {string = (head comps), selectionStart=0, selectionEnd=(String.length &lt;| head comps)}
+                 _  -> {string = (head comps), selectionStart=0, selectionEnd=(String.length <| head comps)}
 ```
 
 The first line in this bit sets up a `field`, which is represented as a pair of `Signal`s; one for the element and one for the content. Signals are a pretty good way of modeling state changes over time in a purely-functional context. You can think of one as the infinite stream of possible values it'll contain, the current of which your program will be continuously operating. An input `field` is a *pair* of signals because you'd like to be able to change it<a name="note-Mon-Feb-17-150016EST-2014"></a>[|2|](#foot-Mon-Feb-17-150016EST-2014), as well as receive updates about its state changes. We'll do that by combining several signals on particular sample points, and `FieldState` is the type we can eventually funnel into a field.
 
 ```haskell
 esc = Keyboard.isDown 27
-ctrlSpace = dropRepeats . lift and &lt;| combine [Keyboard.ctrl, Keyboard.space]
+ctrlSpace = dropRepeats . lift and <| combine [Keyboard.ctrl, Keyboard.space]
 ```
 
-These represent two different signals we'd like from the `Keyboard` module. The first will be `True` whenever the Escape key is down<a name="note-Mon-Feb-17-150022EST-2014"></a>[|3|](#foot-Mon-Feb-17-150022EST-2014), the second will be `True` when both the `Ctrl` and `Space` key are pressed<a name="note-Mon-Feb-17-150025EST-2014"></a>[|4|](#foot-Mon-Feb-17-150025EST-2014). The types at each step might be useful. In particular, `ctrlSpace : Signal Bool`, `combine : [Signal a] -> Signal [a]` and `lift and : Signal [Bool] -> Signal Bool`. The `dropRepeats` is the only chunklet whose type signature will give you no further understanding <a name="note-Mon-Feb-17-150223EST-2014"></a>[|5|](#foot-Mon-Feb-17-150223EST-2014); it's there to prevent partial signal changes from triggering a "change" in the `ctrlSpace` signal itself. Also, on a syntax note, the `&lt;|` is identical to [Haskell's $](http://stackoverflow.com/a/1290727/190887).
+These represent two different signals we'd like from the `Keyboard` module. The first will be `True` whenever the Escape key is down<a name="note-Mon-Feb-17-150022EST-2014"></a>[|3|](#foot-Mon-Feb-17-150022EST-2014), the second will be `True` when both the `Ctrl` and `Space` key are pressed<a name="note-Mon-Feb-17-150025EST-2014"></a>[|4|](#foot-Mon-Feb-17-150025EST-2014). The types at each step might be useful. In particular, `ctrlSpace : Signal Bool`, `combine : [Signal a] -> Signal [a]` and `lift and : Signal [Bool] -> Signal Bool`. The `dropRepeats` is the only chunklet whose type signature will give you no further understanding <a name="note-Mon-Feb-17-150223EST-2014"></a>[|5|](#foot-Mon-Feb-17-150223EST-2014); it's there to prevent partial signal changes from triggering a "change" in the `ctrlSpace` signal itself. Also, on a syntax note, the `<|` is identical to [Haskell's $](http://stackoverflow.com/a/1290727/190887).
 
 Onward.
 
 ```haskell
 empty : Signal Element
-empty = sampleOn (merge Keyboard.enter esc) . fst &lt;| Input.field "Enter text"
+empty = sampleOn (merge Keyboard.enter esc) . fst <| Input.field "Enter text"
 
 completeElem : Signal Element
-completeElem = lift ((Input.fields Input.emptyFieldState).field id "Enter text") . sampleOn ctrlSpace . lift fState &lt;| lift completions content
+completeElem = lift ((Input.fields Input.emptyFieldState).field id "Enter text") . sampleOn ctrlSpace . lift fState <| lift completions content
 
 completions : String -> [String]
-completions partial = if | 0 &lt; String.length partial -> filter (String.startsWith partial) wordList
+completions partial = if | 0 < String.length partial -> filter (String.startsWith partial) wordList
                          | otherwise          -> []
 ```
 
 This is the real meat right here. `empty` is the signal of empty elements which will "changes" whenever the `enter` or `esc` keys are pressed<a name="note-Mon-Feb-17-150245EST-2014"></a>[|6|](#foot-Mon-Feb-17-150245EST-2014). `completeElem` is the signal of filled elements that "changes" whenever the user hits `Ctrl + Space`. Finally, `completions` is the signal of completions of the current text in the main input.
 
 ```haskell
-main = lift2 above (merges [field, completeElem, empty]) . lift asText &lt;| lift completions content
+main = lift2 above (merges [field, completeElem, empty]) . lift asText <| lift completions content
 
 --- Dummy data
 wordList : [String]
@@ -125,22 +125,22 @@ import Graphics.Input as Input
 fState : [String] -> Input.FieldState
 fState comps = case comps of
                  [] -> {string = "", selectionStart=0, selectionEnd=0}
-                 _  -> {string = (head comps), selectionStart=0, selectionEnd= (String.length &lt;| head comps)}
+                 _  -> {string = (head comps), selectionStart=0, selectionEnd= (String.length <| head comps)}
 
 esc = Keyboard.isDown 27
-ctrlSpace = dropRepeats . lift and &lt;| combine [Keyboard.ctrl, Keyboard.space]
+ctrlSpace = dropRepeats . lift and <| combine [Keyboard.ctrl, Keyboard.space]
 
 empty : Signal Element
-empty = sampleOn (merge Keyboard.enter esc) . fst &lt;| Input.field "Enter text"
+empty = sampleOn (merge Keyboard.enter esc) . fst <| Input.field "Enter text"
 
 completeElem : Signal Element
-completeElem = lift ((Input.fields Input.emptyFieldState).field id "Enter text") . sampleOn ctrlSpace . lift fState &lt;| lift2 completions content wordList
+completeElem = lift ((Input.fields Input.emptyFieldState).field id "Enter text") . sampleOn ctrlSpace . lift fState <| lift2 completions content wordList
 
 completions : String -> [String] -> [String]
-completions partial wordList = if | 0 &lt; String.length partial -> filter (String.startsWith partial) wordList
+completions partial wordList = if | 0 < String.length partial -> filter (String.startsWith partial) wordList
                                   | otherwise          -> []
 
-main = lift2 above (merges [field, completeElem, empty]) . lift asText &lt;| lift2 completions content wordList
+main = lift2 above (merges [field, completeElem, empty]) . lift asText <| lift2 completions content wordList
 
 port wordList : Signal [String]
 
@@ -151,30 +151,30 @@ port output = keepIf (\s -> s/="") "" (sampleOn Keyboard.enter content)
 That's a minimally changed `.elm` file. The differences are
 
 
--   We've added port declarations at the bottom there. One incoming, which is just a type declaration, and one outgoing, which has a type declaration and a transmitter function.
--   We've changed `completions` so that it takes its `wordList` as input
--   Anywhere we used to call `completions` with `lift completions content`, we now have to call it with `lift2 completions content wordList`
+- We've added port declarations at the bottom there. One incoming, which is just a type declaration, and one outgoing, which has a type declaration and a transmitter function.
+- We've changed `completions` so that it takes its `wordList` as input
+- Anywhere we used to call `completions` with `lift completions content`, we now have to call it with `lift2 completions content wordList`
 
 
 The file you'd embed that module into would look something like this<a name="note-Mon-Feb-17-150258EST-2014"></a>[|7|](#foot-Mon-Feb-17-150258EST-2014)
 
 ```html
-&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  &lt;head>
-    &lt;title>Embedding Autocomplete - Elm&lt;/title>
-    &lt;script type="text/javascript" src="/elm-runtime.js">&lt;/script>
-    &lt;script type="text/javascript" src="/build/Autocomplete.js">&lt;/script>
-  &lt;/head>
-  &lt;body>
-    &lt;div id="auto" style="position: absolute; left: 50px; top: 50px; width: 600px; height: 100px; border: 2px dashed #000;">&lt;/div>
-    &lt;script type="text/javascript">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Embedding Autocomplete - Elm</title>
+    <script type="text/javascript" src="/elm-runtime.js"></script>
+    <script type="text/javascript" src="/build/Autocomplete.js"></script>
+  </head>
+  <body>
+    <div id="auto" style="position: absolute; left: 50px; top: 50px; width: 600px; height: 100px; border: 2px dashed #000;"></div>
+    <script type="text/javascript">
       var can = Elm.embed(Elm.Autocomplete, 
                           document.getElementById("auto"), 
                           {wordList: ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"]});
       can.ports.output.subscribe(function (msg) { console.log("FROM MINIBUFFER :: ", msg) })
-    &lt;/script>
-  &lt;/body>
-&lt;/html>
+    </script>
+  </body>
+</html>
 ```
 
 > EDIT:  
@@ -193,22 +193,24 @@ It's awesome enough that I'm seriously considering Elm for some production work 
 There are still a [few minor headaches with the language](http://langnostic.blogspot.ca/2013/06/elm-in-practice.html), though thankfully I didn't have to stub my toe on most of them this time around. The only ones that ended up being annoying, or will be very shortly are
 
 
--   **No signal defaults from within `.elm` files**. This bites during development. When you have an Elm module that will depend on an outside signal for its operation, you have to set a default value for that signal outside. This is ok once you've got the embedding file together, but it does mean that that second `Autocomplete.elm` file above will give you the error 
-- 
-- ```
-Initialization Error: port 'wordList' was not given an input!
--     Open the developer console for more details.
+- **No signal defaults from within `.elm` files**. This bites during development. When you have an Elm module that will depend on an outside signal for its operation, you have to set a default value for that signal outside. This is ok once you've got the embedding file together, but it does mean that that second `Autocomplete.elm` file above will give you the error 
+
 ```
-- 
-- if you try to run it standalone without modifications. The workaround I've been using is to comment out the `port` declaration line, and add one that reads `wordList = constant ["one", "two", "three", "four", "five", "six"]`. It works, but I'd rather not have to do it.
--   **No Haskell-style sections**. It only bit once in this program, and it's tolerable, but I'd much rather write `(/="")` than the equivalent, but syntactically noisier `(\s -> s /= "")`.
--   **No Indexing**. I'm almost convinced this has to be an omission on my part, and there's actually a way to do it out of the box, because it seems mildly bizarre to have [`List.head`](http://library.elm-lang.org/catalog/evancz-Elm/0.11/List) and [`String.sub`](http://library.elm-lang.org/catalog/evancz-Elm/0.11/String) in a language, but no list indexing operator or function. If there is one, just point me to it. In the meantime, you can define your own minimal version as `(!!) lst ix = lst |> drop ix |> head`, or maybe 
+Initialization Error: port 'wordList' was not given an input!
+Open the developer console for more details.
+```
+
+  if you try to run it standalone without modifications. The workaround I've been using is to comment out the `port` declaration line, and add one that reads `wordList = constant ["one", "two", "three", "four", "five", "six"]`. It works, but I'd rather not have to do it.
+- **No Haskell-style sections**. It only bit once in this program, and it's tolerable, but I'd much rather write `(/="")` than the equivalent, but syntactically noisier `(\s -> s /= "")`.
+- **No Indexing**. I'm almost convinced this has to be an omission on my part, and there's actually a way to do it out of the box, because it seems mildly bizarre to have [`List.head`](http://library.elm-lang.org/catalog/evancz-Elm/0.11/List) and [`String.sub`](http://library.elm-lang.org/catalog/evancz-Elm/0.11/String) in a language, but no list indexing operator or function. If there is one, just point me to it. In the meantime, you can define your own minimal version as `(!!) lst ix = lst |> drop ix |> head`, or maybe
+
 ```haskell
 (!!) lst ix = case drop ix lst of
                  [] -> Nothing
-                 sub -> Just &lt;| head sub
+                 sub -> Just <| head sub
 ```
--  if getting out of array bounds gives you pause. Neither of these deals with negative indices, but they'll give you trivial indexing capabilities.
+
+- if getting out of array bounds gives you pause. Neither of these deals with negative indices, but they'll give you trivial indexing capabilities.
 
 
 That's that, I guess. I *was* going to talk a bit about [Pure](http://purelang.bitbucket.org/). And [Forth](http://en.wikipedia.org/wiki/Forth_%28programming_language%29). And maybe incidentally a bit about [C](http://gcc.gnu.org/c99status.html), but this is way longer than I was expecting already, so I think I'll call it for today.

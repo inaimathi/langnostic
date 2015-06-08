@@ -13,9 +13,9 @@ This is a phrase I hear pretty often [in context with Erlang](http://www.youtube
 In fact, it's just a natural consequence of having
 
 
--   a functional language
--   that structures its code in processes
--   and supports tail recursion
+- a functional language
+- that structures its code in processes
+- and supports tail recursion
 
 
 If your language has all of those, then it also supports "Hot Code Swapping" by default as long as you structure your processes appropriately. Here's how it works, with the magic peeled away. First, you need to understand what a process looks like. It looks something like this (Erlang pseudocode, it won't actually run):
@@ -82,7 +82,7 @@ Eshell V5.9.1  (abort with ^G)
 1> c(example_server).
 {ok, example_server}
 2> {ok, Proc} = example_server:start().
-{ok, &lt;0.39.0>}
+{ok, <0.39.0>}
 3> Proc ! foo.
 "You sent 'foo'"
 ...

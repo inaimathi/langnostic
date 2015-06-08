@@ -21,27 +21,23 @@ Now then, without further ado.
 
 So here's the minimal amount of stuff we need to model in order to be a useful play-testing tool:
 
-
--   cards
--   collections of cards *(I'm going with "stack" for the moment)*
--   hands *(different from stacks in that they're not on the table, but being held by players)*
--   players
--   die-rolls/coin-flips
--   counters/notes
-
+- cards
+- collections of cards *(I'm going with "stack" for the moment)*
+- hands *(different from stacks in that they're not on the table, but being held by players)*
+- players
+- die-rolls/coin-flips
+- counters/notes
 
 And we need to be able to interact with each one in a variety of ways.
 
-
--   rotate/move/flip cards and collections *("rotate" as in "on an axis", "flip" as in "from face-up to face-down or vice-versa")*
--   play *(either face up or face down)*
--   play to *(onto a stack rather than onto the board directly)*
--   pick up
--   shuffle *(this one just applies to a stack)*
--   peek *(a player looks at n cards of a given stack)*
--   show *(all players see n cards of a given stack)*
--   re-arrange *(peek at `n` cards and put them back in an order you specify)*
-
+- rotate/move/flip cards and collections *("rotate" as in "on an axis", "flip" as in "from face-up to face-down or vice-versa")*
+- play *(either face up or face down)*
+- play to *(onto a stack rather than onto the board directly)*
+- pick up
+- shuffle *(this one just applies to a stack)*
+- peek *(a player looks at n cards of a given stack)*
+- show *(all players see n cards of a given stack)*
+- re-arrange *(peek at `n` cards and put them back in an order you specify)*
 
 Each line of that second group needs to be a handler. Each line of the first group needs to be represented somewhere. Despite my confidence, I'm not *entirely* sure I won't be porting away from Hunchentoot if hacking SSE support into it turns out to be too difficult, so I'd rather define a little sub-language for handler definitions than call `define-easy-handler`s manually. While I'm at it, let that mini-language take type-hints so I don't have to deal with chucking strings around myself. The initial version of `define-handler` does simple type conversion, and thinly wraps `define-easy-handler`
 
@@ -80,7 +76,7 @@ and have it mean `"give me the Integers thing-id, x, y, z and rot, and I'll give
 
 That's it for day one.
 
-## <a name="day-" href="#day-"></a>Day 3
+## <a name="day-three" href="#day-three"></a>Day 3
 
 I skipped one. In truth, this is a few days later, and I *have* been throwing hours/half-hours at the problem in the meantime, but getting no dedicated time down.
 
@@ -164,13 +160,13 @@ And it can.
 
 The other thing I'm finalizing is the `id` system. An earlier crack just had each component keep count of its contents and assign that as the next id. There are a few obvious problems with this. Firstly that it would result in duplicate `id`s sometimes. Secondly, unless I wanted to update the item `id` every time I moved the item, this would mean a global counter in `*server*`, which would mean a lock on the whole server any time anything changed play zones. The change I ended up making is just using `[gensym](http://www.lispworks.com/documentation/HyperSpec/Body/f_gensym.htm#gensym)`. Ordinarily, I wouldn't *but*: these `id`s don't need to be cryptographically random, they just need to be unique with respect to all other active `id`s. Of course, doing it this way is going to run me up against potential problems when I get to loading games from disk storage, but that's a pretty long way off. Anyhow, as a result, all the `foo-id` and `id` fields are now `keyword`s rather than `integer`s.
 
-## <a name="day-" href="#day-"></a>Day 4
+## <a name="day-4" href="#day-4"></a>Day 4
 
 First stab at the interface. And by "first stab", I mean "stupid basic interface that quote renders end-quote things by echoing them to console". It's nowhere near complete, but it's already enough to iron out a wrinkle or two. Specifically, I've had to go back through the model and change every `belongs-to` slot to expect an ID rather than a pointer to a `player`. It became obvious that this was necessary when I got memory-use warnings followed by a crash when I tried to "render" a card. `encode-json-to-string` doesn't like circular references, you see.
 
 Now that everything uses IDs, there's one semi-obvious good thing about it: it'll make putting together the front-end much easier. Because the IDs are now globally unique, I can use them as a `class` tag in the `DOM` to identify objects on the board. That'll let me update the state of a lot of things in the UI without having to re-render very much at all.
 
-## <a name="day-" href="#day-"></a>Day 6
+## <a name="day-6" href="#day-6"></a>Day 6
 
 I've been refining the model a bit to take into account some of the games I'll want to model for this project. There's also a slightly revised `define-handler` macro that stores information about any `handler`s it `define`s, which then gets served through the `list-handlers` handler. That'll make certain parts of the front-end easier to put together.
 
@@ -180,7 +176,7 @@ Not much work other than that, sadly. I'm still moving forward in increments of 
 
 My son is at a stage where everything he gets his hands on automatically goes in his mouth. Food, toys, cats, carpet, the computer I got him to paw at. Everything. He's also gotten to teething, which seems to be a very painful experience judging from his vocal emissions.
 
-## <a name="day-" href="#day-"></a>Day 9
+## <a name="day-9" href="#day-9"></a>Day 9
 
 The past few days have been mostly prospective development and a little thought about secrecy. The end result is going to be some minor mechanical changes to how `id`s function, and they won't be shown for cards inside stacks.
 
@@ -190,27 +186,25 @@ This is not what you want.
 
 The default for that situation is that no one should know what the card is, or have any additional information about it. There are two ways to solve this:
 
-
 1.   We could create canonical `id`s for everything, but display a salted+hashed version to the front end, changing out the salt whenever the zone of play changes. That would let us keep a single `id` in the back-end, but it would keep everything reasonably anonymous to the front end. It seems kind of expensive, and complicated, and not particularly useful in any case.
 1.   We could assign a new `id` to a `thing` when it crosses play zones. So, for example, when you `play` a card, it gets a new `id` while in play. If you then put it into a stack, it gets a new `id` while there. If you play it face-down out of the stack again, that's a third in-play `id`.
 
 
 We don't actually need a central way of addressing a given `thing`. Or, at least, we don't yet, so I'm inclined to go for this second option. Remember, we generate `id`s through `gensym`, which is a pretty cheap computation as far as I know. We could, of course, keep our own global counter as part of `*server*`, but I'll see if that's necessary later. What I might want to do at the moment is name the function `make-id` just to make it a bit simpler to change if we end up needing to.
 
-## <a name="day-" href="#day-"></a>Day 10
+## <a name="day-10" href="#day-10"></a>Day 10
 
 I've been thinking about the SSE situation, and it occurred to me that since
 
-
--   I'd only need one SSE channel per game
--   It would contain only public data
--   I would want it to support spectators *(and therefore wouldn't want to restrict access to it)*
--   I plan to deploy Deal by running a reverse-proxy from [nginx](http://wiki.nginx.org/Main)
+- I'd only need one SSE channel per game
+- It would contain only public data
+- I would want it to support spectators *(and therefore wouldn't want to restrict access to it)*
+- I plan to deploy Deal by running a reverse-proxy from [nginx](http://wiki.nginx.org/Main)
 
 
 it wouldn't be a bad idea to off-load that particular handler onto nginx itself. The ideal situation would be one where I could just serve up a file per game as the "stream", then keep appending to it from within Deal. That *doesn't* seem to be trivially possible, but nginx *does* have an optional, production-ready [push_stream_module](https://github.com/wandenberg/nginx-push-stream-module) licensed under [GPL3](http://gplv3.fsf.org/). That's something to consider, since it would really only take a bit of configuration twiddling as opposed to actual code to get this up-and-running.
 
-## <a name="day-" href="#day-"></a>Day 12
+## <a name="day-12" href="#day-12"></a>Day 12
 
 Ok, I'm ignoring the SSE question for now; we don't really have any call for it until I get enough of a front-end together to support more than one player in any case. That's proceeding apace. I've been thinking about how to approach this task; should I abstract as much and as aggressively as possible, or should I keep it plain, straightforward and stupid? Typically, I go for the second option if I can help it at all, but I decided to go the opposite way this time. Here's a list of utilities I defined. Mostly thin wrappers around existing [jQuery](http://jquery.com/) constructs, and two *very* tasty pieces of syntactic sugar to help me define things.
 
@@ -292,9 +286,11 @@ Ok, I'm ignoring the SSE question for now; we don't really have any call for it 
          ($ ,container (append (who-ps-html ,(expand-self-expression markup thing))))
          ,@(loop for clause in behavior
               collect (expand-self-expression clause thing))))))
+```
 
-&lt;p>The first bunch already kind of got addressed &lt;a href="http://langnostic.blogspot.ca/2011/03/javascript-with-lisp.html">last time I talked about parenscript&lt;/a>. Some newcomers include sugar for using map, draggables and droppables in a simpler way than the default jQuery UI package allows for&lt;/p>
+The first bunch already kind of got addressed [last time I talked about parenscript](/posts/javascript-with-a-lisp). Some newcomers include sugar for using map, draggables and droppables in a simpler way than the default jQuery UI package allows for
 
+```lisp
 (defpsmacro $map (lst &body body)
   `(chain j-query (map ,lst (lambda (elem i) ,@body))))
 
@@ -345,7 +341,7 @@ I'm still considering having the macro itself add the declaration of `:id (self 
 
 That's that for now. Hopefully, I can 0.1 this thing fairly soon, and finally publish part one of this journal. I *was* going to wait 'till the end, but it looks like the complete document will be far too long to publish at once.
 
-## <a name="day-" href="#day-"></a>Day 37
+## <a name="day-37" href="#day-37"></a>Day 37
 
 Kind of a big jump this time. Haven't really had the chance to do stuff related to this project lately. My time's been getting filled with extremely interesting, lispy things that I'm unfortunately not allowed to tell you about. Yet. Hopefully, I can convince the correct humans to let me publish some or all of it in the near future.
 
@@ -364,7 +360,7 @@ Fuck, I had vaguely hoped that in the year 2013, [this](http://langnostic.blogsp
 
 That's that. Once those are ironed out, I can finally post a one point oh and get people playing it. Oh, and get this piece published already so I can get on with the next one: taking it from "working" to "beautiful".
 
-## <a name="day-" href="#day-"></a>Day 38
+## <a name="day-38" href="#day-38"></a>Day 38
 
 So the trivial part of the feature is done. It seems that the nginx stream module is easy to set up and get running properly. I haven't restricted publishing rights to `localhost` yet, but I can't imagine that'll be much more difficult to configure. Now comes the slightly harder part: defining the infrastructure inside of `deal` to publish to these streams and get new arrivals up and running. The basics will look *something* like
 
@@ -379,13 +375,13 @@ So the trivial part of the feature is done. It seems that the nginx stream modul
 Except that I think I'm going to make `move` itself a JSON object just to make it easier to work with on the other end. The `*stream-server*` variable will then be set to the location of the nginx instance that handles stream serving for me. Note two things about this setup, incidentally:
 
 
--   the nginx stream module natively handles multiple protocols. By default it uses a forever-frame, but it can be configured to expose *the same stream* as an EventSource<a name="note-Sun-Aug-25-220313EDT-2013"></a>[|2|](#foot-Sun-Aug-25-220313EDT-2013), and a web-socket, and a long-poll handler.
--   the server handling my stream publishing doesn't have to be on the same machine as the rest of the application, which opens up some interesting hosting possibilities if scaling up ever gets to be *the* problem I'm staring down
+- the nginx stream module natively handles multiple protocols. By default it uses a forever-frame, but it can be configured to expose *the same stream* as an EventSource<a name="note-Sun-Aug-25-220313EDT-2013"></a>[|2|](#foot-Sun-Aug-25-220313EDT-2013), and a web-socket, and a long-poll handler.
+- the server handling my stream publishing doesn't have to be on the same machine as the rest of the application, which opens up some interesting hosting possibilities if scaling up ever gets to be *the* problem I'm staring down
 
 
 It also really, truly looks like it'll be both more performant and much easier than trying to re-write pieces of Hunchentoot to support asynchronous requests in certain contexts.
 
-## <a name="day-" href="#day-"></a>Day 41
+## <a name="day-41" href="#day-41"></a>Day 41
 
 I have no idea what happened, but I finally ended up getting a solid day to put stuff together for this project. As a result, I've got a pretty-much-playable edition sitting up on my server, waiting for a couple more edits before I unveil it, and this massive `Journal: Part One` I've had going. Right now, I'm in the guts of the `define-handler` mini-language, trying to get my pseudo-type-system to automatically solve the problems of argument bounding for me. That is, I want to be able to specify the min and max for various argument types and have it do the right thing. Specifically, I'd like to be able to specify minimum/maximum *values* for `:int`s, and minimum/maximum *lengths* for `:string`s.
 
@@ -404,7 +400,7 @@ What do I do with a string *longer* than I want? There's two reasonable-sounding
 
 Erring means chat messages get dropped, truncating means something goes out over the wire, even if it wasn't exactly what the user intended. Now that I think about it, it seems obvious that what you'd really want, as a user, is for the server to be hard-assed about it, but the front-end to tell you what's going on. In the interests of loose coupling, this means I actually want to specify that limitation in both places. Which works perfectly, because my server already emits the specifications for its handlers through [`/server-info` requests](https://github.com/Inaimathi/deal/blob/master/deal.lisp#L6-L12), and that will automatically include any mins/maxes I define in the relevant argument lines.
 
-## <a name="day-" href="#day-"></a>Day 42
+## <a name="day-42" href="#day-42"></a>Day 42
 
 Basically, finished a bunch of the UI changes I needed to make in order to get this into a playable state. Not quasi-playable, not semi-playable, just plain playable. You can actually go [here](http://deal.inaimathi.ca/static/index.html) and use it for realzies. I mean, it's not *enjoyable* yet, and there's a lot of basic functionality still missing<a name="note-Sun-Aug-25-220327EDT-2013"></a>[|5|](#foot-Sun-Aug-25-220327EDT-2013), but you can actually go there with a couple of friends, start a game of [crazy eights](http://en.wikipedia.org/wiki/Crazy_Eights) or [something](http://www.pagat.com/climbing/asshole.html), and have an excellent chance of finishing it before anything crashes. If anything crashes, incidentally, [do report that](https://github.com/Inaimathi/deal/issues?state=open). Or patch it and send me a pull request.
 

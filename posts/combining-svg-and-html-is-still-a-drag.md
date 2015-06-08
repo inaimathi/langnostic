@@ -3,10 +3,10 @@ Dragging SVG elements is harder than it might appear at first glance.
 The underlying implementation of the SVG DOM and the HTML DOM is different in current browsers you see, so the standard HTML5 drag event doesn't apply to SVG nodes. Luckily, `mousedown`, `mousemove` and `mouseup` *are* supported, so you'd think it would be a straight-forward task to implement the fucker yourself. You probably imagine, as I did initially, something that takes a selector and a list of callbacks, and implements something similar to jQuery's `.draggable()` in ~30 lines of code by
 
 
--   binding a callback to the targets' `mousedown`, `mousemove`, `mouseup` events
--   storing the initial position of the element, and its delta from the mouse cursor
--   preventing default on `mousedown`
--   in addition to firing the callback, moving the target element by manipulating `x` and `y` coordinates using the current mouse position, initial delta and initial position
+- binding a callback to the targets' `mousedown`, `mousemove`, `mouseup` events
+- storing the initial position of the element, and its delta from the mouse cursor
+- preventing default on `mousedown`
+- in addition to firing the callback, moving the target element by manipulating `x` and `y` coordinates using the current mouse position, initial delta and initial position
 
 
 Maybe that's possible for the simple cases, but it's the edges that'll get you. And unless an implementation happens to dull all *your* edges, it's not really good enough.

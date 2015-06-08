@@ -9,11 +9,11 @@ Anyhow; now that my mind is a-twirl, my new spawn is home again, and my nose has
 `[cl-notebook](https://github.com/Inaimathi/cl-notebook)` got a bit more work thrown at it. One or two minor issues fixed, and we've got a working macroexpander now. That's basically it in terms of work *on* it. As for work *with* it, I've started writing an HTML5 edition of Lemonade Stand, and I'm thinking about a few other web games/creativity toys. Its shaken out a few obvious features that I'd want from a proper IDE, and a few obvious bugs that I need to squish. Including, but not limited to:
 
 
--   **A standard-output, and/or logging buffer** of some sort would be very useful when debugging web applications. That way I could keep track of the request logs as I'm working. This time, I ended up running `cl-notebook` through [`SLIME`](http://common-lisp.net/project/slime/), kicking [`house`](https://github.com/Inaimathi/house) into debug mode, and using the REPL as my log buffer. It worked ok, but the whole point of `cl-notebook` is that the user not need Emacs to work productively in Common Lisp. So that's gotta change.
--   More advanced **s-expression navigation**. We've already got movement by s-expression, but we don't yet have transpose, slurp or barf, and I've officially noticed the pain. On a related note, the existing s-exp navigation doesn't handle quoted forms properly. Which is a bug. Not too serious, but I need to squish it, because it causes more annoyance than it should.
--   Some better **system for dealing with static assets**. Maybe a keystroke that uploads a local file and inserts its relative URL at point. The lemonade stand clone has a few images that I want to serve up along with the code, and the way I had to deal with that was, again, manually with Emacs. That is, I had to put the images in the right place via `cp`, then hop into that `SLIME` REPL I mentioned, and evaluate a new `define-file-handler` form. Ideally, all of this process should be automatic.
--   A proper **deployment system**. As in, a one-button thing that takes a notebook to an [ASDF](http://common-lisp.net/project/asdf/) project that you can link to from [cliki](http://www.cliki.net/), or pop into your `quicklisp/local-projects` folder. This includes proper handling of any of those static assets I mentioned in the previous point. Generating binaries would also be a nice touch.
--   **`house` sometimes explodes**. Which is bad. As in, when an improperly defined handler does something wrong, I've sometimes observed the condition handling prompt come up. Not sure how much I can do about this one, unfortunately, because I *have* to let through conditions of type `simple-error` in SBCL. That's the particular error type raised by a keyboard-interrupt in Emacs<a name="note-Thu-Jan-22-112909EST-2015"></a>[|1|](#foot-Thu-Jan-22-112909EST-2015), so I need to resolve the tension of "report, rather than exploding for run-time errors" with "I want to be able to shut the server down with a keyboard interrupt". We'll see how far I get.
+- **A standard-output, and/or logging buffer** of some sort would be very useful when debugging web applications. That way I could keep track of the request logs as I'm working. This time, I ended up running `cl-notebook` through [`SLIME`](http://common-lisp.net/project/slime/), kicking [`house`](https://github.com/Inaimathi/house) into debug mode, and using the REPL as my log buffer. It worked ok, but the whole point of `cl-notebook` is that the user not need Emacs to work productively in Common Lisp. So that's gotta change.
+- More advanced **s-expression navigation**. We've already got movement by s-expression, but we don't yet have transpose, slurp or barf, and I've officially noticed the pain. On a related note, the existing s-exp navigation doesn't handle quoted forms properly. Which is a bug. Not too serious, but I need to squish it, because it causes more annoyance than it should.
+- Some better **system for dealing with static assets**. Maybe a keystroke that uploads a local file and inserts its relative URL at point. The lemonade stand clone has a few images that I want to serve up along with the code, and the way I had to deal with that was, again, manually with Emacs. That is, I had to put the images in the right place via `cp`, then hop into that `SLIME` REPL I mentioned, and evaluate a new `define-file-handler` form. Ideally, all of this process should be automatic.
+- A proper **deployment system**. As in, a one-button thing that takes a notebook to an [ASDF](http://common-lisp.net/project/asdf/) project that you can link to from [cliki](http://www.cliki.net/), or pop into your `quicklisp/local-projects` folder. This includes proper handling of any of those static assets I mentioned in the previous point. Generating binaries would also be a nice touch.
+- **`house` sometimes explodes**. Which is bad. As in, when an improperly defined handler does something wrong, I've sometimes observed the condition handling prompt come up. Not sure how much I can do about this one, unfortunately, because I *have* to let through conditions of type `simple-error` in SBCL. That's the particular error type raised by a keyboard-interrupt in Emacs<a name="note-Thu-Jan-22-112909EST-2015"></a>[|1|](#foot-Thu-Jan-22-112909EST-2015), so I need to resolve the tension of "report, rather than exploding for run-time errors" with "I want to be able to shut the server down with a keyboard interrupt". We'll see how far I get.
 
 
 I'll post code eventually, but I want to fix up a few things in `cl-notebook` first.
@@ -164,43 +164,43 @@ index 0000000..2d10064
 +            | Playing deriving (Eq, Ord, Show)
 +
 +audio :: [JSString] -> IO Audio
-+audio fnames = do f &lt;- jsAudioNew fnames
-+                  dur &lt;- jsAudioGetDuration f
++audio fnames = do f <- jsAudioNew fnames
++                  dur <- jsAudioGetDuration f
 +                  return $ Audio { src=fnames, file=f, duration=dur
 +                                 , loop=False, muted=False, status=Stopped
 +                                 , volume=1.0 }
 +
 +play :: Audio -> IO Audio
-+play a = do _ &lt;- jsAudioPlay $ file a
++play a = do _ <- jsAudioPlay $ file a
 +            return $ a { status=Playing }
 +
 +pause :: Audio -> IO Audio
-+pause a = do off &lt;- jsAudioPause $ file a
++pause a = do off <- jsAudioPause $ file a
 +             return $ a { status = Paused off }
 +
 +stop :: Audio -> IO Audio
-+stop a = do _ &lt;- jsAudioPause $ file a
-+            _ &lt;- jsAudioSetCurrentTime (file a) 0.0
++stop a = do _ <- jsAudioPause $ file a
++            _ <- jsAudioSetCurrentTime (file a) 0.0
 +            return $ a { status = Stopped }
 +
 +jump :: Audio -> Float -> IO Audio
-+jump a off = do _ &lt;- jsAudioSetCurrentTime (file a) off
++jump a off = do _ <- jsAudioSetCurrentTime (file a) off
 +                return $ a
 +
 +mute :: Audio -> IO Audio
 +mute a = if muted a
 +         then return a
-+         else do _ &lt;- jsAudioSetVolume (file a) 0.0
++         else do _ <- jsAudioSetVolume (file a) 0.0
 +                 return $ a { muted=True }
 +
 +unmute :: Audio -> IO Audio
 +unmute a = if muted a
-+           then do _ &lt;- jsAudioSetVolume (file a) $ volume a
++           then do _ <- jsAudioSetVolume (file a) $ volume a
 +                   return $ a { muted=False }
 +           else return a
 +
 +setVolume :: Audio -> Float -> IO Audio
-+setVolume a vol = do _ &lt;- jsAudioSetVolume (file a) $ vol
++setVolume a vol = do _ <- jsAudioSetVolume (file a) $ vol
 +                     return $ a { muted=False, volume=vol }
 ```
 
@@ -223,10 +223,10 @@ So I think that's it for now. I'm going to take a serious break from both langua
 Last thing for this edition, I swear. Some small pieces of work have been done on [experimentaLISP](https://github.com/Inaimathi/experimentalisp), but I've mostly been thinking about it. Which is mildly disappointing from my perspective, given that this is supposed to be my experimental staging grounds. The particular thing I'm thinking about is methods. Which is actually to say, "how do you make operations generic over several types in something approaching a sane way?" The obvious way of doing it is pretty straight-forward:
 
 
--   generic functions are not `Generic Name Env Body`, but rather `Generic Name (Map Type Body)`
--   the generic tables are stored at top-level
--   when you evaluate a `defmethod` form, you're actually inserting an entry into the appropriate top-level table
--   when you evaluate a generic *call*, what actually happens is we go into that top-level table, do a lookup on the number and type of arguments to determine which actual body we're going to evaluate against them
+- generic functions are not `Generic Name Env Body`, but rather `Generic Name (Map Type Body)`
+- the generic tables are stored at top-level
+- when you evaluate a `defmethod` form, you're actually inserting an entry into the appropriate top-level table
+- when you evaluate a generic *call*, what actually happens is we go into that top-level table, do a lookup on the number and type of arguments to determine which actual body we're going to evaluate against them
 
 
 That more or less works<a name="note-Thu-Jan-22-113047EST-2015"></a>[|6|](#foot-Thu-Jan-22-113047EST-2015), but comes with the price that our definition operation really has to be `defgeneric!`. It mutates some piece of global state to achieve its goals, and it takes away the ability to locally override particular methods.

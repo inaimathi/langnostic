@@ -29,9 +29,9 @@ draggable dragDefs $ plainText "This text is draggable"
 and have that tap the right signals so that when you `mousedown` or `touch` on `"This text is draggable"`, it starts moving along with the cursor. In basic terms what needs to happen is
 
 
--   when the mouse down signal is being sent
--   and the `Mouse.focus` signal is referring to a draggable
--   start piping cursor position, modified by initial deltas, into the `x` and `y` coordinates of that element
+- when the mouse down signal is being sent
+- and the `Mouse.focus` signal is referring to a draggable
+- start piping cursor position, modified by initial deltas, into the `x` and `y` coordinates of that element
 
 
 and I have no idea what the appropriate way to express that is in the framework of the existing Elm language.

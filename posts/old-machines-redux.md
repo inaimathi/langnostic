@@ -32,10 +32,10 @@ I tested whether the thing boots before arranging all that hardware in the case.
 This brings my lifetime hard drive failure record by brand up to
 
 
--   3/6 - Maxtor
--   1/1 - Fujitsu
--   0/4 - OCZ
--   2/43 - Western Digital
+- 3/6 - Maxtor
+- 1/1 - Fujitsu
+- 0/4 - OCZ
+- 2/43 - Western Digital
 
 
 Which actually isn't too shabby overall.

@@ -16,76 +16,76 @@ The trivial `gen_server`-based user system looks something like
 
 -record(user,{timestamp, username, password}).
 
-register(Username, Password) -&gt; gen_server:call(?MODULE, {register, Username, NewPassword}).
+register(Username, Password) -> gen_server:call(?MODULE, {register, Username, NewPassword}).
 
-auth(Username, Password) -&gt; gen_server:call(?MODULE, {auth, Username, Password}).
+auth(Username, Password) -> gen_server:call(?MODULE, {auth, Username, Password}).
 
-change_password(Username, NewPassword) -&gt; gen_server:call(?MODULE, {change_pass, Username, NewPassword}).
+change_password(Username, NewPassword) -> gen_server:call(?MODULE, {change_pass, Username, NewPassword}).
 
-exists_p(Username) -&gt; 
+exists_p(Username) -> 
     try
         find(Username)
     catch
-        error:_ -&gt; false
+        error:_ -> false
     end.
 
-handle_call({register, Username, Password}, _From, State) -&gt; 
+handle_call({register, Username, Password}, _From, State) -> 
     Res = case exists_p(Username) of
-              false -&gt; User = #user{username=Username, password=Password, timestamp=now()},
-                       transaction(fun() -&gt; mnesia:write(User) end);
-              _ -&gt; already_exists
+              false -> User = #user{username=Username, password=Password, timestamp=now()},
+                       transaction(fun() -> mnesia:write(User) end);
+              _ -> already_exists
           end,
     {reply, Res, State};
-handle_call({auth, Username, Password}, _From, State) -&gt; 
+handle_call({auth, Username, Password}, _From, State) -> 
     try 
-        [User] = do(qlc:q([X || X &lt;- mnesia:table(user), 
+        [User] = do(qlc:q([X || X <- mnesia:table(user), 
                                 X#user.username =:= Name,
                                 X#user.password =:= Password])),
         {reply, User, State}        
     catch
-        error:_ -&gt; {reply, false, State}
+        error:_ -> {reply, false, State}
     end;
-handle_call({change_pass, Username, NewPassword}, _From, State) -&gt; 
+handle_call({change_pass, Username, NewPassword}, _From, State) -> 
     Rec = find(Username),
-    {reply, transaction(fun() -&gt; mnesia:write(Rec#user{password=NewPassword}) end), State}.
+    {reply, transaction(fun() -> mnesia:write(Rec#user{password=NewPassword}) end), State}.
                        
 %%%%%%%%%%%%%%%%%%%% database utility
-find(Name) -&gt; 
-    [Rec] = db:do(qlc:q([X || X &lt;- mnesia:table(user), X#user.username =:= Name])),
+find(Name) -> 
+    [Rec] = db:do(qlc:q([X || X <- mnesia:table(user), X#user.username =:= Name])),
     Rec.
                            
-do(Q) -&gt; transaction(fun() -&gt; qlc:e(Q) end).
+do(Q) -> transaction(fun() -> qlc:e(Q) end).
 
-transaction(F) -&gt;
+transaction(F) ->
     {atomic, Val} = mnesia:transaction(F),
     Val.
 
 %%%%%%%%%%%%%%%%%%%% generic actions
-start() -&gt; gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
-stop() -&gt; gen_server:call(?MODULE, stop).
+start() -> gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
+stop() -> gen_server:call(?MODULE, stop).
 
 %%%%%%%%%%%%%%%%%%%% gen_server handlers
-init([]) -&gt; {ok, []}.
-handle_cast(_Msg, State) -&gt; {noreply, State}.
-handle_info(_Info, State) -&gt; {noreply, State}.
-terminate(_Reason, State) -&gt; State ! {self(), close}, ok.
-code_change(_OldVsn, State, _Extra) -&gt; {ok, State}.
+init([]) -> {ok, []}.
+handle_cast(_Msg, State) -> {noreply, State}.
+handle_info(_Info, State) -> {noreply, State}.
+terminate(_Reason, State) -> State ! {self(), close}, ok.
+code_change(_OldVsn, State, _Extra) -> {ok, State}.
 ```
 
 ```erlang
-1&gt; mnesia:create_schema([node()]).
+1> mnesia:create_schema([node()]).
 ok
-2&gt; mnesia:start().
+2> mnesia:start().
 ok
-3&gt; rd(user,{username, password, timestamp}).
+3> rd(user,{username, password, timestamp}).
 user
-4&gt; mnesia:create_table(user, [{type, ordered_set}, {disc_copies, [node()]}, {attributes, record_info(fields, user)}]).
+4> mnesia:create_table(user, [{type, ordered_set}, {disc_copies, [node()]}, {attributes, record_info(fields, user)}]).
 {atomic,ok}
-5&gt; trivial_user:start().
-{ok,&lt;0.90.0&gt;}
-6&gt; trivial_user:register("Inaimathi", "password").
+5> trivial_user:start().
+{ok,<0.90.0>}
+6> trivial_user:register("Inaimathi", "password").
 ok
-7&gt; trivial_user:auth("Inaimathi", "password").
+7> trivial_user:auth("Inaimathi", "password").
 #user{username = "Inaimathi",password = "password",
       timestamp = {1339,96410,156774}}
 ```
@@ -112,14 +112,14 @@ Lets work backwards through the pattern, and see how to arrive at a proper-ish u
 
 ```erlang
 ...
-handle_call({auth, Username, Password}, _From, State) -&gt; 
+handle_call({auth, Username, Password}, _From, State) -> 
     try 
-        [User] = do(qlc:q([X || X &lt;- mnesia:table(user), 
+        [User] = do(qlc:q([X || X <- mnesia:table(user), 
                                 X#user.username =:= Username,
                                 X#user.password =:= Password])),
         {reply, User, State}        
     catch
-        error:_ -&gt; timer:sleep(2000),
+        error:_ -> timer:sleep(2000),
                    {reply, false, State}
     end;
 ...
@@ -130,38 +130,38 @@ But that blocks. In other words, whenever anyone enters their password incorrect
 There are two essential ways of "solving" this problem
 
 
--   **The stateless** way would be to decouple authentication from other user actions. We wouldn't have a single authentication process, rather, when a call to `trivial_user:auth/2` happens, it should launch a temporary process that tries to authenticate that user. If the correct answer is given, there should be no delay, but there *should* be a small, non-global delay on a wrong guess.
--   **The stateful** way would be to track how many wrong guesses have been made for a given user name/IP address. At a certain threshold (or perhaps linearly scaling with the number of wrong guesses), impose some sort of limiting factor. This can be as simple as a delay, or as complex as demanding a recaptcha on the front end.
--   **The ideal** way would be to say [fuck passwords](http://me.veekun.com/blog/2011/12/04/fuck-passwords/), collect your users public keys instead, and authenticate them in an actually secure manner. Good luck brute-forcing a 4096 bit RSA key. Then have fun doing it again for every single user. Sadly, this doesn't count as a "solution" because most users are pretty sure they leave their public keys under their welcome mat each morning.
+- **The stateless** way would be to decouple authentication from other user actions. We wouldn't have a single authentication process, rather, when a call to `trivial_user:auth/2` happens, it should launch a temporary process that tries to authenticate that user. If the correct answer is given, there should be no delay, but there *should* be a small, non-global delay on a wrong guess.
+- **The stateful** way would be to track how many wrong guesses have been made for a given user name/IP address. At a certain threshold (or perhaps linearly scaling with the number of wrong guesses), impose some sort of limiting factor. This can be as simple as a delay, or as complex as demanding a recaptcha on the front end.
+- **The ideal** way would be to say [fuck passwords](http://me.veekun.com/blog/2011/12/04/fuck-passwords/), collect your users public keys instead, and authenticate them in an actually secure manner. Good luck brute-forcing a 4096 bit RSA key. Then have fun doing it again for every single user. Sadly, this doesn't count as a "solution" because most users are pretty sure they leave their public keys under their welcome mat each morning.
 
 
 Given the language I'm working with, that first one looks like it'd fit better. In other words, we remove the `auth` handler from `trivial_user:handle_call/3`
 
 ```erlang
 ...
-handle_call({register, Username, Password}, _From, State) -&gt; 
+handle_call({register, Username, Password}, _From, State) -> 
     User = #user{username=Username, password=Password, timestamp=now()},
-    {reply, transaction(fun() -&gt; mnesia:write(User) end), State};
-handle_call({change_pass, Username, NewPassword}, _From, State) -&gt; 
+    {reply, transaction(fun() -> mnesia:write(User) end), State};
+handle_call({change_pass, Username, NewPassword}, _From, State) -> 
     Rec = find(Username),
-    {reply, transaction(fun() -&gt; mnesia:write(Rec#user{password=NewPassword}) end), State}.
+    {reply, transaction(fun() -> mnesia:write(Rec#user{password=NewPassword}) end), State}.
 ...
 ```
 
 and have `trivial_user:auth/2` handle the password checking itself in a child process
 
 ```
-auth(Username, Password) -&gt; 
+auth(Username, Password) -> 
     Pid = self(),
-    Auth = fun() -&gt; User = find(UserName),
+    Auth = fun() -> User = find(UserName),
                     true = Password =:= User#user.password,
                     Pid ! User
            end,
     AuthProc = spawn(Auth),
     receive
-        Res -&gt; exit(AuthProc, thank_you),
+        Res -> exit(AuthProc, thank_you),
                Res
-    after 2000 -&gt;
+    after 2000 ->
             false
     end.
 ```
@@ -191,29 +191,29 @@ So, for those borderline-excuse reasons (and also because I want to show how to 
 
 -export([encode/1]).
 
-encode(String) -&gt; gen_server:call(?MODULE, {encode, String}).
+encode(String) -> gen_server:call(?MODULE, {encode, String}).
 
-handle_call({'EXIT', _Port, Reason}, _From, _State) -&gt;
+handle_call({'EXIT', _Port, Reason}, _From, _State) ->
     exit({port_terminated, Reason});
-handle_call(Message, _From, Port) -&gt;
+handle_call(Message, _From, Port) ->
     port_command(Port, term_to_binary(Message)),
     receive
-        {State, {data, Data}} -&gt; 
+        {State, {data, Data}} -> 
             {reply, binary_to_term(Data), State}
-    after 6000 -&gt; 
+    after 6000 -> 
             exit(timeout)
     end.
 
 %%%%%%%%%%%%%%%%%%%% generic actions
-start() -&gt; gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
-stop() -&gt; gen_server:call(?MODULE, stop).
+start() -> gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
+stop() -> gen_server:call(?MODULE, stop).
 
 %%%%%%%%%%%%%%%%%%%% gen_server handlers
-init([]) -&gt; {ok, open_port({spawn, "python -u sha256.py"}, [{packet, 4}, binary, use_stdio])}.
-handle_cast(_Msg, State) -&gt; {noreply, State}.
-handle_info(_Info, State) -&gt; {noreply, State}.
-terminate(_Reason, State) -&gt; State ! {self(), close}, ok.
-code_change(_OldVsn, State, _Extra) -&gt; {ok, State}.
+init([]) -> {ok, open_port({spawn, "python -u sha256.py"}, [{packet, 4}, binary, use_stdio])}.
+handle_cast(_Msg, State) -> {noreply, State}.
+handle_info(_Info, State) -> {noreply, State}.
+terminate(_Reason, State) -> State ! {self(), close}, ok.
+code_change(_OldVsn, State, _Extra) -> {ok, State}.
 ```
 
 ```python
@@ -238,13 +238,13 @@ What you see above is the trivial string hashing implementation. Writing it took
 ```erlang
 ...
 
-handle_call({register, Username, Password}, _From, State) -&gt; 
+handle_call({register, Username, Password}, _From, State) -> 
     false = exists_p(Username),
     User = #user{username=Username, password=sha256:encode(Password), timestamp=now()},
-    {reply, transaction(fun() -&gt; mnesia:write(User) end), State};
-handle_call({change_pass, Username, NewPassword}, _From, State) -&gt; 
+    {reply, transaction(fun() -> mnesia:write(User) end), State};
+handle_call({change_pass, Username, NewPassword}, _From, State) -> 
     User = find(Username),
-    {reply, transaction(fun() -&gt; mnesia:write(User#user{password=sha256:encode(NewPassword)}) end), State}.
+    {reply, transaction(fun() -> mnesia:write(User#user{password=sha256:encode(NewPassword)}) end), State}.
 
 ...
 
@@ -255,17 +255,17 @@ And second, when authenticating, we need to hash the input before comparing a pa
 ```erlang
 ...
 
-auth(Username, Password) -&gt; 
+auth(Username, Password) -> 
     Pid = self(),
-    Auth = fun() -&gt; User = find(UserName),
+    Auth = fun() -> User = find(UserName),
                     true = sha256(Password) =:= User#user.password,
                     Pid ! User
            end,
     AuthProc = spawn(Auth),
     receive
-        Res -&gt; exit(AuthProc, thank_you),
+        Res -> exit(AuthProc, thank_you),
                Res
-    after 2000 -&gt; 
+    after 2000 -> 
             false
     end.
 
@@ -323,7 +323,7 @@ It means that it's slightly harder to crack one of your passwords<a name="note-S
 The absolute simplest, most brain-dead way to generate salt is to run an operation per password that looks something like
 
 ```erlang
-make_salt() -&gt; binary_to_list(crypto:rand_bytes(32)).
+make_salt() -> binary_to_list(crypto:rand_bytes(32)).
 ```
 
 Tadaah.<a name="note-Sat-Jun-09-122134EDT-2012"></a>[|7|](#foot-Sat-Jun-09-122134EDT-2012)
@@ -333,34 +333,34 @@ And that may actually be going overboard by about 16 bytes. Calling `make_salt/0
 On reflection, this may not be a good thing, but it does make our user system one increment better. We now need to store salt for each user, and use it in our hashing step when comparing and storing passwords. So.
 
 ```erlang
-salt(Salt, String) -&gt; sha256:encode(lists:append(Salt, String)).
+salt(Salt, String) -> sha256:encode(lists:append(Salt, String)).
 
 ...
-auth(Username, Password) -&gt; 
+auth(Username, Password) -> 
     Pid = self(),
-    Auth = fun() -&gt; User = find(Username),
+    Auth = fun() -> User = find(Username),
                     true = salt(User#user.salt, Password) =:= User#user.password,
                     Pid ! User
            end,
     AuthProc = spawn(Auth),
     receive
-        User -&gt; exit(AuthProc, thank_you),
+        User -> exit(AuthProc, thank_you),
                 {User#user.username, User#user.timestamp}
-    after 2000 -&gt; 
+    after 2000 -> 
             false
     end.
 ...
 
 ...
-handle_call({register, Username, Password}, _From, State) -&gt; 
+handle_call({register, Username, Password}, _From, State) -> 
     false = exists_p(Username),
     Salt = make_salt(),
     User = #user{username=Username, password=salt(Salt, Password), salt=Salt, timestamp=now()},
-    {reply, transaction(fun() -&gt; mnesia:write(User) end), State};
-handle_call({change_pass, Username, NewPassword}, _From, State) -&gt; 
+    {reply, transaction(fun() -> mnesia:write(User) end), State};
+handle_call({change_pass, Username, NewPassword}, _From, State) -> 
     User = find(Username),
     Salt = make_salt(),
-    {reply, transaction(fun() -&gt; mnesia:write(User#user{password=salt(Salt, NewPassword), salt=Salt}) end), State}.
+    {reply, transaction(fun() -> mnesia:write(User#user{password=salt(Salt, NewPassword), salt=Salt}) end), State}.
 ...
 ```
 
@@ -370,35 +370,35 @@ Now that we have effective, per-password salt going, that potentially leaked tab
 [{"John Douchebag",
   [218,207,128,49,205,116,234,236,67,27,74,144,22,45,219,251,
    58,82,240,14,233,252,56,105,28,112|...],
-  &lt;&lt;"a0366db583c76fd81901e57f69b4f2f67b9ab779ae76e5ff3ce8c82fdc21b1ea"&gt;&gt;},
+  <<"a0366db583c76fd81901e57f69b4f2f67b9ab779ae76e5ff3ce8c82fdc21b1ea">>},
  {"Jane Douchebag",
   [141,235,133,13,140,199,19,158,169,8,188,147,25,247,31,62,
    112,41,175,243,68,139,130,236,112|...],
-  &lt;&lt;"b6dd5d87a80e166dea1b1959526f544b3d9da3818e178fe82e7571c30ea32077"&gt;&gt;},
+  <<"b6dd5d87a80e166dea1b1959526f544b3d9da3818e178fe82e7571c30ea32077">>},
  {"Dave Foobar",
   [248,80,49,63,241,204,182,120,53,181,84,5,51,142,34,240,187,
    76,115,55,29,207,149,93|...],
-  &lt;&lt;"6442397fd432fa1fa05d96e2db08c3ea4b840ecddf9b3bcf1f0904ec95a2e7cf"&gt;&gt;},
+  <<"6442397fd432fa1fa05d96e2db08c3ea4b840ecddf9b3bcf1f0904ec95a2e7cf">>},
  {"Alex Nutsack",
   [255,116,72,208,37,69,135,169,131,253,115,135,39,54,14,118,
    216,35,92,157,183,96,87|...],
-  &lt;&lt;"6a966e1362d27851fac8e5ed44cff1eb7f3b15035d86e20438e228a2b8441a5e"&gt;&gt;},
+  <<"6a966e1362d27851fac8e5ed44cff1eb7f3b15035d86e20438e228a2b8441a5e">>},
  {"Brian Skidmore",
   [149,22,172,0,14,45,14,228,19,66,214,170,87,238,39,126,65,
    229,118,44,49,18|...],
-  &lt;&lt;"da65f803390a3886915c84adf444324c2d90396f6fcfc9a97900d14ed4ffc264"&gt;&gt;},
+  <<"da65f803390a3886915c84adf444324c2d90396f6fcfc9a97900d14ed4ffc264">>},
  {"Rose Cox",
   [67,22,142,129,118,7,112,66,187,180,201,168,244,132,118,170,
    56,250,127,132,189|...],
-  &lt;&lt;"67235dfae2f44bf68101b67773e2512193383a6d7e965cc423056ad750ab5806"&gt;&gt;},
+  <<"67235dfae2f44bf68101b67773e2512193383a6d7e965cc423056ad750ab5806">>},
  {"Barbara Lastname",
   [214,17,61,189,60,148,2,168,65,140,87,224,216,40,14,132,129,
    145,238,153|...],
-  &lt;&lt;"669b6876ad2cd40b857bd8b0ff67d49df2133498bb7b6a8fd8bbe764889f9c1b"&gt;&gt;},
+  <<"669b6876ad2cd40b857bd8b0ff67d49df2133498bb7b6a8fd8bbe764889f9c1b">>},
  {"Dora Smartass",
   [191,211,52,128,89,167,168,177,221,238,21,94,121,15,20,22,
    144,11,235|...],
-  &lt;&lt;"bdec4a9e62d5f03651720903d2001d82a3167aefd43bc22741c482b98f83ad43"&gt;&gt;}
+  <<"bdec4a9e62d5f03651720903d2001d82a3167aefd43bc22741c482b98f83ad43">>}
  ...]
 ```
 
@@ -431,73 +431,73 @@ Just to bring it all together, the final code for a proper, salted, hashing user
 -record(user,{username, password, salt, timestamp}).
 -export([register/2, auth/2, change_password/2, list/0]).
 
-list() -&gt; gen_server:call(?MODULE, list).
+list() -> gen_server:call(?MODULE, list).
 
-register(Username, Password) -&gt; gen_server:call(?MODULE, {register, Username, Password}).
+register(Username, Password) -> gen_server:call(?MODULE, {register, Username, Password}).
 
-auth(Username, Password) -&gt; 
+auth(Username, Password) -> 
     Pid = self(),
-    Auth = fun() -&gt; User = find(Username),
+    Auth = fun() -> User = find(Username),
                     true = salt(User#user.salt, Password) =:= User#user.password,
                     Pid ! User 
            end,
     AuthProc = spawn(Auth),
     receive
-        User -&gt; exit(AuthProc, thank_you),
+        User -> exit(AuthProc, thank_you),
                 {User#user.username, User#user.timestamp}
-    after 2000 -&gt; 
+    after 2000 -> 
             false
     end.
 
-change_password(Username, NewPassword) -&gt; gen_server:call(?MODULE, {change_pass, Username, NewPassword}).
+change_password(Username, NewPassword) -> gen_server:call(?MODULE, {change_pass, Username, NewPassword}).
 
-handle_call(list, _From, State) -&gt;
-    {reply, do(qlc:q([{X#user.username, X#user.timestamp} || X &lt;- mnesia:table(user)])), State};
-handle_call({register, Username, Password}, _From, State) -&gt; 
+handle_call(list, _From, State) ->
+    {reply, do(qlc:q([{X#user.username, X#user.timestamp} || X <- mnesia:table(user)])), State};
+handle_call({register, Username, Password}, _From, State) -> 
     Res = case exists_p(Username) of
-              false -&gt; Salt = make_salt(),
+              false -> Salt = make_salt(),
                        User = #user{username=Username, password=salt(Salt, Password), salt=Salt, timestamp=now()},
-                       transaction(fun() -&gt; mnesia:write(User) end);
-              _ -&gt; already_exists
+                       transaction(fun() -> mnesia:write(User) end);
+              _ -> already_exists
           end,
     {reply, Res, State}
-handle_call({change_pass, Username, NewPassword}, _From, State) -&gt; 
+handle_call({change_pass, Username, NewPassword}, _From, State) -> 
     User = find(Username),
     Salt = make_salt(),
-    {reply, transaction(fun() -&gt; mnesia:write(User#user{password=salt(Salt, NewPassword), salt=Salt}) end), State}.
+    {reply, transaction(fun() -> mnesia:write(User#user{password=salt(Salt, NewPassword), salt=Salt}) end), State}.
                        
 %%%%%%%%%%%%%%%%%%%% database utility
-make_salt() -&gt; binary_to_list(crypto:rand_bytes(32)).
+make_salt() -> binary_to_list(crypto:rand_bytes(32)).
 
-salt(Salt, String) -&gt; sha256:encode(lists:append(Salt, String)).
+salt(Salt, String) -> sha256:encode(lists:append(Salt, String)).
 
-exists_p(Username) -&gt; 
+exists_p(Username) -> 
     try
         find(Username)
     catch
-        error:_ -&gt; false
+        error:_ -> false
     end.
 
-find(Name) -&gt; 
-    [Rec] = do(qlc:q([X || X &lt;- mnesia:table(user), X#user.username =:= Name])),
+find(Name) -> 
+    [Rec] = do(qlc:q([X || X <- mnesia:table(user), X#user.username =:= Name])),
     Rec.
 
-do(Q) -&gt; transaction(fun() -&gt; qlc:e(Q) end).
+do(Q) -> transaction(fun() -> qlc:e(Q) end).
 
-transaction(F) -&gt;
+transaction(F) ->
     {atomic, Val} = mnesia:transaction(F),
     Val.
 
 %%%%%%%%%%%%%%%%%%%% generic actions
-start() -&gt; gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
-stop() -&gt; gen_server:call(?MODULE, stop).
+start() -> gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
+stop() -> gen_server:call(?MODULE, stop).
 
 %%%%%%%%%%%%%%%%%%%% gen_server handlers
-init([]) -&gt; {ok, []}.
-handle_cast(_Msg, State) -&gt; {noreply, State}.
-handle_info(_Info, State) -&gt; {noreply, State}.
-terminate(_Reason, _State) -&gt; ok.
-code_change(_OldVsn, State, _Extra) -&gt; {ok, State}.
+init([]) -> {ok, []}.
+handle_cast(_Msg, State) -> {noreply, State}.
+handle_info(_Info, State) -> {noreply, State}.
+terminate(_Reason, _State) -> ok.
+code_change(_OldVsn, State, _Extra) -> {ok, State}.
 ```
 
 The pseudocode differences are minute, to be sure,

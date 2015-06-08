@@ -9,7 +9,7 @@ Now then...
 (asdf:defsystem #:raskin-auth
   :serial t
   :description "Implementation of the authentication system proposed in The Humane Interface"
-  :author "Inaimathi &lt;[leo.zovic&#64;gmail.com](mailto:leo.zovic&#64;gmail.com)>"
+  :author "Inaimathi <[leo.zovic&#64;gmail.com](mailto:leo.zovic&#64;gmail.com)>"
   :license "AGPL, as usual"
   :depends-on (#:cl-ppcre #:ironclad)
   :components ((:file "package")
@@ -83,7 +83,7 @@ Lets go through it.
 (asdf:defsystem #:raskin-auth
   :serial t
   :description "Implementation of the authentication system proposed in The Humane Interface"
-  :author "Inaimathi &lt;[leo.zovic&#64;gmail.com](mailto:leo.zovic&#64;gmail.com)>"
+  :author "Inaimathi <[leo.zovic&#64;gmail.com](mailto:leo.zovic&#64;gmail.com)>"
   :license "AGPL, as usual"
   :depends-on (#:cl-ppcre #:ironclad)
   :components ((:file "package")

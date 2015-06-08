@@ -13,9 +13,9 @@ Something should be obvious there. First, unless you're using SSL, that piece of
 From a server operators' perspective, the `https` thing is easy. Just use SSL<a name="note-Tue-Oct-15-222945EDT-2013"></a>[|3|](#foot-Tue-Oct-15-222945EDT-2013). As for guessability, we want the following properties:
 
 
--   each active user should have a unique session token, unless they choose to share it
--   knowing any number of previous keys shouldn't give you any edge in guessing others<a name="note-Tue-Oct-15-222952EDT-2013"></a>[|4|](#foot-Tue-Oct-15-222952EDT-2013).
--   knowing how the keys are generated shouldn't give you any edge in guessing others<a name="note-Tue-Oct-15-222956EDT-2013"></a>[|5|](#foot-Tue-Oct-15-222956EDT-2013)
+- each active user should have a unique session token, unless they choose to share it
+- knowing any number of previous keys shouldn't give you any edge in guessing others<a name="note-Tue-Oct-15-222952EDT-2013"></a>[|4|](#foot-Tue-Oct-15-222952EDT-2013).
+- knowing how the keys are generated shouldn't give you any edge in guessing others<a name="note-Tue-Oct-15-222956EDT-2013"></a>[|5|](#foot-Tue-Oct-15-222956EDT-2013)
 
 
 And that's close enough to the specification of a [CSPRNG](http://en.wikipedia.org/wiki/Cryptographically_secure_pseudorandom_number_generator) that if we had one, we could just use it. The absolute simplest way to do that is to use a secure block cipher on a randomly initialized counter. As it happens, Common Lisp Has That©™.

@@ -33,13 +33,13 @@ Using this has streamlined my lisp workflow enough that I've just sort of starte
 `.emacs` is the least of it. I currently have one of each
 
 
--   `.stumpwmrc`
--   `.screenrc`
--   `.xmodmaprc`
--   `.xinitrc`
--   `.conkerorrc`
--   `.lynxrc`
--   `.sbclrc`
+- `.stumpwmrc`
+- `.screenrc`
+- `.xmodmaprc`
+- `.xinitrc`
+- `.conkerorrc`
+- `.lynxrc`
+- `.sbclrc`
 
 
 I've also got a `.clisprc`, but all it contains is the quicklisp hook, so it doesn't really count. Between these and my growing `.emacs.d`, it's about high time I sit down and put together a basic `~/` git repository so that I can just do a checkout instead of trying to remember all the various files I need.

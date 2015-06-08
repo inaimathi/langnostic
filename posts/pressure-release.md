@@ -237,7 +237,7 @@ deleteMinimum heap@(Heap ts) = case minTree heap of
 minTree :: Ord a => BinomialHeap a -> Maybe (BinomialTree a)
 minTree (Heap []) = Nothing
 minTree (Heap ts) = Just $ foldl1 minKey ts
-    where minKey memo t = if key memo &lt; key t then memo else t
+    where minKey memo t = if key memo < key t then memo else t
 
 minimum :: Ord a => BinomialHeap a -> Maybe a
 minimum = liftM key . minTree
@@ -259,8 +259,8 @@ sort lst = recur (fromList lst) []
 In English, a Binomial Heap is a collection of Binomial Trees, sorted in ascending order of `order`. Which is mildly confusing, but that's what the definition calls a particular property of said trees. Speaking of which,
 
 
--   a Binomial Tree of `order` 0 is a single node with no children
--   a Binomial Tree of `order` N is a root node with children, each of which is a Binomial Tree of descending order, starting with `order` N-1 and ending with `order` 0
+- a Binomial Tree of `order` 0 is a single node with no children
+- a Binomial Tree of `order` N is a root node with children, each of which is a Binomial Tree of descending order, starting with `order` N-1 and ending with `order` 0
 
 
 And now you know all of the invariants involved in maintaining one of these heaps. Lets go through the above code chunk by chunk reasonably quickly.
@@ -356,7 +356,7 @@ Do note that we need to check the result of `minTree`.
 minTree :: Ord a => BinomialHeap a -> Maybe (BinomialTree a)
 minTree (Heap []) = Nothing
 minTree (Heap ts) = Just $ foldl1 minKey ts
-    where minKey memo t = if key memo &lt; key t then memo else t
+    where minKey memo t = if key memo < key t then memo else t
 ```
 
 Because it's a `Maybe`. There is no such thing as the minimum tree of the empty Binomial Heap, you see. The definition of `minimum` is predictably minimal

@@ -26,16 +26,16 @@ At the high-level, there's two ways of doing this (which could, and probably sho
 ## <a name="prove-that-you-can-read-this" href="#prove-that-you-can-read-this"></a>Prove that you can read this
 
 1. The server sends the user a random ~64 byte code, encrypted with the users' public key
-1. The user decrypts the key and sends back the plain-text
-1. The server verifies that the plain-text it gets back corresponds to what it sent in step one
+2. The user decrypts the key and sends back the plain-text
+3. The server verifies that the plain-text it gets back corresponds to what it sent in step one
       - If it does, that code is revoked and the user is given access.
       - If it doesn't, boot the fucker
 
 ## <a name="prove-that-you-can-sign-this" href="#prove-that-you-can-sign-this"></a>Prove that you can sign this
 
 1. The server sends the user a random ~64 code
-1. The user signs that plain-text and sends the result back
-1. The server verifies that what it got matches the plain-text from step one, and was signed by the user trying to log in
+2. The user signs that plain-text and sends the result back
+3. The server verifies that what it got matches the plain-text from step one, and was signed by the user trying to log in
       - If it does and it was, that code is revoked and the user is given access.
       - If it doesn't or it wasn't, boot the fucker *(and probably make a note of the break-in attempt)*
 
@@ -51,8 +51,8 @@ Third, the user is now effectively tied down to a single computer for their brow
 The [forever hack](http://www.codinghorror.com/blog/2007/05/phishing-the-forever-hack.html) still works, and will continue doing so ... well, forever, but we do gain some real advantages by using public key auth rather than passwords.
 
 1.   No one can sniff your key
-1.   Brute-forcing a key is much harder than brute-forcing a password
-1.   You don't need to remember passwords (other than the one that encrypts your key)
+2.   Brute-forcing a key is much harder than brute-forcing a password
+3.   You don't need to remember passwords (other than the one that encrypts your key)
 
 In other words, if we could solve that UI problem in a semi-automated way, this would be an altogether better way of doing web authentication.
 
@@ -62,11 +62,11 @@ I actually intend to build this, because having such a system would be a good th
 
 
 1.   [client] requests page requiring auth
-1.   [server] asks for a user name/identifier
-1.   [client] enters user name/identifier
-1.   [server] sends encrypted string, records it, expects signed plain-text
-1.   [client] decrypts, signs string, sends it back
-1.   [server] compares with what was recorded in 3, authenticates or boots based on comparison
+2.   [server] asks for a user name/identifier
+3.   [client] enters user name/identifier
+4.   [server] sends encrypted string, records it, expects signed plain-text
+5.   [client] decrypts, signs string, sends it back
+6.   [server] compares with what was recorded in 3, authenticates or boots based on comparison
 
 
 Step 5 can potentially be handled by a browser plugin. Something that would look for an RSA-auth form, and do the right thing. Either by tracking your auth keys itself, or by calling out to OpenSSH or similar on the client side. The server-side actually looks pretty simple, and needs minimal changes from the auth system we put together last time. Really, we'd just need to store a users' public key instead of (or in addition to) their password, and use the Erlang `crypto:rsa_*/\d` functions to process the specified messages.

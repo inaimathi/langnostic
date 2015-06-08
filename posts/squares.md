@@ -32,14 +32,14 @@ So what we've got as a 10000-foot-view for the process is this:
 1.   `record` the null dissection (a grid full of 1x1 squares)
 1.   return the size of the set of recorded dissections
 
--   A `StartingPoint` is any point on our grid from `'(0 0)` to ``(,(limit n) ,(limit n))`.
--   The `limit` of `n` is `(- (ceiling (/ n 2)) 1)`
--   To `unfold` a `StartingPoint`, `insert` the solitary placement as a dissection (remember, any empty spaces are treated as "placed 1x1 squares"), then find all `free` `SecondPoint`s and `unfold` them.
--   A `SecondPoint` is any `free` `StartingPoint`, or any point between ``(,(limit n) ,y)` and ``(,(- n 2) ,y)`. Again, any others should be represented among `reflect`ions/`rotate`ions of other dissections.
--   To `unfold` a `SecondPoint`, `insert` it as a dissection, then `unfold` all remaining `free` points on the grid (there's probably a way to cut this step down, but I can't see it yet).
--   To `unfold` any other point, `insert` it as a dissection, and `unfold` all remaining `free` points until there's no more room.
--   To `insert` a dissection, perform `Set` insertion on each of its `rotate`ions and `reflect`ions into the set of all insertions for this particular grid.
--   A `free` point is one where there's enough room to put a square larger than 1x1 *(this implies that `place` could probably remove some additional squares from the potential starting pool to make calculating this easier)*.
+- A `StartingPoint` is any point on our grid from `'(0 0)` to ``(,(limit n) ,(limit n))`.
+- The `limit` of `n` is `(- (ceiling (/ n 2)) 1)`
+- To `unfold` a `StartingPoint`, `insert` the solitary placement as a dissection (remember, any empty spaces are treated as "placed 1x1 squares"), then find all `free` `SecondPoint`s and `unfold` them.
+- A `SecondPoint` is any `free` `StartingPoint`, or any point between ``(,(limit n) ,y)` and ``(,(- n 2) ,y)`. Again, any others should be represented among `reflect`ions/`rotate`ions of other dissections.
+- To `unfold` a `SecondPoint`, `insert` it as a dissection, then `unfold` all remaining `free` points on the grid (there's probably a way to cut this step down, but I can't see it yet).
+- To `unfold` any other point, `insert` it as a dissection, and `unfold` all remaining `free` points until there's no more room.
+- To `insert` a dissection, perform `Set` insertion on each of its `rotate`ions and `reflect`ions into the set of all insertions for this particular grid.
+- A `free` point is one where there's enough room to put a square larger than 1x1 *(this implies that `place` could probably remove some additional squares from the potential starting pool to make calculating this easier)*.
 
 
 Granted, that's easier said than done. I get the feeling that when I actually go to implement this fully, a whole bunch of problems are going to crop up, but at least I have a half-way decent starting point.

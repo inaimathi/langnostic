@@ -81,7 +81,7 @@ fn: make object! [
     ]
     range: func [ start end ] [
         res: make block! 10
-        step: either start &lt; end [ 1 ] [ -1 ]
+        step: either start < end [ 1 ] [ -1 ]
         for i start end step [ append res i ]
         res
     ]
@@ -193,7 +193,7 @@ fn: context [
     ]
     range: funct [ start end ] [
         res: make block! 10
-        step: either start &lt; end [ 1 ] [ -1 ]
+        step: either start < end [ 1 ] [ -1 ]
         for i start end step [ append res i ]
         res
     ]

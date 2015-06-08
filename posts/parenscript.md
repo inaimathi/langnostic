@@ -23,10 +23,10 @@ There's very little that wouldn't strike me as an improvement over
 
 ```javascript
 $(".ui-container")
-    .prepend("&lt;div class='ui-widgets'>"
-             + "&lt;img id='directions' src='directions-icon.jpg' />"
-             + "&lt;img id='street-view' src='street-view-icon.jpg' />"
-             + "&lt;/div>")
+    .prepend("<div class='ui-widgets'>"
+             + "<img id='directions' src='directions-icon.jpg' />"
+             + "<img id='street-view' src='street-view-icon.jpg' />"
+             + "</div>")
     .css({"cursor": "pointer"});
 ```
 
@@ -61,7 +61,7 @@ seems to more or less solve my pain points.
                                    (:img :id "street-view" :src "street-view"))))
        (css (create :cursor "pointer"))))
 
-> "jQuery('.ui-container').prepend('&lt;DIV CLASS=\"ui-widgets\">&lt;IMG ID=\"directions\" SRC=\"directions.jpg\">&lt;IMG ID=\"street-view\" SRC=\"street-view\">&lt;/DIV>').css({ 'cursor' : 'pointer' });"
+> "jQuery('.ui-container').prepend('<DIV CLASS=\"ui-widgets\"><IMG ID=\"directions\" SRC=\"directions.jpg\"><IMG ID=\"street-view\" SRC=\"street-view\"></DIV>').css({ 'cursor' : 'pointer' });"
 ```
 
 `j-query` seems really weird, but it expands properly, and it'll only ever show up in the macro definition anyway.

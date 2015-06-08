@@ -20,7 +20,7 @@ import Data.ByteString.Char8 (ByteString, unpack)
 
 app :: Chan ServerEvent -> Application
 app chan req = do
-  (params, _) &lt;- parseRequestBody lbsBackEnd req
+  (params, _) <- parseRequestBody lbsBackEnd req
   case pathInfo req of
     [] -> return $ ResponseFile status200 [("Content-Type", "text/html")] "static/index.html" Nothing
     ["post"] -> liftIO $ postMessage chan $ lookPost "message" params
@@ -39,7 +39,7 @@ postMessage chan msg = do
 
 main :: IO ()
 main = do  
-  chan &lt;- newChan
+  chan <- newChan
   run 8000 $ gzip def $ app chan
 ```
 
@@ -76,13 +76,13 @@ import Data.Text (unpack, pack)
 
 app :: IORef [(String, Chan ServerEvent)] -> Application
 app channels req = do
-  (params, _) &lt;- parseRequestBody lbsBackEnd req
+  (params, _) <- parseRequestBody lbsBackEnd req
   case pathInfo req of
     [] -> serveFile "text/html" "static/index.html"
     ["jquery.js"] -> serveFile "text/javascript" "static/jquery.min.js"
     ["chat.js"] -> serveFile "text/javascript" "static/chat.js"
     [channelName, action] -> do
-      chan &lt;- liftIO $ getOrCreateChannel channels $ unpack channelName
+      chan <- liftIO $ getOrCreateChannel channels $ unpack channelName
       case action of
         "post" -> 
           liftIO $ postMessage chan $ lookPost "message" params
@@ -101,12 +101,12 @@ lookPost paramName params = case lookup paramName params of
 
 getOrCreateChannel :: IORef [(String, Chan ServerEvent)] -> String -> IO (Chan ServerEvent)
 getOrCreateChannel channels name = do
-  res &lt;- readIORef channels
+  res <- readIORef channels
   case lookup name res of
     Just chan -> 
       return chan
     _ -> do
-      new &lt;- newChan
+      new <- newChan
       atomicModifyIORef channels (\cs -> ((name, new):cs, new))
       return new
 
@@ -117,7 +117,7 @@ postMessage chan msg = do
 
 main :: IO ()
 main = do
-  channels &lt;- newIORef []
+  channels <- newIORef []
   run 8000 $ gzip def $ app channels
 ```
 
@@ -147,8 +147,7 @@ I really wish someone else had written this before I started thinking about it..
 
 4 - <a name="foot-Tue-Apr-16-134413EDT-2013"></a>[|back|](#note-Tue-Apr-16-134413EDT-2013) - The [IORef docs](http://www.haskell.org/ghc/docs/latest/html/libraries/base/Data-IORef.html#v:atomicModifyIORef) warn that using more than one of these in a program makes them unreliable in a multi-threaded setting. The thing is: 
   
--     This chat program is extremely simple, needing only one global map to store open channels
--     If it ever got to the point of needing a more complex model, I'd hook it up to AcidState rather than trying to fiddle with MVars myself.
--   
+- This chat program is extremely simple, needing only one global map to store open channels
+- If it ever got to the point of needing a more complex model, I'd hook it up to AcidState rather than trying to fiddle with MVars myself.
 
 5 - <a name="foot-Tue-Apr-16-134535EDT-2013"></a>[|back|](#note-Tue-Apr-16-134535EDT-2013) - You can see that happening in the branch labeled `[channelName, action] ->`, though we easily could have separated it into an external function rather than nesting `case`s.

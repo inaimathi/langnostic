@@ -115,9 +115,9 @@ If you want to handle this situation correctly and semi-elegantly, you need to b
 Because what you're really trying to do is:
 
 
--   read to a matching paren
--   if you find a quote, read until the next quote
--   at a candidate ending quote, keep reading until you run out of `#\\`s, and count them. If you counted an odd number, one of them escapes the quote, so you need to keep looking for another quote. Otherwise, resume looking for a matching paren.
+- read to a matching paren
+- if you find a quote, read until the next quote
+- at a candidate ending quote, keep reading until you run out of `#\\`s, and count them. If you counted an odd number, one of them escapes the quote, so you need to keep looking for another quote. Otherwise, resume looking for a matching paren.
 
 
 And that's basically what the above does. Lets go step by step so you understand what's going on.
@@ -187,9 +187,9 @@ Now, what does `to-entry-start` do?
 It peeks at its next char, calls `dec` and dispatches based on the value of the char it `peek`ed.
 
 
--   on a quote (`#\"`), call `to-open-quote`
--   on an open-paren, decrement `paren-depth` (since we're going backwards)
--   on a close-paren, increment `paren-depth`
+- on a quote (`#\"`), call `to-open-quote`
+- on an open-paren, decrement `paren-depth` (since we're going backwards)
+- on a close-paren, increment `paren-depth`
 
 
 Finally, it checks if either we've reached the beginning of the file or found the open-paren that starts our history entry. If either is true, we're done here.

@@ -23,10 +23,10 @@ And that was that. After getting the resulting cards into dat Pi, it booted flaw
 Like I said, haven't had much time to explore, but what I can tell you is that the Debian version
 
 
--   uses [the LXDE desktop](http://lxde.org/)<a name="note-Sun-Sep-30-225608EDT-2012"></a>[|5|](#foot-Sun-Sep-30-225608EDT-2012)
--   comes with Python 2.7, Python 3.2, and a bunch of python-based games
--   takes about three seconds to start up a Python 3.2 shell in X, and seems to be able to run at most one
--   comes with Scratch and Squeak<a name="note-Sun-Sep-30-225613EDT-2012"></a>[|6|](#foot-Sun-Sep-30-225613EDT-2012)
+- uses [the LXDE desktop](http://lxde.org/)<a name="note-Sun-Sep-30-225608EDT-2012"></a>[|5|](#foot-Sun-Sep-30-225608EDT-2012)
+- comes with Python 2.7, Python 3.2, and a bunch of python-based games
+- takes about three seconds to start up a Python 3.2 shell in X, and seems to be able to run at most one
+- comes with Scratch and Squeak<a name="note-Sun-Sep-30-225613EDT-2012"></a>[|6|](#foot-Sun-Sep-30-225613EDT-2012)
 
 
 By contrast, the Arch distribution they ship is very minimal. Which I guess makes sense, all things considered. As a note here, the [Downloads page](http://www.raspberrypi.org/downloads) mentions that Arch boots to a useable prompt in about 10 seconds. Firstly, that doesn't sound very impressive, given that the Debian version does exactly the same thing if you tell it to run from command line. Secondly, in practice it seems to be closer to 5 hippopotami, which actually *is* impressive out of a general purpose computer the size of my business card.

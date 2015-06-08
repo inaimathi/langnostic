@@ -170,7 +170,7 @@ parse_encoder_meta (Name, [["%", "EXAM:" | Exam] | Rest], Acc, Cmp) ->
 parse_encoder_meta (Name, [["%" | _] | Rest], Acc, Cmp) ->
     parse_encoder_meta(Name, Rest, Acc, Cmp);
 parse_encoder_meta (Name, Body, [DefArgs, Example], {A, R, S}) ->
-    Reqs = [list_to_atom(strip_nl(X)) || X &lt;- lists:append([A, R, S])],
+    Reqs = [list_to_atom(strip_nl(X)) || X <- lists:append([A, R, S])],
     {list_to_atom(Name), encoder, {requires, Reqs}, Example, DefArgs, lists:append(Body)}.
 
 strip_nl(String) -> string:strip(String, right, $\n).
@@ -199,7 +199,7 @@ process_line(Line) ->
     end.
 
 split_directive_line(Line) ->
-    [X || X &lt;- re:split(strip_nl(Line), "( |--)", [{return, list}]),
+    [X || X <- re:split(strip_nl(Line), "( |--)", [{return, list}]),
           X /= " ", X /= [], X /= "--", X /="\n"].
 ```
 
@@ -243,7 +243,7 @@ parse_encoder_meta (Name, [["%", "EXAM:" | Exam] | Rest], Acc, Cmp) ->
 parse_encoder_meta (Name, [["%" | _] | Rest], Acc, Cmp) ->
     parse_encoder_meta(Name, Rest, Acc, Cmp);
 parse_encoder_meta (Name, Body, [DefArgs, Example], {A, R, S}) ->
-    Reqs = [list_to_atom(strip_nl(X)) || X &lt;- lists:append([A, R, S])],
+    Reqs = [list_to_atom(strip_nl(X)) || X <- lists:append([A, R, S])],
     {list_to_atom(Name), encoder, {requires, Reqs}, Example, DefArgs, lists:append(Body)}.
 ```
 
@@ -257,10 +257,10 @@ This is not the most elegant function. In fact, now that I look at it, it seems 
 What we're doing here is breaking apart an `encoder` block, and pulling out
 
 
--   the list of other blocks we need to output before this one<a name="note-Tue-May-15-221005EDT-2012"></a>[|8|](#foot-Tue-May-15-221005EDT-2012)
--   a piece of example data that this particular encoder can handle<a name="note-Tue-May-15-221009EDT-2012"></a>[|9|](#foot-Tue-May-15-221009EDT-2012)
--   the default arguments to passed to this `encoder`
--   the body code of this `encoder`
+- the list of other blocks we need to output before this one<a name="note-Tue-May-15-221005EDT-2012"></a>[|8|](#foot-Tue-May-15-221005EDT-2012)
+- a piece of example data that this particular encoder can handle<a name="note-Tue-May-15-221009EDT-2012"></a>[|9|](#foot-Tue-May-15-221009EDT-2012)
+- the default arguments to passed to this `encoder`
+- the body code of this `encoder`
 
 
 The list of required blocks is exhaustive for each `encoder`, so we don't need to recursively check requirements later, it's enough to store and act on all requirements of a given barcode.
@@ -473,15 +473,15 @@ A message of `{write, DestFolder, BarcodeType, Data, Width, Height}` will output
 What the `write` message actually does, in order is
 
 
--   generates a tempfile name for the directory it was passed
--   opens that `File` for output
--   looks up the required blocks in our ETS table
--   writes the preamble to `File`
--   writes the required blocks to `File`
--   writes the barcode component to `File`
--   writes a Postscript directive invoking that component with `Data` to `File`
--   closes `File`
--   replies with the absolute tempfile name that it generated
+- generates a tempfile name for the directory it was passed
+- opens that `File` for output
+- looks up the required blocks in our ETS table
+- writes the preamble to `File`
+- writes the required blocks to `File`
+- writes the barcode component to `File`
+- writes a Postscript directive invoking that component with `Data` to `File`
+- closes `File`
+- replies with the absolute tempfile name that it generated
 
 
 And there you have it, we now have a barcode PS file in the specified location.

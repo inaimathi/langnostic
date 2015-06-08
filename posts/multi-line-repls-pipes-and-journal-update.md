@@ -62,7 +62,7 @@ import System.IO
 main_loop :: Environment -> IO ()
 main_loop env = do putStr "EXP>> "
                    hFlush stdout
-                   ln &lt;- getLine
+                   ln <- getLine
                    case lisp_read ln of
                      Right res -> let evaled = eval res env
                                       env' = case evaled of
@@ -102,7 +102,7 @@ EXP>> (def map
 NIL
 
 EXP>> map
-&lt;fn (f lst)>
+<fn (f lst)>
 
 EXP>> 
 ```
@@ -139,16 +139,16 @@ main = do putStrLn $ "experimentaLISP v0.00001"
 
 stdinLn :: Producer String IO ()
 stdinLn = do
-  eof &lt;- lift isEOF
+  eof <- lift isEOF
   unless eof $ do
-            str &lt;- lift getLine
+            str <- lift getLine
             yield str
             stdinLn
 
 reader :: (Monad m) => Pipe String LispVal m ()
 reader = loop []
     where loop acc = do 
-            ln &lt;- await
+            ln <- await
             case strip ln of
               ":c" -> loop []
               _ -> case lisp_read . unlines $ reverse (ln:acc) of
@@ -159,7 +159,7 @@ reader = loop []
 evaluator :: (Monad m) => Pipe LispVal LispVal m ()
 evaluator = loop global_env
     where loop env = do 
-            exp &lt;- await
+            exp <- await
             let evaled = eval exp env
                 env' = case evaled of
                          (Res _) -> env
@@ -170,7 +170,7 @@ evaluator = loop global_env
 prompt :: Show a => Consumer a IO ()
 prompt = do lift $ putStr "\nEXP>> "
             lift $ hFlush stdout
-            msg &lt;- await
+            msg <- await
             lift $ putStrLn $ show msg
             prompt
 
@@ -191,9 +191,9 @@ We're going to write a little intro message on which our version number will be 
 ```haskell
 stdinLn :: Producer String IO ()
 stdinLn = do
-  eof &lt;- lift isEOF
+  eof <- lift isEOF
   unless eof $ do
-            str &lt;- lift getLine
+            str <- lift getLine
             yield str
             stdinLn
 ```
@@ -204,7 +204,7 @@ If we `EOF`, we're done. Otherwise, get a line, `yield` it, and loop. The statio
 reader :: (Monad m) => Pipe String LispVal m ()
 reader = loop []
     where loop acc = do 
-            ln &lt;- await
+            ln <- await
             case strip ln of
               ":c" -> loop []
               _ -> case lisp_read . unlines $ reverse (ln:acc) of
@@ -219,7 +219,7 @@ It gets a line, checks whether it's a special interpreter directive. If not, it 
 evaluator :: (Monad m) => Pipe LispVal LispVal m ()
 evaluator = loop global_env
     where loop env = do 
-            exp &lt;- await
+            exp <- await
             let evaled = eval exp env
                 env' = case evaled of
                          (Res _) -> env
@@ -234,7 +234,7 @@ Which evaluates each incoming expression and yields the result. If evaluating th
 prompt :: Show a => Consumer a IO ()
 prompt = do lift $ putStr "\nEXP>> "
             lift $ hFlush stdout
-            msg &lt;- await
+            msg <- await
             lift $ putStrLn $ show msg
             prompt
 ```

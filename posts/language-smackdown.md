@@ -5,10 +5,10 @@ Before I go any further, as an aside, the irony of a guy who writes a blog calle
 The seven languages were Smalltalk, Ruby, Python, Erlang, Lisp, JavaScript and Perl, and the format was
 
 
--   Introduction
--   Questions from the audience
--   Questions
--   Code examples
+- Introduction
+- Questions from the audience
+- Questions
+- Code examples
 
 
 To summarize, I kicked off (subtly, so no one seems to blame me yet) a line of questioning dealing with canonical implementations that more or less got touched on repeatedly throughout the talk. Erlang guy had it easy, because that language actually has just one canonical implementation (with one attempted port to the JVM that apparently no one takes seriously yet). Other than Erlang, what struck me here is how diverse the pool actually is. I mostly hack Common Lisp these days, and only vigorously play with Ruby, Erlang and Haskell (and PHP at work, but as you can see by the logo bar, I'm not terribly proud of that), so I was under the impression that Lisp was the only freak language that had so many implementations to choose from<a name="smackDownn1" href="#smackDownf1">[1]</a>. That turned out to be a misconception; Ruby has JRuby and Iron Ruby (both of which purportedly conform to the same spec and are both interchangeable and "official" as far as the community is concerned), Myles Braithwaite put up a slide listing twenty or so different Python implementations (which disparately support Python 2.5, 2.9 and 3.x specs), Smalltalk has at least two open-source forks (and [gnu-smalltalk](http://smalltalk.gnu.org/), but that wasn't really discussed), the Perl community is apparently split between 5 and 6 and JavaScript has at least three different server-side implementations (the client-side situation is worse).

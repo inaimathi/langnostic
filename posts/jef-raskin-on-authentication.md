@@ -59,17 +59,17 @@ That should give attackers less purchase, and scale naturally with additional us
 Switching briefly over to my black hat, I can't see an attack on this system that would get you any traction above and beyond traditional password-based implementations<a name="note-Tue-Dec-10-132038EST-2013"></a>[|9|](#foot-Tue-Dec-10-132038EST-2013). That doesn't mean there isn't a way, of course. I'll present the idea to some discerning and devious thinkers to see what they can come up with. Otherwise, we've got some interesting properties here, mainly because the server-side is the one putting everything together. We have a passphrase system that
 
 
--   only requires the barest interaction with the user
--   can be initiated automatically at some point<a name="note-Tue-Dec-10-132043EST-2013"></a>[|10|](#foot-Tue-Dec-10-132043EST-2013)
--   will not suffer the failure mode that someone will use this same passphrase everywhere<a name="note-Tue-Dec-10-132046EST-2013"></a>[|11|](#foot-Tue-Dec-10-132046EST-2013), meaning that even if the system is compromised, all an attacker has is access to an account for one particular service
--   will never have to worry about a passphrase as shitty as "password" or "12345"
+- only requires the barest interaction with the user
+- can be initiated automatically at some point<a name="note-Tue-Dec-10-132043EST-2013"></a>[|10|](#foot-Tue-Dec-10-132043EST-2013)
+- will not suffer the failure mode that someone will use this same passphrase everywhere<a name="note-Tue-Dec-10-132046EST-2013"></a>[|11|](#foot-Tue-Dec-10-132046EST-2013), meaning that even if the system is compromised, all an attacker has is access to an account for one particular service
+- will never have to worry about a passphrase as shitty as "password" or "12345"
 
 
 On the flipside, though:
 
 
--   You can't change your passphrase to something you want
--   There isn't a way to recover or reset a forgotten passphrase<a name="note-Tue-Dec-10-132049EST-2013"></a>[|12|](#foot-Tue-Dec-10-132049EST-2013)
+- You can't change your passphrase to something you want
+- There isn't a way to recover or reset a forgotten passphrase<a name="note-Tue-Dec-10-132049EST-2013"></a>[|12|](#foot-Tue-Dec-10-132049EST-2013)
 
 
 All in all, barring someone pointing out some egregious security flaw in this approach, it seems to be worth implementing.

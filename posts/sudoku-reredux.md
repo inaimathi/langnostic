@@ -3,9 +3,9 @@ Ok, *this* is why I'm less than proud of [that actually, factually working solut
 ```haskell
 import List
  
-main = putStr . unlines . map disp . solve . return . input =&lt;&lt; getContents
+main = putStr . unlines . map disp . solve . return . input =<< getContents
  
-solve s = foldr (\p l -> [mark (p,n) s | s &lt;- l, n &lt;- s p]) s idx
+solve s = foldr (\p l -> [mark (p,n) s | s <- l, n <- s p]) s idx
  
 mark (p@(i,j),n) s q@(x,y)
     | p == q                             = [n]
@@ -13,12 +13,12 @@ mark (p@(i,j),n) s q@(x,y)
     | otherwise                          = s q
     where e a b = div (a-1) 3 == div (b-1) 3
  
-disp s = unlines [unwords [show $ head $ s (i,j) | j &lt;- [1..9]] | i &lt;- [1..9]]
+disp s = unlines [unwords [show $ head $ s (i,j) | j <- [1..9]] | i <- [1..9]]
  
 input s = foldr mark (const [1..9]) $
-  [(p,n) | (p,n) &lt;- zip idx $ map read $ lines s >>= words, n>0]
+  [(p,n) | (p,n) <- zip idx $ map read $ lines s >>= words, n>0]
  
-idx = [(i,j) | i &lt;- [1..9], j &lt;- [1..9]]
+idx = [(i,j) | i <- [1..9], j <- [1..9]]
 ```
 
 Except, as I mentioned, that one cheats by omitting the type signatures<a name="note-Sun-Jun-02-232557EDT-2013"></a>[|1|](#foot-Sun-Jun-02-232557EDT-2013), so here's the original on which it was based:
@@ -29,12 +29,12 @@ import Data.List
 type T = (Int,Int) -> [Int]
 
 main = do
-  s &lt;- getContents
+  s <- getContents
   putStr $ unlines $ map disp $ solve [input s]
 
 solve :: [T] -> [T]
 solve s = foldr search s idx where
-    search p l = [mark (p,n) s | s &lt;- l, n &lt;- s p]
+    search p l = [mark (p,n) s | s <- l, n <- s p]
 
 mark :: ((Int,Int),Int) -> T -> T
 mark (p@(i,j),n) s q@(x,y) =
@@ -43,14 +43,14 @@ mark (p@(i,j),n) s q@(x,y) =
   where e a b = div (a-1) 3==div (b-1) 3
 
 disp :: T -> String
-disp s  = unlines [unwords [show $ head $ s (i,j) | j &lt;- [1..9]] | i &lt;- [1..9]]
+disp s  = unlines [unwords [show $ head $ s (i,j) | j <- [1..9]] | i <- [1..9]]
 
 input :: String -> T
 input s = foldr mark (const [1..9]) $
-  [(p,n) | (p,n) &lt;- zip idx $ map read $ lines s >>= words, n>0]
+  [(p,n) | (p,n) <- zip idx $ map read $ lines s >>= words, n>0]
 
 idx :: [(Int,Int)]
-idx = [(i,j) | i &lt;- [1..9], j &lt;- [1..9]]
+idx = [(i,j) | i <- [1..9], j <- [1..9]]
 ```
 
 This is not the most readable code ever; its goal is supreme elegance<a name="note-Sun-Jun-02-232606EDT-2013"></a>[|2|](#foot-Sun-Jun-02-232606EDT-2013), not instant clarity. It took me a couple of days thinking on-and-off, as well as a read-through of this almost equivalent [Python transliteration](http://www.thenewsh.com/~newsham/x/machine/sud.py)<a name="note-Sun-Jun-02-232612EDT-2013"></a>[|3|](#foot-Sun-Jun-02-232612EDT-2013) to finally understand what the hell is going on here.
@@ -59,7 +59,7 @@ Lets get the obvious out of the way.
 
 ```haskell
 disp :: T -> String
-disp s  = unlines [unwords [show $ head $ s (i,j) | j &lt;- [1..9]] | i &lt;- [1..9]]
+disp s  = unlines [unwords [show $ head $ s (i,j) | j <- [1..9]] | i <- [1..9]]
 ```
 
 This takes a board (whose type is named `T` for some reason), and returns its string representation.
@@ -67,21 +67,21 @@ This takes a board (whose type is named `T` for some reason), and returns its st
 ```haskell
 input :: String -> T
 input s = foldr mark (const [1..9]) $
-  [(p,n) | (p,n) &lt;- zip idx $ map read $ lines s >>= words, n>0]
+  [(p,n) | (p,n) <- zip idx $ map read $ lines s >>= words, n>0]
 ```
 
 This takes a string representation and returns a board.
 
 ```haskell
 idx :: [(Int,Int)]
-idx = [(i,j) | i &lt;- [1..9], j &lt;- [1..9]]
+idx = [(i,j) | i <- [1..9], j <- [1..9]]
 ```
 
 This returns all the `(y, x)` coordinates in a 9x9 board.
 
 ```haskell
 main = do
-  s &lt;- getContents
+  s <- getContents
   putStr $ unlines $ map disp $ solve [input s]
 ```
 
@@ -101,12 +101,12 @@ import Data.List
 type Board = (Int,Int) -> [Int]
 
 main = do
-  boardString &lt;- getContents
+  boardString <- getContents
   putStr . unlines . map disp $ solve [input boardString]
 
 solve :: [Board] -> [Board]
 solve boards = foldr search boards idx where
-    search (x, y) boards = [mark ((x, y),val) brd | brd &lt;- boards, val &lt;- brd (x, y)]
+    search (x, y) boards = [mark ((x, y),val) brd | brd <- boards, val <- brd (x, y)]
 
 mark :: ((Int,Int),Int) -> Board -> Board
 mark (p@(x,y),val) board p'@(x',y') = 
@@ -115,14 +115,14 @@ mark (p@(x,y),val) board p'@(x',y') =
   where blockBound a b = div (a-1) 3==div (b-1) 3
 
 disp :: Board -> String
-disp board = unlines [unwords [show . head $ board (x,y) | y &lt;- [1..9]] | x &lt;- [1..9]]
+disp board = unlines [unwords [show . head $ board (x,y) | y <- [1..9]] | x <- [1..9]]
 
 input :: String -> Board
 input boardString = foldr mark (const [1..9]) $
-  [((x, y),val) | ((x, y),val) &lt;- zip idx . map read $ lines boardString >>= words, val>0]
+  [((x, y),val) | ((x, y),val) <- zip idx . map read $ lines boardString >>= words, val>0]
 
 idx :: [(Int,Int)]
-idx = [(x,y) | y &lt;- [1..9], x &lt;- [1..9]]
+idx = [(x,y) | y <- [1..9], x <- [1..9]]
 ```
 
 Granted, we can no longer claim "707 bytes", but even this minor renaming makes the end result a bit more understandable. On to the difficult parts.
@@ -136,11 +136,11 @@ mark (p@(x,y),val) board p'@(x',y') =
 
 input :: String -> Board
 input boardString = foldr mark (const [1..9]) $
-  [((x, y),val) | ((x, y),val) &lt;- zip idx . map read $ lines boardString >>= words, val>0]
+  [((x, y),val) | ((x, y),val) <- zip idx . map read $ lines boardString >>= words, val>0]
 
 solve :: [Board] -> [Board]
 solve boards = foldr search boards idx where
-  search (x, y) boards = [mark ((x, y),val) brd | brd &lt;- boards, val &lt;- brd (x, y)]
+  search (x, y) boards = [mark ((x, y),val) brd | brd <- boards, val <- brd (x, y)]
 ```
 
 The high level of what's going on here is that you're representing a board as a function of `(Int, Int) -> [Int]`, and `mark`ing spaces by wrapping that function up in a dispatch/delete which returns pruned results in some circumstances.
@@ -198,7 +198,7 @@ Right, so that's how you `mark` a value. Except it doesn't really make sense in 
 ```haskell
 input :: String -> Board
 input boardString = foldr mark (const [1..9]) $
-  [((x, y),val) | ((x, y),val) &lt;- zip idx . map read $ lines boardString >>= words, val>0]
+  [((x, y),val) | ((x, y),val) <- zip idx . map read $ lines boardString >>= words, val>0]
 ```
 
 This is the function that takes a board string and returns an actual board constructed from it. The main operation there is `foldr`, and I'm going to assume you understand how a fold works for this exercise. If you don't, read [this](http://stackoverflow.com/questions/1757740/how-foldr-works) and [this](http://stackoverflow.com/questions/384797/implications-of-foldr-vs-foldl-or-foldl), then do some googling. `(const [1..9])` is a function that always returns the list of integers from `1` to `9`, inclusive. It's equivalent to `(\_ -> [1,2,3,4,5,6,7,8,9])`<a name="note-Sun-Jun-02-232746EDT-2013"></a>[|9|](#foot-Sun-Jun-02-232746EDT-2013). What it produces... is a bit trickier. It has to do with an inherent property of Haskell, and that type signature for `mark` I showed earlier.
@@ -285,7 +285,7 @@ That's the key to understanding this. Lets do the [Little Schemer](http://mitpre
 
 01}} foldr mark (const [1..9]) $ 
                 [((x, y),val) | 
-                 ((x, y),val) &lt;- zip idx . 
+                 ((x, y),val) <- zip idx . 
                                  map read $ 
                                      lines boardString 
                                      >>= words, 
@@ -293,7 +293,7 @@ That's the key to understanding this. Lets do the [Little Schemer](http://mitpre
 
 02}} foldr mark (const [1..9]) $ 
                 [((x, y),val) | 
-                 ((x, y),val) &lt;- zip idx . 
+                 ((x, y),val) <- zip idx . 
                                  map read $ 
                                      ["4 0 0 0 0 0 0 0 0",
                                       "0 0 0 0 0 0 0 0 0",
@@ -344,7 +344,7 @@ And there. If we added another space, it would unfold another level, with the en
 ```haskell
 solve :: [Board] -> [Board]
 solve boards = foldr search boards idx where
-  search (x, y) boards = [mark ((x, y),val) brd | brd &lt;- boards, val &lt;- brd (x, y)]
+  search (x, y) boards = [mark ((x, y),val) brd | brd <- boards, val <- brd (x, y)]
 ```
 
 Hopefully, now that I've un`foldr`d the definition of `input`, this is intuitively obvious. `search` is an internal function that takes a list of boards and a space `(x, y)`, and attempts to solve for them. It does this by taking each possibility for that space on each board and `mark`ing them, collecting all the results. If you look carefully, and have read those `foldr` links from earlier, this also explains why the Haskell version starts returning answers very quickly. The way iteration unfolds here, the first board is going to be solved quite a while before the complete sequence is solved, which means it'll be returned and printed quickly and thereafter not take further resources from the program.

@@ -20,10 +20,10 @@ Any sufficiently complicated, distributed system contains an ad-hoc, informally 
 It's really all stuff you already know cold. 
 
 
--   Inter-node communication, complete with heartbeats and the appropriate byte-protocol
--   a specified, standard remote procedure call mechanism
--   formalized and explicit policy settings about failures
--   graceful distribution, logging, deployment and re-deployment (as per the ["hot code swapping"](http://langnostic.blogspot.ca/2012/05/hot-erlang-code.html))
+- Inter-node communication, complete with heartbeats and the appropriate byte-protocol
+- a specified, standard remote procedure call mechanism
+- formalized and explicit policy settings about failures
+- graceful distribution, logging, deployment and re-deployment (as per the ["hot code swapping"](http://langnostic.blogspot.ca/2012/05/hot-erlang-code.html))
 
 
 The difference is that you're probably used to it being specified in the surrounding infrastructure and systems rather than in the program itself.

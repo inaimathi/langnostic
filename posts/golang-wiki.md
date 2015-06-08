@@ -13,9 +13,9 @@ Also, `gitit` still doesn't compile properly via `nix`, so I may actually find m
 My goals here are minimal:
 
 
--   a simple filesystem-backed wiki
--   with [[`markdown`]] support
--   that properly tracks full history for all documents involved
+- a simple filesystem-backed wiki
+- with `markdown` support
+- that properly tracks full history for all documents involved
 
 
 I'm pointedly not worried about other markup dialects, nor am I worrying about exporting the data as anything other than `.md` files (or naively as a `git` repo). That still gets you through a lot of what you'll need out of a language. Even a project as minimal as this will force me to interact with command-line argument parsing, executing external commands, file I/O, markdown parsing, HTML templating and serving HTTP.
@@ -202,9 +202,9 @@ Two of those handler factories, `ShowPage` and `ShowEdit`, also deal with [HTML 
 The `ShowPage` handler function is responsible for displaying one of
 
 
--   a wiki page (in the case that the specified URL exists and is a page)
--   a list of pages (in the case that the specified URL exists and is a directory)
--   a simple "Create" page (in the case that the specified URL does not designate an existing page)
+- a wiki page (in the case that the specified URL exists and is a page)
+- a list of pages (in the case that the specified URL exists and is a directory)
+- a simple "Create" page (in the case that the specified URL does not designate an existing page)
 
 
 Similarly, the `EditPage` handler function renders the page editing interface for the user. The other three handlers I mentioned do *something* to the state of the specified wiki, then redirect to an appropriate page. The "something" always ends up being a call to some method on the specified `wiki`, and that's as good a segue as any into...

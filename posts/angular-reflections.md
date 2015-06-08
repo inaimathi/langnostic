@@ -15,28 +15,28 @@ First, the relevant HTML markup
 ```html
 ...
 
-&lt;script id="tmp-control" type="text/x-handlebars-template"&gt;
-  &lt;li class="{{cmd}}"&gt;
-    &lt;button class="btn" onclick="mote.command('{{cmd}}');"
+<script id="tmp-control" type="text/x-handlebars-template">
+  <li class="{{cmd}}">
+    <button class="btn" onclick="mote.command('{{cmd}}');"
             {{#if held}}
             onmousedown="mote.hold('{{cmd}}');" onmouseup="mote.release();" onmouseout="mote.release();"
-            {{/if}}&gt;
-      &lt;i class="icon-{{cmd}}"&gt;&lt;/i&gt;
-    &lt;/button&gt;
-  &lt;/li&gt;
-&lt;/script&gt;
+            {{/if}}>
+      <i class="icon-{{cmd}}"></i>
+    </button>
+  </li>
+</script>
 
-&lt;script id="tmp-control-block" type="text/x-handlebars-template"&gt;
-  &lt;ul&gt;
+<script id="tmp-control-block" type="text/x-handlebars-template">
+  <ul>
     {{#each this}}
     {{#control-button this}}{{/control-button}}
     {{/each}}
-  &lt;/ul&gt;
-&lt;/script&gt;
+  </ul>
+</script>
 
 ...
 
-&lt;div id="controls"&gt;&lt;/div&gt;
+<div id="controls"></div>
 
 ...```
 
@@ -128,20 +128,20 @@ That's that. Like I said, this isn't the most elegant code I've ever written. If
 HTML markup first
 
 ```html
-&lt;div id="controls" ng-controller="CommandCtrl" ng-style="style"&gt;
-  &lt;ul ng-repeat="controlsList in controlTree"&gt;
-    &lt;li ng-repeat="control in controlsList" class="{{control.cmd}}" ng-switch="control.held"&gt;
-      &lt;button class="btn" ng-switch-when="true" 
+<div id="controls" ng-controller="CommandCtrl" ng-style="style">
+  <ul ng-repeat="controlsList in controlTree">
+    <li ng-repeat="control in controlsList" class="{{control.cmd}}" ng-switch="control.held">
+      <button class="btn" ng-switch-when="true" 
               ng-mousedown="command(control.cmd); hold(control.cmd)"
-              ng-mouseup="release()" ng-mouseleave="release()"&gt;
-        &lt;i class="icon-{{control.cmd}}"&gt;&lt;/i&gt;
-      &lt;/button&gt;
-      &lt;button class="btn" ng-switch-default ng-click="command(control.cmd)"&gt;
-        &lt;i class="icon-{{control.cmd}}"&gt;&lt;/i&gt;
-      &lt;/button&gt;
-    &lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/div&gt;```
+              ng-mouseup="release()" ng-mouseleave="release()">
+        <i class="icon-{{control.cmd}}"></i>
+      </button>
+      <button class="btn" ng-switch-default ng-click="command(control.cmd)">
+        <i class="icon-{{control.cmd}}"></i>
+      </button>
+    </li>
+  </ul>
+</div>```
 
 It should be fairly self-explanatory. That's not the clearest code you're likely to find, but it's illustrative. We've got a bunch of non-HTML directives strewn about; all the stuff starting with `ng-` is part of the Angular DSL. While we need to do the `{{}}` thing to evaluate code inside of standard HTML properties, any code inside of `ng-` properties is automatically run in the context of the `controller` `CommandCtrl`.
 

@@ -3,10 +3,10 @@ This is a complete non-sequitur thought that hit me recently. Ok, I guess what I
 Oh, heads up I guess, I'm talking about software patents this time. Now you know. Also, let me preface by making the obvious statements:
 
 
--   I am not a lawyer
--   I don't play one on TV
--   I don't even play one on the internet
--   I'm a software developer, illustrator and regular Groklaw reader, and that's almost the entirety of my experience with the field
+- I am not a lawyer
+- I don't play one on TV
+- I don't even play one on the internet
+- I'm a software developer, illustrator and regular Groklaw reader, and that's almost the entirety of my experience with the field
 
 
 I'm also not even remotely [the](http://progfree.org/Patents/knuth-to-pto.txt) [first](http://www.cl.cam.ac.uk/~mgk25/stallman-patents.html) [person](http://www.youtube.com/watch?v=oRqsdSARrgk) to think they're bad (and going to get a lot worse very shortly). Some people (mostly ones who own or are paid by extremely large software companies) think they're a good thing, but their arguments tend to boil down to "Patents exist, and we have them, so tough luck".
@@ -30,9 +30,9 @@ Now, lets step back for a second. Ignoring the fact that "don't troll", "don't u
 On the flipside, how would you fight such a collective? You could
 
 
--   train one of the big players on them before the defensive thicket was built up (at which point a victory would put the collective at square one, but probably invalidate a bunch of the attackers' patents too, if the Oracle case is any indication). 
--   get a shell company to sign up and then get them to start using loopholes to troll outside companies and inventors (that would either precipitate the first situation, or undermine the reputation of the collective)
--   set up a bunch of smaller trolling companies and start pinging members of the collective to bleed them out. This seems like it would be the big problem to solve. You'd do it either by getting enough of the trolls on your side somehow, or by establishing some defensive mechanism to make it easier for signatories to shrug off attacks<a name="note-Fri-Apr-13-013130EDT-2012"></a>[|5|](#foot-Fri-Apr-13-013130EDT-2012)
+- train one of the big players on them before the defensive thicket was built up (at which point a victory would put the collective at square one, but probably invalidate a bunch of the attackers' patents too, if the Oracle case is any indication). 
+- get a shell company to sign up and then get them to start using loopholes to troll outside companies and inventors (that would either precipitate the first situation, or undermine the reputation of the collective)
+- set up a bunch of smaller trolling companies and start pinging members of the collective to bleed them out. This seems like it would be the big problem to solve. You'd do it either by getting enough of the trolls on your side somehow, or by establishing some defensive mechanism to make it easier for signatories to shrug off attacks<a name="note-Fri-Apr-13-013130EDT-2012"></a>[|5|](#foot-Fri-Apr-13-013130EDT-2012)
 
 
 Of course, there are problems to deal with other than outright attacks. How do you fund something like this? The [Graham](http://paulgraham.com/ambitious.html) angle would probably be to make it a start-up, but I don't think this sort of idea is a very good fit for the approach. You could charge dues, but every obstacle you place to membership means fewer signatories, means an over-all less effective defensive thicket of patents.

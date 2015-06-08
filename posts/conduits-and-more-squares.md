@@ -36,9 +36,9 @@ Assuming this works, we could easily write a solution to the "hard" version too;
 I'm carefully refraining from defining `dissection-count`, `insert-dissection`, `grid`, and indeed `rotate` and `reflect`. What I know is
 
 
--   `insert-dissection` is going to have to do the work of ensuring that duplicate dissections are discarded, which implies storing them as a set or hash
--   the definitions of `rotate` and `reflect` will depend heavily on the definition of `grid`, and square storage needs to be thought out to make sure they're all fast
--   it seems like there should be a better way to solve this problem than "brute force", but I'm not seeing it yet. I've joked about it before, but this may actually be the problem that gets me off my ass and into seriously learning about [genetic algorithms](http://www.obitko.com/tutorials/genetic-algorithms/index.php)
+- `insert-dissection` is going to have to do the work of ensuring that duplicate dissections are discarded, which implies storing them as a set or hash
+- the definitions of `rotate` and `reflect` will depend heavily on the definition of `grid`, and square storage needs to be thought out to make sure they're all fast
+- it seems like there should be a better way to solve this problem than "brute force", but I'm not seeing it yet. I've joked about it before, but this may actually be the problem that gets me off my ass and into seriously learning about [genetic algorithms](http://www.obitko.com/tutorials/genetic-algorithms/index.php)
 
 
 That's that for now. I was going to talk a bit about how work has been going, and the shape of small-scale development in Toronto's medical industry, but it looks like a client has finally decided to respond to me, so back to the grindstone I go.

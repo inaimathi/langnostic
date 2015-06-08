@@ -15,12 +15,12 @@ The documentation in the [module itself](http://common-lisp.net/project/cl-smtp/
 ```lisp
 (cl-smtp:send-email
  +mail-server+ from to subject
- "&lt;html>&lt;body>
-    &lt;h2>
+ "<html><body>
+    <h2>
       YES. THIS IS DOG.
-    &lt;/h2>
-      &lt;img src=\"http://my.site.url/dog.jpg\" alt=\"A dog comically answering a phone\"/>
-  &lt;/body>&lt;/html>"
+    </h2>
+      <img src=\"http://my.site.url/dog.jpg\" alt=\"A dog comically answering a phone\"/>
+  </body></html>"
  :extra-headers '(("Content-type" "text/html; charset=\"iso-8859-1\"")))
 ```
 
@@ -47,12 +47,12 @@ The actually working way of accomplishing this task is to use the built-in `:htm
  +mail-server+ from to subject
  "Ok, the HTML version of this email is totally impressive. Just trust me on this."
  :html-message
- "&lt;html>&lt;body>
-    &lt;h2>
+ "<html><body>
+    <h2>
       YES. THIS IS DOG.
-    &lt;/h2>
-      &lt;img src=\"http://my.site.url/dog.jpg\" alt=\"A dog comically answering a phone\"/>
-  &lt;/body>&lt;/html>")
+    </h2>
+      <img src=\"http://my.site.url/dog.jpg\" alt=\"A dog comically answering a phone\"/>
+  </body></html>")
 ```
 
 if you don't want to send a plaintext message at all, it's possible<a name="note-Tue-Apr-17-162819EDT-2012"></a>[|3|](#foot-Tue-Apr-17-162819EDT-2012) to pass `nil` as the message `body`
@@ -61,12 +61,12 @@ if you don't want to send a plaintext message at all, it's possible<a name="note
 (cl-smtp:send-email
  +mail-server+ from to subject nil
  :html-message
- "&lt;html>&lt;body>
-    &lt;h2>
+ "<html><body>
+    <h2>
       YES. THIS IS DOG.
-    &lt;/h2>
-      &lt;img src=\"http://my.site.url/dog.jpg\" alt=\"A dog comically answering a phone\"/>
-  &lt;/body>&lt;/html>")
+    </h2>
+      <img src=\"http://my.site.url/dog.jpg\" alt=\"A dog comically answering a phone\"/>
+  </body></html>")
 ```
 
 Doing it this way causes `cl-smtp` to break your message up into a plaintext and HTML version. You then rely on a client showing its user the appropriate one depending on their context<a name="note-Tue-Apr-17-163515EDT-2012"></a>[|4|](#foot-Tue-Apr-17-163515EDT-2012).
@@ -92,7 +92,7 @@ Ok, the HTML version of this email is totally impressive. Just trust me on this.
 Content-type: text/html; charset="UTF-8"
 Content-Disposition: inline
 
-&lt;html>&lt;body>&lt;h2>YES. THIS IS DOG.&lt;/h2>&lt;img src=\"http://my.site.url/dog.jpg\" alt=\"A dog comically answering a phone\"/>&lt;/body>&lt;/html>
+<html><body><h2>YES. THIS IS DOG.</h2><img src=\"http://my.site.url/dog.jpg\" alt=\"A dog comically answering a phone\"/></body></html>
 
 
 --_---------_2IQrElfHaDK71IdkZlEq5L3C0etr5t--

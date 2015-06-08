@@ -51,7 +51,7 @@ Why don't I just use a byte stream instead? Especially since I already need bi-v
 
 ```lisp
 CL-USER> (describe #'read-char-no-hang)
-#&lt;FUNCTION READ-CHAR-NO-HANG>
+#<FUNCTION READ-CHAR-NO-HANG>
   [compiled function]
 
 Lambda-list: (&OPTIONAL (STREAM *STANDARD-INPUT*) (EOF-ERROR-P T)
@@ -70,11 +70,11 @@ The function COMMON-LISP-USER::READ-BYTE-NO-HANG is undefined.
 Restarts:
  0: [RETRY] Retry SLIME REPL evaluation request.
  1: [*ABORT] Return to SLIME's top level.
- 2: [ABORT] Abort thread (#&lt;THREAD "repl-thread" RUNNING {10046F8063}>)
+ 2: [ABORT] Abort thread (#<THREAD "repl-thread" RUNNING {10046F8063}>)
 
 Backtrace:
-  0: (SB-INT:SIMPLE-EVAL-IN-LEXENV (FUNCTION READ-BYTE-NO-HANG) #&lt;NULL-LEXENV>)
-  1: (SB-INT:SIMPLE-EVAL-IN-LEXENV (DESCRIBE (FUNCTION READ-BYTE-NO-HANG)) #&lt;NULL-LEXENV>)
+  0: (SB-INT:SIMPLE-EVAL-IN-LEXENV (FUNCTION READ-BYTE-NO-HANG) #<NULL-LEXENV>)
+  1: (SB-INT:SIMPLE-EVAL-IN-LEXENV (DESCRIBE (FUNCTION READ-BYTE-NO-HANG)) #<NULL-LEXENV>)
   2: (EVAL (DESCRIBE (FUNCTION READ-BYTE-NO-HANG)))
   ...
 ```

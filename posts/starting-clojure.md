@@ -1,8 +1,8 @@
 So I've been going to this [Coding Dojo](http://www.meetup.com/Toronto-Coding-Dojo/) thing, I guess. In an attempt to finally get off my ass and into Clojure, but also into 
 
 
--   socializing with functional programmers outside of the Lisp group<a name="note-Thu-Aug-23-161334EDT-2012"></a>[|1|](#foot-Thu-Aug-23-161334EDT-2012)
--   getting a bit more of a handle on test driven development<a name="note-Thu-Aug-23-161338EDT-2012"></a>[|2|](#foot-Thu-Aug-23-161338EDT-2012).
+- socializing with functional programmers outside of the Lisp group<a name="note-Thu-Aug-23-161334EDT-2012"></a>[|1|](#foot-Thu-Aug-23-161334EDT-2012)
+- getting a bit more of a handle on test driven development<a name="note-Thu-Aug-23-161338EDT-2012"></a>[|2|](#foot-Thu-Aug-23-161338EDT-2012).
 
 
 For the past two weeks, we've been (unsuccessfully so far, but no one is about to give up yet) trying to run through the poker hand kata in Clojure. Half the point here is trying out the language, and I've successfully procrastinated until they got a fantastic, standardized build system going so that I don't have to fuck around installing libraries by hand, which seems like it'll be very gratifying after the bunch of time spent in the Erlang world lately.
@@ -56,8 +56,8 @@ The first thought that struck me was "Wait a minute, this looks a hell of a lot 
 
 
 1.   if you need to do any extensive work on the JVM, use Clojure, it beats the alternatives
-1.   if you don't know a Lisp yet, Clojure is a reasonable choice for your first<a name="note-Thu-Aug-23-161738EDT-2012"></a>[|3|](#foot-Thu-Aug-23-161738EDT-2012)
-1.   if you already know Scheme or Common Lisp, and are comfortable with it, and don't go in for this JVM nonsense, don't bother learning Clojure because it'll teach you nothing new in the [Perlis](http://www.cs.yale.edu/quotes.html) sense
+2.   if you don't know a Lisp yet, Clojure is a reasonable choice for your first<a name="note-Thu-Aug-23-161738EDT-2012"></a>[|3|](#foot-Thu-Aug-23-161738EDT-2012)
+3.   if you already know Scheme or Common Lisp, and are comfortable with it, and don't go in for this JVM nonsense, don't bother learning Clojure because it'll teach you nothing new in the [Perlis](http://www.cs.yale.edu/quotes.html) sense
 
 
 The differences are mostly in minutia, rather than the general principles of the language. I'll go through the few that are obvious from cursory poking, but if you're interested at all, you should take in [Clojure for Lisp Programmers Part 1](http://blip.tv/clojure/clojure-for-lisp-programmers-part-1-1319721) and [Part 2](http://blip.tv/clojure/clojure-for-lisp-programmers-part-2-1319826), in which Rich Hickey tells you basically everything I'm about to and a few more things besides. 
@@ -65,23 +65,23 @@ The differences are mostly in minutia, rather than the general principles of the
 There are probably bigger differences than the ones I'll point out, consider this a "preliminary impressions" note, because I've yet to do anything more serious than an attempt at that poker hand kata.
 
 
--   **Different Truth/Falsity Values** Clojure has an explicit `true` and `false`. `nil` and the empty list are  **not** equivalent<a name="note-Thu-Aug-23-162302EDT-2012"></a>[|4|](#foot-Thu-Aug-23-162302EDT-2012), and you're free to define one-letter local variables that designate `t`ime, `t`raffic or `t`otals. That's different from both CL and Scheme, and I'm sort of leaning towards calling it frivolous, but I'll see how it works out in practice<a name="note-Thu-Aug-23-162306EDT-2012"></a>[|5|](#foot-Thu-Aug-23-162306EDT-2012).
--   **No Separate Function Namespace** Clojure cribs from Scheme here. A single function/variable namespace means you don't need to use `#'`, and it means you don't need separate `let`/`flet`. Oddly, there are two define forms<a name="note-Thu-Aug-23-162310EDT-2012"></a>[|6|](#foot-Thu-Aug-23-162310EDT-2012), but it's otherwise closer to the Scheme way of doing things.
--   **Fewer Parentheses** I'm talking about `let` and `cond` bodies here. CL and Scheme both have you delimit each pair in an additional set of parens, while Clojure doesn't. This might make `transpose-sexps` a bit weirder on their clauses, but reduces the amount of typing you need to do by a tiny amount in the general case.
--   **Polymorphic Built-Ins** The general equality test in Clojure is `=`, unlike CL or Scheme where you need to pick between `=`, `eq`, `eql`, etc. `first`, `last`, `map` and many others also work generically on sequences rather than just on lists.
--   **Vectors Everywhere** `[1 2 3]` is "the vector of 1, 2, 3" rather than a list. Because of the polymorphic thing above, this doesn't introduce as much syntactic complexity as you'd think, and it means you don't need to worry about which end of a list you're taking from. Argument lists are all vectors rather than lists.
--   **Destructuring By Default** I'm pretty used to whipping out  `destructuring-bind` in Common Lisp because it's sometimes the most straightforward way of expressing something. I don't use it nearly as often as often in CL as I do in Python or Erlang just because it doesn't save typing in nearly as many situations given what the construct looks like<a name="note-Thu-Aug-23-162317EDT-2012"></a>[|7|](#foot-Thu-Aug-23-162317EDT-2012). In Clojure, you can do something like
-- 
--     ```clojure
+- **Different Truth/Falsity Values** Clojure has an explicit `true` and `false`. `nil` and the empty list are  **not** equivalent<a name="note-Thu-Aug-23-162302EDT-2012"></a>[|4|](#foot-Thu-Aug-23-162302EDT-2012), and you're free to define one-letter local variables that designate `t`ime, `t`raffic or `t`otals. That's different from both CL and Scheme, and I'm sort of leaning towards calling it frivolous, but I'll see how it works out in practice<a name="note-Thu-Aug-23-162306EDT-2012"></a>[|5|](#foot-Thu-Aug-23-162306EDT-2012).
+- **No Separate Function Namespace** Clojure cribs from Scheme here. A single function/variable namespace means you don't need to use `#'`, and it means you don't need separate `let`/`flet`. Oddly, there are two define forms<a name="note-Thu-Aug-23-162310EDT-2012"></a>[|6|](#foot-Thu-Aug-23-162310EDT-2012), but it's otherwise closer to the Scheme way of doing things.
+- **Fewer Parentheses** I'm talking about `let` and `cond` bodies here. CL and Scheme both have you delimit each pair in an additional set of parens, while Clojure doesn't. This might make `transpose-sexps` a bit weirder on their clauses, but reduces the amount of typing you need to do by a tiny amount in the general case.
+- **Polymorphic Built-Ins** The general equality test in Clojure is `=`, unlike CL or Scheme where you need to pick between `=`, `eq`, `eql`, etc. `first`, `last`, `map` and many others also work generically on sequences rather than just on lists.
+- **Vectors Everywhere** `[1 2 3]` is "the vector of 1, 2, 3" rather than a list. Because of the polymorphic thing above, this doesn't introduce as much syntactic complexity as you'd think, and it means you don't need to worry about which end of a list you're taking from. Argument lists are all vectors rather than lists.
+- **Destructuring By Default** I'm pretty used to whipping out  `destructuring-bind` in Common Lisp because it's sometimes the most straightforward way of expressing something. I don't use it nearly as often as often in CL as I do in Python or Erlang just because it doesn't save typing in nearly as many situations given what the construct looks like<a name="note-Thu-Aug-23-162317EDT-2012"></a>[|7|](#foot-Thu-Aug-23-162317EDT-2012). In Clojure, you can do something like
+
+ ```clojure
 user=>(def foo [1 2 3 4])
--       #'user/foo
--       user=> (let [[a b c d] foo] (list a b c d))
--       (1 2 3 4)
+       #'user/foo
+       user=> (let [[a b c d] foo] (list a b c d))
+       (1 2 3 4)
 ```
-- 
--     which means that I could start doing this much more frivolously.
--   **Curlies and Brackets** Obviously. It's not as though CL *doesn't* have them, but they tend to get used very sparingly as part of reader macros. Clojure uses curlies to designate hash-maps/sets and `[]` to designate (among other things) vectors. Personally, I don't miss the JavaScript/jQuery matching hell that comes with nesting all three of them, but they don't seem to be mutually nesting in a lot of places, and [`paredit`](http://emacswiki.org/emacs/ParEdit) helps a lot anyway.
--   **Whitespace Commas** The quote and backquote still work as expected, but the "unquote" modifier is `~` rather than `,`. This is another one that I see as frivolous, though I guess it could reduce cognitive friction for people who are used to delimiting lists with things other than spaces.
+ 
+- which means that I could start doing this much more frivolously.
+- **Curlies and Brackets** Obviously. It's not as though CL *doesn't* have them, but they tend to get used very sparingly as part of reader macros. Clojure uses curlies to designate hash-maps/sets and `[]` to designate (among other things) vectors. Personally, I don't miss the JavaScript/jQuery matching hell that comes with nesting all three of them, but they don't seem to be mutually nesting in a lot of places, and [`paredit`](http://emacswiki.org/emacs/ParEdit) helps a lot anyway.
+- **Whitespace Commas** The quote and backquote still work as expected, but the "unquote" modifier is `~` rather than `,`. This is another one that I see as frivolous, though I guess it could reduce cognitive friction for people who are used to delimiting lists with things other than spaces.
 
 
 

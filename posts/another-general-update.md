@@ -31,8 +31,8 @@ The point being: the naive way of building tracers plays exactly to Lisp's conce
 Conflicts I've observed between the Haskell and ML communities are about
 
 
--   [exceptions](http://existentialtype.wordpress.com/2012/12/03/exceptions-are-shared-secrets/)
--   [the cost](http://existentialtype.wordpress.com/2011/04/24/the-real-point-of-laziness/) of [laziness](http://augustss.blogspot.ca/2011/05/more-points-for-lazy-evaluation-in.html)
+- [exceptions](http://existentialtype.wordpress.com/2012/12/03/exceptions-are-shared-secrets/)
+- [the cost](http://existentialtype.wordpress.com/2011/04/24/the-real-point-of-laziness/) of [laziness](http://augustss.blogspot.ca/2011/05/more-points-for-lazy-evaluation-in.html)
 
 
 I haven't informed myself about the first well enough to comment yet, though I am trying.

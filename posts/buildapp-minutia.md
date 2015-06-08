@@ -54,62 +54,62 @@ We had a couple problems deploying a specific part of the system that dealt with
 3 - <a name="foot-Sat-Apr-05-175227EDT-2014"></a>[|back|](#note-Sat-Apr-05-175227EDT-2014) - Here's the transcript, for those of you who want the details:
 
 ```
-13:58 &lt;inaimathi> Anyone here who knows things about asdf
+13:58 <inaimathi> Anyone here who knows things about asdf
                   dependencies, and is willing to answer
                   questions/lend an eye?
-13:58 &lt;Xach> inaimathi: I know a bit. What's up?
-13:59 &lt;inaimathi> I'm trying to find the dependency tree
+13:58 <Xach> inaimathi: I know a bit. What's up?
+13:59 <inaimathi> I'm trying to find the dependency tree
                   (preferably ordered) of a given asdf system.
-13:59 &lt;inaimathi> Is there a build-in way of doing that?
-13:59 &lt;inaimathi> *built
-13:59 &lt;inaimathi> Hm
-14:00 &lt;inaimathi> Actually, you might be able to help with the
+13:59 <inaimathi> Is there a build-in way of doing that?
+13:59 <inaimathi> *built
+13:59 <inaimathi> Hm
+14:00 <inaimathi> Actually, you might be able to help with the
                   larger problem too. The real problem is that I'm
                   trying to run buildapp for a project, and I want
                   to know what systems I need to load as part of
                   the shell command.
-14:00 &lt;Xach> oh. the way i do that is to load the project once with
+14:00 <Xach> oh. the way i do that is to load the project once with
              dependencies downloaded automatically and then note
              what was loaded.
-14:00 &lt;Xach> then i load it again with just those things.
-14:01 &lt;Xach> it is not great but arbitrary things load during
+14:00 <Xach> then i load it again with just those things.
+14:01 <Xach> it is not great but arbitrary things load during
              find-system time so i'm not sure if there's a nice way
              around it.
-14:01 &lt;inaimathi> How do I go about doing that?
-14:02 &lt;inaimathi> That is, loading a project while getting output
+14:01 <inaimathi> How do I go about doing that?
+14:02 <inaimathi> That is, loading a project while getting output
                   of what's being loaded. Is there a ql flag or
                   something?
-14:03 &lt;Xach> inaimathi: i don't actually note the specifics. i just
+14:03 <Xach> inaimathi: i don't actually note the specifics. i just
              load it, and then have quicklisp dump out an index to
              the currently installed libraries via
              (ql:write-asdf-manifest-file
              "/path/to/my/project/system-index.txt")
-14:03 &lt;inaimathi> Ah
-14:03 &lt;Xach> then i use buildapp --asdf-manifest system-index.txt
-             --&lt;the rest of the stuff>
-14:04 &lt;Xach> Each time I make a new project I refine the makefile
+14:03 <inaimathi> Ah
+14:03 <Xach> then i use buildapp --asdf-manifest system-index.txt
+             --<the rest of the stuff>
+14:04 <Xach> Each time I make a new project I refine the makefile
              technique a little more
-14:05 &lt;inaimathi> Ok then. Do you think something like
+14:05 <inaimathi> Ok then. Do you think something like
                   http://stackoverflow.com/a/22732580/190887 could
                   be a valid approach, or is that going to miss
                   things?
-14:07 &lt;Xach> inaimathi: One difficulty arises from .asd files with
+14:07 <Xach> inaimathi: One difficulty arises from .asd files with
              things like (eval-when ... (asdf:load-system
              "some-prerequisite"))
-14:07 &lt;inaimathi> Right; those wouldn't be noted by the asdf system
+14:07 <inaimathi> Right; those wouldn't be noted by the asdf system
                   itself.
-14:07 &lt;inaimathi> Dammit.
-14:08 &lt;Xach> I also don't know if the slot you're looking at
+14:07 <inaimathi> Dammit.
+14:08 <Xach> I also don't know if the slot you're looking at
              includes :defsystem-depends-on dependencies.
-14:08 &lt;Xach> inaimathi: I once asked about how to do this on
+14:08 <Xach> inaimathi: I once asked about how to do this on
              asdf-devel and I got an answer I didn't really
              understand (it was complicated) and I haven't
              revisited it. And I'm not sure there's an archive you
              can search for it.
-14:09 &lt;rtoym> asdf-devel is on gmane.org
-14:10 &lt;inaimathi> Hm. I'll take the asdf-manifest-file approach for
+14:09 <rtoym> asdf-devel is on gmane.org
+14:10 <inaimathi> Hm. I'll take the asdf-manifest-file approach for
                   the moment, and probably ask around on asdf-devel
                   later.
-14:10 &lt;inaimathi> Thanks!
+14:10 <inaimathi> Thanks!
 
 ```

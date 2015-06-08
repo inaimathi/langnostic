@@ -62,7 +62,7 @@ The new `auto` helper overrides [the `show-hint` default](https://github.com/mar
         (push s res)))
     (sort (mapcar (lambda (s) (string-downcase (symbol-name s)))
                   (remove-duplicates res))
-          #'&lt; :key #'length)))
+          #'< :key #'length)))
 ```
 
 which is about as naive as you can get. It does the job though; even when completing on the empty string (which returns all symbols in the `cl-notebook` package), the server comes back with a response in about `10 msec`.

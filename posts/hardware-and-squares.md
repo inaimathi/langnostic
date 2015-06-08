@@ -21,8 +21,8 @@ Suppose you have a grid of squares `n`x`n` large. There is a finite number of wa
 The challenge:
 
 
--   **"Easy" Mode:** Write a function that takes a number `N` and returns the Number of Square Dissections of an `N` by `N` grid.
--   **"Hard" Mode:** Write a second function with the same input as above that returns the number of **unique**, under rotation and reflection, dissections.
+- **"Easy" Mode:** Write a function that takes a number `N` and returns the Number of Square Dissections of an `N` by `N` grid.
+- **"Hard" Mode:** Write a second function with the same input as above that returns the number of **unique**, under rotation and reflection, dissections.
 
 
 Before you chuckle at this, bear in mind that a general solution is publishable<a name="note-Fri-Apr-19-210429EDT-2013"></a>[|1|](#foot-Fri-Apr-19-210429EDT-2013). According to Dann, the sequence is [solved up to an `N` of 15](http://oeis.org/A045846) or so, and that's already some ungodly number best expressed by exponents.

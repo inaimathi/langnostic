@@ -104,12 +104,10 @@ There, that's not so intimidating, is it? The actual interface to these indices 
 
 An `index` has a table of bindings. You'd call `make-index` in a way resembling `(make-index '(:a :b :bc :ac))`, which would give you back an `index` with room to dissect a fact base into chunklets keyed off of
 
-
 1.   the first element
-1.   the second element
-1.   the second then the third element
-1.   the first then the third element
-
+2.   the second element
+3.   the second then the third element
+4.   the first then the third element
 
 No, I have no idea if I'll ever actually need a setup like this. The `indexed?` method takes an `index` and an `ix-type` symbol and tells you whether the given `index` is tracking that particular type of lookup.
 

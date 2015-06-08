@@ -130,7 +130,7 @@ neighbors (x, y) = filter (/=(x,y)) . concat $ map xs l
 > And **then**, I remembered list comprehensions, which turn `neighbors` into a one-liner.  
 >   
 > ```haskell
-> neighbors (x, y) = [(x+dx, y+dy) | dx &lt;- [-1..1], dy &lt;- [-1..1], (dx,dy) /= (0,0)]
+> neighbors (x, y) = [(x+dx, y+dy) | dx <- [-1..1], dy <- [-1..1], (dx,dy) /= (0,0)]
 > ```
 >   
 > Thu, 06 Dec, 2012  
@@ -160,7 +160,7 @@ lifeStep cells = step cells
 >  
 > ```haskell
 > lifeStep :: [(Int, Int)] -> [(Int, Int)]
-> lifeStep cells = [head g | g &lt;- grouped cells, viable g]
+> lifeStep cells = [head g | g <- grouped cells, viable g]
 >   where grouped = group . sort . concat . map neighbors
 >         viable [_,_,_] = True
 >         viable [c,_] = c `elem` cells
@@ -187,10 +187,10 @@ Oh, that was it, by the way.
 import Data.List
 
 neighbors :: (Int, Int) -> [(Int, Int)]
-neighbors (x, y) = [(x+dx, y+dy) | dx &lt;- [-1..1], dy &lt;- [-1..1], (dx,dy) /= (0,0)]
+neighbors (x, y) = [(x+dx, y+dy) | dx <- [-1..1], dy <- [-1..1], (dx,dy) /= (0,0)]
 
 lifeStep :: [(Int, Int)] -> [(Int, Int)]
-lifeStep cells = [head g | g &lt;- grouped cells, viable g]
+lifeStep cells = [head g | g <- grouped cells, viable g]
   where grouped = group . sort . concat . map neighbors
         viable [_,_,_] = True
         viable [c,_] = c `elem` cells
@@ -211,8 +211,8 @@ I was amazed the first time I wrote it too; those 6-lines-plus-type-signatures-a
 > ```haskell
 > showWorld :: [(Int, Int)] -> IO ()
 > showWorld cells = mapM_ putStrLn $ map cellStr groupedByY
->   where groupedByY = [[fst c | c &lt;- cells, snd c == y] | y &lt;- range]
->         cellStr xs = [if c `elem` xs then '#' else ' ' | c &lt;- range]
+>   where groupedByY = [[fst c | c <- cells, snd c == y] | y <- range]
+>         cellStr xs = [if c `elem` xs then '#' else ' ' | c <- range]
 >         range = worldRange cells
 >
 > worldRange cells = [least..greatest]

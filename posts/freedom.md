@@ -67,10 +67,10 @@ There's an entirely other discussion to be had about the middling UI quality in 
 It's beginning to dawn on me that if you really support the idea of Free Software, you are also logically opposed to the idea of monolithic systems. That if your goal is to maximize the Freedom of users, you **can not** hand them many hundred thousand lines of code (with an optional several thousand pages of documentation) and be content that you did your job. That suggests some basic principles by which to build Free Software
 
 
--   it needs to be built in small, individually understandable pieces (a few hundred lines across one file, not a few hundred thousand across hundreds)
--   large systems need to be built more or less by combining smaller systems
--   a large system shouldn't fail because one or more components failed
--   a system should be modifiable without restarting
+- it needs to be built in small, individually understandable pieces (a few hundred lines across one file, not a few hundred thousand across hundreds)
+- large systems need to be built more or less by combining smaller systems
+- a large system shouldn't fail because one or more components failed
+- a system should be modifiable without restarting
 
 
 Which is more or less how the *nix culture likes to build things from what I've seen. The trouble is how to reconcile this with the needs of end-users, and more specifically the moral/practical ramifications of doing so. Making things as easy as possible for non-programmers<a name="note-Thu-May-19-001035EDT-2011"></a>[|4|](#foot-Thu-May-19-001035EDT-2011) implies monoliths. They need as much of their computing experience handled by the computer as possible. It's really not acceptable, for example, to have the end user specify which audio/video codec and resolution to use for converting an mp4 to an avi. They likely don't know what a codec is, for starters. 

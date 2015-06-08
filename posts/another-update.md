@@ -84,7 +84,7 @@ end```
 require 'optparse'
 require 'fileutils'
 
-$options = {:sub =&gt; "", :downcase =&gt; nil}
+$options = {:sub => "", :downcase => nil}
 OptionParser.new do |opts|
   opts.on('-r', '--regex REGEX', String, 
           'Specify the regular expression to replace') {|reg| $options[:regex] = Regexp.new(reg)}
@@ -93,7 +93,7 @@ OptionParser.new do |opts|
   opts.on('-d', '--downcase', 'If passed, all filenames will be downcased.'){|$options[:downcase]|}
 end.parse!
 
-usage unless ARGV.length &gt; 0
+usage unless ARGV.length > 0
 
 def rename(str)
   ($options[:downcase] ? 

@@ -40,8 +40,8 @@ That out of the way, lets spend just a moment discussing...
 As far as I can tell, there are two legitimate approaches to building an async server in Common Lisp.
 
 
--   First, you could install `libevent-core-2.0` and `libevent-extra-2.0`, and make use of the [`cl-async`](https://github.com/orthecreedence/cl-async) bindings. This way seems to save you having to buffer messages yourself, and it probably provides better performance at the expense of a very mildly complicated deployment.
--   Second, you could go pure Lisp and build the whole thing out of [`usocket`s](http://common-lisp.net/project/usocket/).
+- First, you could install `libevent-core-2.0` and `libevent-extra-2.0`, and make use of the [`cl-async`](https://github.com/orthecreedence/cl-async) bindings. This way seems to save you having to buffer messages yourself, and it probably provides better performance at the expense of a very mildly complicated deployment.
+- Second, you could go pure Lisp and build the whole thing out of [`usocket`s](http://common-lisp.net/project/usocket/).
 
 
 I'm taking that second approach in this article, but you can use the same theory to construct a `cl-async`-based equivalent without too much trouble.
@@ -51,9 +51,9 @@ I'm taking that second approach in this article, but you can use the same theory
 We're building a toy example. The simplest async server that can possibly be constructed while remaining worthy of the name. We're going to have three applicable handlers:
 
 
--   one to serve up a basic front end, which will use JavaScript to connect to our subscription handler and get future messages from our server
--   one to handle that subscription
--   one to trigger a message send to all existing listeners
+- one to serve up a basic front end, which will use JavaScript to connect to our subscription handler and get future messages from our server
+- one to handle that subscription
+- one to trigger a message send to all existing listeners
 
 
 nothing fancy like user-specified messages, or multiple channels, both of which will be fairly easy changes once you understand what the basic server structure is. To start with, we need to generate responses, which means tacking a body message onto some situation-dependent HTTP headers, and handling the above `crlf` problems elegantly. So, here are the basics:
@@ -110,7 +110,7 @@ nothing fancy like user-specified messages, or multiple channels, both of which 
                  (defun p (msg)
                    (let ((elem (chain document (get-element-by-id "console"))))
                      (setf (@ elem inner-h-t-m-l)
-                           (+ (@ elem inner-h-t-m-l) "&lt;p>" msg "&lt;/p>"))))
+                           (+ (@ elem inner-h-t-m-l) "<p>" msg "</p>"))))
                  (setf (@ src onerror)
                        (lambda (e) 
                          (p "ERROR OCCURRED...")
@@ -217,9 +217,9 @@ Ok, I *may* have gone a little overboard in defining `starts-with?` myself, sinc
 The `buffer` class and accompanying `buffered-read!` procedure are going to make the job of collecting possibly chunked requests easier, and `starts-with?` does exactly what it says on the tin. It walks a `list` and a `prefix`, comparing for equality element-wise by a user-specified predicate, and it keeps going until
 
 
--   it finds a predicate failure (in which case, it returns `nil`)
--   the list runs out before the prefix (in which case it returns `nil` again)
--   the prefix runs out (in which case it returns `t`)
+- it finds a predicate failure (in which case, it returns `nil`)
+- the list runs out before the prefix (in which case it returns `nil` again)
+- the prefix runs out (in which case it returns `t`)
 
 
 The last piece is the meat. The `start` function is going to take a `port` and a `log-stream`, and listen on that `port` while dumping logging data to `log-stream`. Lets take this one slow.
@@ -419,7 +419,7 @@ And that's that. Assuming I've actually got the SSE points ironed out, and we'll
                  (defun p (msg)
                    (let ((elem (chain document (get-element-by-id "console"))))
                      (setf (@ elem inner-h-t-m-l)
-                           (+ (@ elem inner-h-t-m-l) "&lt;p>" msg "&lt;/p>"))))
+                           (+ (@ elem inner-h-t-m-l) "<p>" msg "</p>"))))
                  (setf (@ src onerror)
                        (lambda (e) 
                          (p "ERROR OCCURRED...")

@@ -59,14 +59,14 @@ applyEvent arc a (Out b) = (wind arc) a b
 
 loadFrom :: Read b => Archive a b -> Handle -> IO a
 loadFrom arc handle = recur handle (empty arc)
-    where recur h acc = do res &lt;- hIsEOF h
+    where recur h acc = do res <- hIsEOF h
                            if res
                            then return acc
-                           else do ln &lt;- hGetLine h
+                           else do ln <- hGetLine h
                                    recur h . applyEvent arc acc $ read ln
 
 newEvent :: Show b => Archive a b -> a -> Event b -> [Handle] -> IO a
-newEvent arc a ev handles = do _ &lt;- mapM_ (\h -> hPutStrLn h $ show ev) handles
+newEvent arc a ev handles = do _ <- mapM_ (\h -> hPutStrLn h $ show ev) handles
                                return $ applyEvent arc a ev
 ```
 
@@ -94,9 +94,9 @@ I'm not entirely sure which direction to go in, because there's exactly one plac
 So yeah. The three potential directions I can see are:
 
 
--   provide a pure-functional rewind system that leaves getting a list of `Event`s up to the user of `History`. It'll be harder to call, and there might be overlap in terms of what each implementer has to put together, but this would afford users the greatest flexibility.
--   provide a file-specific rewind system that knows rather a lot about the on-disk storage format and handles reading `Event`s in as well as rolling them back. This would be less flexible, since we'd assume we had random access to whatever storage solution we're using, but it would be easier for callers to actually use<a name="note-Thu-Oct-02-224232EDT-2014"></a>[|2|](#foot-Thu-Oct-02-224232EDT-2014)
--   provide a system in which archives carry around session deltas. This would give them partial in-memory rewind capability, and give the caller more explicit control over when stream writes happen.
+- provide a pure-functional rewind system that leaves getting a list of `Event`s up to the user of `History`. It'll be harder to call, and there might be overlap in terms of what each implementer has to put together, but this would afford users the greatest flexibility.
+- provide a file-specific rewind system that knows rather a lot about the on-disk storage format and handles reading `Event`s in as well as rolling them back. This would be less flexible, since we'd assume we had random access to whatever storage solution we're using, but it would be easier for callers to actually use<a name="note-Thu-Oct-02-224232EDT-2014"></a>[|2|](#foot-Thu-Oct-02-224232EDT-2014)
+- provide a system in which archives carry around session deltas. This would give them partial in-memory rewind capability, and give the caller more explicit control over when stream writes happen.
 
 
 Not quite sure whether I want to pick one, or a hybrid, or something else entirely.

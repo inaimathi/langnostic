@@ -422,7 +422,7 @@ To load "sicp-constraints":
 [package sicp-constraints]....
 (:SICP-CONSTRAINTS)
 CL-USER> (in-package :sicp-constraints)
-#&lt;PACKAGE "SICP-CONSTRAINTS">
+#<PACKAGE "SICP-CONSTRAINTS">
 SICP-CONSTRAINTS> (compile-diagram :repl #p"celsius-to-faranheit.base")
 (PROGN
  (DEFVAR *FARANHEIT* (MAKE-CONNECTOR))
@@ -591,7 +591,7 @@ Text boxes contained by constraints but not on their edges are constraint names.
     (for-all (and (?id :line-segment nil)
                   (not (?cluster :contains ?id)))
              :in base
-             :collect (let ((cluster (sort (walk-segment-graph base ?id) #'string&lt; :key #'symbol-name)))
+             :collect (let ((cluster (sort (walk-segment-graph base ?id) #'string< :key #'symbol-name)))
                         (setf (gethash cluster res) t)))
     (loop for clst being the hash-keys of res
        do (let ((id (intern (symbol-name (gensym)))))
@@ -844,7 +844,7 @@ Next up, `label-line-connections` is going to make the relationships between lin
     (for-all (and (?id :line-segment nil)
                   (not (?cluster :contains ?id)))
              :in base
-             :do (let ((cluster (sort (walk-segment-graph base ?id) #'string&lt; :key #'symbol-name)))
+             :do (let ((cluster (sort (walk-segment-graph base ?id) #'string< :key #'symbol-name)))
                    (setf (gethash cluster res) t)))
     (loop for clst being the hash-keys of res
        do (let ((id (intern (symbol-name (gensym)))))

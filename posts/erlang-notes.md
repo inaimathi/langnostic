@@ -46,7 +46,7 @@ First, the Erlang communication functions<a name="note-Mon-Apr-30-005635EDT-2012
 ```c
 /* erl_comm.c */
 
-#include &lt;unistd.h>
+#include <unistd.h>
 
 typedef unsigned char byte;
 
@@ -60,7 +60,7 @@ int read_cmd(byte *buff) {
   if (read_exact(buff, 2) != 2) {
     return(-1);
   }
-  len = (buff[0] &lt;&lt; 8) | buff[1];
+  len = (buff[0] << 8) | buff[1];
   return read_exact(buff, len);
 }
 
@@ -78,11 +78,11 @@ int write_cmd(byte *buff, int len) {
 int read_exact(byte *buff, int len){
   int i, got=0;
   do {
-    if ((i = read(0, buff+got, len-got)) &lt;= 0) {
+    if ((i = read(0, buff+got, len-got)) <= 0) {
       return(i);
     }
     got +=i;
-  } while (got&lt;len);
+  } while (got<len);
   buff[len] = '\0';
   return(len);
 }
@@ -90,11 +90,11 @@ int read_exact(byte *buff, int len){
 int write_exact(byte *buff, int len) {
   int i, wrote = 0;
   do {
-    if ((i = write(1, buff+wrote, len-wrote)) &lt;= 0) {
+    if ((i = write(1, buff+wrote, len-wrote)) <= 0) {
       return(i);
     }
     wrote += i;
-  } while (wrote&lt;len);
+  } while (wrote<len);
   return(len);
 }
 ```
@@ -103,11 +103,11 @@ Next, the "driver". This is the bit that will actually end up being spawned and 
 
 ```c
 /* driver.c */
-#include &lt;limits.h>
-#include &lt;libgen.h>
-#include &lt;string.h>
-#include &lt;stdio.h>
-#include &lt;stdlib.h>
+#include <limits.h>
+#include <libgen.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 typedef unsigned char byte;
 
@@ -146,9 +146,9 @@ Then the actual function I'll be wanting to call<a name="note-Mon-Apr-30-005755E
 
 ```c
 /* wand.c */
-#include &lt;stdio.h>
-#include &lt;stdlib.h>
-#include &lt;wand/MagickWand.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <wand/MagickWand.h>
 
 #define ThrowWandException(wand, ret) \
 { \
@@ -255,7 +255,7 @@ Erlang R15B01 (erts-5.9.1) [source] [64-bit] [smp:4:4] [async-threads:0] [kernel
 1> c(wand).
 {ok,wand}
 2> wand:start().
-&lt;0.39.0>
+<0.39.0>
 3> wand:thumbnail("original.png").
 {ok, 0}
 4> wand:thumbnail("/home/inaimathi/Pictures/and-another.png").
@@ -267,10 +267,10 @@ You'll have to take my word for it, but those both generate the appropriate `"th
 All of that looks pretty complicated, but it really isn't when you sit down and read it. If I had to break it out by time involved, it would look something like
 
 
--   10% reading up on ImageMagick C interface
--   5% reading up on Erlang C FFI (emphasis on the ports)
--   5% writing  it
--   80% trying to figure out why the C component was [segfaulting when assembling a thumbnail path](http://stackoverflow.com/questions/10378112/chopping-paths-in-c) (short answer: I didn't include everything I needed to)
+- 10% reading up on ImageMagick C interface
+- 5% reading up on Erlang C FFI (emphasis on the ports)
+- 5% writing  it
+- 80% trying to figure out why the C component was [segfaulting when assembling a thumbnail path](http://stackoverflow.com/questions/10378112/chopping-paths-in-c) (short answer: I didn't include everything I needed to)
 
 
 As a parting note, having gone through the rat's nest that is pathname manipulation in C, I hereby promise to never again bitch about Lisp's [pathname handling](http://www.gigamonkeys.com/book/practical-a-portable-pathname-library.html). Nothing like wading waist-deep in horse shit to remind you how good you've got it merely living within earshot of the stables.

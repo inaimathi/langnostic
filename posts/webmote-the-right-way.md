@@ -31,107 +31,107 @@ web-mote
 Most of that is framework code, of course. The only files I'll be going through today are `webmote.html`, `webmote.css` and `webmote.js`. You'll note the presence of `backbone` and `underscore`; I use their `[Router](http://backbonejs.org/#Router)` class, but don't otherwise touch them for reasons.
 
 ```html
-&lt;!DOCTYPE HTML>
-&lt;html lang="en-US">
-  &lt;head>
-    &lt;meta charset="UTF-8">
-    &lt;title>WebMote&lt;/title>
-  &lt;/head>
-  &lt;body>
+<!DOCTYPE HTML>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <title>WebMote</title>
+  </head>
+  <body>
 
-    &lt;!-- --------- -->
-    &lt;!-- Templates -->
-    &lt;!-- --------- -->
-    &lt;script id="tmp-folder" type="text/x-handlebars-template">
-      &lt;li class="{{type}}">
-        &lt;button class="play icon play" onclick="mote.playDir('{{path}}')">&lt;/button>
-        &lt;button class="shuffle icon shuffle" onclick="mote.shuffleDir('{{path}}')">&lt;/button>
-        &lt;a class="dir-link" href="#navigate{{path}}">{{name}}&lt;/a>
-      &lt;/li>
-    &lt;/script>
+    <!-- --------- -->
+    <!-- Templates -->
+    <!-- --------- -->
+    <script id="tmp-folder" type="text/x-handlebars-template">
+      <li class="{{type}}">
+        <button class="play icon play" onclick="mote.playDir('{{path}}')"></button>
+        <button class="shuffle icon shuffle" onclick="mote.shuffleDir('{{path}}')"></button>
+        <a class="dir-link" href="#navigate{{path}}">{{name}}</a>
+      </li>
+    </script>
 
-    &lt;script id="tmp-file" type="text/x-handlebars-template">
-      &lt;li class="{{type}}">
-        &lt;a class="file-link" href="javascript:void(0);" onclick="mote.play('{{path}}')">{{name}}&lt;/a>
-      &lt;/li>
-    &lt;/script>
+    <script id="tmp-file" type="text/x-handlebars-template">
+      <li class="{{type}}">
+        <a class="file-link" href="javascript:void(0);" onclick="mote.play('{{path}}')">{{name}}</a>
+      </li>
+    </script>
 
-    &lt;script id="tmp-control" type="text/x-handlebars-template">
-      &lt;li>
-        &lt;button class="icon {{cmd}}{{#if css-class}} {{css-class}}{{/if}}" onclick="mote.command('{{cmd}}');">
-        &lt;/button>
-      &lt;/li>
-    &lt;/script>
+    <script id="tmp-control" type="text/x-handlebars-template">
+      <li>
+        <button class="icon {{cmd}}{{#if css-class}} {{css-class}}{{/if}}" onclick="mote.command('{{cmd}}');">
+        </button>
+      </li>
+    </script>
 
-    &lt;script id="tmp-control-block" type="text/x-handlebars-template">
-      &lt;ul>
+    <script id="tmp-control-block" type="text/x-handlebars-template">
+      <ul>
         {{#each this}}
         {{#control-button this}}{{/control-button}}
         {{/each}}
-      &lt;/ul>
-    &lt;/script>
+      </ul>
+    </script>
     
-    &lt;!-- ---- -->
-    &lt;!-- Body -->
-    &lt;!-- ---- -->
-    &lt;ul id="file-list">&lt;/ul>
-    &lt;div id="controls">&lt;/div>
+    <!-- ---- -->
+    <!-- Body -->
+    <!-- ---- -->
+    <ul id="file-list"></ul>
+    <div id="controls"></div>
     
-    &lt;!-- ------ -->
-    &lt;!-- Styles -->
-    &lt;!-- ------ -->
-    &lt;link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
-    &lt;link rel="stylesheet" href="css/custom-theme/jquery-ui-1.8.13.custom.css" type="text/css" media="screen" />
+    <!-- ------ -->
+    <!-- Styles -->
+    <!-- ------ -->
+    <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/custom-theme/jquery-ui-1.8.13.custom.css" type="text/css" media="screen" />
     
-    &lt;!-- ------- -->
-    &lt;!-- Scripts -->
-    &lt;!-- ------- -->
-    &lt;script type="text/javascript" src="js/jquery.min.js">&lt;/script>
-    &lt;script type="text/javascript" src="js/jquery-ui-1.8.13.custom.min.js">&lt;/script>
-    &lt;script type="text/javascript" src="js/handlebars-1.0.rc.1.js">&lt;/script>
-    &lt;script type="text/javascript" src="js/underscore-min.js">&lt;/script>
-    &lt;script type="text/javascript" src="js/backbone-min.js">&lt;/script>
+    <!-- ------- -->
+    <!-- Scripts -->
+    <!-- ------- -->
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.8.13.custom.min.js"></script>
+    <script type="text/javascript" src="js/handlebars-1.0.rc.1.js"></script>
+    <script type="text/javascript" src="js/underscore-min.js"></script>
+    <script type="text/javascript" src="js/backbone-min.js"></script>
 
-    &lt;script type="text/javascript" src="js/webmote.js">&lt;/script>
+    <script type="text/javascript" src="js/webmote.js"></script>
 
-  &lt;/body>
-&lt;/html>
+  </body>
+</html>
 ```
 
 That's actually the entire front-end markup. If you haven't seen HTML before, it might look daunting but it's extremely simple. You've got the `head` up top adding a little bit of metadata, all the `text/javascript` and `text/css` includes at the bottom, and only two actual elements in the `body` of the page: placeholders to pump a file list and control buttons into later. The interesting part is those four `handlebars` templates.
 
 ```html
-    &lt;!-- --------- -->
-    &lt;!-- Templates -->
-    &lt;!-- --------- -->
-    &lt;script id="tmp-folder" type="text/x-handlebars-template">
-      &lt;li class="{{type}}">
-        &lt;button class="play icon play" onclick="mote.playDir('{{path}}')">&lt;/button>
-        &lt;button class="shuffle icon shuffle" onclick="mote.shuffleDir('{{path}}')">&lt;/button>
-        &lt;a class="dir-link" href="#navigate{{path}}">{{name}}&lt;/a>
-      &lt;/li>
-    &lt;/script>
+    <!-- --------- -->
+    <!-- Templates -->
+    <!-- --------- -->
+    <script id="tmp-folder" type="text/x-handlebars-template">
+      <li class="{{type}}">
+        <button class="play icon play" onclick="mote.playDir('{{path}}')"></button>
+        <button class="shuffle icon shuffle" onclick="mote.shuffleDir('{{path}}')"></button>
+        <a class="dir-link" href="#navigate{{path}}">{{name}}</a>
+      </li>
+    </script>
 
-    &lt;script id="tmp-file" type="text/x-handlebars-template">
-      &lt;li class="{{type}}">
-        &lt;a class="file-link" href="javascript:void(0);" onclick="mote.play('{{path}}')">{{name}}&lt;/a>
-      &lt;/li>
-    &lt;/script>
+    <script id="tmp-file" type="text/x-handlebars-template">
+      <li class="{{type}}">
+        <a class="file-link" href="javascript:void(0);" onclick="mote.play('{{path}}')">{{name}}</a>
+      </li>
+    </script>
 
-    &lt;script id="tmp-control" type="text/x-handlebars-template">
-      &lt;li>
-        &lt;button class="icon {{cmd}}{{#if css-class}} {{css-class}}{{/if}}" onclick="mote.command('{{cmd}}');">
-        &lt;/button>
-      &lt;/li>
-    &lt;/script>
+    <script id="tmp-control" type="text/x-handlebars-template">
+      <li>
+        <button class="icon {{cmd}}{{#if css-class}} {{css-class}}{{/if}}" onclick="mote.command('{{cmd}}');">
+        </button>
+      </li>
+    </script>
 
-    &lt;script id="tmp-control-block" type="text/x-handlebars-template">
-      &lt;ul>
+    <script id="tmp-control-block" type="text/x-handlebars-template">
+      <ul>
         {{#each this}}
         {{#control-button this}}{{/control-button}}
         {{/each}}
-      &lt;/ul>
-    &lt;/script>
+      </ul>
+    </script>
 ```
 
 Firstly, notice that they're all in `script type="text/x-handlebars-template"` tags. I think this technically goes against some markup standard, so it may get screamed at by an XHTML validator somewhere, but it's not a huge deal. If you really feel that's something you want to fix, you can also put these templates in hidden `div`s instead of `script` tags; as you'll see later, it wouldn't make a difference in how we use them.
@@ -143,13 +143,13 @@ That's actually why I ended up separating `tmp-control` out of `tmp-control-bloc
 Back to the code at hand.
 
 ```html
-    &lt;script id="tmp-folder" type="text/x-handlebars-template">
-      &lt;li class="{{type}}">
-        &lt;button class="play icon play" onclick="mote.playDir('{{path}}')">&lt;/button>
-        &lt;button class="shuffle icon shuffle" onclick="mote.shuffleDir('{{path}}')">&lt;/button>
-        &lt;a class="dir-link" href="#navigate{{path}}">{{name}}&lt;/a>
-      &lt;/li>
-    &lt;/script>
+    <script id="tmp-folder" type="text/x-handlebars-template">
+      <li class="{{type}}">
+        <button class="play icon play" onclick="mote.playDir('{{path}}')"></button>
+        <button class="shuffle icon shuffle" onclick="mote.shuffleDir('{{path}}')"></button>
+        <a class="dir-link" href="#navigate{{path}}">{{name}}</a>
+      </li>
+    </script>
 ```
 
 The interesting part *of the templates* are those snippets of code in the titular `handlebars` that look something like `{{foo}}` or `{{#foo}}{{/foo}}`. A template expects an object, or possibly a list as its input later, and these snippets act as lookups. So, for example, where it says `{{path}}`, that particular template will look up the value `"path"` in its argument and echo the result. Now that you know that, the first two templates are fairly self-explanatory.
@@ -157,24 +157,24 @@ The interesting part *of the templates* are those snippets of code in the titula
 The last two could use some close-up time though.
 
 ```html
-    &lt;script id="tmp-control" type="text/x-handlebars-template">
-      &lt;li>
-        &lt;button class="icon {{cmd}}{{#if css-class}} {{css-class}}{{/if}}" onclick="mote.command('{{cmd}}');">
-        &lt;/button>
-      &lt;/li>
-    &lt;/script>
+    <script id="tmp-control" type="text/x-handlebars-template">
+      <li>
+        <button class="icon {{cmd}}{{#if css-class}} {{css-class}}{{/if}}" onclick="mote.command('{{cmd}}');">
+        </button>
+      </li>
+    </script>
 ```
 
 The single `control` template demonstrates an `#if` block. When you see the construct `{{#if foo}}{{bar}}{{/if}}` in a template, what happening is `argument.bar` is echoed if `argument.foo` is not one of `""`, `false`, `null`, `[]` or `undefined`.
 
 ```html
-    &lt;script id="tmp-control-block" type="text/x-handlebars-template">
-      &lt;ul>
+    <script id="tmp-control-block" type="text/x-handlebars-template">
+      <ul>
         {{#each this}}
         {{#control-button this}}{{/control-button}}
         {{/each}}
-      &lt;/ul>
-    &lt;/script>
+      </ul>
+    </script>
 ```
 
 The `control-block` is responsible for outputting a group of `control`s. `this` in a `handlebars` block refers to the current argument, and the `{{#each foo}}...{{/each}}` construct iterates through a list. It doesn't seem like there's a good way of iterating over k/v pairs built in, but as that `#control-button` block demonstrates, it's possible to define your own helpers (spoiler, the `control-button` helper just renders an individual `control`).
@@ -481,9 +481,9 @@ The `mote` namespace contains all the relevant navigation commands that we'll ne
 The various `play`/`shuffle` functions pass file or directory names to whatever back-end process we'll be running this on top of. The `command` function is the thing that gets called by each control button. For the most part, it just passes that fact along to the back-end system and calls it a day, but there's additional logic for of `pause` and `play` signals. In that case, it also switches out the `oause` button for the `play` button, cycling between the two on every successful invocation. This is the difficulty I mentioned earlier, and it could still use a helper function or two<a name="note-Sat-Oct-06-195220EDT-2012"></a>[|6|](#foot-Sat-Oct-06-195220EDT-2012). Consider how you would write that code
 
 
--   using `$("#controls button").click()` instead of inlined `onclick` events.
--   without a separate `control` template.
--   without using templates at all (`handlebars` or otherwise).
+- using `$("#controls button").click()` instead of inlined `onclick` events.
+- without a separate `control` template.
+- without using templates at all (`handlebars` or otherwise).
 
 
 The last part is the `navigate` function. It uses `util.getJSON` to request a new set of folders/files and `render`s them.
@@ -493,12 +493,12 @@ And that's it.
 This complete front-end, including the CSS weighs in at just over 200 lines of code. It doesn't do anything yet, but that's just because we haven't slapped it in front of an application server. Note that it will be *completely*, *entirely* separate from whatever back-end we end up using. It'll work as long as said back-end supports the appropriate requests, and returns the correct data from `/show-directory` and `/root-directory`. In fact, if you'd like to make a compatible back-end, all you need to do is provide the following:
 
 
--   `/root-directory`
--   `/show-directory` *(we could probably get rid of the previous handler by letting this one take a zero-parameter request)*
--   `/play`
--   `/play-directory` *(if you wanted to provide a polymorphic `play` handler, you could do without this one)*
--   `/shuffle-directory`
--   `/command`
+- `/root-directory`
+- `/show-directory` *(we could probably get rid of the previous handler by letting this one take a zero-parameter request)*
+- `/play`
+- `/play-directory` *(if you wanted to provide a polymorphic `play` handler, you could do without this one)*
+- `/shuffle-directory`
+- `/command`
 
 
 That's slightly misleading because the `command` handler needs to respond to 10 different parameters, depending on what button the user presses, but it's still much simpler than re-writing the front end for each new back-end. This cuts both ways too; someone wanting to implement their own front-end to the corresponding server needs to implement as many of those handlers as they'll need, and they're good to go.

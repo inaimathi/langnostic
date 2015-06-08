@@ -10,13 +10,11 @@ Programming Teensy with C provides access to all features. Experience with the C
 
 The reason *that's* slightly amusing is that, as I mentioned, the Arduino constantly drove me to frustration. By contrast, I got the Teensy up and running in under ten minutes by following the [Getting Started tutorial](http://www.pjrc.com/teensy/first_use.html). It boils down to
 
-
--   Install the required libraries (`apt-get install gcc-avr binutils-avr avr-libc libusb-dev`)
--   Download the loader program (either the [binary version](http://www.pjrc.com/teensy/loader_linux.html) for your architecture, or the [source](http://www.pjrc.com/teensy/loader_cli.html). Remember to run `make` if you go with the source version.)
--   Plug in the Teensy
--   Press the pushbutton to activate the HalfKay loader
--   Load your code onto it (either by running the GUI, or by using `./teensy_loader_cli -mmcu=[your processor here] -wv program.hex`)
-
+- Install the required libraries (`apt-get install gcc-avr binutils-avr avr-libc libusb-dev`)
+- Download the loader program (either the [binary version](http://www.pjrc.com/teensy/loader_linux.html) for your architecture, or the [source](http://www.pjrc.com/teensy/loader_cli.html). Remember to run `make` if you go with the source version.)
+- Plug in the Teensy
+- Press the pushbutton to activate the HalfKay loader
+- Load your code onto it (either by running the GUI, or by using `./teensy_loader_cli -mmcu=[your processor here] -wv program.hex`)
 
 That's that.
 

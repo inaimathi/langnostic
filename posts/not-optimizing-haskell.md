@@ -56,9 +56,9 @@ import Data.List (group, sort, concatMap)
 import Data.Set
 
 lifeStep :: Set (Int, Int) -> Set (Int, Int)
-lifeStep cells = fromList [head g | g &lt;- grouped cells, viable g]
+lifeStep cells = fromList [head g | g <- grouped cells, viable g]
   where grouped = group . sort . concatMap neighbors . toList
-        neighbors (x, y) = [(x+dx, y+dy) | dx &lt;- [-1..1], dy &lt;- [-1..1], (dx,dy) /= (0,0)]
+        neighbors (x, y) = [(x+dx, y+dy) | dx <- [-1..1], dy <- [-1..1], (dx,dy) /= (0,0)]
         viable [_,_,_] = True
         viable [c,_] = c `member` cells
         viable _ = False
@@ -122,12 +122,12 @@ Anyhow, the first thing we're doing this time is limiting the size of the world.
 
 ```haskell
 inRange :: Ord a => a -> a -> a -> Bool
-inRange low n high = low &lt; n && n &lt; high
+inRange low n high = low < n && n < high
 
 lifeStep :: Int -> Set (Int, Int) -> Set (Int, Int)
-lifeStep worldSize cells = fromList [head g | g &lt;- grouped cells, viable g]
+lifeStep worldSize cells = fromList [head g | g <- grouped cells, viable g]
   where grouped = group . sort . concatMap neighbors . toList
-        neighbors (x, y) = [(x+dx, y+dy) | dx &lt;- [-1..1], dy &lt;- [-1..1], 
+        neighbors (x, y) = [(x+dx, y+dy) | dx <- [-1..1], dy <- [-1..1], 
                             (dx,dy) /= (0,0), inSize (dx+x) (dy+y)]
         inSize x y = inR x worldSize && inR y worldSize
         inR = inRange 0
@@ -249,11 +249,11 @@ life w h old =
         f (y, x) = ( c && (n == 2 || n == 3) ) || ( not c && n == 3 )
           where c = get x y
                 n = count [get (x + x') (y + y') |
-                    x' &lt;- [-1, 0, 1], y' &lt;- [-1, 0, 1],
+                    x' <- [-1, 0, 1], y' <- [-1, 0, 1],
                     not (x' == 0 && y' == 0)]
  
-        get x y | x &lt; x1 || x > x2 = False
-                | y &lt; y1 || y > y2 = False
+        get x y | x < x1 || x > x2 = False
+                | y < y1 || y > y2 = False
                 | otherwise       = old ! (y, x)
  
 count :: [Bool] -> Int
@@ -425,9 +425,9 @@ frequencies list = rec list $ Map.fromList []
                        else inc cell m
 
 lifeStep :: Int -> Set (Int, Int) -> Set (Int, Int)
-lifeStep worldSize cells = fromList [fst g | g &lt;- grouped cells, viable g]
+lifeStep worldSize cells = fromList [fst g | g <- grouped cells, viable g]
   where grouped = Data.List.filter viable . Map.toList . frequencies . concatMap neighbors . toList
-        neighbors (x, y) = [(x+dx, y+dy) | dx &lt;- [-1..1], dy &lt;- [-1..1], 
+        neighbors (x, y) = [(x+dx, y+dy) | dx <- [-1..1], dy <- [-1..1], 
                             (dx,dy) /= (0,0), inSize (dx+x) (dy+y)]
         inSize x y = inR x worldSize && inR y worldSize
         inR = inRange 0

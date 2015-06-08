@@ -101,9 +101,9 @@ and refresh your browser.
 The first bit we did was define a namespace ("package") called `:cl-chan`. You can find specifics and some more advanced uses [here](http://www.gigamonkeys.com/book/programming-in-the-large-packages-and-symbols.html), but the basic reason for this is to manage how the symbols we'll be defining interact on the global level. The basic `:use` directive we used specified that our package would import all exported symbols from three other packages; 
 
 
--   `:cl` (all the basic Common Lisp functions; if you get into the situation where you've defined a package and odd things are happening in expressions that really shouldn't error, what's probably going on is that you forgot to include `:cl`), 
--   `:cl-who` (an HTML generation library) and
--   `:hunchentoot` (a lisp-based web-server). We'll talk about namespace conflicts a later.
+- `:cl` (all the basic Common Lisp functions; if you get into the situation where you've defined a package and odd things are happening in expressions that really shouldn't error, what's probably going on is that you forgot to include `:cl`), 
+- `:cl-who` (an HTML generation library) and
+- `:hunchentoot` (a lisp-based web-server). We'll talk about namespace conflicts a later.
 
 
     `(in-package :cl-chan)` means that any symbol following it will be evaluated in the package `:cl-chan` instead of in the global namespace.
@@ -117,13 +117,13 @@ The first bit we did was define a namespace ("package") called `:cl-chan`. You c
 Right. So a chan is a collection of boards, each of which is a collection of threads, each of which is a collection of comments. Lets start at the bottom, since that'll be the fastest way of getting something relevant on screen. A comment is composed of
 
 
--   a name
--   an email
--   a subject
--   a comment
--   an image
--   a posted date/time
--   a password (for deletion purposes)
+- a name
+- an email
+- a subject
+- a comment
+- an image
+- a posted date/time
+- a password (for deletion purposes)
 
 
 We won't be dealing with the image and password for a while, so the obvious thing to do is
@@ -140,9 +140,9 @@ We won't be dealing with the image and password for a while, so the obvious thin
 Which is an awful lot of repetitious typing. Almost enough that I'm tempted to write myself a macro, since I try to use the same symbol as the name, reader and initarg for a given class. The first bit in each slot is a slot name, the keyword arguments are
 
 
--   `:reader` -- the name of the function which will return that slots' value (if you want one that will also let you modify the value, you should make it an `:accessor` instead)
--   `:initarg` -- the name of the parameter that will accept a value for this slot when you call `make-instance` (you actually have to name it with a colon at the beginning there; `:author`, not `author`, it matters)
--   `:initform` -- the default value of the slot if none is passed in (a class doesn't store `nil` by default; if you try to get the value of a slot that hasn't been set, you get an error).
+- `:reader` -- the name of the function which will return that slots' value (if you want one that will also let you modify the value, you should make it an `:accessor` instead)
+- `:initarg` -- the name of the parameter that will accept a value for this slot when you call `make-instance` (you actually have to name it with a colon at the beginning there; `:author`, not `author`, it matters)
+- `:initform` -- the default value of the slot if none is passed in (a class doesn't store `nil` by default; if you try to get the value of a slot that hasn't been set, you get an error).
 
 
 So, lets try it out.
@@ -174,11 +174,11 @@ The function (SETF BODY) is undefined.
 Restarts:
  0: [RETRY] Retry SLIME REPL evaluation request.
  1: [*ABORT] Return to SLIME's top level.
- 2: [TERMINATE-THREAD] Terminate this thread (#&lt;THREAD "repl-thread" RUNNING {1003108271}>)
+ 2: [TERMINATE-THREAD] Terminate this thread (#<THREAD "repl-thread" RUNNING {1003108271}>)
 
 Backtrace:
   0: ("bogus stack frame")
-  1: (SB-INT:SIMPLE-EVAL-IN-LEXENV (SETF (BODY TEST-COMMENT) "Blah") #&lt;NULL-LEXENV>)
+  1: (SB-INT:SIMPLE-EVAL-IN-LEXENV (SETF (BODY TEST-COMMENT) "Blah") #<NULL-LEXENV>)
  --more--
 ```
 
@@ -240,24 +240,24 @@ Put that anywhere you like in the file (after your `in-package` line) and evalua
 ```lisp
 > (echo test-comment)
 "
-&lt;div class='comment'>
-  &lt;span class='header'>memy@email.com3522954339FRIST
-  &lt;/span>
-  &lt;span class='body'>
-    &lt;p>I am most certainly the first poster in this fine establishment
-    &lt;/p>
-  &lt;/span>
-&lt;/div>"
+<div class='comment'>
+  <span class='header'>memy@email.com3522954339FRIST
+  </span>
+  <span class='body'>
+    <p>I am most certainly the first poster in this fine establishment
+    </p>
+  </span>
+</div>"
 > (echo test-comment2)
 "
-&lt;div class='comment'>
-  &lt;span class='header'>someone elseyou@fmail.com3522956120Stop being a douchebag
-  &lt;/span>
-  &lt;span class='body'>
-    &lt;p>
-    &lt;/p>
-  &lt;/span>
-&lt;/div>"
+<div class='comment'>
+  <span class='header'>someone elseyou@fmail.com3522956120Stop being a douchebag
+  </span>
+  <span class='body'>
+    <p>
+    </p>
+  </span>
+</div>"
 ```
 
 A `method` is like an `un` (in that you can `def` them both), but it can specialize on one or more classes. Take a look at where it says `((a-comment comment))`; that means that the `method` accepts one argument named `a-comment`, and that argument must be of class `comment`. From what I've seen, the correct convention is actually to name the argument after its class (so I really should have done ((comment comment)), but that's a bit harder to explain clearly).
@@ -303,7 +303,7 @@ We defined our first `:accessor` earlier, by the way. It's no different from a `
 
 ```lisp
 > (comments test-thread)
-(#&lt;COMMENT {C1F3AF9}> #&lt;COMMENT {100425C101}>) 
+(#<COMMENT {C1F3AF9}> #<COMMENT {100425C101}>) 
 
 > ;; your comment will probably look slightly different; that's ok
 ; No Value
@@ -311,10 +311,10 @@ We defined our first `:accessor` earlier, by the way. It's no different from a `
 > (setf (comments test-thread) 
            (append (comments test-thread) 
                    (list test-comment3 test-comment4)))
-(#&lt;COMMENT {C1F3AF9}> 
- #&lt;COMMENT {10048B3291}> 
- #&lt;COMMENT {10048B32F1}> 
- #&lt;COMMENT {100425C101}>)
+(#<COMMENT {C1F3AF9}> 
+ #<COMMENT {10048B3291}> 
+ #<COMMENT {10048B32F1}> 
+ #<COMMENT {100425C101}>)
 ```
 
 There. Now that we have a thread with four comments, lets show that.
@@ -460,7 +460,7 @@ And define the test board
                                 test-thread)))
 ```
 
-Now, we know how to echo a thread (output all of its comments with the first one acting as the root element), and we know how to echo an individual comment (output the header in spans, followed by the body), but a board isn't dealt with the same way. The way you `echo` a board is you output the board's name in giant letters, followed by an `&lt;hr />`, followed by a summary of each thread it contains (a summary is the first comment along with the last five, along with a little label telling us how many were omitted). The best way to do that would probably be to let a thread summarize itself instead of echoing its whole contents.
+Now, we know how to echo a thread (output all of its comments with the first one acting as the root element), and we know how to echo an individual comment (output the header in spans, followed by the body), but a board isn't dealt with the same way. The way you `echo` a board is you output the board's name in giant letters, followed by an `<hr />`, followed by a summary of each thread it contains (a summary is the first comment along with the last five, along with a little label telling us how many were omitted). The best way to do that would probably be to let a thread summarize itself instead of echoing its whole contents.
 
 ```lisp
 (defmethod summarize ((thread thread) &optional (preview-comment-count 5))
@@ -553,7 +553,7 @@ without really losing any readability. Right, now then. The inputs. Teaching how
 FORMLETS
 
 > (defpackage :cl-chan (:use :cl :cl-who :hunchentoot :formlets))
-#&lt;PACKAGE "CL-CHAN">
+#<PACKAGE "CL-CHAN">
 ```
 
 It's [a library](https://github.com/Inaimathi/formlets) I wrote a little while ago to help me reduce the boilerplate involved with using HTML forms, drawing inspiration heavily from the [Racket](http://racket-lang.org/) (then PLT Scheme) implementation. I won't teach you this, just show you the code involved and offer a shortened explanation so we can move on.
@@ -717,11 +717,11 @@ The transformation of a thread is a little more interesting.
 We add an `id` slot here too, but the declaration of `comments` is our first example of the `:db-kind :join` notation. The important parts are
 
 
--   `:db-info` *must* be provided if you have `:db-kind :join`.
--   `:join-class` must designate another class defined by `def-view-class` (in this case `comment`, obviously).
--   `:home-key` and `:foreign-key` specify which columns to join on (you can specify either single columns or multiple columns, as in `'(id thread-id)`, for example).
--   `:set` is a boolean that specifies whether this join should expect multiple values. It's `nil` by default, but in this case, we *are* expecting a set of comments to be returned, so we need to set it.
--   the results of a `:join` are returned as a list of matching elements, so we won't need to change how we deal with comments in any of the `thread` methods
+- `:db-info` *must* be provided if you have `:db-kind :join`.
+- `:join-class` must designate another class defined by `def-view-class` (in this case `comment`, obviously).
+- `:home-key` and `:foreign-key` specify which columns to join on (you can specify either single columns or multiple columns, as in `'(id thread-id)`, for example).
+- `:set` is a boolean that specifies whether this join should expect multiple values. It's `nil` by default, but in this case, we *are* expecting a set of comments to be returned, so we need to set it.
+- the results of a `:join` are returned as a list of matching elements, so we won't need to change how we deal with comments in any of the `thread` methods
 
 
 The boards declaration shouldn't present any surprises
@@ -741,7 +741,7 @@ Once you've got the classes defined, you can automatically create tables based o
 
 ```lisp
 > (connect '("localhost" "cl_chan" "me" "my password") :database-type :mysql) ;; obviously, you'll want to change the :mysql to your DB type and "me"/"my password" to your information
-#&lt;CLSQL-MYSQL:MYSQL-DATABASE localhost/cl_chan/me OPEN {BA80359}>
+#<CLSQL-MYSQL:MYSQL-DATABASE localhost/cl_chan/me OPEN {BA80359}>
 > (dolist (c '(board thread comment)) (create-view-from-class c))
 NIL
 ```
@@ -807,10 +807,10 @@ After evaluating all that, hop into your browser and add a thread. If you've don
 
 ```lisp
 > (select 'thread)
-((#&lt;THREAD {B5D5D49}>))
+((#<THREAD {B5D5D49}>))
 
 > (select 'comment)
-((#&lt;COMMENT {B64AE29}>))
+((#<COMMENT {B64AE29}>))
 ```
 
 There'll be more of them if you tried a few times. So the threads and comments are being generated, but they're not showing up on your page. This is actually a feature of CLSQL. A caching feature. I don't mean for that to sound tongue-in-cheek, it's very useful when you have a somewhat static set of data and you'd like to save database round-trips. In those situations, you'd want to keep caching on globally and specify the individual non-caching `select`s by doing

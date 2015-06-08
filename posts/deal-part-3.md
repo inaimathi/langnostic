@@ -87,10 +87,10 @@ That complicates the definition, but it lets me do things like
 ...
 ($on "#deck-editor"
      (:keydown ".new-card"
-               &lt;ret> (unless shift?
+               <ret> (unless shift?
                        (chain event (prevent-default))
                        ($ "#deck-editor button.add-card" (click)))
-               &lt;esc> ($ "#deck-editor .new-card" (val ""))))
+               <esc> ($ "#deck-editor .new-card" (val ""))))
 ...
 ```
 
@@ -144,10 +144,10 @@ Today, I showed Deal off to the [first bunch of humans who aren't programmers](h
 What I found out is that I'm pretty much on target for what people want, and my observations told me I really ought to fast-track some features I was planning for later on
 
 
--   custom backgrounds on cards/decks
--   custom tablecloths/minis
--   adding notes<a name="note-Sun-Sep-29-203112EDT-2013"></a>[|3|](#foot-Sun-Sep-29-203112EDT-2013)
--   rotation
+- custom backgrounds on cards/decks
+- custom tablecloths/minis
+- adding notes<a name="note-Sun-Sep-29-203112EDT-2013"></a>[|3|](#foot-Sun-Sep-29-203112EDT-2013)
+- rotation
 
 
 I figured I could wait on these, but having seen some games people actually play, they'll will become painfully necessary soon. Also, I got the idea for a feature I wasn't even thinking of, but that's entirely obvious in retrospect. The ability to ping a particular location on the board, or perhaps an existing placeable. This wouldn't change the board in any way, but it would highlight a particular thing on it to draw everyones' attention.
@@ -163,8 +163,8 @@ I've been spending most of my time figuring out a new server arrangement for the
 Got a bit done yesterday, and a bit today. It turns out that neither implementing [element rotation](http://vremenno.net/js/jquery-ui-rotation-using-css-transform/) nor implementing [HTML5 localStorage](http://www.w3schools.com/html/html5_webstorage.asp) were particularly difficult. It did give me a couple of ideas that I'll need to look into though
 
 
--   resizing minis/tablecloths<a name="note-Sun-Sep-29-203119EDT-2013"></a>[|5|](#foot-Sun-Sep-29-203119EDT-2013)
--   storing custom mini/tablecloth URIs in local storage<a name="note-Sun-Sep-29-203122EDT-2013"></a>[|6|](#foot-Sun-Sep-29-203122EDT-2013)
+- resizing minis/tablecloths<a name="note-Sun-Sep-29-203119EDT-2013"></a>[|5|](#foot-Sun-Sep-29-203119EDT-2013)
+- storing custom mini/tablecloth URIs in local storage<a name="note-Sun-Sep-29-203122EDT-2013"></a>[|6|](#foot-Sun-Sep-29-203122EDT-2013)
 
 
 The project's really winding down though. Apart from that server rewrite/tweak I'll need to make at some point, the work's pretty much done. And even that won't really change the UI much. Depending on the approach I end up taking, I may need to switch from EventSource to WebSockets on the front-end, and that's about as intense a project as I've got left. We've got a fairly nice tool in just under 2500 lines of Common Lisp.
@@ -250,11 +250,11 @@ I'm in the middle of throwing the second biggest chunk of time I've had at this 
 That killed a good three or four feature requests with one stone. Before the day's up, I'm still hoping to do something about
 
 
--   the ability to play a card directly from a stack<a name="note-Sun-Sep-29-203202EDT-2013"></a>[|12|](#foot-Sun-Sep-29-203202EDT-2013)
--   the ability to flip over the top card of a stack
--   card/deck background images
--   leavers hands
--   in-game player status
+- the ability to play a card directly from a stack<a name="note-Sun-Sep-29-203202EDT-2013"></a>[|12|](#foot-Sun-Sep-29-203202EDT-2013)
+- the ability to flip over the top card of a stack
+- card/deck background images
+- leavers hands
+- in-game player status
 
 
 and that's all. Once those are put together, I'm just doing a final few cleanup runs before the deadline is up. At that point, I'll consider this One Point Ohed, and I'll move on to the larger project chunklets I still want to put together, including a custom server and multi-select functionality.
@@ -493,8 +493,8 @@ Next up, there's a few elements on the front end that *are* components, but aren
   ($button "#new-table-setup .cancel" (:cancel :text? t) ($ "#new-table-setup" (hide)))
   
   ($keydown "#new-table-setup .game-tag" 
-            &lt;ret> ($ "#new-table-setup .ok" (click))
-            &lt;esc> ($ "#new-table-setup .cancel" (click))))
+            <ret> ($ "#new-table-setup .ok" (click))
+            <esc> ($ "#new-table-setup .cancel" (click))))
 ...
 
 (define-component (custom-tablecloth-form :empty? nil)
@@ -581,8 +581,8 @@ If you haven't seen it before, you may want to go through this one slowly. It's 
   ($button ($find ".ok") (:check :text? t)
            (lobby/new-table ($ "#new-table-setup .game-tag" (val)) ""))
   ($keydown ($find ".game-tag")
-            &lt;ret> ($ ($find ".ok") (click))
-            &lt;esc> ($ ($find ".cancel") (click))))
+            <ret> ($ ($find ".ok") (click))
+            <esc> ($ ($find ".cancel") (click))))
 ...
 
 (define-overlay (custom-tablecloth)
@@ -623,12 +623,12 @@ If you haven't seen it before, you may want to go through this one slowly. It's 
 And that's going to be the mod I end off on for now. There's more refactoring to do, of course.
 
 
--   The server-side still needs those additions to `define-handler`
--   There's a lot of boilerplate on the client-side relating to storing things in `localStorage` which I'm pretty sure I could abstract away
--   The initial `localStorage` loads happen all over the place, as opposed to just where I set `*session*`
--   There's still implicit components hiding in a couple of places
--   I've yet to unify the front-end SSE handlers with the chat message interface
--   *and* I'm calling `$button`/`$droppable`/`$draggable`/`$keydown` a lot more than I thought I would, and each of them has their own local bindings for the modifier and special key values. the specials, at least, probably ought to be global bindings instead of being inlined each time.
+- The server-side still needs those additions to `define-handler`
+- There's a lot of boilerplate on the client-side relating to storing things in `localStorage` which I'm pretty sure I could abstract away
+- The initial `localStorage` loads happen all over the place, as opposed to just where I set `*session*`
+- There's still implicit components hiding in a couple of places
+- I've yet to unify the front-end SSE handlers with the chat message interface
+- *and* I'm calling `$button`/`$droppable`/`$draggable`/`$keydown` a lot more than I thought I would, and each of them has their own local bindings for the modifier and special key values. the specials, at least, probably ought to be global bindings instead of being inlined each time.
 
 
 But all of that, and probably a lot more besides, will have to wait until I've had a bit of rest.

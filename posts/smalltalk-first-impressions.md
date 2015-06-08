@@ -45,8 +45,8 @@ In Smalltalk `"foo"` is not the string foo. It's actually the *comment* foo. The
 I'm putting this one at the bottom of the list because I'm convinced that there must be a way to change them that I just haven't discovered yet. By "wonky", I don't mean "it uses the wrong letter", I mean "who the fuck thought this was the correct behavior?". Things like not having Ctrl+backspace `backward-word-kill` (giving that honor to Shift+backspace for comical effect), *or* having Ctrl+x kill a line, but move forward doing it and keep the `\n` in place, **or** having Ctrl+Right move forward a word, but skip newlines so that moving your point to the last symbol of a line is just that little bit more annoying. Also in this category, things like having `(`, `'` and `"` auto-close themselves, but only about half the time and with a noticeable delay. Like I said, this isn't that huge a deal because I'm convinced that
 
 
--   There must be options I'm missing that will let me fix this
--   Even if there is no explicit config option, there's a way to fix this through the object model, and it won't be complicated enough to drive me to drink
+- There must be options I'm missing that will let me fix this
+- Even if there is no explicit config option, there's a way to fix this through the object model, and it won't be complicated enough to drive me to drink
 
 
 So there. That's first impressions after about half a week of poking at Pharo. Hopefully it came off as more positive than negative, because I really do like the language so far, but my internal censor goes a bit wonky at about 11:00, and I won't get a chance to proof this until tomorrow morning.

@@ -44,24 +44,24 @@ if ($.browser.safari) {
 Finally, it turns out that there's at least one case where we'll be rendering a directory, but not want the play/shuffle buttons. To that end, the protocol needs to change very slightly to accommodate a field specifying whether to render a button. The template needs to change too.
 
 ```html
-    &lt;script id="tmp-folder" type="text/x-handlebars-template">
-      &lt;li class="{{type}}">
+    <script id="tmp-folder" type="text/x-handlebars-template">
+      <li class="{{type}}">
         {{#if buttons}}
-        &lt;button class="play icon play" onclick="mote.play('{{path}}')">&lt;/button>
-        &lt;button class="shuffle icon shuffle" onclick="mote.shuffleDir('{{path}}')">&lt;/button>
+        <button class="play icon play" onclick="mote.play('{{path}}')"></button>
+        <button class="shuffle icon shuffle" onclick="mote.shuffleDir('{{path}}')"></button>
         {{/if}}
-        &lt;a class="dir-link" href="#navigate{{path}}">{{name}}&lt;/a>
-      &lt;/li>
-    &lt;/script>
+        <a class="dir-link" href="#navigate{{path}}">{{name}}</a>
+      </li>
+    </script>
 ```
 
 Oh, actually, I also ended up making those handler changes mentioned last time. WebMote now has exactly four required handlers<a name="note-Mon-Oct-08-140346EDT-2012"></a>[|1|](#foot-Mon-Oct-08-140346EDT-2012):
 
 
--   `/show-directory` *(a zero-parameter request gets the root directory)*
--   `/play`
--   `/shuffle-directory`
--   `/command`
+- `/show-directory` *(a zero-parameter request gets the root directory)*
+- `/play`
+- `/shuffle-directory`
+- `/command`
  
 
 That's it for changes to the front-end since last time, but let me share some random thoughts before going on to the server-side.
@@ -85,9 +85,9 @@ Woo.
 Anyway, the long and the short of it is that putting together a Common Lisp solution to this problem on an ARM machine is pretty far from trivial, involving one of
 
 
--   manual installation of Hunchentoot<a name="note-Mon-Oct-08-140419EDT-2012"></a>[|3|](#foot-Mon-Oct-08-140419EDT-2012)
--   resolving the CMUCL cyclical requirements graph
--   compiling your own SBCL
+- manual installation of Hunchentoot<a name="note-Mon-Oct-08-140419EDT-2012"></a>[|3|](#foot-Mon-Oct-08-140419EDT-2012)
+- resolving the CMUCL cyclical requirements graph
+- compiling your own SBCL
 
 
 Which is why this first stab is written in Python, and a follow-up is probably going to be using Haskell rather than CL.
@@ -330,10 +330,10 @@ There's a few things that this player obviously still needs. I *have* to put tog
 Other than that, features I'll be building over the next little while include
 
 
--   playing directories and lists of files<a name="note-Mon-Oct-08-140821EDT-2012"></a>[|17|](#foot-Mon-Oct-08-140821EDT-2012)
--   playlist management<a name="note-Mon-Oct-08-140826EDT-2012"></a>[|18|](#foot-Mon-Oct-08-140826EDT-2012)
--   better volume and seek control<a name="note-Mon-Oct-08-140829EDT-2012"></a>[|19|](#foot-Mon-Oct-08-140829EDT-2012)
--   ability to send HDMI events to the output<a name="note-Mon-Oct-08-140833EDT-2012"></a>[|20|](#foot-Mon-Oct-08-140833EDT-2012)
+- playing directories and lists of files<a name="note-Mon-Oct-08-140821EDT-2012"></a>[|17|](#foot-Mon-Oct-08-140821EDT-2012)
+- playlist management<a name="note-Mon-Oct-08-140826EDT-2012"></a>[|18|](#foot-Mon-Oct-08-140826EDT-2012)
+- better volume and seek control<a name="note-Mon-Oct-08-140829EDT-2012"></a>[|19|](#foot-Mon-Oct-08-140829EDT-2012)
+- ability to send HDMI events to the output<a name="note-Mon-Oct-08-140833EDT-2012"></a>[|20|](#foot-Mon-Oct-08-140833EDT-2012)
 
 
 but they're all icing, as far as I'm concerned. This is now a pretty decent, working web-interface for a media server on the RasPi written in 389 lines of Python/JS/HTML/CSS. Once again, [the github](https://github.com/Inaimathi/web-mote) has been updated<a name="note-Mon-Oct-08-140839EDT-2012"></a>[|21|](#foot-Mon-Oct-08-140839EDT-2012) if you want to poke around with it.

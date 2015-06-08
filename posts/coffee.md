@@ -17,9 +17,9 @@ greet = (subject = "world") -> "Hello, #{subject}!"
 squares = (numbers...) -> square n for n in numbers     
 # multi-quote string
 content = """
-&lt;div id="content">
-  &lt;span class="quote">Blah!&lt;/span>
-&lt;/div>
+<div id="content">
+  <span class="quote">Blah!</span>
+</div>
 """
 ```
 
@@ -59,16 +59,16 @@ greet = function(subject) {
 
 squares = function() {
   var n, numbers, _i, _len, _results;
-  numbers = 1 &lt;= arguments.length ? __slice.call(arguments, 0) : [];
+  numbers = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
   _results = [];
-  for (_i = 0, _len = numbers.length; _i &lt; _len; _i++) {
+  for (_i = 0, _len = numbers.length; _i < _len; _i++) {
     n = numbers[_i];
     _results.push(square(n));
   }
   return _results;
 };
 
-content = "&lt;div id=\"content\">\n  &lt;span class=\"quote\">Blah!&lt;/span>\n&lt;/div>";
+content = "<div id=\"content\">\n  <span class=\"quote\">Blah!</span>\n</div>";
 ```
 
 Granted, it misses some big ones<a name="note-Thu-Mar-08-234306EST-2012"></a>[|4|](#foot-Thu-Mar-08-234306EST-2012), but still.

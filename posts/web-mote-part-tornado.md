@@ -130,11 +130,9 @@ def playFile(playerCmd, fileName, cmdTable):
 
 `playFile` is probably the oddest function I've ever had to write. It has to be blocking, because we don't want its caller to think it can play another file before the last one is done<a name="note-Thu-Nov-29-163509EST-2012"></a>[|3|](#foot-Thu-Nov-29-163509EST-2012), but it also has to launch its player in an asynchronous `subprocess`, because it needs to be able to receive input from the user, **but** it can't *wait* for input because that means that it would *have* to receive some before it returned<a name="note-Thu-Nov-29-163517EST-2012"></a>[|4|](#foot-Thu-Nov-29-163517EST-2012). The result is what you see there. The first thing we do is clear the `commandQueue`<a name="note-Thu-Nov-29-163521EST-2012"></a>[|5|](#foot-Thu-Nov-29-163521EST-2012) and launch the player and retain a handle to it. Then, until playback finishes, we poll `commandQueue` for user input. We have to leave a timeout for that input check, because we'd otherwise wait here even after the file finished playing, and that's not fun. `ServerStatus.write_message_to_all` write out an SSE notifying the front-end of
 
-
--   playing a file
--   receiving a user command
--   finishing the file
-
+- playing a file
+- receiving a user command
+- finishing the file
 
 respectively. Hmm. I should probably notify the front end that I've finished playback even when a `stop` command is received. Just for completeness. I'll make a note of it.
 

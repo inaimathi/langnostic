@@ -25,7 +25,7 @@ type Rules = (Cell -> [Cell] -> Maybe Cell)
 
 neighbors :: Grid -> Cell -> [Cell]
 neighbors grid (Cell (Coords x y) _) = map cellAt cs
-    where cs = [Coords (x'+x) (y'+y) | x' &lt;- [-1..1], y' &lt;- [-1..1], (x', y') /= (0, 0)]
+    where cs = [Coords (x'+x) (y'+y) | x' <- [-1..1], y' <- [-1..1], (x', y') /= (0, 0)]
           cellAt c = case getOne $ grid @= c of
                        Just cell -> cell 
                        Nothing -> Cell c Off
@@ -104,7 +104,7 @@ These are the data declarations. You might get enough information out of these a
 ```haskell
 neighbors :: Grid -> Cell -> [Cell]
 neighbors grid (Cell (Coords x y) _) = map cellAt cs
-    where cs = [Coords (x'+x) (y'+y) | x' &lt;- [-1..1], y' &lt;- [-1..1], (x', y') /= (0, 0)]
+    where cs = [Coords (x'+x) (y'+y) | x' <- [-1..1], y' <- [-1..1], (x', y') /= (0, 0)]
           cellAt c = case getOne $ grid @= c of
                        Just cell -> cell 
                        Nothing -> Cell c Off

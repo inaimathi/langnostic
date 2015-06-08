@@ -20,11 +20,11 @@ import qualified Data.Map as M
 main = xmonad $ xfceConfig { modMask = mod4Mask }
        `additionalKeysP`
        [ ("M-p", dmenu_launch)
-       , ("M-&lt;Return>", spawn_term)
-       , ("&lt;Print>", spawn "xfce4-screenshooter")
+       , ("M-<Return>", spawn_term)
+       , ("<Print>", spawn "xfce4-screenshooter")
        , ("C-t p", dmenu_launch)
        , ("C-t C-p", dmenu_launch)
-       , ("C-t &lt;Return>", spawn_term)
+       , ("C-t <Return>", spawn_term)
        , ("C-t w", nextScreen)
        , ("C-t e", prevScreen)
          
@@ -34,7 +34,7 @@ main = xmonad $ xfceConfig { modMask = mod4Mask }
        , ("C-t S-k", windows S.swapUp)
        , ("C-t g", goToSelected defaultGSConfig)
          
-       , ("C-t &lt;Space>", sendMessage NextLayout)
+       , ("C-t <Space>", sendMessage NextLayout)
        , ("C-t h", sendMessage Shrink)
        , ("C-t l", sendMessage Expand)
        , ("C-t t", withFocused $ windows . S.sink)
@@ -57,16 +57,16 @@ You can't help but be biased if that's all the exposure you've had, [recent holl
 First off, "piracy" in the software sense translates to "unauthorized copying" if you want to be a bit more pedantic about it. If we look at what DMCA, SOPA et al attempt to regulate, piracy includes, but isn't limited to distributing copyrighted works for profit. To start with, here are some examples of piracy in no particular order:
 
 
--   posting [fan art of characters you don't own](http://quintela.deviantart.com/art/Zelda-fan-art-108197853) on a third party service
--   selling [homemade copies of commercial movies](http://www.thestar.com/article/561408)
--   non-commercially [creating and posting original content that incidentally features copyrighted material](http://www.youtube.com/watch?v=N1KfJHFWlhQ)
--   non-commercially creating and posting [remixed content that centrally features copyrighted material](http://www.youtube.com/watch?v=Pui0UzAFCJg)
--   hosting a for-profit site whose primary use is hosting copyrighted content, or linking to torrents of copyrighted content
--   selling [original work featuring characters and settings you don't own](http://en.wikipedia.org/wiki/Another_Hope) without the original authors' permission
--   <a href="http://thepiratebay.org/">providing links or references to copyrighted material</a >or to sites which enable copyright infringement (which means that this particular page is actually engaging in piracy, we'll get back to that later)
--   using [copyrighted material for the purposes of criticism](http://boingboing.net/2009/10/06/the-criticism-that-r.html)
--   [copying a music CD you own onto a private computer network](http://www.mtv.com/news/articles/1471036/riaa-sues-four-college-students.jhtml)
--   hosting [user-submitted content and/or links](http://www.reddit.com/) which may include unauthorized copies of commercial content
+- posting [fan art of characters you don't own](http://quintela.deviantart.com/art/Zelda-fan-art-108197853) on a third party service
+- selling [homemade copies of commercial movies](http://www.thestar.com/article/561408)
+- non-commercially [creating and posting original content that incidentally features copyrighted material](http://www.youtube.com/watch?v=N1KfJHFWlhQ)
+- non-commercially creating and posting [remixed content that centrally features copyrighted material](http://www.youtube.com/watch?v=Pui0UzAFCJg)
+- hosting a for-profit site whose primary use is hosting copyrighted content, or linking to torrents of copyrighted content
+- selling [original work featuring characters and settings you don't own](http://en.wikipedia.org/wiki/Another_Hope) without the original authors' permission
+- <a href="http://thepiratebay.org/">providing links or references to copyrighted material</a >or to sites which enable copyright infringement (which means that this particular page is actually engaging in piracy, we'll get back to that later)
+- using [copyrighted material for the purposes of criticism](http://boingboing.net/2009/10/06/the-criticism-that-r.html)
+- [copying a music CD you own onto a private computer network](http://www.mtv.com/news/articles/1471036/riaa-sues-four-college-students.jhtml)
+- hosting [user-submitted content and/or links](http://www.reddit.com/) which may include unauthorized copies of commercial content
 
 
 

@@ -42,144 +42,144 @@ Gentlemen...
 -record(secret, {timestamp, user_id, ip, plaintext}).
 
 %%% API
-new_key(UserId, Pubkey) -&gt; gen_server:call(?MODULE, {new_key, UserId, Pubkey}).
-gen_secret(UserId, IP) -&gt; gen_server:call(?MODULE, {gen_secret, UserId, IP}).
-verify(UserId, IP, Sig) -&gt; gen_server:call(?MODULE, {verify, UserId, IP, Sig}).
+new_key(UserId, Pubkey) -> gen_server:call(?MODULE, {new_key, UserId, Pubkey}).
+gen_secret(UserId, IP) -> gen_server:call(?MODULE, {gen_secret, UserId, IP}).
+verify(UserId, IP, Sig) -> gen_server:call(?MODULE, {verify, UserId, IP, Sig}).
 
-handle_call({gen_secret, UserId, IP}, _From, State) -&gt; 
+handle_call({gen_secret, UserId, IP}, _From, State) -> 
     Pubkey = find({key, UserId}),
     P = binary_to_hex(crypto:sha(crypto:rand_bytes(32))),
     Ciphertext = binary_to_list(m2crypto:encrypt(Pubkey, P)),
     Secret = #secret{timestamp=now(), user_id=UserId, ip=IP, plaintext=P},
-    db:transaction(fun() -&gt; mnesia:write(Secret) end),
+    db:transaction(fun() -> mnesia:write(Secret) end),
     {reply, Ciphertext, State};
-handle_call({verify, UserId, IP, Sig}, _From, State) -&gt;
+handle_call({verify, UserId, IP, Sig}, _From, State) ->
     Pubkey = find({key, UserId}),
     Secrets = find({secrets, UserId, IP}),
     Res = lists:any(
-            fun({T, S}) -&gt; verify_key({T, S}, Pubkey, Sig) end, 
+            fun({T, S}) -> verify_key({T, S}, Pubkey, Sig) end, 
             Secrets),
     {reply, Res, State};
-handle_call({new_key, UserId, Pubkey}, _From, State) -&gt; 
+handle_call({new_key, UserId, Pubkey}, _From, State) -> 
     Res = case exists_p(UserId) of
-              false -&gt; Fname = make_tempname("/tmp"),
+              false -> Fname = make_tempname("/tmp"),
                        file:write_file(Fname, Pubkey),
                        K = m2crypto:split_key(Fname),
                        Rec = #pubkey{user_id=UserId, pubkey=K},
-                       ok = db:transaction(fun() -&gt; mnesia:write(Rec) end),
+                       ok = db:transaction(fun() -> mnesia:write(Rec) end),
                        file:delete_file(Fname),
                        K;
-              true -&gt; already_exists
+              true -> already_exists
           end,
     {reply, Res, State}.
 
 %%% rsa_auth-specific utility
-verify_key({T, S}, Pubkey, Sig) -&gt;
+verify_key({T, S}, Pubkey, Sig) ->
     case old_secret_p(T) of
-        true -&gt; revoke_secret(T),
+        true -> revoke_secret(T),
                 false;
-        _ -&gt; case m2crypto:verify(Pubkey, S, Sig) of
-                 true -&gt; revoke_secret(T),
+        _ -> case m2crypto:verify(Pubkey, S, Sig) of
+                 true -> revoke_secret(T),
                          true;
-                 _ -&gt; false
+                 _ -> false
              end
     end.
 
-revoke_secret(T) -&gt;
-    db:transaction(fun() -&gt; mnesia:delete({secret, T}) end).
+revoke_secret(T) ->
+    db:transaction(fun() -> mnesia:delete({secret, T}) end).
 
-old_secret_p(T) -&gt; 
+old_secret_p(T) -> 
     %% it's old if the timestamp is older than 5 minutes
-    300 &lt; (now_to_seconds(now()) - now_to_seconds(T)).
+    300 < (now_to_seconds(now()) - now_to_seconds(T)).
 
-exists_p(UserId) -&gt; 
+exists_p(UserId) -> 
     try
         find({key, UserId})
     catch
-        error:_ -&gt; false
+        error:_ -> false
     end.
 
 %%% DB related
-find({key, UserId}) -&gt; 
-    [Rec] = db:do(qlc:q([X#pubkey.pubkey || X &lt;- mnesia:table(pubkey), X#pubkey.user_id =:= UserId])),
+find({key, UserId}) -> 
+    [Rec] = db:do(qlc:q([X#pubkey.pubkey || X <- mnesia:table(pubkey), X#pubkey.user_id =:= UserId])),
     Rec;
-find({secrets, UserId, IP}) -&gt; 
+find({secrets, UserId, IP}) -> 
     db:do(qlc:q([{X#secret.timestamp, X#secret.plaintext} || 
-                    X &lt;- mnesia:table(secret), 
+                    X <- mnesia:table(secret), 
                     X#secret.user_id =:= UserId,
                     X#secret.ip =:= IP])).
 
-create() -&gt;
+create() ->
     mnesia:create_table(pubkey, [{type, ordered_set}, {disc_copies, [node()]}, {attributes, record_info(fields, pubkey)}]),
     mnesia:create_table(secret, [{type, ordered_set}, {disc_copies, [node()]}, {attributes, record_info(fields, secret)}]).
 
-clear() -&gt;
+clear() ->
     mnesia:delete_table(pubkey),
     mnesia:delete_table(secret).
 
-recreate() -&gt;
+recreate() ->
     clear(),
     create().
 
 %%% general utility
-now_to_seconds(Now) -&gt;
+now_to_seconds(Now) ->
     calendar:datetime_to_gregorian_seconds(calendar:now_to_datetime(Now)).
 
-make_tempname() -&gt;
+make_tempname() ->
     {A, B, C} = now(),
     [D, E, F] = lists:map(fun integer_to_list/1, [A, B, C]),
     lists:append(["tmp.", D, ".", E, ".", F]).
-make_tempname(TargetDir) -&gt;
+make_tempname(TargetDir) ->
     filename:absname_join(TargetDir, make_tempname()).
 
-binary_to_hex(Bin) -&gt;
+binary_to_hex(Bin) ->
     lists:flatten([io_lib:format("~2.16.0B", [X]) ||
-                      X &lt;- binary_to_list(Bin)]).
+                      X <- binary_to_list(Bin)]).
 
 %%%%%%%%%%%%%%%%%%%% generic actions
-start() -&gt; gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
-stop() -&gt; gen_server:call(?MODULE, stop).
+start() -> gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
+stop() -> gen_server:call(?MODULE, stop).
 
 %%%%%%%%%%%%%%%%%%%% gen_server handlers
-init([]) -&gt; {ok, []}.
-handle_cast(_Msg, State) -&gt; {noreply, State}.
-handle_info(_Info, State) -&gt; {noreply, State}.
-terminate(_Reason, _State) -&gt; ok.
-code_change(_OldVsn, State, _Extra) -&gt; {ok, State}.
+init([]) -> {ok, []}.
+handle_cast(_Msg, State) -> {noreply, State}.
+handle_info(_Info, State) -> {noreply, State}.
+terminate(_Reason, _State) -> ok.
+code_change(_OldVsn, State, _Extra) -> {ok, State}.
 ```
 
 Actually, that's way too intimidating, given what this thing does. Lets break that shit down, and strip the `gen_server`/`mnesia`-related boilerplate. Chunklet the first is the meatiest:
 
 ```erlang
 %%% API
-new_key(UserId, Pubkey) -&gt; gen_server:call(?MODULE, {new_key, UserId, Pubkey}).
-gen_secret(UserId, IP) -&gt; gen_server:call(?MODULE, {gen_secret, UserId, IP}).
-verify(UserId, IP, Sig) -&gt; gen_server:call(?MODULE, {verify, UserId, IP, Sig}).
+new_key(UserId, Pubkey) -> gen_server:call(?MODULE, {new_key, UserId, Pubkey}).
+gen_secret(UserId, IP) -> gen_server:call(?MODULE, {gen_secret, UserId, IP}).
+verify(UserId, IP, Sig) -> gen_server:call(?MODULE, {verify, UserId, IP, Sig}).
 
-handle_call({gen_secret, UserId, IP}, _From, State) -&gt; 
+handle_call({gen_secret, UserId, IP}, _From, State) -> 
     Pubkey = find({key, UserId}),
     P = binary_to_hex(crypto:sha(crypto:rand_bytes(32))),
     Ciphertext = binary_to_list(m2crypto:encrypt(Pubkey, P)),
     Secret = #secret{timestamp=now(), user_id=UserId, ip=IP, plaintext=P},
-    db:transaction(fun() -&gt; mnesia:write(Secret) end),
+    db:transaction(fun() -> mnesia:write(Secret) end),
     {reply, Ciphertext, State};
-handle_call({verify, UserId, IP, Sig}, _From, State) -&gt;
+handle_call({verify, UserId, IP, Sig}, _From, State) ->
     Pubkey = find({key, UserId}),
     Secrets = find({secrets, UserId, IP}),
     Res = lists:any(
-            fun({T, S}) -&gt; verify_key({T, S}, Pubkey, Sig) end, 
+            fun({T, S}) -> verify_key({T, S}, Pubkey, Sig) end, 
             Secrets),
     {reply, Res, State};
-handle_call({new_key, UserId, Pubkey}, _From, State) -&gt; 
+handle_call({new_key, UserId, Pubkey}, _From, State) -> 
     Res = case exists_p(UserId) of
-              false -&gt; Fname = make_tempname("/tmp"),
+              false -> Fname = make_tempname("/tmp"),
                        file:write_file(Fname, Pubkey),
                        K = m2crypto:split_key(Fname),
                        Rec = #pubkey{user_id=UserId, pubkey=K},
-                       ok = db:transaction(fun() -&gt; mnesia:write(Rec) end),
+                       ok = db:transaction(fun() -> mnesia:write(Rec) end),
                        file:delete_file(Fname),
                        K;
-              true -&gt; already_exists
+              true -> already_exists
           end,
     {reply, Res, State}.
 ```
@@ -192,38 +192,38 @@ The exported functions are self-explanatory, so lets focus in on the `handle_cal
 
 ```erlang
 %%% rsa_auth-specific utility
-verify_key({T, S}, Pubkey, Sig) -&gt;
+verify_key({T, S}, Pubkey, Sig) ->
     case old_secret_p(T) of
-        true -&gt; revoke_secret(T),
+        true -> revoke_secret(T),
                 false;
-        _ -&gt; case m2crypto:verify(Pubkey, S, Sig) of
-                 true -&gt; revoke_secret(T),
+        _ -> case m2crypto:verify(Pubkey, S, Sig) of
+                 true -> revoke_secret(T),
                          true;
-                 _ -&gt; false
+                 _ -> false
              end
     end.
 
-revoke_secret(T) -&gt;
-    db:transaction(fun() -&gt; mnesia:delete({secret, T}) end).
+revoke_secret(T) ->
+    db:transaction(fun() -> mnesia:delete({secret, T}) end).
 
-old_secret_p(T) -&gt; 
+old_secret_p(T) -> 
     %% it's old if the timestamp is older than 5 minutes
-    300 &lt; (now_to_seconds(now()) - now_to_seconds(T)).
+    300 < (now_to_seconds(now()) - now_to_seconds(T)).
 ```
 
 That seems reasonably self-explanatory too<a name="note-Sat-Jun-23-013559EDT-2012"></a>[|4|](#foot-Sat-Jun-23-013559EDT-2012). We check whether a given secret is too old, revoking it without granting access if it is, then calling out to python for the actual verification step (coming soon, I promise). If it succeeds, we revoke it and grant access. Note that by the time we've gotten to this point, the keys have already been verified for a matching IP. Right, back to the last clause in `handle_call/3`
 
 ```erlang
-handle_call({new_key, UserId, Pubkey}, _From, State) -&gt; 
+handle_call({new_key, UserId, Pubkey}, _From, State) -> 
     Res = case exists_p(UserId) of
-              false -&gt; Fname = make_tempname("/tmp"),
+              false -> Fname = make_tempname("/tmp"),
                        file:write_file(Fname, Pubkey),
                        K = m2crypto:split_key(Fname),
                        Rec = #pubkey{user_id=UserId, pubkey=K},
-                       ok = db:transaction(fun() -&gt; mnesia:write(Rec) end),
+                       ok = db:transaction(fun() -> mnesia:write(Rec) end),
                        file:delete_file(Fname),
                        K;
-              true -&gt; already_exists
+              true -> already_exists
           end,
     {reply, Res, State}.
 ```
@@ -242,31 +242,31 @@ Ok, it's Python time
 
 -export([encrypt/2, verify/3, split_key/1]).
 
-encrypt({E, N}, Message) -&gt; gen_server:call(?MODULE, {encrypt, E, N, Message}).
-verify({E, N}, Message, Signature) -&gt; gen_server:call(?MODULE, {verify, E, N, Message, Signature}).
-split_key(Filename) -&gt; gen_server:call(?MODULE, {split_key, Filename}).
+encrypt({E, N}, Message) -> gen_server:call(?MODULE, {encrypt, E, N, Message}).
+verify({E, N}, Message, Signature) -> gen_server:call(?MODULE, {verify, E, N, Message, Signature}).
+split_key(Filename) -> gen_server:call(?MODULE, {split_key, Filename}).
 
-handle_call({'EXIT', _Port, Reason}, _From, _State) -&gt;
+handle_call({'EXIT', _Port, Reason}, _From, _State) ->
     exit({port_terminated, Reason});
-handle_call(Message, _From, Port) -&gt;
+handle_call(Message, _From, Port) ->
     port_command(Port, term_to_binary(Message)),
     receive
-        {State, {data, Data}} -&gt; 
+        {State, {data, Data}} -> 
             {reply, binary_to_term(Data), State}
-    after 3000 -&gt; 
+    after 3000 -> 
             exit(timeout)
     end.
 
 %%%%%%%%%%%%%%%%%%%% generic actions
-start() -&gt; gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
-stop() -&gt; gen_server:call(?MODULE, stop).
+start() -> gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
+stop() -> gen_server:call(?MODULE, stop).
 
 %%%%%%%%%%%%%%%%%%%% gen_server handlers
-init([]) -&gt; {ok, open_port({spawn, "python -u m2crypto.py"}, [{packet, 4}, binary, use_stdio])}.
-handle_cast(_Msg, State) -&gt; {noreply, State}.
-handle_info(_Info, State) -&gt; {noreply, State}.
-terminate(_Reason, State) -&gt; State ! {self(), close}, ok.
-code_change(_OldVsn, State, _Extra) -&gt; {ok, State}.
+init([]) -> {ok, open_port({spawn, "python -u m2crypto.py"}, [{packet, 4}, binary, use_stdio])}.
+handle_cast(_Msg, State) -> {noreply, State}.
+handle_info(_Info, State) -> {noreply, State}.
+terminate(_Reason, State) -> State ! {self(), close}, ok.
+code_change(_OldVsn, State, _Extra) -> {ok, State}.
 ```
 
 ```erlang
@@ -301,11 +301,11 @@ And, that's that. Well, ok, on the backend anyway. Which means we've got two mor
 -compile(export_all).
 -include_lib("nitrogen_core/include/wf.hrl").
 
-main() -&gt; #template { file="./site/templates/bare.html" }.
+main() -> #template { file="./site/templates/bare.html" }.
 
-title() -&gt; "Manual RSA Auth".
+title() -> "Manual RSA Auth".
 
-body() -&gt; 
+body() -> 
     [
      #label {text="Username: "},
      #textbox { id=username, next=sendButton },
@@ -314,7 +314,7 @@ body() -&gt;
      #panel { id=auth_token }
     ].
 
-event(send_user) -&gt;
+event(send_user) ->
     Token = rpc:call('trivial_user@127.0.1.1', rsa_auth, gen_secret, [wf:q(username), wf:peer_ip()]),
     wf:update(auth_token,
              [
@@ -322,17 +322,17 @@ event(send_user) -&gt;
               #textarea { id=auth_response },
               #button { id=send_signed, text="Send Signed", postback=send_signed }
              ]);
-event(send_signed) -&gt;
+event(send_signed) ->
     Args = [wf:q(username), wf:peer_ip(), 
             re:replace(wf:q(auth_response), "\\\\n", "\n", [global, {return, list}])],
     Res = rpc:call('trivial_user@127.0.1.1', rsa_auth, verify, Args),
     erlang:display(Res),
     erlang:display(Args),
     case Res of
-        true -&gt; wf:update(auth_token, [ #span { text="Yay! You're in!"} ]);
-        _ -&gt; wf:update(auth_token, [ #span {text="Halt, criminal scum!" } ])
+        true -> wf:update(auth_token, [ #span { text="Yay! You're in!"} ]);
+        _ -> wf:update(auth_token, [ #span {text="Halt, criminal scum!" } ])
     end;
-event(_) -&gt; ok.
+event(_) -> ok.
 ```
 
 That should be puzzle-out-able based on what we've been talking about too. Note that this expects to find a running instance of `trivial_user` at `'trivial_user@127.0.1.1'`. The only other thing I'll note is the bit that goes
@@ -379,9 +379,9 @@ Assuming it was done correctly, you should then be logged in. The automatic vers
 I don't fucking know, something. Oh, wait, yeah it is. In three specific ways.
 
 
--   **Bi directional authentication**; If we implement that note I mentioned earlier, it lets you authenticate to your server and authenticate the server to you, without an intermediary<a name="note-Sat-Jun-23-013835EDT-2012"></a>[|6|](#foot-Sat-Jun-23-013835EDT-2012)
--   **No critical information is exchanged**; even if someone is watching your entire transaction, they never get enough information to impersonate you, whether you're dealing with SSL or not.
--   **No critical information is present on the server**; even if your service provider is an utter dumbass that keeps their user database in plaintext with a little note taped to it reading "Plz dont steals", you don't care. Unlike a password system, where your password is effectively as secure as the weakest service you use it on, your RSA key is as secure as your personal machine. Granted, that may still not be *very* secure, but it's a step up.
+- **Bi directional authentication**; If we implement that note I mentioned earlier, it lets you authenticate to your server and authenticate the server to you, without an intermediary<a name="note-Sat-Jun-23-013835EDT-2012"></a>[|6|](#foot-Sat-Jun-23-013835EDT-2012)
+- **No critical information is exchanged**; even if someone is watching your entire transaction, they never get enough information to impersonate you, whether you're dealing with SSL or not.
+- **No critical information is present on the server**; even if your service provider is an utter dumbass that keeps their user database in plaintext with a little note taped to it reading "Plz dont steals", you don't care. Unlike a password system, where your password is effectively as secure as the weakest service you use it on, your RSA key is as secure as your personal machine. Granted, that may still not be *very* secure, but it's a step up.
 
 
 I'm also convinced that once this is properly automated, it will be *easier* to deal with than password authentication from the user perspective, but I haven't built it yet, so I won't count that. I'm basing this conviction on the fact that I've stopped [using SSH with](http://paulkeck.com/ssh/)out [RSA keys](http://lani78.wordpress.com/2008/08/08/generate-a-ssh-key-and-disable-password-authentication-on-ubuntu-server/). I encourage you to try it if you haven't already.

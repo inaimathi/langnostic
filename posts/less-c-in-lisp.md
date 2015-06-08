@@ -77,10 +77,10 @@ There's at least one thing there that should have set off definite alarms though
         (setq tmp (cdr tmp)))
       (while source-list
         (setq c (car source-list))
-            (if (&lt; c #x80)
+            (if (< c #x80)
                 (setq elite-for-emacs-planet-description (concat elite-for-emacs-planet-description (list c)))
               (progn
-                (if (&lt;= c #xa4)
+                (if (<= c #xa4)
                     (progn (setq rnd (gen_rnd_number))
                       (setq tmp 0);;true: non-zero, zer=false
                       (if (>= rnd #x33)
@@ -99,7 +99,7 @@ There's at least one thing there that should have set off definite alarms though
                                          (capitalize (plansys-name planet-sys))))
                            ;;(insert (capitalize (plansys-name planet-sys)))
                       )
-                     ((= c #xB1);; /* &lt;planet name>ian */
+                     ((= c #xB1);; /* <planet name>ian */
                       (setq tmp (capitalize (plansys-name planet-sys)))
                       (if (and (not (string-match "e$" tmp)) (not (string-match "i$" tmp)))
                           (setq elite-for-emacs-planet-description (concat elite-for-emacs-planet-description tmp))
@@ -109,7 +109,7 @@ There's at least one thing there that should have set off definite alarms though
                      ((= c #xB2);;/* random name */
                       (setq i 0)
                       (setq len (logand (gen_rnd_number) 3))
-                      (while (&lt;= i len)
+                      (while (<= i len)
                         (setq x (logand (gen_rnd_number) #x3e))
                         (if (/= (aref pairs x) 46);;46='.' (string-to-char ".")
                             (setq elite-for-emacs-planet-description (concat elite-for-emacs-planet-description (char-to-string (aref pairs x))))
@@ -121,7 +121,7 @@ There's at least one thing there that should have set off definite alarms though
 ;;                                              case 0xB2: /* random name */
 ;;                              {       int i;
 ;;                                      int len = gen_rnd_number() & 3;
-;;                                      for(i=0;i&lt;=len;i++)
+;;                                      for(i=0;i<=len;i++)
 ;;                                      {       int x = gen_rnd_number() & 0x3e;
 ;;                                              if(pairs0[x]!='.') printf("%c",pairs0[x]);
 ;;                                              if(i && (pairs0[x+1]!='.')) printf("%c",pairs0[x+1]);
@@ -241,9 +241,9 @@ That's the data, at any rate. The above uses all the original words and combinat
 In other words, 
 
 
--   a string gets returned
--   an atom gets expanded (by looking it up in the grammar and picking a random possible expansion)
--   a list gets expanded (by expanding each of its elements)
+- a string gets returned
+- an atom gets expanded (by looking it up in the grammar and picking a random possible expansion)
+- a list gets expanded (by expanding each of its elements)
 
 
 ```lisp

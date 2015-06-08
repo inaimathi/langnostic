@@ -9,8 +9,8 @@ This is probably the first time I've left an employer with, on balance, positive
 We *didn't* GPL any of our code, which always disappointed me, because it meant that I
 
 
--   couldn't get an outside opinion without collecting NDAs, which I don't like doing
--   won't be able to reasonably work on the projects any more after I leave
+- couldn't get an outside opinion without collecting NDAs, which I don't like doing
+- won't be able to reasonably work on the projects any more after I leave
 
 
 That's in addition to the usual argument about how sufficiently interesting projects are just plain better off becoming open source, so that they can leverage as many developers as they can attract, rather than merely as many as their owners can pay for. There's a threshold at which the first number is so much larger than the second that it really doesn't make sense to keep secrets, and I think at least two of the projects I shepherded could cross it given the chance. Such is life, I suppose.

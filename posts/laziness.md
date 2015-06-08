@@ -62,8 +62,8 @@ foo = lazyNumbers();
 Granted the second set looks more complicated, except for the Haskell line, but it has some advantages. Firstly, while the first bunch of lists is bounded, this second bunch is infinite, and you do sometimes want to express that. More to the point though, the reason these can *be* infinite is that they're lazy. They only compute as much of the remainder of the sequence as you actually ask for, which means they save you space in two ways
 
 
--   they don't keep the entire list in memory by default; they deal with only one element at a time and any used ones are garbage collected unless you decide to keep a pointer to them yourself
--   they never bother computing parts of the list you don't call for, so they don't waste space storing values that'll never actually get used somewhere
+- they don't keep the entire list in memory by default; they deal with only one element at a time and any used ones are garbage collected unless you decide to keep a pointer to them yourself
+- they never bother computing parts of the list you don't call for, so they don't waste space storing values that'll never actually get used somewhere
 
 
 That's basic stuff, it should be pretty obvious. Less obvious, but more significant, is how this saves you time.
@@ -92,10 +92,10 @@ But what about when we compose multiple operations on one sequence? You'll recal
 import Data.List
 
 neighbors :: (Int, Int) -> [(Int, Int)]
-neighbors (x, y) = [(x+dx, y+dy) | dx &lt;- [-1..1], dy &lt;- [-1..1], (dx,dy) /= (0,0)]
+neighbors (x, y) = [(x+dx, y+dy) | dx <- [-1..1], dy <- [-1..1], (dx,dy) /= (0,0)]
 
 lifeStep :: [(Int, Int)] -> [(Int, Int)]
-lifeStep cells = [head g | g &lt;- grouped cells, viable g]
+lifeStep cells = [head g | g <- grouped cells, viable g]
   where grouped = group . sort . concat . map neighbors
         viable [_,_,_] = True
         viable [c,_] = c `elem` cells

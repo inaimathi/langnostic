@@ -49,7 +49,7 @@ showEntries res = case res of
 showMe entries = flow down [ box 100 $ controls
                            , showEntries entries ] 
 
-main = showMe &lt;~ dir
+main = showMe <~ dir
 ```
 
 And that's all. Seriously. This replaces all of the ~200 lines of JS/HTML/CSS that comprised the [Angular.js edition](https://github.com/Inaimathi/web-mote/blob/master/static/js/mote.js), and the ~300 lines of its [jQuery/Backbone predecessor](https://github.com/Inaimathi/web-mote/blob/a864b926bb8304dba03b32813964291bee2cea9e/static/js/web-mote.js).
@@ -95,8 +95,8 @@ jstrToRec jStr = let conv = toRecord . toJSObject
 That is a short utility function that converts a JSON string to a (potentially empty) list of records. The empty list situation happens in two cases
 
 
--   if the server sends back an empty list
--   if the server sends back a malformed JSON string
+- if the server sends back an empty list
+- if the server sends back a malformed JSON string
 
 
 ```haskell
@@ -120,7 +120,7 @@ showEntries res = case res of
 showMe entries = flow down [ box 100 $ controls
                            , showEntries entries ] 
 
-main = showMe &lt;~ dir
+main = showMe <~ dir
 ```
 
 This is the meat of the front-end. `box` is just a positioning helper function. `cmdButton` is a helper function to define a playback command element. Note that these are missing a piece of functionality from the old interface: clicking and holding the `rewind`/`forward`/`volume-up`/`volume-down` buttons doesn't do anything. It *used* to make serial requests to the server for the appropriate command, but Elm doesn't have very good support for HTML events. I'll talk more about that in a bit.
@@ -147,13 +147,13 @@ Now, I'm *not* disagreeing with this argument, but take a look at the bottom of 
 showMe entries = flow down [ box 100 $ controls
                            , showEntries entries ] 
 
-main = showMe &lt;~ dir
+main = showMe <~ dir
 ```
 
 What I want to express here is "Stack the controls on top of the file `entries` (figuring out `entries` based on the signal `dir`)". But you can't display an `Element` in the same list as a `Signal Element` because that would make some type theorist somewhere cry apparently. So instead of doing something like
 
 ```haskell
-main = flow down [ box 100 $ controls, showEntries $ id &lt;~ dir]
+main = flow down [ box 100 $ controls, showEntries $ id <~ dir]
 ```
 
 I have to write a separate callback-like function to accept the sanitized signal value and display *that* instead.

@@ -578,9 +578,9 @@ In addition to our combination constructs, we need at least one primitive. I've 
 The `char>>` function is also a good place to talk about what `parser`s really *are*, since it's the most basic demonstration. A parser takes a `rapid` as an argument, and returns one of three things as its result:
 
 
--   If a parser runs out of characters to read in the given `rapid`, but hasn't hit `eof`, and hasn't succeeded or failed yet, it returns **a paused state**. This means that the caller should wait until the appropriate stream has new available input before trying to resume that state<a name="note-Fri-May-15-155748EDT-2015"></a>[|4|](#foot-Fri-May-15-155748EDT-2015). This is here specifically for the case of TCP streams, which don't always have all input available at the time we begin taking characters out; the client might be adding them to the other end as we go.
--   If a parser encounters a character that completes its desired input, it returns two values: the result of the parse in the first position, and the number of characters that result consumed in the second
--   If a parser encounters a character that doesn't satisfy its next step, it returns **a failure** and reverses its work up to that point.
+- If a parser runs out of characters to read in the given `rapid`, but hasn't hit `eof`, and hasn't succeeded or failed yet, it returns **a paused state**. This means that the caller should wait until the appropriate stream has new available input before trying to resume that state<a name="note-Fri-May-15-155748EDT-2015"></a>[|4|](#foot-Fri-May-15-155748EDT-2015). This is here specifically for the case of TCP streams, which don't always have all input available at the time we begin taking characters out; the client might be adding them to the other end as we go.
+- If a parser encounters a character that completes its desired input, it returns two values: the result of the parse in the first position, and the number of characters that result consumed in the second
+- If a parser encounters a character that doesn't satisfy its next step, it returns **a failure** and reverses its work up to that point.
 
 
 Those steps a bit obscured in `or>>`, `and>>` and `many>>`, because those parsers each have to do some slightly odd bookkeeping, but you can see them perfectly in the `char>>` definition.

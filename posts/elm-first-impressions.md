@@ -25,9 +25,9 @@ Enough with the minutia though. Really, I'm here to give you a paragraph or two 
 The usual disclaimers apply.
 
 
--   you'll easily find more people who are familiar with JS/HTML than those who are familiar with Elm
--   if you use it, there's an extra<a name="note-Mon-Jun-17-232855EDT-2013"></a>[|4|](#foot-Mon-Jun-17-232855EDT-2013) abstraction layer between you and the final front-end
--   using it forces your users to enable JavaScript. Ostensibly, you can use the compiler to generate `noscript` tags, but all these seem to do is statically document what the page *would* do if JS was on.
+- you'll easily find more people who are familiar with JS/HTML than those who are familiar with Elm
+- if you use it, there's an extra<a name="note-Mon-Jun-17-232855EDT-2013"></a>[|4|](#foot-Mon-Jun-17-232855EDT-2013) abstraction layer between you and the final front-end
+- using it forces your users to enable JavaScript. Ostensibly, you can use the compiler to generate `noscript` tags, but all these seem to do is statically document what the page *would* do if JS was on.
 
 
 That second one in particular means that once again, you really should learn JavaScript before trying to use Elm to save yourself from it.
@@ -47,7 +47,7 @@ I'll let you know how it goes.
 
 1 - <a name="foot-Mon-Jun-17-232836EDT-2013"></a>[|back|](#note-Mon-Jun-17-232836EDT-2013) - Which I'm pretty sure will eventually be addressed. I particularly miss full sections and `where`, though you'd think the multi-line function declarations would be the biggest gap.
 
-2 - <a name="foot-Mon-Jun-17-232840EDT-2013"></a>[|back|](#note-Mon-Jun-17-232840EDT-2013) - For no reason I could see, `:` is Elm's type annotation operator, while `::` is Elm's `cons`. It's precisely the opposite in Haskell, and buys little enough that I hereby formally question the decision. Similar reasoning seems to apply to the operator `&lt;|`, which seems to do exactly the same thing as Haskells' `$`, except that it's twice as long.
+2 - <a name="foot-Mon-Jun-17-232840EDT-2013"></a>[|back|](#note-Mon-Jun-17-232840EDT-2013) - For no reason I could see, `:` is Elm's type annotation operator, while `::` is Elm's `cons`. It's precisely the opposite in Haskell, and buys little enough that I hereby formally question the decision. Similar reasoning seems to apply to the operator `<|`, which seems to do exactly the same thing as Haskells' `$`, except that it's twice as long.
 
 3 - <a name="foot-Mon-Jun-17-232850EDT-2013"></a>[|back|](#note-Mon-Jun-17-232850EDT-2013) - Or separate `.html` and `.js` files, if you also passed the `-s` flag.
 

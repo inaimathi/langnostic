@@ -7,19 +7,19 @@ import Time
 port resourceA : Signal Bool
 port building : Signal String
 
-buildingCost = foldp (+) 0 &lt;| keepWhen (lift2 (>) (constant 50) balance) 0 &lt;| sampleOn building &lt;| constant 50
+buildingCost = foldp (+) 0 <| keepWhen (lift2 (>) (constant 50) balance) 0 <| sampleOn building <| constant 50
 
-tickIncrement = foldp (+) 0 &lt;| sampleOn buildingCost &lt;| constant 0.01
-tick = sampleOn (every Time.millisecond) &lt;| constant True
+tickIncrement = foldp (+) 0 <| sampleOn buildingCost <| constant 0.01
+tick = sampleOn (every Time.millisecond) <| constant True
 
-spent = foldp (+) 0 &lt;| merges [ sampleOn building buildingCost ]
+spent = foldp (+) 0 <| merges [ sampleOn building buildingCost ]
 
-gathered = foldp (+) 0 &lt;| merges [ sampleOn resourceA &lt;| constant 1
+gathered = foldp (+) 0 <| merges [ sampleOn resourceA <| constant 1
                                  , sampleOn tick tickIncrement ]
 
-balance = lift round &lt;| lift2 (-) gathered spent
+balance = lift round <| lift2 (-) gathered spent
 
-main = lift (flow down) &lt;| combine [ lift asText balance ]
+main = lift (flow down) <| combine [ lift asText balance ]
 ```
 
 That's almost the complete game, except for one very annoying detail: it doesn't work. When I try to run it in the appropriate HTML harness, I get

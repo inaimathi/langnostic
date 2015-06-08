@@ -20,7 +20,7 @@ Fairly self-explanatory. Or maybe not? In Lisp modes, there's typically a bindin
 
 ## <a name="documentation-display" href="#documentation-display"></a>Documentation Display
 
-Just a simple, straight-forward way to display help about a particular symbol in a separate buffer. Nothing fancy, move along. Ok, in a future edition, it would be nice if the return text was all [linkified](http://www.gnu.org/software/emacs/manual/html_node/elisp/Clickable-Text.html) and [highlighted](https://www.gnu.org/software/emacs/manual/html_node/elisp/Text-Properties.html#Text-Properties) so that you could click/`&lt;Ret>` through docs, but that can wait.
+Just a simple, straight-forward way to display help about a particular symbol in a separate buffer. Nothing fancy, move along. Ok, in a future edition, it would be nice if the return text was all [linkified](http://www.gnu.org/software/emacs/manual/html_node/elisp/Clickable-Text.html) and [highlighted](https://www.gnu.org/software/emacs/manual/html_node/elisp/Text-Properties.html#Text-Properties) so that you could click/`<Ret>` through docs, but that can wait.
 
 ## <a name="source-display" href="#source-display"></a>Source Display
 
@@ -35,9 +35,9 @@ foo bar baz mumble |
 Assuming that pipe represents my cursor, what should the mode display in your minibuffer, and how would you find out? Near as I can tell, you'd need to ask a running r3 interpreter with the words `foo`, `bar`, `baz` and `mumble` defined. What it would do is:
 
 
--   check if `mumble` is a function, and if so, print the arg-hint for `mumble`, otherwise
--   check if `baz` is a function of more than one argument, and if so print the arg-hint for `baz`, otherwise
--   check if `bar` is a function of more than two arguments, and if so print the blah blah blah
+- check if `mumble` is a function, and if so, print the arg-hint for `mumble`, otherwise
+- check if `baz` is a function of more than one argument, and if so print the arg-hint for `baz`, otherwise
+- check if `bar` is a function of more than two arguments, and if so print the blah blah blah
 
 
 until you run out of words to check. Another open question is: how far back should the mode look for relevant symbols? For the moment, I've settled on "To the beginning of the previous block, or the first assignment, whichever comes first", but that's probably not the best approach to take.

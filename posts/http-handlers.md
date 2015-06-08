@@ -17,12 +17,10 @@ urls = [(r"/", Index),
 ...
 ```
 
-as well as Clojure's [`compojure`](https://github.com/weavejester/compojure)
+as well as Clojure's [`compojure`](https://github.com/weavejester/compojure) (snippet from [thephoeron.com](https://github.com/thephoeron/thephoeron.com), rather than one of my projects)
 
 ```clojure
 ...
-;; snippet from &lt;a href="https://github.com/thephoeron/thephoeron.com">thephoeron.com&lt;/a>, rather than one of my projects
-
 (defroutes app-routes
   (GET "/" [req] (res/splash req))
   (GET "/quantum-computing" [req] (res/quantum-computing req))
@@ -97,9 +95,9 @@ First off, they're mechanically equivalent. Both of them produce some sort of lo
 The Table-Oriented approach keeps all handlers in one place. After having read through that table, you can be reasonably sure that there aren't any handlers sitting around that you've missed. Because it's centralized, this approach
 
 
--   **Lends itself to functional handler composition.** You don't need side-effects to compose this table, because you're doing it all at once (so it can be a declaration), and you can imagine writing functions that transform handler tables without breaking abstraction.
--   **Is less flexible regarding runtime handler definition.** Once you're running a server, defining a new handler involves side-effect. In languages that are uppity about side effects, such as Clojure, Haskell or ML, this means it's somewhat more difficult and needs to be explicitly planned for, and the table-oriented approach doesn't allow it out of the box (Although, to be fair, runtime handler-definition is something you only really want while you're writing the program, and almost never something you want to be part of your deployed application. It's very useful while you're writing, but depending on how you set up your environment, you might not actually end up needing it).
--   **Implicitly produces no state clashes.** This is actually a detriment of the handler-oriented approach. The `go` variant doesn't suffer from this, but the Lisp versions do. Imagine what would happen if you used the handler-oriented approach to write two separate micro-service projects, for instance. They'd both be defining handlers into some global table, and if any routes clashed, one would end up clobbering the other. Unless you took some pains to plan for the eventuality, you'd sometimes get a handler silently stomping on another one.
+- **Lends itself to functional handler composition.** You don't need side-effects to compose this table, because you're doing it all at once (so it can be a declaration), and you can imagine writing functions that transform handler tables without breaking abstraction.
+- **Is less flexible regarding runtime handler definition.** Once you're running a server, defining a new handler involves side-effect. In languages that are uppity about side effects, such as Clojure, Haskell or ML, this means it's somewhat more difficult and needs to be explicitly planned for, and the table-oriented approach doesn't allow it out of the box (Although, to be fair, runtime handler-definition is something you only really want while you're writing the program, and almost never something you want to be part of your deployed application. It's very useful while you're writing, but depending on how you set up your environment, you might not actually end up needing it).
+- **Implicitly produces no state clashes.** This is actually a detriment of the handler-oriented approach. The `go` variant doesn't suffer from this, but the Lisp versions do. Imagine what would happen if you used the handler-oriented approach to write two separate micro-service projects, for instance. They'd both be defining handlers into some global table, and if any routes clashed, one would end up clobbering the other. Unless you took some pains to plan for the eventuality, you'd sometimes get a handler silently stomping on another one.
 
 
 The handler oriented approach is more or less the inverse. Handlers can be scattered about anywhere, so the only real way to be sure you've seen all of them is by loading up your server and inspecting the final table. The advantage you get out of this is that it's more convenient for incremental development, since you can modify one handler definition without touching the rest and can do so without restarting any servers. Additionally, this approach groups parameter validation/parsing structure (where that structure exists) along with the parameter body. That second one is the main win, because as I'll discuss in the next section, it presents an obvious path to removing a level of repetition otherwise found in handler definition.
@@ -201,12 +199,12 @@ withParam2 (arg, arg') fn = wrapped
     where wrapped ps = liftM2 fn (lookP ps arg) (lookP ps arg')
 ```
 
-We need `parse` to be a `typeclass` method because we don't want to lock users into using the `reads` approach to decoding their custom types, and we'd basically need a bunch more individual `withParam&lt;n>` declarations, but we could then write something like
+We need `parse` to be a `typeclass` method because we don't want to lock users into using the `reads` approach to decoding their custom types, and we'd basically need a bunch more individual `withParam<n>` declarations, but we could then write something like
 
 ```haskell
-handlers = [ ("/v0/add/&lt;a>/&lt;b>", withParam2 ("a", "b") (+))
-           , ("/v0/sub/&lt;a>/&lt;b>", withParam2 ("a", "b") (-))
-           , ("/v0/sum/&lt;nums>", withParam "nums" sum) ]
+handlers = [ ("/v0/add/<a>/<b>", withParam2 ("a", "b") (+))
+           , ("/v0/sub/<a>/<b>", withParam2 ("a", "b") (-))
+           , ("/v0/sum/<nums>", withParam "nums" sum) ]
 ```
 
 Which isn't the prettiest thing I've ever seen, but spares us the trouble of validation boilerplate every damned time. I'll need to give this some more thought before putting together something more concrete. I'll let you know how it goes.

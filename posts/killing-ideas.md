@@ -2,9 +2,9 @@ So maybe I'm feeling more curmudgeonly than usual because of a combination of sh
 
 
 1.   This `foo` is counter-intuitive
-1.   This `foo` is too complicated
-1.   The designers of this `foo` think significantly differently from me
-1.   I'm unable/unwilling/both to figure out how to use this `foo` or what it's good for, and I already know how to use a `bar` that does approximately what I think this will
+2.   This `foo` is too complicated
+3.   The designers of this `foo` think significantly differently from me
+4.   I'm unable/unwilling/both to figure out how to use this `foo` or what it's good for, and I already know how to use a `bar` that does approximately what I think this will
 
 
 `foo` can be bound to pretty much any tool, idea or language you can think of. I assert that in the absence of a well defined, objective metric for intuitiveness and simplicity **all of these statements are equivalent**. And while you might comfort yourself by using the first two to imply that the problem is clearly in the tool you've failed to master or its constructors, I put it to you that *you probably really mean* the fourth.

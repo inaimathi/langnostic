@@ -434,9 +434,9 @@ And I get bored.
 5 - <a name="foot-Sat-Apr-12-205537EDT-2014"></a>[|back|](#note-Sat-Apr-12-205537EDT-2014) - This is where we could be a bit more efficient, in case you're interested. If we wanted to be very precise about it, we'd say that we *could* use a compound form with variables as an index, provided that all of its variables have been bound prior to this point in the traversal. I'm leaving it out for now because 
 
 
--   it would further complicate an already tricky chunk of code 
--   I'm not sure how often this edge case would happen in practice and 
--   if it *does* happen, the current result will be a slightly less efficient traversal, which doesn't sound too bad. If the consequence were incorrect results instead, I'd have reconsidered
+- it would further complicate an already tricky chunk of code 
+- I'm not sure how often this edge case would happen in practice and 
+- if it *does* happen, the current result will be a slightly less efficient traversal, which doesn't sound too bad. If the consequence were incorrect results instead, I'd have reconsidered
 
 
 

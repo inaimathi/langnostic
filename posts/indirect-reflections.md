@@ -1,20 +1,20 @@
 I've got some thinking to do, and given how long the alternative was taking, it's obvious that it can't happen effectively in my head. I don't want to tell you exactly what I'm working on yet, because revealing my projects before I'm done with them results in them never getting done. Witness the detritus that already litters this blog
 
 
--   `[cl-chan](https://github.com/Inaimathi/cl-chan)` took about a year and a half to get a quarter of the way I was going, whereupon I was distracted by shinies
--   `[Strifebarge](https://github.com/Inaimathi/strifebarge)` was supposed to be a quick weekend project to get me back into the groove of programming after a bit of a vacation, but it's taking months and counting
--   `[auth](https://github.com/Inaimathi/auth)` was meant to have a working external API layer by now, as well as two-factor-authentication capability<a name="note-Fri-Aug-03-163551EDT-2012"></a>[|1|](#foot-Fri-Aug-03-163551EDT-2012)
--   `[clomments](https://github.com/Inaimathi/clomments)` was a piece that I literally planned out in its entirety and proceeded to `0.1` in about four hours, then got bored and started poking at Arduinos
--   `[cl-leet](https://github.com/Inaimathi/cl-leet)` took months of planning and a week of the CL Games Competition to get to a hemi-semi-playable state<a name="note-Fri-Aug-03-163909EDT-2012"></a>[|3|](#foot-Fri-Aug-03-163909EDT-2012)
+- `[cl-chan](https://github.com/Inaimathi/cl-chan)` took about a year and a half to get a quarter of the way I was going, whereupon I was distracted by shinies
+- `[Strifebarge](https://github.com/Inaimathi/strifebarge)` was supposed to be a quick weekend project to get me back into the groove of programming after a bit of a vacation, but it's taking months and counting
+- `[auth](https://github.com/Inaimathi/auth)` was meant to have a working external API layer by now, as well as two-factor-authentication capability<a name="note-Fri-Aug-03-163551EDT-2012"></a>[|1|](#foot-Fri-Aug-03-163551EDT-2012)
+- `[clomments](https://github.com/Inaimathi/clomments)` was a piece that I literally planned out in its entirety and proceeded to `0.1` in about four hours, then got bored and started poking at Arduinos
+- `[cl-leet](https://github.com/Inaimathi/cl-leet)` took months of planning and a week of the CL Games Competition to get to a hemi-semi-playable state<a name="note-Fri-Aug-03-163909EDT-2012"></a>[|3|](#foot-Fri-Aug-03-163909EDT-2012)
 
 
 Hell, the only projects I've gotten to `done`, for some value of "done", are the ones I never really think about as projects.
 
 
--   `[emacs-utils](https://github.com/Inaimathi/emacs-utils)` is sitting quietly up on github, saving me a few hours per day on various tasks.
--   `[formlets](https://github.com/Inaimathi/formlets)` is doing likewise, though not on a daily basis. 
--   `[cl-css](https://github.com/Inaimathi/cl-css)` should probably be replaced by something closer to `cl-who`, and stop using so many ``',@`s, but it gets the job done in the meanwhile.
--   finally, [my mplayer web-frontend](https://github.com/Inaimathi/web-mote) is still as awful as the day I threw it together, but it actually functions and lets me "control"<a name="note-Fri-Aug-03-164109EDT-2012"></a>[|4|](#foot-Fri-Aug-03-164109EDT-2012) my media center from any wifi-capable device in the house.
+- `[emacs-utils](https://github.com/Inaimathi/emacs-utils)` is sitting quietly up on github, saving me a few hours per day on various tasks.
+- `[formlets](https://github.com/Inaimathi/formlets)` is doing likewise, though not on a daily basis. 
+- `[cl-css](https://github.com/Inaimathi/cl-css)` should probably be replaced by something closer to `cl-who`, and stop using so many ``',@`s, but it gets the job done in the meanwhile.
+- finally, [my mplayer web-frontend](https://github.com/Inaimathi/web-mote) is still as awful as the day I threw it together, but it actually functions and lets me "control"<a name="note-Fri-Aug-03-164109EDT-2012"></a>[|4|](#foot-Fri-Aug-03-164109EDT-2012) my media center from any wifi-capable device in the house.
 
 
 So, given the track record of "things I talk about first" vs "things I put together first", you'll pardon me for keeping my latest exploits under my hat until I'm ready to pull the big red lever. Thing is, there's a component that I'm trying to assemble that has me unsure about direction, so sitting down and throwing those thoughts through the loopback interface seems like a good idea.
@@ -78,8 +78,8 @@ Instead of having a set of Authority Figures for the whole community, [shard](ht
 And we're back. Based on the principles outlined above, it seems like the best way to avoid over-moderation-related costs on a community is to make sure that any actions moderators take are
 
 
--   publicly viewable in context
--   fully reversible
+- publicly viewable in context
+- fully reversible
 
 
 As mentioned earlier though, there needs to be a way to actually, factually delete threads posts and images for legal purposes. If you get hit upside the head with a DMCA or similar, you can't really say "Yup, we've deleted it, only our moderator community can see it now", that shit needs to be *gone*. Which means I'm stuck implementing both, and worrying (perhaps excessively) about the effects of the nuclear option. In other words, I want

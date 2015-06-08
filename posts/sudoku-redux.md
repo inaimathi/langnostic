@@ -100,7 +100,7 @@ toBoard values = findEmpties $ Board { values = values, empty = fromList [],
         len = length values
 
 findEmpties :: Board -> Board
-findEmpties board = board { empty = fromList [(x, y) | y &lt;- is, x &lt;- is, blank (x, y)] }
+findEmpties board = board { empty = fromList [(x, y) | y <- is, x <- is, blank (x, y)] }
   where blank (x, y) = 0 == ((values board) !! y !! x)
         is = ixs board
 
@@ -128,7 +128,7 @@ naiveSolve functions board = rec functions board
 ---------- The solve stages
 obvious :: Board -> Board
 obvious board = findEmpties $ board { values = newVals }
-  where newVals = [[newVal (x, y) | x &lt;- ixs board] | y &lt;- ixs board]
+  where newVals = [[newVal (x, y) | x <- ixs board] | y <- ixs board]
         ps x y = toList $ possibilities board (x, y)
         newVal (x, y) = case ((values board) !! y !! x, ps x y) of
           (0, [val]) -> val
@@ -136,19 +136,19 @@ obvious board = findEmpties $ board { values = newVals }
 
 blockwise :: Board -> Board
 blockwise board = findEmpties $ board { values = new }
-  where new = [[newVal (x, y) | x &lt;- ixs board] | y &lt;- ixs board]
+  where new = [[newVal (x, y) | x <- ixs board] | y <- ixs board]
         newVal (x, y) = case find (\(x', y', v) -> (x == x') && (y == y')) uniques of
           Just (_, _, v) -> v
           Nothing -> (values board) !! y !! x
-        uniques = concat [uniqueInBlock board (x, y) | y &lt;- bIxs, x &lt;- bIxs]
+        uniques = concat [uniqueInBlock board (x, y) | y <- bIxs, x <- bIxs]
         bIxs = [0, bs..size board-1]
         bs = blockSize board
 
 guess :: Board -> [Board]
 guess board = map (\v -> findEmpties $ board { values = newVals v }) vs
   where (x, y, vs) = head $ sortBy (comparing (length . thd)) posMap
-        newVals v = [[if x == x' && y == y' then v else (values board) !! y' !! x' | x' &lt;- ixs board] | y' &lt;- ixs board]
-        posMap = [(x, y, toList $ possibilities board (x, y)) | (x, y) &lt;- es]
+        newVals v = [[if x == x' && y == y' then v else (values board) !! y' !! x' | x' <- ixs board] | y' <- ixs board]
+        posMap = [(x, y, toList $ possibilities board (x, y)) | (x, y) <- es]
         es = toList $ empty board
 
 
@@ -171,14 +171,14 @@ block board (x, y) = fromList . concat . square $ values board
 
 uniqueInBlock :: Board -> (Int, Int) -> [(Int, Int, Int)]
 uniqueInBlock board (x, y) = singles $ concatMap (toList . thd) posMap
-  where posMap = [(x', y', possibilities board (x', y')) | (x', y') &lt;- es]
+  where posMap = [(x', y', possibilities board (x', y')) | (x', y') <- es]
         es = blockEmpties board (x, y)
         singles = map (findInMap . head) . filter ((==1) . length) . group . sort
         findInMap n = let (x, y, p) = fromJust $ find (member n . thd) posMap
                       in (x, y, n)
 
 blockEmpties :: Board -> (Int, Int) -> [(Int, Int)]
-blockEmpties board (x, y) = [(x', y') | x' &lt;- xs, y' &lt;- ys, blank (x', y')]
+blockEmpties board (x, y) = [(x', y') | x' <- xs, y' <- ys, blank (x', y')]
   where blank (x, y) = 0 == ((values board) !! y !! x)
         xs = [ox..ox + bs-1]
         ys = [oy..oy + bs-1]
@@ -226,7 +226,7 @@ Lets start in the middle this time:
 ```haskell
 obvious :: Board -> Board
 obvious board = findEmpties $ board { values = newVals }
-  where newVals = [[newVal (x, y) | x &lt;- ixs board] | y &lt;- ixs board]
+  where newVals = [[newVal (x, y) | x <- ixs board] | y <- ixs board]
         ps x y = toList $ possibilities board (x, y)
         newVal (x, y) = case ((values board) !! y !! x, ps x y) of
           (0, [val]) -> val
@@ -238,11 +238,11 @@ That's how we solve a board with obvious values in it: just return a new board w
 ```haskell
 blockwise :: Board -> Board
 blockwise board = findEmpties $ board { values = new }
-  where new = [[newVal (x, y) | x &lt;- ixs board] | y &lt;- ixs board]
+  where new = [[newVal (x, y) | x <- ixs board] | y <- ixs board]
         newVal (x, y) = case find (\(x', y', v) -> (x == x') && (y == y')) uniques of
           Just (_, _, v) -> v
           Nothing -> (values board) !! y !! x
-        uniques = concat [uniqueInBlock board (x, y) | y &lt;- bIxs, x &lt;- bIxs]
+        uniques = concat [uniqueInBlock board (x, y) | y <- bIxs, x <- bIxs]
         bIxs = [0, bs..size board-1]
         bs = blockSize board
 ```
@@ -370,7 +370,7 @@ As you can see, only one of those possibility sets contains `7`, whereas the oth
 ```haskell
 uniqueInBlock :: Board -> (Int, Int) -> [(Int, Int, Int)]
 uniqueInBlock board (x, y) = singles $ concatMap (toList . thd) posMap
-  where posMap = [(x', y', possibilities board (x', y')) | (x', y') &lt;- es]
+  where posMap = [(x', y', possibilities board (x', y')) | (x', y') <- es]
         es = blockEmpties board (x, y)
         singles = map (findInMap . head) . filter ((==1) . length) . group . sort
         findInMap n = let (x, y, p) = fromJust $ find (member n . thd) posMap
@@ -426,8 +426,8 @@ Which is a board where the only remaining moves are ones where we need to guess.
 guess :: Board -> [Board]
 guess board = map (\v -> findEmpties $ board { values = newVals v }) vs
   where (x, y, vs) = head $ sortBy (comparing (length . thd)) posMap
-        newVals v = [[if x == x' && y == y' then v else (values board) !! y' !! x' | x' &lt;- ixs board] | y' &lt;- ixs board]
-        posMap = [(x, y, toList $ possibilities board (x, y)) | (x, y) &lt;- es]
+        newVals v = [[if x == x' && y == y' then v else (values board) !! y' !! x' | x' <- ixs board] | y' <- ixs board]
+        posMap = [(x, y, toList $ possibilities board (x, y)) | (x, y) <- es]
         es = toList $ empty board
 ```
 

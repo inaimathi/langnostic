@@ -24,7 +24,7 @@ The function (COMMON-LISP:SETF COMMON-LISP-USER::LOOKUP) is undefined.
 Restarts:
  0: [RETRY] Retry SLIME REPL evaluation request.
  1: [*ABORT] Return to SLIME's top level.
- 2: [ABORT] Abort thread (#&lt;THREAD "repl-thread" RUNNING {10047D0113}>)
+ 2: [ABORT] Abort thread (#<THREAD "repl-thread" RUNNING {10047D0113}>)
 ```
 
 There are two ways of fixing this.
@@ -68,7 +68,7 @@ CL-USER> (defmethod lookup (key (session session))
 (defmethod lookup (key (hash hash-table))
   (gethash key hash))
 STYLE-WARNING: Implicitly creating new generic function LOOKUP.
-#&lt;STANDARD-METHOD LOOKUP (T HASH-TABLE) {1005048E03}>
+#<STANDARD-METHOD LOOKUP (T HASH-TABLE) {1005048E03}>
 CL-USER> (defsetf lookup (key session) (new-value)
   `(setf (gethash ,key (session-values ,session)) ,new-value))
 LOOKUP
@@ -87,20 +87,20 @@ ONE
 CL-USER> (setf (lookup :test bar) 'two)
 
 There is no applicable method for the generic function
-  #&lt;STANDARD-GENERIC-FUNCTION SESSION-VALUES (1)>
+  #<STANDARD-GENERIC-FUNCTION SESSION-VALUES (1)>
 when called with arguments
-  (#&lt;HASH-TABLE :TEST EQL :COUNT 0 {10051DC633}>).
+  (#<HASH-TABLE :TEST EQL :COUNT 0 {10051DC633}>).
    [Condition of type SIMPLE-ERROR]
 
 Restarts:
  0: [RETRY] Retry calling the generic function.
  1: [RETRY] Retry SLIME REPL evaluation request.
  2: [*ABORT] Return to SLIME's top level.
- 3: [ABORT] Abort thread (#&lt;THREAD "repl-thread" RUNNING {10047D0113}>)
+ 3: [ABORT] Abort thread (#<THREAD "repl-thread" RUNNING {10047D0113}>)
 
 Backtrace:
-  0: ((SB-PCL::FAST-METHOD NO-APPLICABLE-METHOD (T)) #&lt;unused argument> #&lt;unused argument> #&lt;STANDARD-GENERIC-FUNCTION SESSION-VALUES (1)> #&lt;HASH-TABLE :TEST EQL :COUNT 0 {10051DC633}>)
-  1: (SB-PCL::CALL-NO-APPLICABLE-METHOD #&lt;STANDARD-GENERIC-FUNCTION SESSION-VALUES (1)> (#&lt;HASH-TABLE :TEST EQL :COUNT 0 {10051DC633}>))
+  0: ((SB-PCL::FAST-METHOD NO-APPLICABLE-METHOD (T)) #<unused argument> #<unused argument> #<STANDARD-GENERIC-FUNCTION SESSION-VALUES (1)> #<HASH-TABLE :TEST EQL :COUNT 0 {10051DC633}>)
+  1: (SB-PCL::CALL-NO-APPLICABLE-METHOD #<STANDARD-GENERIC-FUNCTION SESSION-VALUES (1)> (#<HASH-TABLE :TEST EQL :COUNT 0 {10051DC633}>))
   2: (#:EVAL-THUNK)
   ...
 ```

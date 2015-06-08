@@ -88,7 +88,7 @@ It takes a `Grid` and a list of `Coord`s, and takes only the first contiguous ch
 
 ```haskell
 main :: IO ()
-main = do g &lt;- readSparse "test.txt"
+main = do g <- readSparse "test.txt"
           let showGrid = showMap (gridWidth g) (gridHeight g)
               score = scoreGrid g
           putBeside [ showGrid $ Map.map cardinal score
@@ -179,7 +179,7 @@ Which is to say, if either Cardinal scores are above a certain `threshold`, and 
 
 ```haskell
 main :: IO ()
-main = do g &lt;- readSparse "test.txt"
+main = do g <- readSparse "test.txt"
           let showGrid = showMap (gridWidth g) (gridHeight g)
               score = scoreGrid g
               showScore = showGrid . flip Map.map score
@@ -254,8 +254,8 @@ Ok, modules loaded: Util, Direction, SparseRead.
 That third version can very nearly be naively converted to lines. The only real issues are
 
 
--   There isn't much to disambiguate the circle from the square
--   The arrow has horizontal breaks in its diagonal lines
+- There isn't much to disambiguate the circle from the square
+- The arrow has horizontal breaks in its diagonal lines
 
 
 The first two together might solve both, but introduce a new one; an ambiguity about where the break between the arrow line and the circle happens.

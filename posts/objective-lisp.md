@@ -68,7 +68,7 @@ Stand back! I have dramatic pause an idea!
 (defmethod = ((a structure-object) (b structure-object)) (cl:equalp a b))
 
 ;;; really, I should do the same for all the various
-;;; comparison functions (>, >=, &lt;=, &lt;), but this is
+;;; comparison functions (>, >=, <=, <), but this is
 ;;; already longer than I'd like
 ```
 
@@ -78,9 +78,9 @@ What looking at CLOS this way gets you is the easing of a few syntactic binds at
 
 
 
--   For starters, we now have a generic `=` that can be called in pretty-much any situation<a name="note-Sat-Nov-05-000146EDT-2011"></a>[|2|](#foot-Sat-Nov-05-000146EDT-2011). That lets us define `memberp` and other functions without having to pass in a test function (`=` handles dispatch itself). It also lets us define `map`/`concatenate` and similar functions without specifying what the output type is expected to be<a name="note-Sat-Nov-05-000434EDT-2011"></a>[|3|](#foot-Sat-Nov-05-000434EDT-2011). 
--   As I note, it saves us from having a separate `=`, `char=` and `string=` and similar comparison operations. 
--   Finally, if we define new types (such as matrix), we are not prevented from giving them a `+` or `*` method (and we can specifically define how to go about `map`ping, `concatenate`ing or `length`ing them, if it makes sense, as well as defining the correct new equality test without having to name it `matrix=`).
+- For starters, we now have a generic `=` that can be called in pretty-much any situation<a name="note-Sat-Nov-05-000146EDT-2011"></a>[|2|](#foot-Sat-Nov-05-000146EDT-2011). That lets us define `memberp` and other functions without having to pass in a test function (`=` handles dispatch itself). It also lets us define `map`/`concatenate` and similar functions without specifying what the output type is expected to be<a name="note-Sat-Nov-05-000434EDT-2011"></a>[|3|](#foot-Sat-Nov-05-000434EDT-2011). 
+- As I note, it saves us from having a separate `=`, `char=` and `string=` and similar comparison operations. 
+- Finally, if we define new types (such as matrix), we are not prevented from giving them a `+` or `*` method (and we can specifically define how to go about `map`ping, `concatenate`ing or `length`ing them, if it makes sense, as well as defining the correct new equality test without having to name it `matrix=`).
 
 
 

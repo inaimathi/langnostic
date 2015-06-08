@@ -7,9 +7,9 @@ Using XFCE and GNOME standalone really wasn't going to do anything for me, I alr
 Out of the box, neither Xmonad nor StumpWM
 
 
--   support a nautilus/thunar style file display (and I sometimes need it)
--   auto-connect to my wireless network
--   automatically mount external media (or watch for new drives being added and mount them as necessary)
+- support a nautilus/thunar style file display (and I sometimes need it)
+- auto-connect to my wireless network
+- automatically mount external media (or watch for new drives being added and mount them as necessary)
 
 
 It's becoming clear that I don't want a regular point-and-click interface by default anymore, except for one or two specialized tasks for which `nautilus --no-desktop` should suffice.
@@ -27,14 +27,14 @@ I've been using [GNU Screen](http://www.gnu.org/s/screen/) as a way of deploying
 The default control combination is `C-a` instead of `C-t`, and the keys are significantly different, and you can't extend it in Lisp<a name="note-Thu-Oct-06-114732EDT-2011"></a>[|4|](#foot-Thu-Oct-06-114732EDT-2011), but it looks like a fairly simple `.screenrc` file can turn it into Stump-Lite. Here's a quick breakdown, assuming the default bindings:
 
 
--   `C-a ?` shows you the help screen. 
--   `C-a c` starts a new terminal in the same session (when you re-attach later, you'll have both of these)
--   `C-a |` splits the screen vertically (note that screen doesn't automatically start a second terminal). Equivalent to `C-t S`
--   `C-a S` splits screen horizontally. Equivalent to `C-t s`
--   `C-a TAB` moves to the next split
--   `C-a X` removes the current split
--   `C-a C-a` pulls the other terminal. Equivalent to `C-t C-t`
--   `C-a n`/`C-a C-n` cycles to the next terminal (`C-a p`/`C-a C-p` cycles backward)
+- `C-a ?` shows you the help screen. 
+- `C-a c` starts a new terminal in the same session (when you re-attach later, you'll have both of these)
+- `C-a |` splits the screen vertically (note that screen doesn't automatically start a second terminal). Equivalent to `C-t S`
+- `C-a S` splits screen horizontally. Equivalent to `C-t s`
+- `C-a TAB` moves to the next split
+- `C-a X` removes the current split
+- `C-a C-a` pulls the other terminal. Equivalent to `C-t C-t`
+- `C-a n`/`C-a C-n` cycles to the next terminal (`C-a p`/`C-a C-p` cycles backward)
 
 
 In other words, out of the box, you've got the same basic window management shortcuts this way. And if you feel like remembering extra keys, feel free to commit the above to memory. As for me, my `.screenrc` file is going to look something like
@@ -75,10 +75,10 @@ in order to customize your startup routine. I'm sure I could get more complex th
 The stuff that I'll be missing this way is
 
 
--   A `dmenu`-like command (it seems like you can't have screen prompt for user input to then use in a keybinding; I'll have to do more research. The only thing I'd do with this is setup some `lynx` webjumps in any case.)
--   X windows (so no GIMP, `gitk` or a graphic browser on my dev machine, which is actually a good thing on balance since that'll reduce Reddit use)
--   Resizing mode (you *can* resize windows in screen, but you do it by typing in a height/width in lines/cols to set the width to, rather than the Stump resize mode where you can incrementally tweak windows)
--   A `run-or-raise` equivalent (the `C-t C-e` binding as above will actually start a new `emacs` every time rather than switching to it if one already exists)
+- A `dmenu`-like command (it seems like you can't have screen prompt for user input to then use in a keybinding; I'll have to do more research. The only thing I'd do with this is setup some `lynx` webjumps in any case.)
+- X windows (so no GIMP, `gitk` or a graphic browser on my dev machine, which is actually a good thing on balance since that'll reduce Reddit use)
+- Resizing mode (you *can* resize windows in screen, but you do it by typing in a height/width in lines/cols to set the width to, rather than the Stump resize mode where you can incrementally tweak windows)
+- A `run-or-raise` equivalent (the `C-t C-e` binding as above will actually start a new `emacs` every time rather than switching to it if one already exists)
 
 
 Given how my `.stumpwmrc` is shaping up, I don't think this'll be a big sacrifice. The thing I think I'll miss most is actually `gitk`. I'll let you know how it goes.

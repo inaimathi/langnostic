@@ -99,12 +99,9 @@ Like I said, that's it. It's an extremely minimal system, and it doesn't have an
 
 The only things I'm still missing:
 
-  
--     a klavaro-analogue *I still have no way of practicing typing from the command line (which is kind of ironic)*
--     more shell-friendly bindings for `paredit`
--     multi-monitor support *which I have no idea where to even start on*
--   
-
+- a klavaro-analogue *I still have no way of practicing typing from the command line (which is kind of ironic)*
+- more shell-friendly bindings for `paredit`
+- multi-monitor support *which I have no idea where to even start on*
 
 * * *
 ##### Footnotes

@@ -15,9 +15,9 @@ That gotcha is the leading dash.
 See, if you discount leading `-` signs, you can pretty much write a full LISP reader entirely using `getc`<a name="note-Mon-Dec-01-211220EST-2014"></a>[|1|](#foot-Mon-Dec-01-211220EST-2014). It gets mildly tricky depending on precisely how hard-assed you want to be about contiguous symbol/paren/quote situations, but you can do it. As soon as you include `-`, you suddenly *need* some sort of `peek-char` equivalent in order to stay even remotely sane. Because a `-` might start off
 
 
--   `-123   ;; a number`
--   `-test  ;; a symbol starting with -`
--   `-      ;; a symbol composed entirely of -`
+- `-123   ;; a number`
+- `-test  ;; a symbol starting with -`
+- `-      ;; a symbol composed entirely of -`
 
 
 Unless it's acceptable that users can't enter negative number literals, you have to deal with this ambiguity. I *don't* think it's acceptable, but the only way it would be was if we had a specific negation procedure. And *that* semi-leads us into part one of what I'm considering right now.
@@ -93,9 +93,9 @@ I've been reading up on [Standard ML](http://sml-family.org/) lately. I think I 
 Go read it right now. Seriously, it'll save you a lot of time in the long run. There are some points in the "good" that I probably won't get to, given what the target environment for this interpreter is, and there are a couple things he mentions that just outright aren't priorities or that I get to dodge by virtue of prefix notation and s-expression syntax, but a few of his bullets still stuck out to me. In particular
 
 
--   "Lack of macros"
--   "No pointer equality"
--   "Overloading" and relatedly "Polymorphic equality"
+- "Lack of macros"
+- "No pointer equality"
+- "Overloading" and relatedly "Polymorphic equality"
 
 
 The first one reads

@@ -98,9 +98,9 @@ The only other problem I'm having is understanding how exactly you're supposed t
 This last one is probably a broken understanding on my part though. Intuitively, I'd expect to either
 
 
--   Wrap each handler function in a with-connection (so that any database hits happening as a result of that handler share a connection)
--   Wrap each database-manipulating function in a with-connection (so that each database hit has its own connection. Sounds bad, but it's actually manageable on my current project)
--   Start a connection with the server, and use that one to handle all traffic (which sounds scary in many ways, so I'm not seriously considering)
+- Wrap each handler function in a with-connection (so that any database hits happening as a result of that handler share a connection)
+- Wrap each database-manipulating function in a with-connection (so that each database hit has its own connection. Sounds bad, but it's actually manageable on my current project)
+- Start a connection with the server, and use that one to handle all traffic (which sounds scary in many ways, so I'm not seriously considering)
 
 
 The second honestly sounds like the right choice (though I could be wrong depending on how much overhead is associated with starting a connection to the database server; I should run that through the profiler this weekend), but the first one is also acceptable. The trouble is that I can't reconcile either with the fact that with-connection really seems to want me passing explicit database references around. Like I said, more research is necessary.

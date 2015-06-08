@@ -147,7 +147,7 @@ I was feeling a bit intimidated by that, but the group pushed me to write my own
 
 ```haskell
 loop :: Monad m => (a -> m a) -> a -> m b
-loop f a = do res &lt;- f a
+loop f a = do res <- f a
               loop f res
 ```
 

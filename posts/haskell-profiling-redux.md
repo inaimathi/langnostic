@@ -38,12 +38,12 @@ import Data.List (group, sort, concatMap)
 import Data.Set
 
 inRange :: Ord a => a -> a -> a -> Bool
-inRange low n high = low &lt; n && n &lt; high
+inRange low n high = low < n && n < high
 
 lifeStep :: Integer -> Set (Integer, Integer) -> Set (Integer, Integer)
-lifeStep worldSize cells = fromList [head g | g &lt;- grouped cells, viable g]
+lifeStep worldSize cells = fromList [head g | g <- grouped cells, viable g]
   where grouped = group . sort . concatMap neighbors . toList
-        neighbors (x, y) = [(x+dx, y+dy) | dx &lt;- [-1..1], dy &lt;- [-1..1], 
+        neighbors (x, y) = [(x+dx, y+dy) | dx <- [-1..1], dy <- [-1..1], 
                             (dx,dy) /= (0,0), inSize (dx+x) (dy+y)]
         inSize x y = inR x worldSize && inR y worldSize
         inR = inRange 0
@@ -138,7 +138,7 @@ fromList [(3,5),(4,4),(4,6),(5,4),(5,6),(6,5),(17,3),(17,4),(18,3),(18,4),(22,4)
 collecting 100 samples, 1 iterations each, in estimated 547.4592 s
 fromList [(3,5),(4,4),(4,6),(5,4),(5,6),(6,5),(17,3),(17,4),(18,3),(18,4),(22,4),(22,5),(23,3),(23,6),(24,4),(24,6),(25,5),(34,2),(34,3),(35,2),(35,3)]
 
-&lt;snip a fuckton of duplicates />
+<snip a fuckton of duplicates />
 
 fromList [(3,5),(4,4),(4,6),(5,4),(5,6),(6,5),(17,3),(17,4),(18,3),(18,4),(22,4),(22,5),(23,3),(23,6),(24,4),(24,6),(25,5),(34,2),(34,3),(35,2),(35,3)]
 mean: 772.6040 us, lb 753.6831 us, ub 785.0876 us, ci 0.950

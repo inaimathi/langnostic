@@ -11,11 +11,11 @@ It's not quite a rewrite because stuff was kept, but that diff says I added/dele
 The declarations have been simplified. I did my best to carve out the annoyances, including
 
 
--   There's no `show-[name]-formlet` function anymore, there's just a `show` method that handles all formlet and field output, as well as a `show-formlet` macro for ease-of-use purposes
--   That `show-formlet` macro *doesn't* need any magical values passed to it because the validating and sending pages are communicating via huncentoots' `session-value` now
--   It is now easy to add additional field type handlers (just add a new `defclass`, `show`, and potentially `validate` method)
--   I've got the HTML output functions isolated enough that it actually wouldn't be very hard at all to port away from `cl-who` (*I'm* not going to, because it's the best of the lisp->html markup languages I've seen so far, but feel free to; it won't take you more than a few hours)
--   The hunchentoot-specific stuff is isolated in the `define-formlet` and `show-formlet` helper macros and a tiny bit in the `post-value` method (which means that the previous non-goal of portability across Lisp servers may also be attainable)
+- There's no `show-[name]-formlet` function anymore, there's just a `show` method that handles all formlet and field output, as well as a `show-formlet` macro for ease-of-use purposes
+- That `show-formlet` macro *doesn't* need any magical values passed to it because the validating and sending pages are communicating via huncentoots' `session-value` now
+- It is now easy to add additional field type handlers (just add a new `defclass`, `show`, and potentially `validate` method)
+- I've got the HTML output functions isolated enough that it actually wouldn't be very hard at all to port away from `cl-who` (*I'm* not going to, because it's the best of the lisp->html markup languages I've seen so far, but feel free to; it won't take you more than a few hours)
+- The hunchentoot-specific stuff is isolated in the `define-formlet` and `show-formlet` helper macros and a tiny bit in the `post-value` method (which means that the previous non-goal of portability across Lisp servers may also be attainable)
 
 
 I've also added bunches of features that will come in handy in an ongoing work project. I *think* I've got a semi-handle on the CLOS stuff, having slogged through this. I don't imagine it's the greatest OO code in the world, but it's certainly a step up from defining tons of functions. The biggest difference in expressiveness actually came from the method system (though, full disclosure, I haven't yet plumbed the depths of [`defgeneric`](http://www.lispworks.com/documentation/HyperSpec/Body/m_defgen.htm#defgeneric)).

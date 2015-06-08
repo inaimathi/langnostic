@@ -41,8 +41,8 @@ This is the C/C++ approach. You, the programmer, get to declare exactly what pie
 One of the automatic memory management approaches. The general idea here is
 
 
--   keep a free memory list, and track of all things allocated by the program
--   every so often (either at a time interval, or every `n` allocations, or maybe just when you try to allocate memory and your free list is empty), traverse the list of all things and free the ones that aren't being used any more
+- keep a free memory list, and track of all things allocated by the program
+- every so often (either at a time interval, or every `n` allocations, or maybe just when you try to allocate memory and your free list is empty), traverse the list of all things and free the ones that aren't being used any more
 
 
 A variant on this known as **generational garbage collection** is keeping several buckets of allocated things, rather than one. You'd partition objects based on how long they've been around so that you don't waste much time traversing long-lived data every time through. This is the variant that I've seen discussed most often, and I kind of get the impression that it's also the one getting the most research time thrown at it, but I'm not entirely sure why. Oh, incidentally, languages like Common Lisp, Java and Python use this one.

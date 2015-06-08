@@ -10,19 +10,19 @@ First the bugs, just because those seem to be the easy to discuss (in the sense 
 
 Taking a look at the source, there is actually a function that generates inputs based on type, but its dispatch is bugged such that it does the same thing for text and password types (ie. it generates an input tag with type="text"). 
 
-Text-areas and select-boxes aren't supported at all, because the naming procedure seems to misstep with them. Instead of putting the name in as a parameter to the tag, it's put in as the content (so, if you tried doing "Label: " (text-box . -> . content) it would actually spit out &lt;textarea>name="input_2"&lt;/textarea>. The way name assignment works also seems to inherently break option buttons, but I haven't teste that myself. The only way around this seems to be coding up your own generators for textareas and selects, as well as fixing the password bug.
+Text-areas and select-boxes aren't supported at all, because the naming procedure seems to misstep with them. Instead of putting the name in as a parameter to the tag, it's put in as the content (so, if you tried doing `"Label: " (text-box . -> . content)` it would actually spit out `<textarea>name="input_2"</textarea>`. The way name assignment works also seems to inherently break option buttons, but I haven't teste that myself. The only way around this seems to be coding up your own generators for textareas and selects, as well as fixing the password bug.
 
 I jury-rigged some stuff that worked half-way acceptably, then I noticed that actually, formlets don't really support automatic validation. That's the "massive shortcoming", by the way. Validation is something you have to do to the vast majority of all web forms, and it is always the same three-step process of 
 
 
-1.   Get the output back, 
-1.   check each piece of output against a certain predicate (different for each input, but always the same for a given instance)
-1.   If all of the inputs pass, send the extracted info off to the target page, otherwise send it back to the caller with some helpful notes attached.
+1. Get the output back, 
+2. check each piece of output against a certain predicate (different for each input, but always the same for a given instance)
+3. If all of the inputs pass, send the extracted info off to the target page, otherwise send it back to the caller with some helpful notes attached.
 
 
 That makes it a prime candidate for automation, and I find it curious that the PLT docs suggest that the formlets' "nesting" property was in effect chosen over "validation".
 
-Nesting is pretty thorny, not just because it directly competes with automated validation, but because it also gets in the way of auto-generating the associated HTML boilerplate. Each complete form has its own &lt;form> tag and &lt;input type="submit" /> elements, but if your goal is to let formlets nest, then you don't want each one generating that; you only want it produced by the outer one.
+Nesting is pretty thorny, not just because it directly competes with automated validation, but because it also gets in the way of auto-generating the associated HTML boilerplate. Each complete form has its own `<form>` tag and `<input type="submit" />` elements, but if your goal is to let formlets nest, then you don't want each one generating that; you only want it produced by the outer one.
 
 First and foremost, nesting takes away a lot of convenience. As I said above, if your goal is to have nestable formlets, then it gets problematic to generate the form tags. It also kind of prevents you from doing validation, because (as I found out thinking about the problem), doing validation requires that you pass the form into whatever page is going to be displaying it rather than generating it on the fly (this is the only real way to display errors effectively, and if you have to pass an arbitrary tree of data recursively to itself... well, it's possible, but much more complicated than necessary most of the time).
 
@@ -61,7 +61,7 @@ And here's the code (with some inline docs):
 ;;             `(html (body
 ;;                     ,(display-form test-form))))]
 ;;          (send/suspend/dispatch resp-gen)))
-   ;;&lt;later>
+   ;;<later>
 ;; (login-page req (generate-form test-form))
 
 ;The target function needs to accept one list argument (not a request, just a list). The list contains extracted bindings from the form, in the order they were declared.

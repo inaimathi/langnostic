@@ -45,9 +45,9 @@ I'm not going to talk about merging separate timelines, because I haven't though
 You can see the basic interaction in [that video](https://vimeo.com/102799084) above. To summarize:
 
 
--   there's a slider/input combo at the top of the control bar of every notebook
--   if you change them<a name="note-Thu-Aug-07-115203EDT-2014"></a>[|1|](#foot-Thu-Aug-07-115203EDT-2014) appropriately, you'll see some point in the history of the notebook
--   if you try to edit anything at that point, the system will automatically fork a separate notebook and apply the changes to *that*. This way, you can edit starting from some point in the past, without losing the earlier timeline.
+- there's a slider/input combo at the top of the control bar of every notebook
+- if you change them<a name="note-Thu-Aug-07-115203EDT-2014"></a>[|1|](#foot-Thu-Aug-07-115203EDT-2014) appropriately, you'll see some point in the history of the notebook
+- if you try to edit anything at that point, the system will automatically fork a separate notebook and apply the changes to *that*. This way, you can edit starting from some point in the past, without losing the earlier timeline.
 
 
 That last item is still the subject of some internal debate, by the way. Do I want auto-forking, or do I want to make changes to the past of this particular notebook? I obviously don't want to do the second one *naively*, because that would imply re-writing the entire history of a particular notebook in a destructive manner, which goes against this "never lose data again" goal I'm working towards. But something more complicated like a fork/apply-edits/re-merge sequence would let me get both full data retention *and* the ability to mess with time.

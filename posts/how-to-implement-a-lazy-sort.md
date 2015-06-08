@@ -48,12 +48,12 @@ def heapify(arr, count, pred=lambda a, b: a > b):
 
 def sift(arr, start, end, pred=lambda a, b: a > b):
     root = start
-    while root * 2 + 1 &lt;= end:
+    while root * 2 + 1 <= end:
         child = root * 2 + 1
         target = root
         if pred(arr[target], arr[child]):
             target = child
-        if child+1 &lt;= end and pred(arr[target], arr[child+1]):
+        if child+1 <= end and pred(arr[target], arr[child+1]):
             target = child + 1
         if not target == root:
             __swap(arr, root, target)
@@ -78,11 +78,11 @@ This is a direct translation of the [Wikipedia Heapsort pseudo-code](http://en.w
    Ordered by: standard name
 
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-        1    0.000    0.000    0.103    0.103 &lt;string>:1(&lt;module>)
+        1    0.000    0.000    0.103    0.103 <string>:1(<module>)
         1    0.000    0.000    0.000    0.000 copy.py:113(_copy_with_constructor)
         1    0.000    0.000    0.000    0.000 copy.py:66(copy)
         1    0.002    0.002    0.013    0.013 heapsort.py:27(heapify)
-   107567    0.014    0.000    0.014    0.000 heapsort.py:3(&lt;lambda>)
+   107567    0.014    0.000    0.014    0.000 heapsort.py:3(<lambda>)
         1    0.004    0.004    0.103    0.103 heapsort.py:3(eager)
      7499    0.069    0.000    0.097    0.000 heapsort.py:34(sift)
     57023    0.015    0.000    0.015    0.000 heapsort.py:49(__swap)
@@ -98,7 +98,7 @@ This is a direct translation of the [Wikipedia Heapsort pseudo-code](http://en.w
    Ordered by: standard name
 
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-        1    0.000    0.000    0.000    0.000 &lt;string>:1(&lt;module>)
+        1    0.000    0.000    0.000    0.000 <string>:1(<module>)
         1    0.000    0.000    0.000    0.000 heapsort.py:15(lazy)
         1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
 
@@ -109,10 +109,10 @@ This is a direct translation of the [Wikipedia Heapsort pseudo-code](http://en.w
    Ordered by: standard name
 
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-        1    0.001    0.001    0.107    0.107 &lt;string>:1(&lt;module>)
+        1    0.001    0.001    0.107    0.107 <string>:1(<module>)
         1    0.000    0.000    0.000    0.000 copy.py:113(_copy_with_constructor)
         1    0.000    0.000    0.000    0.000 copy.py:66(copy)
-   107567    0.015    0.000    0.015    0.000 heapsort.py:15(&lt;lambda>)
+   107567    0.015    0.000    0.015    0.000 heapsort.py:15(<lambda>)
      5001    0.004    0.000    0.106    0.000 heapsort.py:15(lazy)
         1    0.002    0.002    0.014    0.014 heapsort.py:27(heapify)
      7499    0.070    0.000    0.098    0.000 heapsort.py:34(sift)
@@ -136,7 +136,7 @@ Oh, before anyone gets the wrong idea
    Ordered by: standard name
 
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-        1    0.000    0.000    0.002    0.002 &lt;string>:1(&lt;module>)
+        1    0.000    0.000    0.002    0.002 <string>:1(<module>)
         1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
         1    0.002    0.002    0.002    0.002 {sorted}
 
@@ -220,8 +220,8 @@ I'm not going to bother showing you the profiling on this one. Rest assured that
 For those of you who, like me, have never worked with heaps before<a name="note-Thu-May-02-214622EDT-2013"></a>[|3|](#foot-Thu-May-02-214622EDT-2013), here's some basic theory. A heap is actually two things:
 
 
--   **A tree-based data structure in which each parent node is ordered with respect to its children.** This is the easier-than-sorted-but-still-useful property mentioned earlier; children aren't ordered with respect to each other, and if you're watching the [wiki illustration](http://en.wikipedia.org/wiki/File:Sorting_heapsort_anim.gif) for the first time ever, you might be forgiven for thinking that step 1 involves randomly re-arranging your input. It's very easy to pull out the next element; it's the root. However, every time you pop the root, you need to do some re-juggling to maintain the heap property.
--   **A way of packing said tree-based data-structure into a 1-d array.** It's not painfully obvious, so I figured I'd make this part explicit: you pack a heap into a vector by designating `(aref vector (+ 1 (* i 2)))` and `(aref vector (+ 2 (* i 2)))` to be the children of `(aref vector i)`. This is faster than navigating an actual pointer tree, but it makes the structure of the code a bit counter-intuitive to the uninitiated, since it's talking about indices in non-obvious ways rather than talking about parents and children.
+- **A tree-based data structure in which each parent node is ordered with respect to its children.** This is the easier-than-sorted-but-still-useful property mentioned earlier; children aren't ordered with respect to each other, and if you're watching the [wiki illustration](http://en.wikipedia.org/wiki/File:Sorting_heapsort_anim.gif) for the first time ever, you might be forgiven for thinking that step 1 involves randomly re-arranging your input. It's very easy to pull out the next element; it's the root. However, every time you pop the root, you need to do some re-juggling to maintain the heap property.
+- **A way of packing said tree-based data-structure into a 1-d array.** It's not painfully obvious, so I figured I'd make this part explicit: you pack a heap into a vector by designating `(aref vector (+ 1 (* i 2)))` and `(aref vector (+ 2 (* i 2)))` to be the children of `(aref vector i)`. This is faster than navigating an actual pointer tree, but it makes the structure of the code a bit counter-intuitive to the uninitiated, since it's talking about indices in non-obvious ways rather than talking about parents and children.
 
 
 Now then, most of the actual `heapsort.lisp` code is implementing a heap. Again, just for educational purposes, I'm sure there's a variable-predicate heap implementation floating around somewhere even though I haven't looked for it<a name="note-Thu-May-02-214631EDT-2013"></a>[|4|](#foot-Thu-May-02-214631EDT-2013). In fact, lets take a look at the top-level functions before diving into that code, just to get it out of the way.
@@ -397,8 +397,8 @@ And that's that. As long as the Heap Property is respected, the next item by wha
 
 2 - <a name="foot-Thu-May-02-214521EDT-2013"></a>[|back|](#note-Thu-May-02-214521EDT-2013) - I've been saying "heapsort", though that's strictly speaking not the case. What you need for a lazy* sort is an intermediate structure that
 
--   is easier create than a full sort in the general case
--   has some property which makes it useful than an arbitrary collection when it comes to finding `next`
+- is easier create than a full sort in the general case
+- has some property which makes it useful than an arbitrary collection when it comes to finding `next`
 
 
 A heap does both of those, and it's fairly easy to understand, so I picked it, but it's not necessarily the only or best approach. I just don't know any other ones.

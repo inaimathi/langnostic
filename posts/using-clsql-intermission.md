@@ -14,30 +14,24 @@ Is, simply enough, to offload the comment system for a given page to a third par
 
 Anyway, the point is, instead of keeping your own comment database locally, you just echo a static page with a line or two of [trixy javascript](http://api.jquery.com/jQuery.post/), and your comments get pulled in on the clients' time.
 
-
-  So the basic feature set here is pretty sparse:
+So the basic feature set here is pretty sparse:
   
--     Track comments on a per-page basis
--     Allow adding/liking/disliking/reporting of individual comments
--     Allow replying to individual comments (not *strictly* necessary, but nice)
--   
-
+- Track comments on a per-page basis
+- Allow adding/liking/disliking/reporting of individual comments
+- Allow replying to individual comments (not *strictly* necessary, but nice)
 
   It wouldn't be any fun if that was all though. It would also be nice if
   
--     you could submit to [social site of choice] through one button click
--     you could edit your comments
--     spam sites could be tracked
--     spam/low-rating comments could be omitted/hidden by default
--   
+- you could submit to [social site of choice] through one button click
+- you could edit your comments
+- spam sites could be tracked
+- spam/low-rating comments could be omitted/hidden by default
 
-
-  Finally, to support the Free Software objective, it needs to:
+Finally, to support the Free Software objective, it needs to:
   
--     be AGPL (so that anyone can run their own for their friends if they feel like)
--     be written in a Free language (which is no problem at all)
--     allow full data exports (so that you could move pages between servers if you wanted)
--   
+- be AGPL (so that anyone can run their own for their friends if they feel like)
+- be written in a Free language (which is no problem at all)
+- allow full data exports (so that you could move pages between servers if you wanted)
 
 This is a reasonably simple problem. Not trivial, but it looks like it would take a couple of weeks of serious work to knock out something useful. To the point that I have no idea how building a company around doing it is even possible. The only thing I can imagine is that the data storage and security around it is somehow more challenging than organizing the actual functionality (which is consistent with my observations of other software).
 Well, that's that. [Kick the tires](http://clomments.inaimathi.ca/test), but don't blow my server up, and I'll do some more hacking on it later in the week.
@@ -59,5 +53,5 @@ Well, that's that. [Kick the tires](http://clomments.inaimathi.ca/test), but don
 >   Tue, 30 Aug, 2011  
 
 > EDIT:  
-> Also, I'm perfectly aware why there are extra spaces this time; it's because I'm starting to use regulation xhtml markup instead of relying on Blogger's seemingly flaky spacing feature. It seems like you can only set it globally for a given blog though, so I can't just switch over one post at a time. I'll need to go through my archives and wrap everything in `&lt;p>` tags first.  
+> Also, I'm perfectly aware why there are extra spaces this time; it's because I'm starting to use regulation xhtml markup instead of relying on Blogger's seemingly flaky spacing feature. It seems like you can only set it globally for a given blog though, so I can't just switch over one post at a time. I'll need to go through my archives and wrap everything in `<p>` tags first.  
 > Tue, 30 Aug, 2011  

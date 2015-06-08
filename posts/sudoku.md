@@ -7,10 +7,10 @@ I haven't gotten to the bottom of the squares problem yet, and yesterday was the
 Near as I can tell, [Sudoku](http://en.wikipedia.org/wiki/Sudoku) is a Set problem. This isn't how I first heard the rules described, but it fits. A solved Sudoku board is one where
 
 
--   each number is filled in
--   each row is a set
--   each column is a set
--   each disjoint `nxn` square is a set (where `n` is the square root of the board size)
+- each number is filled in
+- each row is a set
+- each column is a set
+- each disjoint `nxn` square is a set (where `n` is the square root of the board size)
 
 
 we'll call this "The Sudoku Property"

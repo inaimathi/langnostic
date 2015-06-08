@@ -18,10 +18,10 @@ example
 These all have specific purposes.
 
 
--   **src** is where you'll keep all your `.erl` files. Really, you're supposed to keep other language sources in separate `[lang]_src` folders, but I put it all in here. I don't know if that'll come back to bite me in the ass. I'll report on it either way.
--   **ebin** is where you put the results of compiling your `.erl`s. Only your `.erl`s, not your `.c`s, `.py`s, `.java`s or `.lisp`s, please. I actually follow this one since everyone else seems to and it might actually matter for the purposes of someone else making use of my libraries. So interop. Fun.
--   **priv** is where you put the results of compiling all your non-Erlang code. Note that since we'll be running the system from `exapmle/`, you should invoke any non-Erlang components with (for example) `python -u priv/foo`
--   **deps** is where you put any code not part of your project, but that you depend on. I'm actually not too clear on whether you're supposed to copy all required files into `deps` directly, or whether you're supposed to arrange a tree of `deps/(.*?)/(ebin|priv)/`. Both approaches work, and there doesn't seem to be any big technical difference between them. I use the former for preference.
+- **src** is where you'll keep all your `.erl` files. Really, you're supposed to keep other language sources in separate `[lang]_src` folders, but I put it all in here. I don't know if that'll come back to bite me in the ass. I'll report on it either way.
+- **ebin** is where you put the results of compiling your `.erl`s. Only your `.erl`s, not your `.c`s, `.py`s, `.java`s or `.lisp`s, please. I actually follow this one since everyone else seems to and it might actually matter for the purposes of someone else making use of my libraries. So interop. Fun.
+- **priv** is where you put the results of compiling all your non-Erlang code. Note that since we'll be running the system from `exapmle/`, you should invoke any non-Erlang components with (for example) `python -u priv/foo`
+- **deps** is where you put any code not part of your project, but that you depend on. I'm actually not too clear on whether you're supposed to copy all required files into `deps` directly, or whether you're supposed to arrange a tree of `deps/(.*?)/(ebin|priv)/`. Both approaches work, and there doesn't seem to be any big technical difference between them. I use the former for preference.
 
 
 That's the folder structure, now lets organize our `src` folder. To set up an OTP project, you'll need at minimum 4 files.

@@ -48,7 +48,7 @@ The three approaches I can see off the top of my head are storing a deletion ind
 Basically the deletion primitive looks like `(delete! (list _ :subject _) fact-base)`, which goes through and deletes any fact whose second element is `:subject`, and also keeps that matching template as an indicator. A deletion entry then looks like
 
 ```lisp
-(&lt;timestamp> :delete (list _ :subject _))
+(<timestamp> :delete (list _ :subject _))
 ```
 
 When you go to apply this particular deletion token, you'll need to create the function that checks for a match against it, then run that function across your built up state, removing anything it marks. There are three downsides here. First, this deletion token might pick up things other than the specific facts that it actually deletes in any particular traversal, which means that prospective evaluation gets more complicated. Second, because it's ambiguous, you can't easily reverse it; if you're building up state, you can't just back up over a deletion token, you need to throw away your accumulated state and start from the beginning again to get to the point you were at before applying it. Third, because it involves keeping a piece of match logic in the record, this approach means pulling out `eval` during de-serialization.
@@ -60,13 +60,13 @@ On the flip-side, it's easily parallelizable, and it doesn't care one whit about
 This approach just has you keep the offset of the removed fact. A deletion token looks like
 
 ```lisp
-(&lt;timestamp> :delete 37)
+(<timestamp> :delete 37)
 ```
 
 or maybe 
 
 ```lisp
-(&lt;timestamp> :delete (list 13 572 1335))
+(<timestamp> :delete (list 13 572 1335))
 ```
 
 To apply this one, you go back through your built-up state and drop the `nth` elements. Mostly the same downsides as the **Deletion Template**; it gets a bit tricky when you want prospective change projection and it isn't cleanly reversible. It's mildly easier on memory, since we're just slinging integers around, and it doesn't need `eval`, but it suddenly matters which direction you're traversing your corpus in, it matters how your corpus is ordered, and I could see it getting in the way of parallelization later.
@@ -76,7 +76,7 @@ To apply this one, you go back through your built-up state and drop the `nth` el
 A deletion value token looks something like
 
 ```lisp
-(&lt;timestamp> :delete (&lt;id> :subject "whatever the third value is"))
+(<timestamp> :delete (<id> :subject "whatever the third value is"))
 ```
 
 You apply this by going through the accumulated corpus and removing the first fact that matches it. Granted, it's slower in general (because applying it in general involves an arbitrary tree-compare), and it's more wasteful of disk space (because we have to store those arbitrary trees as well as comparing them with facts to remove). But. Depending on how strictly you enforce it, this one is more easily reversible, and it doesn't need `eval` either, since it's just storing a value.
@@ -86,8 +86,8 @@ You apply this by going through the accumulated corpus and removing the first fa
 A couple of other thoughts I'd like to leave percolating:
 
 
--   It might be possible to get the best of both worlds by making sure that a deletion token remembers the particular members it removed *at application time*. That would let both the Template and Index approach reverse easily, though it would complicate the projection process somewhat.
--   It might be useful to have a layer of meta-tokens. That is, insertions in `history` that modify other history entries. Off the top of my head, only `:ignore` or `:duplicate` seem like they'd be significantly useful. On the plus side, you now have a meta layer to these histories which gives you more flexibility in using them. On the other hand, you now need to have one of efficient reversals, a two-pass loading procedure, or really *really* shitty performance for heavily meta-tagged histories.
+- It might be possible to get the best of both worlds by making sure that a deletion token remembers the particular members it removed *at application time*. That would let both the Template and Index approach reverse easily, though it would complicate the projection process somewhat.
+- It might be useful to have a layer of meta-tokens. That is, insertions in `history` that modify other history entries. Off the top of my head, only `:ignore` or `:duplicate` seem like they'd be significantly useful. On the plus side, you now have a meta layer to these histories which gives you more flexibility in using them. On the other hand, you now need to have one of efficient reversals, a two-pass loading procedure, or really *really* shitty performance for heavily meta-tagged histories.
 
 
 That's that. Not the most flowing narrative I've ever produced, but I think it touched on one or two interesting ideas. And anyhow, I'm still chewing over most of this. I'll let you know how it goes, and if I end up finding a real use for it.

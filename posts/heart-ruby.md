@@ -8,14 +8,14 @@ I'm musing on this now, because I recently received a reminder of how beautiful 
 #!/usr/bin/ruby
 
 def xrandr_pairs (xrandr_output)
-## Returns [[&lt;display name>, &lt;max-resolution>] ...]
+## Returns [[<display name>, <max-resolution>] ...]
   display = /^(\S+)/
   option = /^\s+(\S+)/
   xrandr_output.scan(/#{display}.*\n#{option}/)
 end
 
 def xrandr_string (x_pairs)
-## Takes [[&lt;display name>, &lt;max-resolution>] ...] and returns an xrandr command string
+## Takes [[<display name>, <max-resolution>] ...] and returns an xrandr command string
   cmd = "xrandr --output #{x_pairs[0][0]} --mode #{x_pairs[0][1]}"
   args = x_pairs.each_cons(2).map do |(previous_output, previous_mode), (output, mode)|
       "--output #{output} --mode #{mode} --right-of #{previous_output}"
