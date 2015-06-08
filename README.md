@@ -12,3 +12,4 @@
 - Properly number the OLs. You've still got a few that just start with consecutive `1.`s
 - Add title text to remaining images
 - Fix up one or two more images (grep for `![](`, and check the ones that don't start with a `/`)
+- Re-write some of the earlier articles that start with parentheses
