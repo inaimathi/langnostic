@@ -2,7 +2,7 @@ I know I posted earlier, but this has to come out of my head. And I don't think 
 
 So...
 
-![](/static/img/square-zones.png)
+![Illustrated thoughts about dissecting squares](/static/img/square-zones.png)
 
 That's what I'm thinking.
 

@@ -2,7 +2,7 @@ Two things this time. First...
 
 ### <a name="an-admission" href="#an-admission"></a>...An Admission
 
-![](/static/img/vrms-output.png)
+![Output from `vrms` on my machine](/static/img/vrms-output.png)
 
 I'm weak.
 

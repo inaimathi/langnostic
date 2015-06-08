@@ -23,7 +23,7 @@ That's false. Specifically, once I sat down to actually read *read* the examples
 
 
 
->   ![](/static/img/oh-you-spj.jpeg)  
+> ![Simon Peyton Jones' face photoshopped into an 'Oh You' image macro](/static/img/oh-you-spj.jpeg)  
 >   
 > -Inaimathi  
 

@@ -7,9 +7,9 @@ This is the big problem we all struggle with. I remember reading somewhere that 
 The other side, "To be understood" seems harder. Whether the target audience is your fellow programmers, or management/business types that you need to keep in the loop, or a future instance of yourself after some months away from the codebase. There's a bunch of different approaches out there, none of them are perfectly general, and they're all only scratching the surface. Haskellers and MLers swear by types, hoping that additional, compiler-checked meta-information about a particular function is useful to the reader. [Eiffel](https://www.eiffel.com/values/design-by-contract/) and other [contract](http://docs.racket-lang.org/guide/contracts-first.html)/[dependent type](http://www.idris-lang.org/) systems go a bit further in the same direction. [Rather](http://www.haskell.org/haddock/doc/html/) a [lot](http://happydoc.sourceforge.net/) of [people](http://www.oracle.com/technetwork/java/javase/documentation/index-137868.html) just [try](https://github.com/clojuredocs/doc-extractor#what-is-extractor) to [keep](http://perldoc.perl.org/perlpod.html) ad-hoc documentation in along with their code, or perhaps [in external articles](/archive/by-tag?tag=ALMOST-LITERATE-PROGRAMMING), and call it a day. If you've been following [my](https://github.com/Inaimathi/cl-notebook) recent [exploits](https://vimeo.com/97623064) at all, you'll know that I'm experimenting with [literate programming](https://en.wikipedia.org/wiki/Literate_programming) concepts. Interweaving prose explanations, examples and executable code to try to get a form of documentation that
 
 
--   imparts more than a trivial understanding of a particular set of functions and their interactions
--   is useful to people that don't necessarily already have a developed understanding of the underlying systems
--   doesn't go stale through inattention 
+- imparts more than a trivial understanding of a particular set of functions and their interactions
+- is useful to people that don't necessarily already have a developed understanding of the underlying systems
+- doesn't go stale through inattention 
 
 
 It's hard. Even having written my own editor for this purpose, it's not clear that I can ever do a complete job. I'll keep experimenting with it; it might work eventually.
@@ -24,7 +24,7 @@ That's not intrinsically necessary though, depending on the underlying system yo
 
 Here's a simple example directly from the book:
 
-![](/static/img/sicp-constraint-image.gif)
+![The celsius<->faranheit converter image from SICP](/static/img/sicp-constraint-image.gif)
 
 It's a Celsius to Faranheit temperature converter. The idea is that you can either chuck a Celsius temperature at it and get out the Faranheit, *or* you can give it a Faranheit to take to Celsius. Here's the in-book code they show you that does the job:
 
@@ -84,17 +84,16 @@ The only conceptual change I had to make that *isn't* related to the language sh
 
 Here's one created with `2dmacs`, the visual editor we use in Moneris' Web POS Development team. It's not yet open source, though we do have plans in that direction, so I can only show you its output rather than its innards.
 
-![](/static/img/2dmacs-celsius-to-faranheit.png)
+![A visual program that converts Celsius to Faranheit](/static/img/2dmacs-celsius-to-faranheit.png)
 
 I've adopted some formalisms from the SICP diagram, and made up a couple:
 
-
--   A `constraint` is a rectangle
--   A text box contained by, and touching the border of a constraint is one of its arguments
--   A text box contained by, but *not* touching the border of a constraint is its name
--   A `constant` is a rounded rectangle perfectly overlapped by a text element (the text element contains its value)
--   A `connector` is a set of one or more lines
--   Any other text box is taken to be a top level `connector`
+- A `constraint` is a rectangle
+- A text box contained by, and touching the border of a constraint is one of its arguments
+- A text box contained by, but *not* touching the border of a constraint is its name
+- A `constant` is a rounded rectangle perfectly overlapped by a text element (the text element contains its value)
+- A `connector` is a set of one or more lines
+- Any other text box is taken to be a top level `connector`
 
 
 2dmacs internally represents diagrams as triple-stores. Here's the triple-store that represents the above diagram:

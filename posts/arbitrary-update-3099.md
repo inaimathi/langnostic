@@ -4,7 +4,7 @@ There's not much going on, but I figured I'd keep you in the loop anyhow.
 
 We've got [SICPv2 starting](https://github.com/CompSciCabal/SMRTYPRTY/wiki/Reading-Schedule!-SICP-Mark-II) at the Toronto Computer Science Reading Group. Or rather, it started last week. Anyway, when we did this the first time, a few people found out about it three-quarters of the way through, and expressed sentiments like "I wish I found out about this when you were starting out". It was enough people that they've managed to organize a second round. And, yes, if there are 9 or fewer core group members, we'll totally be handing these out:
 
-![](/static/img/cabal-badge.png)
+![The Squires of the Lambda Calculus badge](/static/img/cabal-badge.png)
 
 ## <a name="wik" href="#wik"></a>`wik`
 

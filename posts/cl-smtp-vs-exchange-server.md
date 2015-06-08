@@ -98,7 +98,7 @@ Content-Disposition: inline
 --_---------_2IQrElfHaDK71IdkZlEq5L3C0etr5t--
 ```
 
-![](/static/img/themoreyouknow.jpg)
+![The 'The More You Know' rainbow image](/static/img/themoreyouknow.jpg)
 
 * * *
 ##### Footnotes

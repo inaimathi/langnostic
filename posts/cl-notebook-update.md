@@ -1,6 +1,6 @@
 So I finally got a semi-contiguous stretch of time together in order to work on [this](https://github.com/Inaimathi/cl-notebook) and [this](https://github.com/Inaimathi/fact-base). A few tiny cosmetic changes, which I'm still not done with, a few deep behind-the-scenes changes that you shouldn't have to care about, and one major front-end feature.
 
-![](/static/img/history-slider.png)
+![A screenshot of the history slider in cl-notebook](/static/img/history-slider.png)
 
 That's a history slider. Which I've been talking about all over the place, but always in the context of "man I gotta get on that". So I finally got, and [this](https://vimeo.com/102799084) is what it currently looks like. It's surprisingly snappy, given what's going on behind the scenes. `rewind` is an ajax hit to the server for re-calculation of the next notebook state, the result of which is re-rendering the entire screenful of cells. It's debounced at 10 units, ostensibly `msecs`, but it really doesn't feel like it.
 

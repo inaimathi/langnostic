@@ -3,7 +3,7 @@
 > No dark sarcasm in the network  
 > Servers leave them kids alone  
 
-![](/static/img/the-wall.jpg)
+![The cover image from Pink Floyd's 'The Wall'](/static/img/the-wall.jpg)
 
 ## <a name="housekeeping" href="#housekeeping"></a>Housekeeping
 

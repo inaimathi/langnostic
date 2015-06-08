@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-const CacheLimit = time.Minute
+const CacheLimit = 30 * time.Minute
 
 type Post struct {
 	Id int

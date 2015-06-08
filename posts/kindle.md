@@ -1,6 +1,6 @@
 So I got something in the mail a week ago.
 
-![](/static/img/kindle.jpg)
+![A picture of a Kindle](/static/img/kindle.jpg)
 
 Ok, not in the mail, UPS delivered it in their usual, careless manner, but I'm not talking about that right now.
 

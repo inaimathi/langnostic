@@ -135,7 +135,8 @@ type Cached struct {
 }
 
 var mdCache = make(map[string]Cached)
-var LangnosticPolicy = bluemonday.UGCPolicy().AllowAttrs("name").OnElements("a")
+var LangnosticPolicy = 
+	bluemonday.UGCPolicy().AllowAttrs("name").OnElements("a").AllowAttrs("alt").OnElements("img")
 
 func ProcessMarkdown (mdFile string) ([]byte, error) {
 	cache, present := mdCache[mdFile]

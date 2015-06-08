@@ -1,6 +1,6 @@
 '(I got something new.
 
-![](/static/img/tray.jpg)
+![Me holding a new keyboard tray](/static/img/tray.jpg)
 
 Pretty good as far as keyboard trays go, but I still find myself wanting one of those squishy wrist-rest pads. The default wrist bit on this tray isn't *terribly* uncomfortable, but it doesn't quite compress right. And for all the awesome work PFU did on [this little beast](http://www.fentek-ind.com/happyhacking.htm) in terms of key placement/spacing/spring system, they didn't put any effort at all into making the wrist comfortable. That's the one thing I miss from my [old behemoth](http://www.microsoft.com/hardware/mouseandkeyboard/productdetails.aspx?pid=043) (which is now comfortably at the office). I still prefer the HHL2 for speed; the keys are actually spaced close enough together (and consistently sized enough) that I get a fairly significant boost just from using it (on average 5 wpm). 
 

@@ -1,8 +1,8 @@
 First things first, there was finally a sale on [these things](http://www.newegg.ca/Product/Product.aspx?Item=N82E16820147189&nm_mc=KNC-GoogleAdwordsCA&cm_mmc=KNC-GoogleAdwordsCA-_-pla-_-Internal+SSD-_-N82E16820147189), and I was getting sick of the [jury-rigged Vertex in my current laptop](http://langnostic.blogspot.ca/2011/12/x220-and-unrelatedly-portable-keyboards.html), so I picked one up. They're back up at ~$170, but mine cost me a much more attractive $90 last week.
 
-![](/static/img/new-hard-drive.jpg)
+![A new hard drive; showing the front](/static/img/new-hard-drive.jpg)
 
-![](/static/img/new-hard-drive--angle-2.jpg)
+![A new hard drive; showing the side](/static/img/new-hard-drive--angle-2.jpg)
 
 First impressions are ok.
 
@@ -14,7 +14,7 @@ I'm blaming [Dann](http://www.meetup.com/Toronto-Code-Retreat/members/2372148/) 
 
 Suppose you have a grid of squares `n`x`n` large. There is a finite number of ways you can split that square grid up into squares of at least 1x1 size. For example, for a 1x1 grid, there is only `1` possible dissection. For a 2x2 grid, there are `2` (either 4 1x1 squares or 1 2x2 square). For a 3x3 grid there are `6`; (either 9 1x1 squares, 1 3x3 square, or 4 separate combinations of 1 2x2 square and 5 1x1 squares). This is the Number of Square Dissections.
 
-![](/static/img/square-dissections.png)
+![An illustration of the first three terms of the square dissection number series](/static/img/square-dissections.png)
 
 *(A [complete illustration of the first four terms](http://oeis.org/A224239/a224239_4.jpg) is over in the OEIS page. There's [also](http://oeis.org/A224239/a224239_5.jpg) a [further](http://oeis.org/A224239/a224239_6.jpg) three [pages](http://oeis.org/A224239/a224239_7.jpg) illustrating the fifth term. This gets big in a hurry.)*
 

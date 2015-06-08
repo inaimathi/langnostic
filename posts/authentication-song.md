@@ -13,7 +13,7 @@
 > Use RSA to guarantee it...  
 
 
-![](/static/img/wonka.jpg)
+![Willie Wonka looking at you](/static/img/wonka.jpg)
 
 Ok, that's quite enough of that. There are reasons I don't consider myself a writer, and bullshit like this is right up there.
 

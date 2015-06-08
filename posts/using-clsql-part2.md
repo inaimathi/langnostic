@@ -526,7 +526,7 @@ That should be that. If you head over to your browser now, you should be able to
 .clear { clear: both; }
 ```
 
-![](/static/img/cl-chan--screenshot1--png.png)
+![A screenshot of cl-chan kinda working](/static/img/cl-chan--screenshot1--png.png)
 
 Whew!
 
@@ -576,7 +576,7 @@ also, we need to modify the validation functions on our formlets.
 
 That should do it.
 
-![](/static/img/cl-chan--screenshot2--jpg.png)
+![A different screenshot of cl-chan kinda working](/static/img/cl-chan--screenshot2--jpg.png)
 
 We implemented JPGs ahead of GIFs because it's much closer to the PNG scaling we already did, but note the number of differences there.
 
@@ -650,7 +650,7 @@ and the appropriate formlet changes. In fact, we'd really better pull out the im
 
 And that's that.
 
-![](/static/img/cl-chan--screenshot3--gif.png)
+![Yet another screenshot of cl-chan kinda working](/static/img/cl-chan--screenshot3--gif.png)
 
 You'll notice that the GIF resizing process is a lot more complicated than what we had to do for PNGs or JPGs. That's because GIFs are potentially animated, so the Lisp library that handles them treats them as streams of images. That allows for better frame control, but it does mean that we need to
 

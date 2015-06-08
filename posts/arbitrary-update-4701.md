@@ -73,7 +73,7 @@ The same situation ensures that you can't *really* write a general purpose memoi
 
 Which brings me to the attitude problem I mentioned. Apparently, `go` developers are expected to develop a boilerplate fetish. That's the only conclusion I can come to when I read things like ["It's simpler to write a `for` loop than iterating over a range"](http://stackoverflow.com/questions/21950244/is-there-a-way-to-iterate-over-a-range-of-integers-in-golang), or ["Reversing an array manually with a `for`-loop is simple enough that you should just write the four lines out each time"](http://stackoverflow.com/a/19239850/190887), or ["That `sort.Sort` boilerplate is no big deal, why would you ever want something simpler?"](http://grokbase.com/t/gg/golang-nuts/132d2rt3hh/go-nuts-how-to-sort-an-array-of-struct-by-field), or, god help me, ["If you want to call `math.Min` on integers rather than floats, you should just define your own `int` version each time"](https://groups.google.com/forum/#!searchin/golang-nuts/min$20max/golang-nuts/dbyqx_LGUxM/tLFFSXSfOdQJ).
 
-![What the fuck am I reading?](/static/img/what-the-fuck-am-i-reading.jpg)
+![What the fuck am I looking at here?](/static/img/what-the-fuck-am-i-reading.jpg)
 
 Reading this kind of garbage is supremely depressing. It got to the point where I was searching for whatever this language calls `downcase` and half-expected to find a discussion wherein members of the community expressed surprise that anyone would ever need to work with strings. I didn't, and it's called [`ToLower`](http://golang.org/pkg/strings/#ToLower), but it was a real concern for a minute or so there. 
 
