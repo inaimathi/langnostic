@@ -11,13 +11,15 @@
   </head>
   <body>
     <a href="/"><img class="logo-bar" src="/static/img/langnostic.png" /></a>
-    <ul class="top-menu">
-      <li>{{if eq .Section "blog"}}blog{{else}}<a href="/">blog</a>{{end}}</li>
-      <li>{{if eq .Section "archive"}}archive{{else}}<a href="/archive">archive</a>{{end}}</li>
-      <li>{{if eq .Section "links"}}links{{else}}<a href="/links">links</a>{{end}}</li>
-      <li>{{if eq .Section "meta"}}meta{{else}}<a href="/meta">meta</a>{{end}}</li>
-      <li><a href="/feed/atom">atom feed</a></li>
-    </ul>
+    <div class="top-menu-container">
+      <ul class="top-menu">
+	<li>{{if eq .Section "blog"}}blog{{else}}<a href="/">blog</a>{{end}}</li>
+	<li>{{if eq .Section "archive"}}archive{{else}}<a href="/archive">archive</a>{{end}}</li>
+	<li>{{if eq .Section "links"}}links{{else}}<a href="/links">links</a>{{end}}</li>
+	<li>{{if eq .Section "meta"}}meta{{else}}<a href="/meta">meta</a>{{end}}</li>
+	<li><a href="/feed/atom">atom feed</a></li>
+      </ul>
+    </div>
     <div class="content">{{.Body}}</div>
     <hr />
     <div class="license">
