@@ -215,3 +215,5 @@
 {"id":214,"title":"Blog Changes","file":"blog-changes","edited":1433054532,"posted":1433054532,"tags":["journal","general-update","golang"]}
 {"edited": 1433131684, "tags": ["journal", "golang", "almost-literate-programming"], "title": "Arbitrary Update 4701", "file": "arbitrary-update-4701", "id": 215, "posted": 1433131648}
 {"edited": 1434076894, "tags": ["common-lisp", "almost-literate-programming"], "title": "Non-Blocking Stream Parsing - Redux", "file": "non-blocking-stream-parsing-redux", "id": 216, "posted": 1434076894}
+{"edited": 1435029577, "tags": ["idea-peeling", "general-programming-thoughts"], "title": "Strong Types", "file": "strong-types", "id": 217, "posted": 1435029577}
+{"edited": 1435028739, "tags": ["journal", "bitching"], "title": "Writing Harder", "file": "writing-harder", "id": 218, "posted": 1435028739}
