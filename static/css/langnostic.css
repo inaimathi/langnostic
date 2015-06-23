@@ -2,7 +2,7 @@ body { width: 100%; margin:0px; padding: 0px; font-family: sans-serif; }
 
 .logo-bar { padding: 10px; }
 
-.content, .logo-bar, .license, .top-menu { width: 80%; max-width: 840px; margin: auto; display: block; }
+.content, .logo-bar, .license, .top-menu { width: 80%; max-width: 640px; margin: auto; display: block; }
 
 .top-menu-container, hr { background-image: url(/static/img/red.jpg); background-size: 100%; background-position: bottom; background-color: #CC0606; }
 
@@ -13,12 +13,12 @@ body { width: 100%; margin:0px; padding: 0px; font-family: sans-serif; }
 
 h1 { color: #CC0606; margin-bottom: 0px; }
 .posted { font-style: oblique; color: #AAA; display: block; font-size: small; text-align: right; margin-bottom: 10px;}
-h2 a, h3 a, h4 a, h5 a, h6 a { display:block; position: absolute; width: 10%; height: 26px; left: 0; }
+h2 a, h3 a, h4 a, h5 a, h6 a { display:block; position: absolute; width: 20%; height: 26px; transform: translateX(-80%); }
 h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, h6 a:hover { 
     background-image: url(/static/img/link-icon.png); 
     background-repeat: no-repeat; 
     background-size: auto 10px; 
-    background-position: 95% 50%;
+    background-position: 75% 50%;
 }
 
 .content img { margin: auto; padding: 10px; display: block; max-width: 80%; border: 1px solid #CC0606; }

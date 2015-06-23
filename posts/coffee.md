@@ -25,21 +25,21 @@ content = """
 
 > EDIT:  
 >   For comparison, here's the equivalent parenscript  
-> ```lisp
-> (ps
->   ;;; function definition
->   (defun square (num) (* num num))
->   ;;; optional argument and string handling
->   (defun greet (&optional (subject "world"))
->     (+ "Hello, " subject "!"))
->   ;;; rest args and iteration
->   (defun squares (&rest numbers)
->     (loop for n in numbers collect (square n)))
->   ;;; generating html
->   (defvar content 
->     (who-ps-html (:div :id "content" 
->                        (:span :class "quote" "Blah!")))))
-> ```
+```lisp
+(ps
+  ;;; function definition
+  (defun square (num) (* num num))
+  ;;; optional argument and string handling
+  (defun greet (&optional (subject "world"))
+    (+ "Hello, " subject "!"))
+  ;;; rest args and iteration
+  (defun squares (&rest numbers)
+    (loop for n in numbers collect (square n)))
+  ;;; generating html
+  (defvar content 
+    (who-ps-html (:div :id "content" 
+                       (:span :class "quote" "Blah!")))))
+```
 > Mon, 12 Mar, 2012  
 
 That surprisingly terse block of Coffee Script expands out to

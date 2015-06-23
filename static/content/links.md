@@ -57,6 +57,14 @@
 
 *The Common Lisp and Haskell interfaces aren't listed because "I haven't gotten it working" and "it sucks donkey dong" respectively.*
 
+### Standard ML
+
+- [SML Family](http://sml-family.org/)
+- [Standard ML libraries](https://sites.google.com/site/polymlsoftware/sml-libraries)
+- [MLton](http://mlton.org/)
+- [SML/NJ](http://www.smlnj.org/)
+- [SMLtoJs](http://www.smlserver.org/smltojs/)
+
 ### Haskell
 
 - [Learn You Haskell](http://learnyouahaskell.com/)
