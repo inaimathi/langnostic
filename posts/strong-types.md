@@ -16,9 +16,9 @@ So, second question.
 
 ## If a compiler could prove that a particular expression would lead to the above being evaluated, what should it do?
 
-And if your answer to that is "it should raise an error or warning", and you started with the position of "we don't want strong types"... Well, I've got some news for you.
+If your answer to that is "it should raise an error or warning", and you started with the position of "we don't want strong types", I've got some news for you.
 
-Now this is not to say that a compiler will catch all such errors (or, alternately, it will catch *all* such errors at the expense of disallowing some untypable, but otherwise well-behaved programs), but *if* it can, it *should*. Because they *are* errors, and if they're not caught by the type system and analysis machinery, they'll have to be caught by comparatively much more expensive humans. By hand, in the snow, both ways, etc. etc.
+Now this is not to say that a compiler will catch all such errors (or, alternately, it will catch *all* such errors at the expense of disallowing some untypable, but otherwise well-behaved programs), but *if* it can, it *should*. Because they *are* errors, and if they're not caught by the type system and analysis machinery, they'll have to be caught by much more expensive and boredom-prone humans. By hand, in the snow, both ways, etc. etc.
 
 The argument for strong types in this sense comes down to
 
@@ -45,7 +45,7 @@ Now, there are two related discussions we could have. Namely, those about overlo
 > "2nd test"
 ```
 
-I'm steering clear of [deliberately insane](http://xkcd.com/1537/) examples here. Depending on your point of view, the above may be reasonable or not. I'm not making a judgement call one way or the other. Having a "strong" type system tends to make code like this less convenient. You might expect to find yourself using different functions for integer and float addition, as in [OCaml](http://learnxinyminutes.com/docs/ocaml/), or at *least* different functions for list/string concatenation and number addition, as in [Haskell](http://learnxinyminutes.com/docs/haskell/). In practice, you find yourself having to do lots of little manual number conversions in Haskll too, even though they've made the `+` funcion polymorphic, because it's [sometimes unclear what you want as output](https://wiki.haskell.org/Generic_number_type#Problem).
+I'm steering clear of [deliberately insane](http://xkcd.com/1537/) examples here. Depending on your point of view, the above may be reasonable or not. I'm not making a judgement call one way or the other. Having a "strong" type system tends to make code like this less convenient. You might expect to find yourself using different functions for integer and float addition, as in [OCaml](http://learnxinyminutes.com/docs/ocaml/), or at *least* different functions for list/string concatenation and number addition, as in [Haskell](http://learnxinyminutes.com/docs/haskell/). In practice, you find yourself having to do lots of little manual number conversions in Haskell too, even though they've made the `+` funcion polymorphic, because it's [sometimes unclear what you want as output](https://wiki.haskell.org/Generic_number_type#Problem).
 
 Now, really, for most of the places you'd *like* to pull these tricks, the problem is that the underlying type system in whose context you're attempting to do so is not elaborate enough to let you. Most of the rest of the time, pulling these tricks can get you [into serious trouble](https://www.destroyallsoftware.com/talks/wat) at the language level. But even that's a complete aside. The point is, *this* is the trade your making.
 
