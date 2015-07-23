@@ -50,7 +50,7 @@ At this point, something on the order of a third of my `go` code looks like
 
 ```go
 if err != nil {
-	return nil
+	return err
 }
 ```
 
