@@ -21,7 +21,7 @@ h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, h6 a:hover {
     background-position: 75% 50%;
 }
 
-.content img { margin: auto; padding: 10px; display: block; max-width: 80%; border: 1px solid #CC0606; }
+.content img { margin: auto; margin-bottom: 10px; padding: 10px; display: block; max-width: 80%; border: 1px solid #CC0606; }
 .content p code { background-color: #EEE; padding: 1px 3px; }
 .content blockquote { font-style: oblique; font-family: serif; background-color: #EEE; padding: 10px; border-left: 20px solid #CCC; }
 
