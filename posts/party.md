@@ -4,7 +4,7 @@ So yesterday, we had a party.
 ![On the party bus - Evgeny and Renat chatting while we wait to get going](/static/img/500px/000002_2015-07-22.jpg)
 ![On the party bus - Jeff covered in frickin' lasers](/static/img/500px/000003_2015-07-22.jpg)
 
-The occasion was a successful funding round (which was [officially announced]() earlier this week, so I can safely tell you this).
+The occasion was a successful funding round (which was [officially announced](https://iso.500px.com/fresh-funds-mean-a-very-bright-future-of-the-500px-community/) earlier this week, so I can safely tell you this).
 
 ![On the way in - rounding the corner to our venue](/static/img/500px/000005_2015-07-22.jpg)
 ![On the way in - Michael looking sharp in his blue suit](/static/img/500px/000006_2015-07-22.jpg)
@@ -39,7 +39,7 @@ This place is clearly kitted out for weddings and similar, so there's the canoni
 ![After dinner - duelling cameras](/static/img/500px/000024_2015-07-22.jpg)
 ![After dinner - someone wanted a picture with the lake background](/static/img/500px/000025_2015-07-22.jpg)
 
-This is the part where I feel like an outsider, because there's a large amount of lore and craft involved in taking high-quality pictures. I basically just know a little bit about composition thanks to my [education](). That's enough to appreciate the skill I'm seeing, but not enough to wield it myself. This is how non-programmers would feel sitting in on one of [the Bento CompSci discussions](TODO).
+This is the part where I feel like an outsider, because there's a large amount of lore and craft involved in taking high-quality pictures. I basically just know a little bit about composition thanks to my [education](http://www.ocadu.ca/). That's enough to appreciate the skill I'm seeing, but not enough to wield it myself. This is how non-programmers would feel sitting in on one of [the Bento CompSci discussions](https://bentomiso.com/events/comp-sci-cabal-102).
 
 ![Time passes - Paul and his +1 with a crescent moon](/static/img/500px/000027_2015-07-22.jpg)
 ![Time passes - the group disperses into smaller social clusters](/static/img/500px/000031_2015-07-22.jpg)
