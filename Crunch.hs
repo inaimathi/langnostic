@@ -4,7 +4,6 @@ import Data.List
 import Data.Function
 import Data.Char
 import System.Environment
-import Control.Monad
 
 crunch :: String -> [(String, Int)]
 crunch s = filterCommons . filterOneOfs . frequencyMap $ map toLower s
@@ -14,9 +13,6 @@ crunch s = filterCommons . filterOneOfs . frequencyMap $ map toLower s
           commonWords = ["the", "of", "to", "a", "is", "and"
                         , "if", "it", "i", "as", "but", "an"
                         , "are", "at", "in", "than", "you"]
-
-concatMapM :: (Monad m) => (a -> m [b]) -> [a] -> m [b]
-concatMapM f xs   =  liftM concat (mapM f xs)
 
 main :: IO ()
 main = do
