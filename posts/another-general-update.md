@@ -6,15 +6,13 @@ I'm not actually sure because I've been under enough stress on enough different 
 
 ## <a name="dead-bitmaps-rise-of-the-ellipses" href="#dead-bitmaps-rise-of-the-ellipses"></a>Dead Bitmaps 2: Rise of the Ellipses
 
-I'm starting to think about ellipse finding. And, at the urging of some members of the <a name="note-Tue-Nov-25-111814EST-2014"></a>[|1|](https://groups.google.com/forum/#!forum/toronto-haskell">Toronto Haskell User Group</a>, shape finding in general. The pre-beta cut of the code which will find an ellipse in a region is [up at github](https://github.com/Inaimathi/edgy/blob/master/ShapeDetection.hs). Essentially, we take a region, find its center, plot an ellipse based on that[](#foot-Tue-Nov-25-111814EST-2014), and check perimeter coordinates at ~10 degree intervals. If we get three consecutive misses, or 10 total misses<a name="note-Tue-Nov-25-111818EST-2014)[|2|](#foot-Tue-Nov-25-111818EST-2014), we can discount that region as an ellipse and go do our regular line-detection routine on it.
+I'm starting to think about ellipse finding. And, at the urging of some members of the [Toronto Haskell User Group](https://groups.google.com/forum/#!forum/toronto-haskell), shape finding in general. The pre-beta cut of the code which will find an ellipse in a region is [up at github](https://github.com/Inaimathi/edgy/blob/master/ShapeDetection.hs). Essentially, we take a region, find its center, plot an ellipse based on that<a name="note-Tue-Nov-25-111814EST-2014"></a>[|1|](#foot-Tue-Nov-25-111814EST-2014), and check perimeter coordinates at ~10 degree intervals. If we get three consecutive misses, or 10 total misses<a name="note-Tue-Nov-25-111818EST-2014)[|2|](#foot-Tue-Nov-25-111818EST-2014), we can discount that region as an ellipse and go do our regular line-detection routine on it.
 
 It's surprising to me that this seems to be standard practice in computer vision, though on reflection it *really* shouldn't be. Candidate selection is usually some simple directional scoring procedure, but once you have candidate points together, the most efficient way of processing them seems to be:
 
-
-1.   Have a theory of approximately what you're going to see
-1.   Verify the presence or absence of the thing you're expecting
-1.   Repeat with revised theories until satisfied
-
+1. Have a theory of approximately what you're going to see
+2. Verify the presence or absence of the thing you're expecting
+3. Repeat with revised theories until satisfied
 
 It feels like there should be a better way. Like it should be possible to sieve meaning directly out of a color map, without having an expectation of what you'll see there. But if pressed, I confess I couldn't tell you how.
 
@@ -30,10 +28,8 @@ The point being: the naive way of building tracers plays exactly to Lisp's conce
 
 Conflicts I've observed between the Haskell and ML communities are about
 
-
 - [exceptions](http://existentialtype.wordpress.com/2012/12/03/exceptions-are-shared-secrets/)
 - [the cost](http://existentialtype.wordpress.com/2011/04/24/the-real-point-of-laziness/) of [laziness](http://augustss.blogspot.ca/2011/05/more-points-for-lazy-evaluation-in.html)
-
 
 I haven't informed myself about the first well enough to comment yet, though I am trying.
 
@@ -41,10 +37,8 @@ The second one comes down to the trade-off between having <a name="note-Tue-Nov-
 
 However, I'd still be very loudly wondering why no one was working on either *real* solution. These are respectively
 
-
 1.   abstracting away the glue code with better compositional primitives for strict languages
-1.   developing a better cost model for lazy evaluation
-
+2.   developing a better cost model for lazy evaluation
 
 As far as I know, the closest anyone's ever gotten to the first is Common Lisp's [`loop`](http://www.gigamonkeys.com/book/loop-for-black-belts.html) macro. Which, when you think about it, is like a roll of duct tape where you'd really like lego-esque pieces. Also as far as I know, no other language even bothers going as far as `loop`, which tells me this might be widely considered a non-problem. The second is [causing](http://galois.com/wp-content/uploads/2014/08/pub_JL_NaturalSemanticsForLazyEvaluation.pdf) some [activity](http://www.vex.net/~trebla/haskell/lazy.xhtml). I'll admit I've read neither paper yet, but we're set to discuss it at the Toronto Haskell Users' group next month with the author of the first link, so I'll hopefully get it under my belt by then. I chatted him up about it a bit and his perspective is, spoiler warning:
 

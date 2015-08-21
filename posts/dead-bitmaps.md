@@ -16,7 +16,7 @@ This is the approach I've been considering and prototyping most vigorously. Most
 
 The algorithm for separating an image into these directional maps is relatively simple: for each pixel, count the contiguous filled space in each direction and sum the totals for equivalent directions.
 
-```haskell
+```ocaml
 scoreCoord :: Grid -> Coord -> Score
 scoreCoord g (x, y) = Score (lengthI contigH) (lengthI contigV)
                       (lengthI contigSW) (lengthI contigSE)
@@ -58,7 +58,7 @@ data Score = Score { north :: Integer, east :: Integer
 
 That's that. The `scoreCoord` function is admittedly more repetitive than it should be. I'm not sure this
 
-```haskell
+```ocaml
 scoreCoord :: Grid -> Coord -> Score
 scoreCoord g (x, y) = Score contigH contigV contigSW contigSE
     where contig (xs, ys) = findContiguous g $ zip xs ys
@@ -75,7 +75,7 @@ scoreCoord g (x, y) = Score contigH contigV contigSW contigSE
 
 makes it any more readable, but it is equivalent, and doesn't repeat itself quite as frequently. The point is, this function takes a `Grid` and a `Coord` (which represents a pixel) and returns the score of that pixel in that `Grid`. `findContiguous` is a helper function used in the above.
 
-```haskell
+```ocaml
 findContiguous :: Grid -> [Coord] -> [Coord]
 findContiguous g cs = recur cs []
     where recur [] acc       = reverse acc
@@ -86,7 +86,7 @@ findContiguous g cs = recur cs []
 
 It takes a `Grid` and a list of `Coord`s, and takes only the first contiguous chunk; as soon as it fails to find a given coordinate, it terminates and returns the ones its accumulated so far. Having defined all of the above, you can then define
 
-```haskell
+```ocaml
 main :: IO ()
 main = do g <- readSparse "test.txt"
           let showGrid = showMap (gridWidth g) (gridHeight g)
@@ -97,7 +97,7 @@ main = do g <- readSparse "test.txt"
 
 and hop over to `GHCi`
 
-```haskell
+```ocaml
 Prelude> :load "Direction.hs"
 [1 of 3] Compiling Util             ( Util.hs, interpreted )
 [2 of 3] Compiling SparseRead       ( SparseRead.hs, interpreted )
@@ -165,7 +165,7 @@ Loading package containers-0.5.0.0 ... linking ... done.
 
 That transformation alone gets you some traction, although not quite enough. What I'd really want is a decision function that would give me the result of trying to merge them, rather than just two separate maps. The easiest thing I can think of is
 
-```haskell
+```ocaml
 decide :: Integer -> Score -> Direction
 decide threshold s@(Score n e sw se)
     | ((n - threshold) > 0 || (e - threshold) > 0) 
@@ -177,7 +177,7 @@ decide threshold s@(Score n e sw se)
 
 Which is to say, if either Cardinal scores are above a certain `threshold`, and one beats the other by said `threshold`, this is a Cardinal pixel. Same deal with the Ordinal scores. If nothing breaks the `threshold`, or if the breaking pair of scores doesn't point to a decisive winner, this is a Contested pixel. That then lets us redefine `main`
 
-```haskell
+```ocaml
 main :: IO ()
 main = do g <- readSparse "test.txt"
           let showGrid = showMap (gridWidth g) (gridHeight g)
@@ -188,7 +188,7 @@ main = do g <- readSparse "test.txt"
 
 which gives us the output
 
-```haskell
+```ocaml
 *Direction> :load "Direction.hs"
 [1 of 3] Compiling Util             ( Util.hs, interpreted )
 [2 of 3] Compiling SparseRead       ( SparseRead.hs, interpreted )
@@ -260,7 +260,7 @@ That third version can very nearly be naively converted to lines. The only real 
 
 The first two together might solve both, but introduce a new one; an ambiguity about where the break between the arrow line and the circle happens.
 
-```
+<pre>
     \/                          
    \o\////\\\\///\\\\o/         
  \\o\o///oo\\oo//o\\\oo/        
@@ -281,36 +281,36 @@ The first two together might solve both, but introduce a new one; an ambiguity a
            //\\                 
           ////\                 
           /o/o                  
-    <code style="color: red;">\\</code>o    o\///    ///         
-    <code style="color: red;">\\\</code>o  \\///    /////        
-     <code style="color: red;">\\\</code>   oo/o   /////\        
-      <code style="color: red;">\\\</code> //o\\  /////\         
-       <code style="color: red;">\\\</code>//o\\ /////           
-        /<code style="color: red;">\\</code>/\\\////             
-          <code style="color: red;">\\</code>o\////              
-           <code style="color: red;">\\</code>///                
-            o<code style="color: red;">\</code>                  
-         ////<code style="color: red;">\\\\\</code>              
-     o//////oo<code style="color: red;">\\\\\\</code>/           
-    o/////     <code style="color: red;">\\\\\\</code>/          
-   o////          <code style="color: red;">\\\\</code>          
-   ////            <code style="color: red;">\\\\</code>         
-  \///             <code style="color: red;">\\\\</code>/        
-  \\/o              <code style="color: red;">\\</code>o<code style="color: red;">\</code>o       
-  //\o              o/<code style="color: red;">\\\</code>       
-  /\\\              ///<code style="color: red;">\</code>        
+    <span style="color: red;">\\</span>o    o\///    ///         
+    <span style="color: red;">\\\</span>o  \\///    /////        
+     <span style="color: red;">\\\</span>   oo/o   /////\        
+      <span style="color: red;">\\\</span> //o\\  /////\         
+       <span style="color: red;">\\\</span>//o\\ /////           
+        /<span style="color: red;">\\</span>/\\\////             
+          <span style="color: red;">\\</span>o\////              
+           <span style="color: red;">\\</span>///                
+            o<span style="color: red;">\</span>                  
+         ////<span style="color: red;">\\\\\</span>              
+     o//////oo<span style="color: red;">\\\\\\</span>/           
+    o/////     <span style="color: red;">\\\\\\</span>/          
+   o////          <span style="color: red;">\\\\</span>          
+   ////            <span style="color: red;">\\\\</span>         
+  \///             <span style="color: red;">\\\\</span>/        
+  \\/o              <span style="color: red;">\\</span>o<span style="color: red;">\</span>o       
+  //\o              o/<span style="color: red;">\\\</span>       
+  /\\\              ///<span style="color: red;">\</span>        
    \\\\           /////         
    /\\\\\\     ///////\         
     /\\\\\\\/////////           
        \\\\\o/////              
           \\o/                  
 
-```
+</pre>
 
 
 That is one contiguous region, you see. And I don't see a way of breaking it without a priori knowledge. Except for the cheating approach. Specifically, if I started with the input
 
-```
+<pre>
     ..............................
     ....xx........................
     ...xxxxxxxxxxxxxxxxxxxx.......
@@ -358,11 +358,11 @@ That is one contiguous region, you see. And I don't see a way of breaking it wit
     ..............................
     ..............................
     ..............................
-```
+</pre>
 
 it would be a fairly simple matter to do the arrow/shape separation first, and then figure out how each shape breaks down in the Cardinal/Ordinal sense. What I'd be looking for at that point is to see which of the two maps yielded full coverage of a particular area with the fewest lines. Which is how I could tell that
 
-```
+<pre>
    ||                          +    \/                         
   --------------------         +   \o\////\\\\///\\\\o/        
 -----------------------        + \\o\o///oo\\oo//o\\\oo/       
@@ -377,12 +377,12 @@ it would be a fairly simple matter to do the arrow/shape separation first, and t
  -|||--         --o|||-        +  /\\\\\         /////o\       
   --------------------         +   /o\\\\\\\\o////////\        
   ---------||-------           +   /o\\\\\\\\o///////          
-```
+</pre>
 
 this is meant to be a Cardinal shape; it can be drawn with four cardinal lines<a name="note-Tue-Oct-28-230220EDT-2014"></a>[|7|](#foot-Tue-Oct-28-230220EDT-2014), whereas the ordinal map specifies between 6 and 8 depending specifically on where you set the threshold for recognizing a line<a name="note-Tue-Oct-28-230224EDT-2014"></a>[|8|](#foot-Tue-Oct-28-230224EDT-2014). This also has the side benefit of disambiguating curves/circles from squares/lines;
 
 
-```
+<pre>
         ---||----              +         ////\\\\\             
     -------||-------           +     o//////oo\\\\\\/          
    ||----     -----||          +    o/////     \\\\\\/         
@@ -397,12 +397,12 @@ this is meant to be a Cardinal shape; it can be drawn with four cardinal lines<a
    -----------------           +    /\\\\\\\/////////          
       -----------              +       \\\\\o/////             
          ----                  +          \\o/                 
-```
+</pre>
 
 
 Curves are areas where the cardinal and ordinal approaches tie for efficiency. There is another issue though.
 
-```
+<pre>
        ||||          +        ---------        +    ||                   
       -|||o-         +    ----------------     +   --------------------  
        ||||-         +   ||----     -----||    + ----------------------- 
@@ -436,7 +436,7 @@ Curves are areas where the cardinal and ordinal approaches tie for efficiency. T
       \\o\////       +         \\o/            +   /o\\\\\o    //////    
        \\///         +                         +                         
         oo           +                         +                         
-```
+</pre>
 
 
 If we go this breaking shape direction, we suddenly have the problem of how to compose the arrow. Ideally, we'd want the large vertical from the Cardinal map, and the two side diagonals from the Ordinal map. Which means we're not really checking which map gives us better coverage, we're trying to find maximum coverage of some number of coordinates by several distinct, but connected areas on a map. Which sounds like it lands us in [difficult-problem territory](https://en.wikipedia.org/wiki/Maximum_coverage_problem). The good news is that approximation is very probably good enough for what we're doing here, and I can think of one or two half-way decent ways of doing the needed comparisons quickly enough<a name="note-Tue-Oct-28-230232EDT-2014"></a>[|9|](#foot-Tue-Oct-28-230232EDT-2014).

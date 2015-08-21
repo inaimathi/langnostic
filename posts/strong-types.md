@@ -47,15 +47,15 @@ Now, there are two related discussions we could have. Namely, those about overlo
 
 I'm steering clear of [deliberately insane](http://xkcd.com/1537/) examples here. Depending on your point of view, the above may be reasonable or not. I'm not making a judgement call one way or the other. Having a "strong" type system tends to make code like this less convenient. You might expect to find yourself using different functions for integer and float addition, as in [OCaml](http://learnxinyminutes.com/docs/ocaml/), or at *least* different functions for list/string concatenation and number addition, as in [Haskell](http://learnxinyminutes.com/docs/haskell/). In practice, you find yourself having to do lots of little manual number conversions in Haskell too, even though they've made the `+` funcion polymorphic, because it's [sometimes unclear what you want as output](https://wiki.haskell.org/Generic_number_type#Problem).
 
-Now, really, for most of the places you'd *like* to pull these tricks, the problem is that the underlying type system in whose context you're attempting to do so is not elaborate enough to let you. Most of the rest of the time, pulling these tricks can get you [into serious trouble](https://www.destroyallsoftware.com/talks/wat) at the language level. But even that's a complete aside. The point is, *this* is the trade your making.
+Now, really, for most of the places you'd *like* to pull these tricks, the problem is that the underlying type system in whose context you're attempting to do so is not elaborate enough to let you. Most of the rest of the time, pulling these tricks can get you [into serious trouble](https://www.destroyallsoftware.com/talks/wat) at the language level. But even that's a complete aside. The point is, *this* is the trade you're making.
 
 **When you reach for a strongly or weakly typed language, you're deciding between the convenience of expressing certain assignments and comparisons more succinctly, and the convenience of having large classes of errors prevented on your behalf.**
 
 That's actually a choice you can debate about. There are pros and cons. You might prefer one side or the other, a particular task might call for one or the other, and there doesn't seem to be a clear-cut `Correct` answer for all situations, but at least make the call knowing what the stakes are.
 
-## My Preference
+## My Preference...
 
-Is not particularly important. Leastwise, it shouldn't be important to you, since this *is* partially a matter of preference and partially of problem, but I do have one in general.
+...is not particularly important. Leastwise, it shouldn't be important to you, since this *is* partially a matter of preference and partially of problem, but I do have one in general.
 
 1. I like type systems that let me [write](http://sml-family.org/) very [little](https://www.haskell.org/) extra [information](https://ocaml.org/), while giving me strong guarantees about the correctness of my program. And I'm an equally big fan of [type](http://clhs.lisp.se/) systems [that](http://racket-lang.org/) let me write nothing, while giving me some guarantees about the correctness of my program.
 2. I can just about stand type systems that let me [write](https://www.ruby-lang.org/en/) nothing [and give](https://www.python.org/) me no guarantees, or type systems that make me [annotate heavily](http://www.rust-lang.org/) in [exchange](http://golang.org/) for strong safety guarantees.
