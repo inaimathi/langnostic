@@ -72,7 +72,6 @@
 - [An Accurate Assessment](http://www.xent.com/pipermail/fork/Week-of-Mon-20070219/044101.html)
 - [Write Yourself a Scheme](http://en.wikibooks.org/wiki/Write_Yourself_a_Scheme_in_48_Hours)
 - [Happstack Crash Course](http://happstack.com/docs/crashcourse/index.html)
-- [snap](http://snapframework.com/)
 - [Warp](http://www.haskell.org/haskellwiki/Web/Servers#Warp)
 - [hackage](http://hackage.haskell.org/packages/archive/pkg-list.html)
 - [hoogle](http://www.haskell.org/hoogle/)
@@ -92,7 +91,6 @@
 ### PHP
 
 - [PHP Manual](http://php.net/manual/en/index.php)
-- [CodeIgniter](http://codeigniter.com/)
 - [WordPress](http://wordpress.org/)
 - [Drupal](http://drupal.org/)
 
