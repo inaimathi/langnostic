@@ -2,7 +2,7 @@ So [here's](https://github.com/Inaimathi/cl-pronounce) something stupid I built,
 
 ## The Common Lisp `format` procedure
 
-![](/static/img/format-fear.jpg)
+![The format function, typeset in the styel of a beer-bottle, being used to format the full 99 bottles song](/static/img/format-fear.jpg)
 
 ...is kind of weird. By my estimation it's either the most or second-most complicated construct you're likely to use in even casual CL programming (the other potential being [`loop`](http://clhs.lisp.se/Body/m_loop.htm)). One of the [many](http://www.gigamonkeys.com/book/a-few-format-recipes.html), [*many*](http://www.lispworks.com/documentation/lw51/CLHS/Body/22_c.htm) things it can do is take a number, and give you its verbal English representation. That's the `~r` format directive. Last night, at the Toronto Haskell Meetup, I was about a quarter joking about turning this into an actual service. It soon occurred to me that this could also turn out to be a simple demo application for [`cl-handlers`](https://github.com/Inaimathi/cl-handlers).
 
@@ -149,7 +149,7 @@ Backtrace:
  51: ("foreign function: new_thread_trampoline") 
 ```
 
-Really, I should do something about this in a future version, but haven't bothered with it yet.
+Really, I should do something about this in a future version, but haven't bothered with it yet. Note to self.
 
 Next up,
 
