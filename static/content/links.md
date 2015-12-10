@@ -23,7 +23,7 @@
 - [d3.js](http://mbostock.github.com/d3/)
 - [Handlebars.js](http://handlebarsjs.com/)
 - [Angular.js](http://angularjs.org/)
-	 
+
 ### REBOL
 
 - [REBOL3 Repository](https://github.com/rebol/r3)
@@ -32,7 +32,7 @@
 - [REBOL3 function reference](http://www.rebol.com/r3/docs/functions.html)
 - [REBOL/RED Chatroom](http://chat.stackoverflow.com/rooms/291/rebol-and-red)
 - [RED: an in-development variant of REBOL with a JIT compiler](http://www.red-lang.org/)
-	 
+
 ### Ruby
 
 - [The Ruby Language](http://www.ruby-lang.org/en/)
@@ -47,7 +47,7 @@
 - [Learn You Erlang](http://learnyousomeerlang.com/)
 - [Lisp Flavored Erlang](https://github.com/rvirding/lfe)
 - [Rebar](https://github.com/basho/rebar/)
-	 
+
 ##### Erlang Language Interfaces
 
 - [C](http://www.erlang.org/doc/tutorial/c_port.html)
@@ -112,6 +112,8 @@
 - [Practical Common Lisp](http://gigamonkeys.com/book/)
 - [Common Lisp Cookbook](http://cl-cookbook.sourceforge.net/index.html)
 - [Hunchentoot (the CL-web server, not the rock opera)](http://weitz.de/hunchentoot/)
+- [Learn Lisp The Hard Way](http://learnlispthehardway.org/) *(work in progress)*
+- [Common Lisp Resource List](http://www.whoishostingthis.com/resources/common-lisp/)
 
 ### Scheme
 
