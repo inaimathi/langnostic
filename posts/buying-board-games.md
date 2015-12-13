@@ -39,11 +39,10 @@ I think I finally have to start a `boardgames` tag. I've been thinking about boa
 - **Dec 03rd 2015** ` :(` Open claim with PayPal over failure to deliver paid-for products.
 - **Dec 03rd 2015** `>:(` Receive response to PayPal claim, claiming that the shipment has already been processed and that we should have received a tracking number for our order.
 - **Dec 05th 2015** `>:(` Receive tracking email from order shipment, created on Dec 4th. Estimated delivery date of Dec 9th.
-- **Dec 09th 2015** `>8(` Receive package from Golden Egg. Contains only the base game (no sign of the expansion that's supposed to come with it, or the "extra card game").
-- **Dec 09th 2015** `>8(` Send message via PayPal pointing out the above missing pieces from the shipment.
+- **Dec 09th 2015** `>:|` Receive package from Golden Egg.
 
 ## What I Think
 
-Were I the sort of person to infer from timestamps here, my conclusion would be that my order got completely forgotten about for the better part of a month, then hurriedly put through in response to the claim being filed with PayPal. Honestly, I'd rather have the game than my $34 back, so at this point I'm considering simply cutting off all communication with Golden Egg, and sharing this story with anyone who ever sits down to play City Council with me. I'll keep updating the timeline above as this Epic Saga continues, but it's beside the point. The lesson here is that shipping delays are **not** a Kickstarter Exclusive. I have not yet had a worse experience ordering off the [KS games stream](http://kicktracker.inaimathi.ca/board-games).
+Were I the sort of person to infer from timestamps here, my conclusion would be that my order got completely forgotten about for the better part of a month, then hurriedly put through in response to the claim being filed with PayPal. Honestly, I'd rather have the game than my $34 back, so at this point I'm considering simply cutting off all communication with Golden Egg, and sharing this story with anyone who ever sits down to play City Council with me. The lesson here is that shipping delays are **not** a Kickstarter Exclusive. I have not yet had a worse experience ordering off the [KS games stream](http://kicktracker.inaimathi.ca/board-games).
 
 Obviously, if you want to avoid this kind of hassle, order from [dedicated board game retailers](http://www.greatboardgames.ca/). Or better yet, walk into [an](http://bayfieldmall.ca/mall-directory/sir-games-a-lot) actual [store](http://store.401games.ca/) or [cafe](http://www.snakesandlattes.com/) and [buy](http://castleboardgames.com/) a physical box to bring home with you. Shipping delays eliminated, guaranteed, though this does restrict you to buying games that are merely currently available.
