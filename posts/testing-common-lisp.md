@@ -1,4 +1,4 @@
-Given that I'm on vacation, I'm obviously back to writing mostly Common Lisp rather than mostly Ruby. Although, admittedly, *mostly* for [tiny puzzle-style things](TODO - advent code). I wanted to use [`prove`](TODO) and [`quickcheck`](TODO) to do some light automated testing, and found the experience a bit clunkier than expected. So, I [did something about it](TODO - test-utils).
+Given that I'm on vacation, I'm obviously back to writing mostly Common Lisp rather than mostly Ruby. Although, admittedly, *mostly* for [tiny puzzle-style things](https://github.com/Inaimathi/advent-code). I wanted to use [`prove`](https://github.com/fukamachi/prove) and [`cl-quickcheck`](https://github.com/mcandre/cl-quickcheck) to do some light automated testing, and found the experience a bit clunkier than expected. So, I [did something about it](https://github.com/Inaimathi/test-utils).
 
 ## The Aim
 
