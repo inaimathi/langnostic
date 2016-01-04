@@ -108,7 +108,7 @@ def delete_page(path, wiki="."):
 def create_page(path, wiki="."):
     if not is_in_repo(path, wiki): raise NotInRepo()
     full = os.path.join(wiki, path)
-    if os.path.exists(full): 
+    if os.path.exists(full):
         raise PageExists()
     d = os.path.dirname(full)
     if d and (not os.path.exists(d)): os.makedirs(d)
@@ -141,7 +141,7 @@ def log_of(path, repo="."):
     for entry in entries:
         if entry:
             split = filter(identity, entry.split("\x00"))
-            yield { "commit_hash": split[0], 
+            yield { "commit_hash": split[0],
                     "timestamp": datetime.datetime.utcfromtimestamp(int(split[1])),
                     "author_name": split[2],
                     "author_email": split[3],
@@ -269,7 +269,7 @@ def file_list(path):
     full = os.listdir(local)
     return ((f, os.path.join(path, f)) for f in full if not is_hidden(f))
 
-def breadcrumbs(path): 
+def breadcrumbs(path):
     if path == "":
         return """<div class="breadcrumbs">home</div>"""
     s = re.split(r"[/\\]", path)
@@ -367,7 +367,7 @@ Unlike the `view_(raw_)?page` functions above, `delete_page` makes changes to th
 def create_page(path, wiki="."):
     if not is_in_repo(path, wiki): raise NotInRepo()
     full = os.path.join(wiki, path)
-    if os.path.exists(full): 
+    if os.path.exists(full):
         raise PageExists()
     d = os.path.dirname(full)
     if d and (not os.path.exists(d)): os.makedirs(d)
@@ -424,7 +424,7 @@ def log_of(path, repo="."):
     for entry in entries:
         if entry:
             split = filter(identity, entry.split("\x00"))
-            yield { "commit_hash": split[0], 
+            yield { "commit_hash": split[0],
                     "timestamp": datetime.datetime.utcfromtimestamp(int(split[1])),
                     "author_name": split[2],
                     "author_email": split[3],
@@ -554,7 +554,7 @@ if __name__ == "__main__":
 
 Last couple of things. I'm keeping `WIKI_ROOT` as a global constant, because I'm working under the assumption that a particular instance of `tornado` will *only serve one wiki*. This may end up being a faulty assumption later on, in which case I'll need to re-think where and how the directory gets stored. As it stands, it'll be a single global, and as you can see from the `__main__` block, we set it from the first and only command-line arg. At the moment, I'm not even parameterizing the port number, opting instead to use the literal `4848`. That's a note to self; the right thing to do in this situation is would be importing and appropriately configuring/calling [`argparse`](https://docs.python.org/2/library/argparse.html#module-argparse) so that we could pass in a target directory, as well as a port, and maybe some other configuration options. So, you know. Get on that, self.
 
-The last bit we need to go over is the code defining our basic cosmetic templates. I'm fully aware of <a name="note-Sun-Mar-01-220020EST-2015"></a>[|4|](http://tornado.readthedocs.org/en/latest/template.html">`tornado.template`</a>, but didn't bother with it for stuff this minimal<a href="#foot-Sun-Mar-01-220020EST-2015).
+The last bit we need to go over is the code defining our basic cosmetic templates. I'm fully aware of [`tornado-template`](http://tornado.readthedocs.org/en/latest/template.html), but didn't bother with it for stuff this minimal<a name="note-Sun-Mar-01-220020EST-2015"></a>[|4|](#foot-Sun-Mar-01-220020EST-2015).
 
 ```python
 def main_template(path, contents):
@@ -574,7 +574,7 @@ def main_template(path, contents):
 The `main_template` contains the basic `html`/`head`/`body` tags, and expects to be passed some `contents` and a `path`. The `contents` are naively templated into a `div#content` tag, while the `path` is passed to `breadcrumbs` for processing.
 
 ```python
-def breadcrumbs(path): 
+def breadcrumbs(path):
     if path == "":
         return """<div class="breadcrumbs">home</div>"""
     s = re.split(r"[/\\]", path)
@@ -670,11 +670,11 @@ which started up my server, and killed/restarted it each time I saved any `.py` 
 
 ## <a name="khan-academy" href="#khan-academy"></a>Khan Academy
 
-Something I've been seriously meaning to get into is some basic math. It's surprising, and somewhat embarrassing, how long I've gone without doing that. So this past week, I finally registered an account over at <a name="note-Sun-Mar-01-220102EST-2015"></a>[|5|](https://www.khanacademy.org">Khan Academy</a> and plowed through the [Combinatorics/Probability lessons](https://www.khanacademy.org/math/probability/probability-and-combinatorics-topic) as well as I could. It still feels like I need to practice and study more, but I have a less shaky grasp of [n-choose-k](http://en.wikipedia.org/wiki/Combination) problems than I used to. I'm not prepared to swear by the information yet, given that I haven't battle-tested it at this point, but I can tentatively recommend the lessons<a href="#foot-Sun-Mar-01-220102EST-2015). They certainly help retention over the moderate term.
+Something I've been seriously meaning to get into is some basic math. It's surprising, and somewhat embarrassing, how long I've gone without doing that. So this past week, I finally registered an account over at [Khan Academy](https://www.khanacademy.org) and plowed through the [Combinatorics/Probability lessons](https://www.khanacademy.org/math/probability/probability-and-combinatorics-topic) as well as I could. It still feels like I need to practice and study more, but I have a less shaky grasp of [n-choose-k](http://en.wikipedia.org/wiki/Combination) problems than I used to. I'm not prepared to swear by the information yet, given that I haven't battle-tested it at this point, but I can tentatively recommend the lessons<a name="note-Sun-Mar-01-220102EST-2015"></a>[|5|](#foot-Sun-Mar-01-220102EST-2015). They certainly help retention over the moderate term.
 
 ## <a name="finally" href="#finally"></a>Finally
 
-I was going to mention the recent Cabal memory-management-fest, in which the current core members got together to discuss the implementations they'd spent the week building. Mine's up <a name="note-Sun-Mar-01-220114EST-2015"></a>[|6|](https://github.com/CompSciCabal/SMRTYPRTY/blob/master/experiments/inaimathi/memory-management/g.c">here</a>, while Scott's are over [here](https://github.com/CompSciCabal/SMRTYPRTY/tree/master/experiments/scott/garbage_collector), and dann hasn't posted anything yet as far as I know. I *was* going to go over each of those, but this piece is already quite a bit longer than I was expecting. Fuck, also, I've been putting some work into exercises for [Learn Lisp the Hard Way.](https://github.com/LispTO/llthw/tree/master/book) At the moment, I'm just working on [section 1-04](https://github.com/LispTO/llthw/blob/master/book/1-04-0-lists.md), but I'm hoping to claw some time together over the next couple of weeks. It's an interesting effort, and I guess technically the second book I've contributed to<a href="#foot-Sun-Mar-01-220114EST-2015). I can't wait to see what kind of impact it has.
+I was going to mention the recent Cabal memory-management-fest, in which the current core members got together to discuss the implementations they'd spent the week building. Mine's up [here](https://github.com/CompSciCabal/SMRTYPRTY/blob/master/experiments/inaimathi/memory-management/g.c), while Scott's are over [here](https://github.com/CompSciCabal/SMRTYPRTY/tree/master/experiments/scott/garbage_collector)<a name="note-Sun-Mar-01-220114EST-2015"></a>[|6|](#foot-Sun-Mar-01-220114EST-2015), and dann hasn't posted anything yet as far as I know. I *was* going to go over each of those, but this piece is already quite a bit longer than I was expecting. Fuck, also, I've been putting some work into exercises for [Learn Lisp the Hard Way.](https://github.com/LispTO/llthw/tree/master/book) At the moment, I'm just working on [section 1-04](https://github.com/LispTO/llthw/blob/master/book/1-04-0-lists.md), but I'm hoping to claw some time together over the next couple of weeks. It's an interesting effort, and I guess technically the second book I've contributed to. I can't wait to see what kind of impact it has.
 
 Now that I've done an initial proof of this article, it occurs that I opened with "There's not much going on".
 
