@@ -14,7 +14,7 @@ What I'd like to be able to write is something like
  (qchecks
   (for-all ((a a-number) (b a-number))
     (is= (+ a b) (+ b a)))
-  "Addition is idempotent"))
+  "Addition is commutative"))
 ```
 
 and have it represent a proper `prove` suite that checks some manually specified properties, *along with* some fuzzed proerties via `quickcheck`. And that't exactly what you can do with `test-utils`.
@@ -29,14 +29,14 @@ TEST-UTILS> (a-suite
  (qchecks
   (for-all ((a a-number) (b a-number))
     (is= (+ a b) (+ b a)))
-  "Addition is idempotent"))
+  "Addition is commutative"))
 1..5
 
   ✓ Addition works
   ✓ Addition works on more than two numbers
   ✓ Addition works on negative numbers
   ✓ Addition works on negative and positive numbers together
-  ✓ Addition is idempotent
+  ✓ Addition is commutative
 
 ✓ 5 tests completed (4ms)
 T
@@ -55,7 +55,7 @@ TEST-UTILS> (a-suite
  (qchecks
   (for-all ((a a-number) (b a-number))
     (is= (- a b) (- b a)))
-  "Subtraction is not idempotent, so this should fail"))
+  "Subtraction is not commutative, so this should fail"))
 1..5
 
   ✓ Subtraction works
@@ -67,7 +67,7 @@ FAIL (IS= (- A B) (- B A))
   with values -0.88533974 0.88533974
   for ((A 14297/2081) (B 7.7555943))
 1 test submitted; 1 FAILED.
-  × Subtraction is not idempotent, so this should fail
+  × Subtraction is not commutative, so this should fail
     NIL is expected to be T
 
 × 1 of 5 tests failed (4ms)
