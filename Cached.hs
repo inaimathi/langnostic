@@ -39,8 +39,8 @@ epochToClockTime x =
           secfrac = floor $ (ratval - (seconds % 1) ) * picosecondfactor
           picosecondfactor = 10 ^ 12
 
-newCache :: TimeDiff -> FilePath -> (FilePath -> IO a) -> IO (Cache a)
-newCache cacheLimit fname reader = do
+newCache :: TimeDiff -> (FilePath -> IO a) -> FilePath -> IO (Cache a)
+newCache cacheLimit reader fname = do
   now <- getClockTime
   val <- reader fname
   newIORef $ Cached { reader = reader, file = fname, cacheLimit = cacheLimit, value = val, lastChecked = now }

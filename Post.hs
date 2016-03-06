@@ -8,7 +8,7 @@ import Text.Blaze.Html (Html)
 import Cached
 
 cachePost :: FilePath -> IO (Cache Html)
-cachePost fpath = newCache (minutes 30) fpath readPost
+cachePost fpath = newCache (minutes 30) readPost fpath
 
 readPost :: FilePath -> IO Html
 readPost fpath = do
