@@ -39,9 +39,9 @@ replaceFootnote :: [(Inline, Int)] -> Inline -> Inline
 replaceFootnote tbl elem@(Link _ content _) =
     case lookup elem tbl of
       Nothing -> elem
-      Just n ->
-          Link ("", [], []) newContents ("#foot-" ++ show n, "")
-              where newContents = concat [anchor ("note-" ++ show n), [Str $ concat ["[", show n, "]"]]]
+      Just n -> Span ("", [], []) $
+                concat [ anchor ("note-" ++ show n)
+                       , [Link ("", [], []) [Str $ concat ["[", show n, "]"]] ("#foot-" ++ show n, "")]]
 replaceFootnote _ elem = elem
 
 compileFootnotes :: [(Inline, Int)] -> [Block]
