@@ -1,16 +1,16 @@
-> **EDITOR'S NOTE:**  
-> *This is a piece I wrote about three years ago, then sat down to copy-edit and polish up today. It was very focused on a few particular, topical anecdotes that my then-co-workers were throwing about. Having read over it equipped with three extra years of hindsight, I'm not sure I'd still be quite as vehement about my opinions as I was here, but don't disagree on any large points.*  
-> Sun, 10 Nov, 2013  
+> **EDITOR'S NOTE:**
+> *This is a piece I wrote about three years ago, then sat down to copy-edit and polish up today. It was very focused on a few particular, topical anecdotes that my then-co-workers were throwing about. Having read over it equipped with three extra years of hindsight, I'm not sure I'd still be quite as vehement about my opinions as I was here, but don't disagree on any large points.*
+> Sun, 10 Nov, 2013
 
 I'm writing this post because I've seen one too many comments of the sort "Well, if PHP is so shitty, then why is it so popular?". Typically this is the main claim in a rebuttal to "PHP is a shit language"<a name="note-Sun-Nov-10-173728EST-2013"></a>[|1|](#foot-Sun-Nov-10-173728EST-2013), and the end result seems to be that a lot of people just sit back and think "Oh yeah, I guess it is popular. It must not be shit, but rugged." Substitute  "manly", or "quirky" or similar if you like. As in, yeah, it has flaws, but they're endearing flaws. Like [`mysql_escape`](http://us2.php.net/mysql_escape_string) being the deprecated precursor to a different function named [`mysql_real_escape_string`](http://php.net/manual/en/function.mysql-real-escape-string.php) (itself also deprecated). And [static functions having an odd interpretation of "this"](http://bugs.php.net/bug.php?id=12622). And the complete list of [deprecated functions](http://stackoverflow.com/questions/6822446/what-does-php-do-with-deprecated-functions) being longer than my average blog post thanks to the fact that they never actually get removed.
 
 I don't care that we've known how to do better language design for at least thirty years, PHP iss Rugged©™, goddamit! And it's still more popular than whatever properly designed tool it is that you use!
 
-### <a name="how-do-technologies-get-popular" href="#how-do-technologies-get-popular"></a>How do technologies get popular?
+### How do technologies get popular?
 
 This probably won't turn into an article where I mention Common Lisp<a name="note-Sun-Nov-10-173736EST-2013"></a>[|2|](#foot-Sun-Nov-10-173736EST-2013), by the way. The idea of language popularity is almost completely irrelevant to what I'm discussing here; this could be a discussion of any sort of tool and how you'd go about picking one for a particular purpose. The source of popularity is obviously difficult to determine because relatively few things get there, so lets back off a little bit.
 
-### <a name="what-does-it-mean-for-a-tool-to-be-popular" href="#what-does-it-mean-for-a-tool-to-be-popular"></a>What does it mean for a tool to be popular?
+### What does it mean for a tool to be popular?
 
 Does it have to solve some specific problem better than other tools? Does it need to be better/cheaper/faster than solving that particular problem by hand? Does it need to be more fun or easier to use? Does it have better marketing/sales/promotions than the competition? Is it the first tool to solve a problem sufficiently well?
 
@@ -20,7 +20,7 @@ A tool is popular when enough people have chosen it to perform a given task. Any
 
 Lets look at it from the other side instead though.
 
-### <a name="what-does-it-take-for-someone-to-choose-a-given-tool" href="#what-does-it-take-for-someone-to-choose-a-given-tool"></a>What does it take for someone to choose a given tool?
+### What does it take for someone to choose a given tool?
 
 That's a simpler question, but it should get us the same answer. If "popularity" is "being chosen by enough people" then figuring out "how do most people choose" should tell us "what it means to be popular".
 
@@ -32,11 +32,11 @@ Fitness of purpose maybe? Well, not in practice, no. Fitness of purpose is how y
 
 **Popularity** is the only other big reason I can think of that tools get chosen, but I don't want to recur just yet, so we'll leave that one alone. Back up a bit.
 
-## <a name="tools-are-popular-if-theyll-get-you-a-job" href="#tools-are-popular-if-theyll-get-you-a-job"></a>Tools are popular if they'll get you a job.
+## Tools are popular if they'll get you a job.
 
 When will a tool get you a job? Well, when enough employers start putting it on their job listings. Until that point, it's not worth learning it *just* for that. Tools before that point mostly get adopters that come by because it's fun for them or the tiny minority that have performed a sufficient comparison and found *that* tool to be the best fit for them out of the ones they compared. In other words *"I choose tools that will get me jobs"* translates to *"I choose tools that employers choose"*.
 
-## <a name="so-how-do-employers-choose-tools" href="#so-how-do-employers-choose-tools"></a>So how do employers choose tools?
+## So how do employers choose tools?
 
 Well, here, I can actually share some small amount of real-world data. Anecdotal, so take it with a grain of salt, but enough to form a theory. If anyone wants to try being the experimentalist on this one, be my guest. If you did it well enough, I'm sure it'd be publishable.
 
@@ -63,7 +63,7 @@ The fourth one is the previous answer on a macro scale; *"We'll keep using what 
 
 *Now*, we need to go deeper<a name="note-Sun-Nov-10-173855EST-2013"></a>[|12|](#foot-Sun-Nov-10-173855EST-2013).
 
-### <a name="how-does-the-first-company-in-an-industry-pick-their-tools" href="#how-does-the-first-company-in-an-industry-pick-their-tools"></a>How does the first company in an industry pick their tools?
+### How does the first company in an industry pick their tools?
 
 Regardless of any other decision factors, the answer is almost by definition "before they really know what problems those tools will have to solve", and I've already discussed that one [pretty thoroughly](http://langnostic.blogspot.ca/2012/02/self-titled.html). There are no clients, so they can't pick that way, there are no other companies or vendors so there is no industry standard. They might look at what similar industries do. Would they use the best possible tool for the job though? Well, no. They're likely to go the *"What do our developers know how to use?"* route, which we've already discussed above.
 
@@ -85,7 +85,7 @@ and the big one
 
 The end result is that, in a sufficiently large company, it's safer to use a popular tool that's poor in the technical sense than it is to use an excellent tool no one's heard of. And that's *also* been [discussed thoroughly](http://paulgraham.com/avg.html), and [this time](http://www.joelonsoftware.com/items/2006/09/01.html) it wasn't even by me. The decision is made purely on the basis of popularity once again.
 
-### <a name="shit" href="#shit"></a>Shit
+### Shit
 
 We just bottomed out our recursion. Just in case you haven't been keeping score, literally every single level at which a tool can be selected is likely to be filled by the most popular tool in some context, and this popularity never requires, therefore never implies, *anything other than popularity*. One more time: **at no point in the process of selecting a toolkit do most choosers even try to see whether it's shit or not.** So I don't care how popular your steaming pile of imperative, counter-intuitive security-exploits-waiting-to-happen is; it's still shit.
 

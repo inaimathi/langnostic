@@ -8,13 +8,13 @@ I may or may not have referred to the OS X setup as "Lowest Common Denominator",
 
 Here's the trade-off you make when you choose your environment, or customize it, or (if you're really hardcore) build your own: **ease-of-use** vs. **worth-learning**. That's ***NOT*** a fancy way of saying `"you fuckers are lazy for not learning #{my_editor}"`. There's an actual trade there.
 
-## <a name="ease-of-use" href="#ease-of-use"></a>Ease of Use
+## Ease of Use
 
 When you sit down at this environment, it will be easy to pick up. You may need to learn one or two new keystrokes, and you may need to toggle one or two options to make it a bit comfortable. You will never have it explode on you. You'll never have to make use of its built-in auto-debugger, which it probably doesn't have, because it doesn't ship with the source code.
 
 You'll also never really bend it to your will, which means that you won't be coding as fast as you can possibly be coding. You'll need to make peace with the fact that it just plain won't let you do certain things, or force you to do certain repetitive things manually, and that you'll need to use external tools for certain pieces of your workflow. Assuming you choose to live with it.
 
-## <a name="worth-learning" href="#worth-learning"></a>Worth Learning
+## Worth Learning
 
 You can not pick up this environment in a day or two. It will take you weeks or months. It has substantially different keybindings than general-purpose editors because it is or includes a *special*-purpose editor. You need to go through a lot of configuration before you get it feeling just right. You may need to change your keyboard layout slightly, and/or write up a few custom modules. You *will* see the debugger, and you will say "Thank fucking god that I have access to this", because you will *need* it.
 
@@ -22,7 +22,7 @@ You will likely be able to pull source code for it, and it will likely have its 
 
 In the long run, it will make you much more productive. *Noticeably* more productive. You will show someone how you work, and their reaction will be "How the hell did you do that?".
 
-## <a name="where-it-matters" href="#where-it-matters"></a>Where It Matters
+## Where It Matters
 
 If you're a professional programmer, and actually want to be effective at it, I'd argue that it's a mistake not to pick the second option for your solo programming time. Note that this *doesn't* mean "pick Emacs". I did, but that's mainly because of the languages I use. [vi](https://en.wikipedia.org/wiki/Vi)/[vim](http://www.vim.org/), [Eclipse](http://eclipse.org/), [leksah](http://leksah.org/), [jEdit](http://www.jedit.org/), or whatever might make as much sense for you. [Gedit](http://projects.gnome.org/gedit/), or [Notepad++](http://www.notepad-plus-plus.org/) or similar doesn't cut it here. And if there are any mutants out there coding in Word or something, just stay away from me, because I will not be able to veil my contempt.
 

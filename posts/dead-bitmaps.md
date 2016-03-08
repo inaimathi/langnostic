@@ -1,16 +1,16 @@
 I've been pouring some of my time into trying to [automatically translate bitmap images into richer flowchart representation](https://github.com/Inaimathi/EAF#eaf)<a name="note-Tue-Oct-28-230119EDT-2014"></a>[|1|](#foot-Tue-Oct-28-230119EDT-2014). What I want ultimately, is a way of going from an old-fashioned, hand-crafted line drawing to something that I could easily use to pull [this trick](/article?name=the-big-problem-and-visual-compilers.html). I don't quite have anything workable yet, but it feels like I'm making some progress regardless. Enough to blog about it for a bit, in any case.
 
-### <a name="high-level" href="#high-level"></a>High Level
+### High Level
 
 I'm considering two very specific approaches at the moment, but there's a general direction I'm trying to go in. First and foremost, I want something that works, and don't care *too* much about purity or elegance. Which means I'm perfectly willing to cheat by introducing easy to handle out-of-band information. One thing I'm already considering, but won't reach for until I need it, is color-coding lines/arrows differently from shapes. So, for instance, anything red would be interpreted as lines while anything blue would be processed under the assumption that it represented shapes<a name="note-Tue-Oct-28-230122EDT-2014"></a>[|2|](#foot-Tue-Oct-28-230122EDT-2014).
 
 Secondly, I'm working with a very tight set of constraints on the source images I'm considering. These aren't going to be photographs. I admit, it would be cool to be able to draw a program in the sand, take a picture, and have it compile correctly, but that sounds ... hard. What I'll be dealing with to start with is going to be line drawings composed of primitive shapes, arrows and some sparse annotating text on a relatively uniform white background. Most of the work I've read on the subject of edge or feature detection has been aimed either at plain text nuder various transformations<a name="note-Tue-Oct-28-230127EDT-2014"></a>[|3|](#foot-Tue-Oct-28-230127EDT-2014), or at photographs<a name="note-Tue-Oct-28-230131EDT-2014"></a>[|4|](#foot-Tue-Oct-28-230131EDT-2014). The box and wire diagram area seems to be relatively unexplored.
 
-### <a name="thinning" href="#thinning"></a>Thinning
+### Thinning
 
 The first approach I'm thinking about is thinning the image down to the minimal number of points it takes to represent. Once that's done, it should be possible to connect the dots at some threshold of proximity and generate the appropriate line/shape facts that we need in order to proceed further. And honestly, that's about as much thought as I've put into this approach. If you want details, check [the README scection](https://github.com/Inaimathi/EAF#thinning) and [`Ping.hs`](https://github.com/Inaimathi/EAF/blob/master/Ping.hs). I might come back to it if the other `Direction` proves fruitless, or hits some unseen roadblocks.
 
-### <a name="directional-mapping" href="#directional-mapping"></a>Directional Mapping
+### Directional Mapping
 
 This is the approach I've been considering and prototyping most vigorously. Mostly because it seems within striking distance of workable results in the very near future. At its most distilled form, this involves deciding the directional tendency of each pixel in the image. Each one might be one of the Cardinal directions (North/South or East/West), one of the Ordinal directions (NorthEast/SouthWest or NorthWest/SouthEast), or it might be contested<a name="note-Tue-Oct-28-230150EDT-2014"></a>[|6|](#foot-Tue-Oct-28-230150EDT-2014).
 
@@ -38,14 +38,14 @@ findContiguous g cs = recur cs []
                                  Just _ -> recur rest $ c:acc
 
 ordinal :: Score -> Direction
-ordinal (Score _ _ sw se) = 
+ordinal (Score _ _ sw se) =
     case se `compare` sw of
       EQ -> C
       GT -> SW
       LT -> SE
 
 cardinal :: Score -> Direction
-cardinal (Score n e _ _) = 
+cardinal (Score n e _ _) =
     case n `compare` e of
       EQ -> C
       GT -> H
@@ -112,55 +112,55 @@ Ok, modules loaded: Util, Direction, SparseRead.
 Loading package array-0.4.0.1 ... linking ... done.
 Loading package deepseq-1.3.0.1 ... linking ... done.
 Loading package containers-0.5.0.0 ... linking ... done.
-   ||                          +    \/                         
-  --------------------         +   \o\////\\\\///\\\\o/        
------------------------        + \\o\o///oo\\oo//o\\\oo/       
- --|||-    ----   -|||--       +  \\o///    oooo   \\\o//      
-  o|||-           -|||-        +   \o///           o\\o/       
-  ||||             |||o        +   /\//             o\/o       
-   |||             |||         +    /oo             //\        
-  ||||            ||||         +   \//\            o///        
-  |||             ||||         +   o\/             /o//        
- -|||o            ||||-        +  /o\\/            /////       
- -|||o            ||||-        +  /o\\\            ///oo       
- -|||--         --o|||-        +  /\\\\\         /////o\       
-  --------------------         +   /o\\\\\\\\o////////\        
-  ---------||-------           +   /o\\\\\\\\o///////          
-         -||||-                +          \\\///               
-          ||||-                +           \\///               
-          ||||                 +           /\/o                
-          ||||                 +           //\\                
-         -||||                 +          ////\                
-         -|||                  +          /o/o                 
-   -o|    ||||-    |||         +    \\o    o\///    ///        
-   --oo  -||||    -o---        +    \\\o  \\///    /////       
-    o||   ||||   ------        +     \\\   oo/o   /////\       
-     ||o -||||  ------         +      \\\ //o\\  /////\        
-      ----|||o ----o           +       \\\//o\\ /////          
-       ---|||-----             +        /\\/\\\////            
-         -|||o---              +          \\o\////             
-          ||||-                +           \\///               
-           ||                  +            o\                 
-        ---||----              +         ////\\\\\             
-    -------||-------           +     o//////oo\\\\\\/          
-   ||----     -----||          +    o/////     \\\\\\/         
-  |||--          -|||          +   o////          \\\\         
-  |||o            ||||         +   ////            \\\\        
- o|||             o|||-        +  \///             \\\\/       
- o|||              |||--       +  \\/o              \\o\o      
- o|||              |||--       +  //\o              o/\\\      
- o|||              |||o        +  /\\\              ///\       
-  |||-           --|||         +   \\\\           /////        
-  |||----     -----||-         +   /\\\\\\     ///////\        
-   -----------------           +    /\\\\\\\/////////          
-      -----------              +       \\\\\o/////             
-         ----                  +          \\o/                 
-                               +                               
-                               +                               
-                               +                               
-                               +                               
+   ||                          +    \/
+  --------------------         +   \o\////\\\\///\\\\o/
+-----------------------        + \\o\o///oo\\oo//o\\\oo/
+ --|||-    ----   -|||--       +  \\o///    oooo   \\\o//
+  o|||-           -|||-        +   \o///           o\\o/
+  ||||             |||o        +   /\//             o\/o
+   |||             |||         +    /oo             //\
+  ||||            ||||         +   \//\            o///
+  |||             ||||         +   o\/             /o//
+ -|||o            ||||-        +  /o\\/            /////
+ -|||o            ||||-        +  /o\\\            ///oo
+ -|||--         --o|||-        +  /\\\\\         /////o\
+  --------------------         +   /o\\\\\\\\o////////\
+  ---------||-------           +   /o\\\\\\\\o///////
+         -||||-                +          \\\///
+          ||||-                +           \\///
+          ||||                 +           /\/o
+          ||||                 +           //\\
+         -||||                 +          ////\
+         -|||                  +          /o/o
+   -o|    ||||-    |||         +    \\o    o\///    ///
+   --oo  -||||    -o---        +    \\\o  \\///    /////
+    o||   ||||   ------        +     \\\   oo/o   /////\
+     ||o -||||  ------         +      \\\ //o\\  /////\
+      ----|||o ----o           +       \\\//o\\ /////
+       ---|||-----             +        /\\/\\\////
+         -|||o---              +          \\o\////
+          ||||-                +           \\///
+           ||                  +            o\
+        ---||----              +         ////\\\\\
+    -------||-------           +     o//////oo\\\\\\/
+   ||----     -----||          +    o/////     \\\\\\/
+  |||--          -|||          +   o////          \\\\
+  |||o            ||||         +   ////            \\\\
+ o|||             o|||-        +  \///             \\\\/
+ o|||              |||--       +  \\/o              \\o\o
+ o|||              |||--       +  //\o              o/\\\
+ o|||              |||o        +  /\\\              ///\
+  |||-           --|||         +   \\\\           /////
+  |||----     -----||-         +   /\\\\\\     ///////\
+   -----------------           +    /\\\\\\\/////////
+      -----------              +       \\\\\o/////
+         ----                  +          \\o/
+                               +
+                               +
+                               +
+                               +
 
-*Direction> 
+*Direction>
 ```
 
 That transformation alone gets you some traction, although not quite enough. What I'd really want is a decision function that would give me the result of trying to merge them, rather than just two separate maps. The easiest thing I can think of is
@@ -168,9 +168,9 @@ That transformation alone gets you some traction, although not quite enough. Wha
 ```ocaml
 decide :: Integer -> Score -> Direction
 decide threshold s@(Score n e sw se)
-    | ((n - threshold) > 0 || (e - threshold) > 0) 
+    | ((n - threshold) > 0 || (e - threshold) > 0)
       && (abs $ n - e) > threshold = cardinal s
-    | ((sw - threshold) > 0 || (se - threshold) > 0) 
+    | ((sw - threshold) > 0 || (se - threshold) > 0)
       && (abs $ sw - se) > threshold = ordinal s
     | otherwise = C
 ```
@@ -200,55 +200,55 @@ Direction.hs:44:15: Warning:
       (and originally defined at SparseRead.hs:33:1-8)
 Ok, modules loaded: Util, Direction, SparseRead.
 *Direction> main
-   ||                          +    \/                          +    ||                         
-  --------------------         +   \o\////\\\\///\\\\o/         +   --------------------        
------------------------        + \\o\o///oo\\oo//o\\\oo/        + -----------------------       
- --|||-    ----   -|||--       +  \\o///    oooo   \\\o//       +  oo||oo    oooo   o|||oo      
-  o|||-           -|||-        +   \o///           o\\o/        +   o||oo           o|||o       
-  ||||             |||o        +   /\//             o\/o        +   o||o             |||o       
-   |||             |||         +    /oo             //\         +    ||o             |||        
-  ||||            ||||         +   \//\            o///         +   o||o            o|||        
-  |||             ||||         +   o\/             /o//         +   o||             o|||        
- -|||o            ||||-        +  /o\\/            /////        +  oo||o            o|||o       
- -|||o            ||||-        +  /o\\\            ///oo        +  oo||\            /|||o       
- -|||--         --o|||-        +  /\\\\\         /////o\        +  oo||o\         o/o|ooo       
-  --------------------         +   /o\\\\\\\\o////////\         +   --------ooo---------        
-  ---------||-------           +   /o\\\\\\\\o///////           +   -oo-----ooo------o          
-         -||||-                +          \\\///                +          \|||o/               
-          ||||-                +           \\///                +           |||/o               
-          ||||                 +           /\/o                 +           |||o                
-          ||||                 +           //\\                 +           |||o                
-         -||||                 +          ////\                 +          o|||\                
-         -|||                  +          /o/o                  +          /|||                 
-   -o|    ||||-    |||         +    \\o    o\///    ///         +    \\o    |||oo    ///        
-   --oo  -||||    -o---        +    \\\o  \\///    /////        +    o\\o  o|||o    //ooo       
-    o||   ||||   ------        +     \\\   oo/o   /////\        +     o\\   |||o   //oooo       
-     ||o -||||  ------         +      \\\ //o\\  /////\         +      o\\ o|||o  //oooo        
-      ----|||o ----o           +       \\\//o\\ /////           +       o\-o|||o ///oo          
-       ---|||-----             +        /\\/\\\////             +        ---o||o----            
-         -|||o---              +          \\o\////              +          \|||/ooo             
-          ||||-                +           \\///                +           |||/o               
-           ||                  +            o\                  +            ||                 
-        ---||----              +         ////\\\\\              +         ---||----             
-    -------||-------           +     o//////oo\\\\\\/           +     o------oo------o          
-   ||----     -----||          +    o/////     \\\\\\/          +    ooo///     \\\\ooo         
-  |||--          -|||          +   o////          \\\\          +   oo|//          \\|o         
-  |||o            ||||         +   ////            \\\\         +   o||/            \|\o        
- o|||             o|||-        +  \///             \\\\/        +  oo||             o|ooo       
- o|||              |||--       +  \\/o              \\o\o       +  oo||              |\ooo      
- o|||              |||--       +  //\o              o/\\\       +  oo||              |oooo      
- o|||              |||o        +  /\\\              ///\        +  oo||              |ooo       
-  |||-           --|||         +   \\\\           /////         +   o||\           o/|oo        
-  |||----     -----||-         +   /\\\\\\     ///////\         +   oooo\oo     ooo/oooo        
-   -----------------           +    /\\\\\\\/////////           +    -----------------          
-      -----------              +       \\\\\o/////              +       -----------             
-         ----                  +          \\o/                  +          \ooo                 
-                               +                                +                               
-                               +                                +                               
-                               +                                +                               
-                               +                                +                               
+   ||                          +    \/                          +    ||
+  --------------------         +   \o\////\\\\///\\\\o/         +   --------------------
+-----------------------        + \\o\o///oo\\oo//o\\\oo/        + -----------------------
+ --|||-    ----   -|||--       +  \\o///    oooo   \\\o//       +  oo||oo    oooo   o|||oo
+  o|||-           -|||-        +   \o///           o\\o/        +   o||oo           o|||o
+  ||||             |||o        +   /\//             o\/o        +   o||o             |||o
+   |||             |||         +    /oo             //\         +    ||o             |||
+  ||||            ||||         +   \//\            o///         +   o||o            o|||
+  |||             ||||         +   o\/             /o//         +   o||             o|||
+ -|||o            ||||-        +  /o\\/            /////        +  oo||o            o|||o
+ -|||o            ||||-        +  /o\\\            ///oo        +  oo||\            /|||o
+ -|||--         --o|||-        +  /\\\\\         /////o\        +  oo||o\         o/o|ooo
+  --------------------         +   /o\\\\\\\\o////////\         +   --------ooo---------
+  ---------||-------           +   /o\\\\\\\\o///////           +   -oo-----ooo------o
+         -||||-                +          \\\///                +          \|||o/
+          ||||-                +           \\///                +           |||/o
+          ||||                 +           /\/o                 +           |||o
+          ||||                 +           //\\                 +           |||o
+         -||||                 +          ////\                 +          o|||\
+         -|||                  +          /o/o                  +          /|||
+   -o|    ||||-    |||         +    \\o    o\///    ///         +    \\o    |||oo    ///
+   --oo  -||||    -o---        +    \\\o  \\///    /////        +    o\\o  o|||o    //ooo
+    o||   ||||   ------        +     \\\   oo/o   /////\        +     o\\   |||o   //oooo
+     ||o -||||  ------         +      \\\ //o\\  /////\         +      o\\ o|||o  //oooo
+      ----|||o ----o           +       \\\//o\\ /////           +       o\-o|||o ///oo
+       ---|||-----             +        /\\/\\\////             +        ---o||o----
+         -|||o---              +          \\o\////              +          \|||/ooo
+          ||||-                +           \\///                +           |||/o
+           ||                  +            o\                  +            ||
+        ---||----              +         ////\\\\\              +         ---||----
+    -------||-------           +     o//////oo\\\\\\/           +     o------oo------o
+   ||----     -----||          +    o/////     \\\\\\/          +    ooo///     \\\\ooo
+  |||--          -|||          +   o////          \\\\          +   oo|//          \\|o
+  |||o            ||||         +   ////            \\\\         +   o||/            \|\o
+ o|||             o|||-        +  \///             \\\\/        +  oo||             o|ooo
+ o|||              |||--       +  \\/o              \\o\o       +  oo||              |\ooo
+ o|||              |||--       +  //\o              o/\\\       +  oo||              |oooo
+ o|||              |||o        +  /\\\              ///\        +  oo||              |ooo
+  |||-           --|||         +   \\\\           /////         +   o||\           o/|oo
+  |||----     -----||-         +   /\\\\\\     ///////\         +   oooo\oo     ooo/oooo
+   -----------------           +    /\\\\\\\/////////           +    -----------------
+      -----------              +       \\\\\o/////              +       -----------
+         ----                  +          \\o/                  +          \ooo
+                               +                                +
+                               +                                +
+                               +                                +
+                               +                                +
 
-*Direction> 
+*Direction>
 ```
 
 That third version can very nearly be naively converted to lines. The only real issues are
@@ -261,49 +261,49 @@ That third version can very nearly be naively converted to lines. The only real 
 The first two together might solve both, but introduce a new one; an ambiguity about where the break between the arrow line and the circle happens.
 
 <pre>
-    \/                          
-   \o\////\\\\///\\\\o/         
- \\o\o///oo\\oo//o\\\oo/        
-  \\o///    oooo   \\\o//       
-   \o///           o\\o/        
-   /\//             o\/o        
-    /oo             //\         
-   \//\            o///         
-   o\/             /o//         
-  /o\\/            /////        
-  /o\\\            ///oo        
-  /\\\\\         /////o\        
-   /o\\\\\\\\o////////\         
-   /o\\\\\\\\o///////           
-          \\\///                
-           \\///                
-           /\/o                 
-           //\\                 
-          ////\                 
-          /o/o                  
-    <span style="color: red;">\\</span>o    o\///    ///         
-    <span style="color: red;">\\\</span>o  \\///    /////        
-     <span style="color: red;">\\\</span>   oo/o   /////\        
-      <span style="color: red;">\\\</span> //o\\  /////\         
-       <span style="color: red;">\\\</span>//o\\ /////           
-        /<span style="color: red;">\\</span>/\\\////             
-          <span style="color: red;">\\</span>o\////              
-           <span style="color: red;">\\</span>///                
-            o<span style="color: red;">\</span>                  
-         ////<span style="color: red;">\\\\\</span>              
-     o//////oo<span style="color: red;">\\\\\\</span>/           
-    o/////     <span style="color: red;">\\\\\\</span>/          
-   o////          <span style="color: red;">\\\\</span>          
-   ////            <span style="color: red;">\\\\</span>         
-  \///             <span style="color: red;">\\\\</span>/        
-  \\/o              <span style="color: red;">\\</span>o<span style="color: red;">\</span>o       
-  //\o              o/<span style="color: red;">\\\</span>       
-  /\\\              ///<span style="color: red;">\</span>        
-   \\\\           /////         
-   /\\\\\\     ///////\         
-    /\\\\\\\/////////           
-       \\\\\o/////              
-          \\o/                  
+    \/
+   \o\////\\\\///\\\\o/
+ \\o\o///oo\\oo//o\\\oo/
+  \\o///    oooo   \\\o//
+   \o///           o\\o/
+   /\//             o\/o
+    /oo             //\
+   \//\            o///
+   o\/             /o//
+  /o\\/            /////
+  /o\\\            ///oo
+  /\\\\\         /////o\
+   /o\\\\\\\\o////////\
+   /o\\\\\\\\o///////
+          \\\///
+           \\///
+           /\/o
+           //\\
+          ////\
+          /o/o
+    <span style="color: red;">\\</span>o    o\///    ///
+    <span style="color: red;">\\\</span>o  \\///    /////
+     <span style="color: red;">\\\</span>   oo/o   /////\
+      <span style="color: red;">\\\</span> //o\\  /////\
+       <span style="color: red;">\\\</span>//o\\ /////
+        /<span style="color: red;">\\</span>/\\\////
+          <span style="color: red;">\\</span>o\////
+           <span style="color: red;">\\</span>///
+            o<span style="color: red;">\</span>
+         ////<span style="color: red;">\\\\\</span>
+     o//////oo<span style="color: red;">\\\\\\</span>/
+    o/////     <span style="color: red;">\\\\\\</span>/
+   o////          <span style="color: red;">\\\\</span>
+   ////            <span style="color: red;">\\\\</span>
+  \///             <span style="color: red;">\\\\</span>/
+  \\/o              <span style="color: red;">\\</span>o<span style="color: red;">\</span>o
+  //\o              o/<span style="color: red;">\\\</span>
+  /\\\              ///<span style="color: red;">\</span>
+   \\\\           /////
+   /\\\\\\     ///////\
+    /\\\\\\\/////////
+       \\\\\o/////
+          \\o/
 
 </pre>
 
@@ -363,79 +363,79 @@ That is one contiguous region, you see. And I don't see a way of breaking it wit
 it would be a fairly simple matter to do the arrow/shape separation first, and then figure out how each shape breaks down in the Cardinal/Ordinal sense. What I'd be looking for at that point is to see which of the two maps yielded full coverage of a particular area with the fewest lines. Which is how I could tell that
 
 <pre>
-   ||                          +    \/                         
-  --------------------         +   \o\////\\\\///\\\\o/        
------------------------        + \\o\o///oo\\oo//o\\\oo/       
- --|||-    ----   -|||--       +  \\o///    oooo   \\\o//      
-  o|||-           -|||-        +   \o///           o\\o/       
-  ||||             |||o        +   /\//             o\/o       
-   |||             |||         +    /oo             //\        
-  ||||            ||||         +   \//\            o///        
-  |||             ||||         +   o\/             /o//        
- -|||o            ||||-        +  /o\\/            /////       
- -|||o            ||||-        +  /o\\\            ///oo       
- -|||--         --o|||-        +  /\\\\\         /////o\       
-  --------------------         +   /o\\\\\\\\o////////\        
-  ---------||-------           +   /o\\\\\\\\o///////          
+   ||                          +    \/
+  --------------------         +   \o\////\\\\///\\\\o/
+-----------------------        + \\o\o///oo\\oo//o\\\oo/
+ --|||-    ----   -|||--       +  \\o///    oooo   \\\o//
+  o|||-           -|||-        +   \o///           o\\o/
+  ||||             |||o        +   /\//             o\/o
+   |||             |||         +    /oo             //\
+  ||||            ||||         +   \//\            o///
+  |||             ||||         +   o\/             /o//
+ -|||o            ||||-        +  /o\\/            /////
+ -|||o            ||||-        +  /o\\\            ///oo
+ -|||--         --o|||-        +  /\\\\\         /////o\
+  --------------------         +   /o\\\\\\\\o////////\
+  ---------||-------           +   /o\\\\\\\\o///////
 </pre>
 
 this is meant to be a Cardinal shape; it can be drawn with four cardinal lines<a name="note-Tue-Oct-28-230220EDT-2014"></a>[|7|](#foot-Tue-Oct-28-230220EDT-2014), whereas the ordinal map specifies between 6 and 8 depending specifically on where you set the threshold for recognizing a line<a name="note-Tue-Oct-28-230224EDT-2014"></a>[|8|](#foot-Tue-Oct-28-230224EDT-2014). This also has the side benefit of disambiguating curves/circles from squares/lines;
 
 
 <pre>
-        ---||----              +         ////\\\\\             
-    -------||-------           +     o//////oo\\\\\\/          
-   ||----     -----||          +    o/////     \\\\\\/         
-  |||--          -|||          +   o////          \\\\         
-  |||o            ||||         +   ////            \\\\        
- o|||             o|||-        +  \///             \\\\/       
- o|||              |||--       +  \\/o              \\o\o      
- o|||              |||--       +  //\o              o/\\\      
- o|||              |||o        +  /\\\              ///\       
-  |||-           --|||         +   \\\\           /////        
-  |||----     -----||-         +   /\\\\\\     ///////\        
-   -----------------           +    /\\\\\\\/////////          
-      -----------              +       \\\\\o/////             
-         ----                  +          \\o/                 
+        ---||----              +         ////\\\\\
+    -------||-------           +     o//////oo\\\\\\/
+   ||----     -----||          +    o/////     \\\\\\/
+  |||--          -|||          +   o////          \\\\
+  |||o            ||||         +   ////            \\\\
+ o|||             o|||-        +  \///             \\\\/
+ o|||              |||--       +  \\/o              \\o\o
+ o|||              |||--       +  //\o              o/\\\
+ o|||              |||o        +  /\\\              ///\
+  |||-           --|||         +   \\\\           /////
+  |||----     -----||-         +   /\\\\\\     ///////\
+   -----------------           +    /\\\\\\\/////////
+      -----------              +       \\\\\o/////
+         ----                  +          \\o/
 </pre>
 
 
 Curves are areas where the cardinal and ordinal approaches tie for efficiency. There is another issue though.
 
 <pre>
-       ||||          +        ---------        +    ||                   
-      -|||o-         +    ----------------     +   --------------------  
-       ||||-         +   ||----     -----||    + ----------------------- 
+       ||||          +        ---------        +    ||
+      -|||o-         +    ----------------     +   --------------------
+       ||||-         +   ||----     -----||    + -----------------------
        ||||          +  |||--          -|||    +  --|||-    ----   -|||--
-       ||||          +  |||o            ||||   +   o|||-           -|||- 
-      -||||          + o|||             o|||-  +   ||||             |||o 
-      -|||           + o|||              |||-- +    |||             |||  
--o|    ||||-    |||  + o|||              |||-- +   ||||            ||||  
---oo  -||||    -o--- + o|||              |||o  +   |||             ||||  
- o||   ||||   ------ +  |||-           --|||   +  -|||o            ||||- 
-  ||o -||||  ------  +  |||----     -----||-   +  -|||o            ||||- 
-   ----|||o ----o    +   -----------------     +  -|||--         --o|||- 
-    ---|||-----      +      -----------        +   --------------------  
-      -|||o---       +         ----            +   -||-----    ----||    
-       ||||-         +                         +                         
-        ||           +                         +                         
+       ||||          +  |||o            ||||   +   o|||-           -|||-
+      -||||          + o|||             o|||-  +   ||||             |||o
+      -|||           + o|||              |||-- +    |||             |||
+-o|    ||||-    |||  + o|||              |||-- +   ||||            ||||
+--oo  -||||    -o--- + o|||              |||o  +   |||             ||||
+ o||   ||||   ------ +  |||-           --|||   +  -|||o            ||||-
+  ||o -||||  ------  +  |||----     -----||-   +  -|||o            ||||-
+   ----|||o ----o    +   -----------------     +  -|||--         --o|||-
+    ---|||-----      +      -----------        +   --------------------
+      -|||o---       +         ----            +   -||-----    ----||
+       ||||-         +                         +
+        ||           +                         +
 
-       \\o/          +        ///o\\\\\        +    \/                   
-      \\\///         +    o/////ooo\\\\\\/     +   \o\////\\\\///\\\\o/  
-       \o///         +   o/////     o\\\\\/    + \\o\o///oo\\oo//o\\\oo/ 
+       \\o/          +        ///o\\\\\        +    \/
+      \\\///         +    o/////ooo\\\\\\/     +   \o\////\\\\///\\\\o/
+       \o///         +   o/////     o\\\\\/    + \\o\o///oo\\oo//o\\\oo/
        /o//          +  o////          \\\\    +  \\o///    oooo   \\\o//
-       //o/          +  ////            \\\\   +   \o///           o\\o/ 
-      o///\          + \///             \\\\/  +   /\//             o\/o 
-      /o/o           + \\/o              \\o\o +    /oo             //\  
-\\o    o\///    ///  + //\o              o/\\\ +   o//\            o///  
-\\\o  \\///    ///// + /\\\              ///\  +   o\/             /o//  
- \\\   oo/o   /////\ +  \\\\           /////   +  /o\\/            ///// 
-  \\\ //o\\  /////\  +  /\\\\\\     ///////\   +  /o\\\            ///oo 
-   \\\//o\\ /////    +   /\\\\\\\/////////     +  /\\\\\         o////o\ 
-    /\\/\\\////      +      \\\\\o/////        +   /o\\\\o//oo\\//////\  
-      \\o\////       +         \\o/            +   /o\\\\\o    //////    
-       \\///         +                         +                         
-        oo           +                         +                         
+       //o/          +  ////            \\\\   +   \o///           o\\o/
+      o///\          + \///             \\\\/  +   /\//             o\/o
+      /o/o           + \\/o              \\o\o +    /oo             //\
+\\o    o\///    ///  + //\o              o/\\\ +   o//\            o///
+\\\o  \\///    ///// + /\\\              ///\  +   o\/             /o//
+ \\\   oo/o   /////\ +  \\\\           /////   +  /o\\/            /////
+  \\\ //o\\  /////\  +  /\\\\\\     ///////\   +  /o\\\            ///oo
+   \\\//o\\ /////    +   /\\\\\\\/////////     +  /\\\\\         o////o\
+    /\\/\\\////      +      \\\\\o/////        +   /o\\\\o//oo\\//////\
+      \\o\////       +         \\o/            +   /o\\\\\o    //////
+       \\///         +                         +
+        oo           +                         +
 </pre>
 
 

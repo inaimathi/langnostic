@@ -1,18 +1,18 @@
 Fairly boring update time. I still haven't really had enough time to tear into the next real article I've got planned, but its been long enough that I need to release mental steam.
 
-### <a name="future-of-programming" href="#future-of-programming"></a>Future of Programming
+### Future of Programming
 
 So [this](https://vimeo.com/97623064) is a thing. I'm not sure how I feel about it since it was a zero-edit, one sitting walk-through of a still very incomplete version of [`cl-notebook`](https://github.com/Inaimathi/cl-notebook), but at least it's a thing. I recently submitted it to John Edwards et als' [Future of Programming workshop](http://www.future-programming.org/call.html) where, I guess, I'm hoping to get in as a token "blast from the past" entry. The funny part is that even if I get selected to participate at these conferences, there's no way in hell I could go. My passport is somewhat out of date, and I've got a family to care for and a job to do here. Hopefully they've got a remote option I guess?
 
 Someone just sort of mentioned the thing off-hand, and I immediately assumed from the title that this was just a mechanism by which to get more feedback on particular programming projects you were working on. Presenting to [this crowd](https://thestrangeloop.com/) isn't something I thought was part of the deal.
 
-### <a name="memory" href="#memory"></a>Memory
+### Memory
 
 So it turns out that the memory management landscape I briefly mused about [last time](/article?name=arbitrary-update-932.html) is even simpler than I thought. Because "tracers" and "refernce counters" [turn out to be duals](http://www.cs.virginia.edu/~cs415/reading/bacon-garbage.pdf). You can either follow that link to the paper, or [this one](https://www.youtube.com/watch?v=XtUtfARSIv8) to the [Papers We Love](https://www.youtube.com/channel/UCoj4eQh_dZR37lL78ymC6XA) video explaining it. Both elucidate wonderfully.
 
 So there isn't even five different ways of approaching memory, there's four.
 
-### <a name="http-on-windows" href="#http-on-windows"></a>HTTP On Windows...
+### HTTP On Windows...
 
 ...is a sack of balls. It's especially a sack of balls in Lisp (or leastwise SBCL), which tries to be clever about how to parse incoming line-endings. Let me back up a bit first.
 
@@ -31,7 +31,7 @@ However, one such piece of compatibility code crosses the line into outright inf
 
 ```lisp
 (defun line-terminated? (lst)
-  (starts-with-subseq 
+  (starts-with-subseq
    #-win32(list #\linefeed #\return #\linefeed #\return)
    #+win32(list #\newline #\newline)
    lst))
@@ -42,7 +42,7 @@ Why do I need this? It's because platform-specific line-endings read from a `cha
 ```lisp
 CL-USER> (eq #\linefeed #\newline)
 T
-CL-USER> 
+CL-USER>
 ```
 
 The situation's different on Windows though. There, a line ends with `CRLF`. Which happens to be the actual specified line-ending for HTTP. Combining these fairly sensical decisions gets you the situation that you *can't* check for a char-stream HTTP line-ending on Windows by looking for a terminating `CRLF`.
@@ -81,9 +81,9 @@ Backtrace:
 
 It's because there's no non-blocking way to grab a `byte` out of a stream. There *is* such a way to grab a `char`, but that doesn't help in this situation. Anyway, the end result of all of this is that ugly little hack that makes the line-ending check conditional on execution platform.
 
-### <a name="factbase-changes" href="#factbase-changes"></a>[`fact-base`](https://github.com/Inaimathi/fact-base) changes
+### `fact-base` changes
 
-Two changes I'd been considering for a while got pushed recently.
+Two changes I'd been considering for a while got [pushed](https://github.com/Inaimathi/fact-base) recently.
 
 Firstly, there's an intermediate data-structure backing `delta`s and `history`s. It's extremely simple; just a linked list you can push to the back of. The end result is saving a tiny bit of time when reading or writing things, because you suddenly don't need to reverse anything for it to work properly. Not big, and this changes literally nothing as far as *users* of `fact-base` are concerned, but it feels better not to have to toss `reverse` into the equation every so often.
 

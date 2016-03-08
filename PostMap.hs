@@ -1,7 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
-module PostMap where
+module PostMap ( PostMap, postMap, bySlug, byTags, postBody
+               , BlogPost, PostMap.id, title, edited, posted, tags) where
 
 import Data.Aeson
+import Data.List (intersect)
 import Data.Maybe (catMaybes)
 import Text.Blaze.Html (Html)
 import qualified Data.ByteString.Lazy as BS
@@ -26,17 +28,26 @@ instance FromJSON BlogPost where
                 <*> o .: "posted"
                 <*> o .: "tags"
 
-type PostMap = Cache [(BlogPost, Cache Html)]
+type PostMap = [BlogPost]
 
--- bySlug :: PostMap -> String -> BlogPost
+postBody :: BlogPost -> IO Html
+postBody post = readPost $ "posts/" ++ file post ++ ".md"
+
+bySlug :: PostMap -> String -> Maybe BlogPost
+bySlug pm slug = case filter ((==slug) . file) pm of
+                   [] -> Nothing
+                   res -> Just $ head res
+
+byTags :: PostMap -> [String] -> [BlogPost]
+byTags pm ts = filter hasSome pm
+    where hasSome post = case ts `intersect` tags post of
+                           [] -> False
+                           _ -> True
 
 postMap :: IO PostMap
-postMap = newCache (minutes 30) posts "posts.json"
+postMap = posts "posts.json"
 
-posts :: FilePath -> IO [(BlogPost, Cache Html)]
+posts :: FilePath -> IO [BlogPost]
 posts fname = do
   f <- BS.readFile fname
-  mapM getCache $ catMaybes . map decode $ C8.split '\n' f
-      where getCache p = do
-                c <- cachePost ("posts/" ++ file p ++ ".md")
-                return $ (p, c)
+  return $ catMaybes . map decode $ C8.split '\n' f

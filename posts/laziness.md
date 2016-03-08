@@ -2,7 +2,7 @@ I've gotten some questions about what, exactly, [laziness](http://en.wikipedia.o
 
 Short answer: **it saves you space and time**.
 
-## <a name="space" href="#space"></a>Space
+## Space
 
 Really, this should be obvious, but if we're going through this, lets do it properly. Here are some lists
 
@@ -68,7 +68,7 @@ Granted the second set looks more complicated, except for the Haskell line, but 
 
 That's basic stuff, it should be pretty obvious. Less obvious, but more significant, is how this saves you time.
 
-## <a name="time" href="#time"></a>Time
+## Time
 
 By its lonesome, it actually doesn't.
 

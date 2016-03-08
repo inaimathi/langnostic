@@ -1,6 +1,6 @@
 Part three of my journal for the [Deal Project](https://github.com/Inaimathi/deal). Part [one](http://langnostic.blogspot.ca/2013/08/deal-journal-part-one.html) and [two](http://langnostic.blogspot.ca/2013/09/deal-part-2.html) are already up, of course.
 
-## <a name="t-minus-days" href="#t-minus-days"></a>T minus 22 days
+## T minus 22 days
 
 There's a couple of small patterns that I've come across. One:
 
@@ -63,7 +63,7 @@ Tadaah. I also took the liberty of having the `$button` macro add a custom body 
 
 Much better. I'll be adding both of these to [cl-web-dev](https://github.com/Inaimathi/cl-web-dev) later on. While we're on the subject by the way, [that project](https://github.com/Inaimathi/cl-web-dev) has been very helpful for me, even though I've yet to actually use it anywhere. Porting code from `:deal` to `:cl-web-dev` forced me to think about how to generalize certain constructs, and its made me pay a lot more attention to the small assumptions I've been making while writing front-end code. I thoroughly recommend it. In fact, I may just get into the habit of writing a general version along with whatever project-specific code I'm writing in the future.
 
-## <a name="later-that-day" href="#later-that-day"></a>Later That Day...
+## Later That Day...
 
 Two things. First off, I updated the `$on` macro to give me the same kind of sugar as `$keydown`
 
@@ -71,8 +71,8 @@ Two things. First off, I updated the `$on` macro to give me the same kind of sug
 (defpsmacro $on (context-selector &rest event/selector/behavior-list)
   `($ ,context-selector
       ,@(loop for (ev sel . behav) in event/selector/behavior-list
-           collect 
-             `(on ,ev ,sel (lambda (event) 
+           collect
+             `(on ,ev ,sel (lambda (event)
                              ,@(if (eq ev :keydown)
                                    `((let (,@mod-keys ,@key-codes
                                            (key-code (or (@ event key-code) (@ event which))))
@@ -106,7 +106,7 @@ As in, when the client needs to load a part of their local filesystem, they'll u
 ; deal.lisp
 
 ...
-;;; TODO: figure out a way to do this entirely on the client side. 
+;;; TODO: figure out a way to do this entirely on the client side.
 ;;; Why should I have to give a rats' ass what they want to load?
 (define-handler (load-deck) ((deck :json-file))
   deck)
@@ -118,8 +118,8 @@ As in, when the client needs to load a part of their local filesystem, they'll u
 ; deal-ui.lisp
 
 ...
-($ "#load-deck-form" 
-   (change 
+($ "#load-deck-form"
+   (change
     (fn ($upload "#load-deck-form" "/load-deck"
                  (load-deck-for-editing res)))))
 ...
@@ -137,7 +137,7 @@ There has got to be a better way of doing that. If all else fails, I'll just unw
 
 What you're looking at is an `On` implementation of `identity`, with some really, *really* bad, network-dependent constant factors tacked on. And the entire thing is completely, aggravatingly unnecessary anyway because as the comment says: why do I care what my users are loading in the first place? I guess it doesn't really matter for the short term. It will *begin* to matter the instant people start actually using the thing, because I really won't be able to afford the extra traffic at that point.
 
-## <a name="t-minus-days" href="#t-minus-days"></a>T minus 21 days
+## T minus 21 days
 
 Today, I showed Deal off to the [first bunch of humans who aren't programmers](https://bentomiso.com/events/40-games-with-friends). Reaction was by and large positive, so that's good I guess. Also, someone called me an "idealistic craftsman", in what I'm sure he thought was a condescending way, but, well... I resemble that remark.
 
@@ -154,11 +154,11 @@ I figured I could wait on these, but having seen some games people actually play
 
 The server-side components for all of those have been implemented, by the by. By the time this is published, they'll have been in production for about two weeks. The *client* side will take a little longer. Mostly because I have to figure out intuitive ways to trigger all of this without cluttering the UI.
 
-## <a name="t-minus-days" href="#t-minus-days"></a>T minus 14 days
+## T minus 14 days
 
 I've been spending most of my time figuring out a new server arrangement for the project. Which I did, more or less, and the incomplete<a name="note-Sun-Sep-29-203116EDT-2013"></a>[|4|](#foot-Sun-Sep-29-203116EDT-2013) results have already been published [here](http://langnostic.blogspot.ca/2013/09/deal-journal-interlude-one-treatise-on.html). I don't expect the session is going to give me any trouble at all, but I'm still leaving it for a bit. I've already got a running server with the shitty deployment method, after all, and work on the UI will benefit my current as well as my future deployments, so I figure those are higher priority targets. In particular, the more I think about rotation the more I think that's going to be the really annoying feature to add. We'll see I guess. I hope to have a further update on this project for you later today.
 
-## <a name="t-minus-days" href="#t-minus-days"></a>T minus 13 days
+## T minus 13 days
 
 Got a bit done yesterday, and a bit today. It turns out that neither implementing [element rotation](http://vremenno.net/js/jquery-ui-rotation-using-css-transform/) nor implementing [HTML5 localStorage](http://www.w3schools.com/html/html5_webstorage.asp) were particularly difficult. It did give me a couple of ideas that I'll need to look into though
 
@@ -171,13 +171,13 @@ The project's really winding down though. Apart from that server rewrite/tweak I
 
 Lets see what it'll take to make it beautiful instead of just nice...
 
-## <a name="t-minus-days" href="#t-minus-days"></a>T minus 9 days
+## T minus 9 days
 
 The deck editor has finally been overhauled into something approaching beautiful. You no longer need to know JSON to use it at all<a name="note-Sun-Sep-29-203128EDT-2013"></a>[|7|](#foot-Sun-Sep-29-203128EDT-2013), and it's reasonably intuitive. That's it. That was the goal. I've amended the note in README.md to reflect that we now, in fact, have the prototyping down cold.
 
 At this point I'm giving serious thought to plowing ahead and putting together that special-purpose server I was on about last time. In a separate branch obviously, so that I still have something to show if it passes "pencils down" before I get done with it, but still.
 
-## <a name="t-minus-days" href="#t-minus-days"></a>T minus 8 days
+## T minus 8 days
 
 I've re-considered that again. Looking at the [issue tracker](https://github.com/Inaimathi/deal/issues), there's still a few things I want to put together *before* I start thinking about re-engineering the back end. It still needs to happen; putting together a stripped-down, async server with SSE and Session capabilities out of the box will make game writing in Lisp much easier. To the point that I might finally go back and finish up [Strifebarge](http://langnostic.blogspot.ca/2012/02/strifebarge-turn-based-web-games-in.html) once it's done. For this specific project though, some stuff is slightly more important than re-working the back end. Stuff like card images, custom notes, peek/show/play-from, setting the number of seats and starting private games. Normally, I'd say that's a short list. And I'd probably try to get all of the above done. Unfortunately, my next week is going to be busy as hell even without factoring in the additional work I intend to pour into Deal, so I'm picking my battles at the moment.
 
@@ -189,19 +189,19 @@ Roll20 takes a similar *approach*, but has much different *goals*. It's a web ap
 
 I guess you could look at Deal as an attempt to unify these two applications, but that would imply I was aware of either when I started, and I wasn't.
 
-## <a name="t-minus-days" href="#t-minus-days"></a>T minus 4 days
+## T minus 4 days
 
 I seriously wanted to do a countdown from 5, but life gets in the way of that. Today I had an idea for a cooperative card game heavily riffing off of [ShadowRift](http://boardgamegeek.com/boardgame/112092/shadowrift), so I figured I'd put Deal through its paces. It was slow going at first, I'll admit, but I added two or three minor features that made it easier. Most notably, the card editor now deals with copy count rather than naively treating each individual card as a separate record, even if they're copies. It still doesn't go deep; the JSON representation I save still does the stupid thing and it shouldn't in the long run, but the interface has been greatly simplified. I'm going to release the game files so you guys can try it once I get it to version 1.0.
 
 This weekend is the last couple of full days I'll be able to throw at the thing before the contest is up, which means I want to add a last couple of features to the front end, then concentrate on cleanup. There aren't any particularly gnarly bits I can think of off the top of my head, but its been a while since I got the chance to just sit down and read the UI code, so maybe I'll see rot accumulating where I wasn't expecting it.
 
-## <a name="t-minus-days" href="#t-minus-days"></a>T minus 3 days
+## T minus 3 days
 
 Today saw some minor UI changes, inspired by my attempt to actually build a game, as well as the removal of the last piece of stupid JS hack code on the server. There used to be a thing, which I already bitched about earlier, that looked like this
 
 ```lisp
 ;;;;;;;;;; Stupid hacks around in-browser JS limitations
-;;; TODO: figure out a way to do this entirely on the client side. 
+;;; TODO: figure out a way to do this entirely on the client side.
 ;;; Why should I have to give a rats' ass what they want to load?
 (define-handler (load-deck) ((deck :json-file))
   deck)
@@ -220,7 +220,7 @@ The way I ended up solving that was with a bit of HTML5 tech (which unfortunatel
            (,f-list (chain document (get-element-by-id ,elem-id) files)))
        (setf (@ reader onloadend)
              (lambda (event)
-               (let ((res (string->obj (@ event target result)))) 
+               (let ((res (string->obj (@ event target result))))
                  ,@body)))
        (when ,f-list
          (chain reader (read-as-text (@ ,f-list 0)))))))
@@ -230,8 +230,8 @@ The way I ended up solving that was with a bit of HTML5 tech (which unfortunatel
 ```lisp
 ;;; in deal-ui.lisp
 ...
-($ "#load-deck-form" 
-   (change (fn 
+($ "#load-deck-form"
+   (change (fn
             ($load "load-deck-file" (load-deck-for-editing res))
             ($ "#load-deck-dialog" (dialog :close)))))
 ...
@@ -243,7 +243,7 @@ The block in `deal-ui.lisp` just calls that macro in a `change` event for `#load
 
 Not as pretty as it could possibly be, but it does the job.
 
-## <a name="t-minus-days" href="#t-minus-days"></a>T Minus 2 days
+## T Minus 2 days
 
 I'm in the middle of throwing the second biggest chunk of time I've had at this project. For an opener, I put together a peek system which lets players look at and manipulate the cards in stacks. You can just peek, and you can reorder the cards you're looking at, *and* you can take arbitrary ones into your hand. Of course, as usual, all of this is logged in the games public broadcast, so you can't exactly cheat inconspicuously using these techniques.
 
@@ -259,7 +259,7 @@ That killed a good three or four feature requests with one stone. Before the day
 
 and that's all. Once those are put together, I'm just doing a final few cleanup runs before the deadline is up. At that point, I'll consider this One Point Ohed, and I'll move on to the larger project chunklets I still want to put together, including a custom server and multi-select functionality.
 
-## <a name="later-that-day" href="#later-that-day"></a>Later That Day...
+## Later That Day...
 
 So that's done.
 
@@ -269,7 +269,7 @@ All of it.
 
 The only thing I've got left to do tomorrow is cleanup, which is non-trivial but certainly possible. I don't even have enough mental energy to witter about technique at this point, so I know damn well that I don't want to bite off any more features on a schedule this tight. This has been a pretty draining three months, all things considered, but I'm almost done here. A break will be quite welcome after that.
 
-## <a name="dawn-of-the-final-day" href="#dawn-of-the-final-day"></a>Dawn of the Final day
+## Dawn of the Final day
 
 Satori.
 
@@ -409,7 +409,7 @@ What I want there is to replace an existing game record with an update. It's not
                 collect (expand-self-expression clause 'thing)))))))
 ```
 
-There. That adds optional `prepend?` and `replace?` options to `define-thing`. Note that I make the choice about replacement and prepending in the macro call, rather than the resulting function definition. That means that I can't `prepend` a thing I've declared as `append`ing<a name="note-Sun-Sep-29-203250EDT-2013"></a>[|18|](#foot-Sun-Sep-29-203250EDT-2013), but it means more work can be done at macro-expansion time, which is usually a good thing. 
+There. That adds optional `prepend?` and `replace?` options to `define-thing`. Note that I make the choice about replacement and prepending in the macro call, rather than the resulting function definition. That means that I can't `prepend` a thing I've declared as `append`ing<a name="note-Sun-Sep-29-203250EDT-2013"></a>[|18|](#foot-Sun-Sep-29-203250EDT-2013), but it means more work can be done at macro-expansion time, which is usually a good thing.
 
 As an aside, in the course of this edit, I noticed that there's another call pattern surrounding `$exists?`. Specifically
 
@@ -450,7 +450,7 @@ Ahem. Now, then<a name="note-Sun-Sep-29-203259EDT-2013"></a>[|19|](#foot-Sun-Sep
                     (:span :class "players" (:span :class "count" (self player-count)) "/" (self max-players))
                     (:button :class "join" "Join"))
              ($highlight $self)
-             ($button ($child ".join") (:arrowthick-1-ne) 
+             ($button ($child ".join") (:arrowthick-1-ne)
                       (let ((passphrase ""))
                         (lobby/join-table (self id) passphrase))))
 ...
@@ -491,14 +491,14 @@ Next up, there's a few elements on the front end that *are* components, but aren
   ($button "#new-table-setup .ok" (:check :text? t)
            (lobby/new-table ($ "#new-table-setup .game-tag" (val)) ""))
   ($button "#new-table-setup .cancel" (:cancel :text? t) ($ "#new-table-setup" (hide)))
-  
-  ($keydown "#new-table-setup .game-tag" 
+
+  ($keydown "#new-table-setup .game-tag"
             <ret> ($ "#new-table-setup .ok" (click))
             <esc> ($ "#new-table-setup .cancel" (click))))
 ...
 
 (define-component (custom-tablecloth-form :empty? nil)
-    (:div :id "custom-tablecloth-form" :class "overlay" 
+    (:div :id "custom-tablecloth-form" :class "overlay"
           (:h3 "Custom Tablecloth")
           (:div :class "content"
                 (:input :class "url-input" :placeholder "Tablecloth image URL")
@@ -542,8 +542,8 @@ Next up, there's a few elements on the front end that *are* components, but aren
                 (:form :id "load-deck-inputs" :enctype "multipart/form-data"
                        (:input :id "load-deck-file" :name "deck" :type "file")))
           (:button :class "cancel" "Cancel"))
-  ($ "#load-deck-inputs" 
-     (change (fn 
+  ($ "#load-deck-inputs"
+     (change (fn
               ($load "load-deck-file" (load-deck-for-editing res))
               ($ "#load-deck-form" (hide)))))
   ($button "#load-deck-form .cancel" (:cancel :text? t) ($ "#load-deck-form" (hide))))
@@ -673,7 +673,7 @@ But all of that, and probably a lot more besides, will have to wait until I've h
 
 18 - <a name="foot-Sun-Sep-29-203250EDT-2013"></a>[|back|](#note-Sun-Sep-29-203250EDT-2013) - Which I don't need to do anywhere.
 
-19 - <a name="foot-Sun-Sep-29-203259EDT-2013"></a>[|back|](#note-Sun-Sep-29-203259EDT-2013) - Actually, as an aside to the aside, this change ended up giving me the expression 
+19 - <a name="foot-Sun-Sep-29-203259EDT-2013"></a>[|back|](#note-Sun-Sep-29-203259EDT-2013) - Actually, as an aside to the aside, this change ended up giving me the expression
 
 ```lisp
 (aif ($exists? (+ ".new-deck.new-custom-deck[title='" deck-name "']"))

@@ -2,13 +2,13 @@ So you may have noticed that I took down that <a name="note-Sun-Apr-05-173817EDT
 
 Anyway, the transformation process is sufficiently advanced that I can talk about it now.
 
-## <a name="why-wiki" href="#why-wiki"></a>Why Wiki?
+## Why Wiki?
 
 Because it's simple enough to put together in a weekend or so, has enough tricky edges that it'll take me through most of the potential sore-points of a new language, and it's still vaguely entertaining to try.
 
 Also, `gitit` still doesn't compile properly via `nix`, so I may actually find myself in the situation of *using* this toy project for something.
 
-## <a name="what-wiki" href="#what-wiki"></a>What Wiki?
+## What Wiki?
 
 My goals here are minimal:
 
@@ -20,7 +20,7 @@ My goals here are minimal:
 
 I'm pointedly not worried about other markup dialects, nor am I worrying about exporting the data as anything other than `.md` files (or naively as a `git` repo). That still gets you through a lot of what you'll need out of a language. Even a project as minimal as this will force me to interact with command-line argument parsing, executing external commands, file I/O, markdown parsing, HTML templating and serving HTTP.
 
-## <a name="how-wiki" href="#how-wiki"></a>How Wiki?
+## How Wiki?
 
 To start with, the project page is [here](https://github.com/Inaimathi/wik). I don't intend to take this one down, and even though this is an entirely toy project, literate patches welcome.
 
@@ -46,7 +46,7 @@ func main() {
 
         fmt.Printf("Serving %s\n", flag.Arg(0))
         fmt.Printf("Listening on local port %d...\n", *port)
-        
+
         static := http.FileServer(http.Dir("static"))
         http.Handle("/static/", http.StripPrefix("/static/", static))
 
@@ -82,19 +82,19 @@ func ShowPage (wiki *Wiki) func (http.ResponseWriter, *http.Request) {
         flist := template.Must(template.ParseFiles("static/templates/list.html", "static/templates/base.html"))
         return func (w http.ResponseWriter, r *http.Request) {
                 p, err := wiki.Local(r.URL.Path)
-                if err == nil { 
+                if err == nil {
                         info, err := os.Stat(p)
                         if err == nil && info.IsDir() {
                                 dir, e := wiki.GetDir(r.URL.Path)
-                                if e == nil { 
+                                if e == nil {
                                         lst := &List{URI: r.URL.Path, Links: dir}
                                         flist.ExecuteTemplate(w, "base", lst)
                                 }
                         } else if err == nil {
                                 pg, e := wiki.GetPage(r.URL.Path)
-                                if e == nil { 
+                                if e == nil {
                                         pg.ProcessMarkdown()
-                                        show.ExecuteTemplate(w, "base", pg) 
+                                        show.ExecuteTemplate(w, "base", pg)
                                 }
                         } else {
                                 pg := &Page{ URI: r.URL.Path }
@@ -159,7 +159,7 @@ type Trail struct {
         Name string
 }
 
-// Breadcrumbs takes a URI and returns the Trail of breadcrumbs that lead to it. 
+// Breadcrumbs takes a URI and returns the Trail of breadcrumbs that lead to it.
 //   "/"                => {[] "home"}
 //   "/test.md"         => {[{"home" "/"}] "test.md"}
 //   "/a/b/test.md"     => {[{"home" "/"} {"a" "/a"} {"b" "/a/b"}] "test.md"}
@@ -331,7 +331,7 @@ func (w *Wiki) ExecIn(command string, args ...string) error {
 }
 
 // Local takes a path and checks if it would fall within the given
-// repo if joined with it. Returns either 
+// repo if joined with it. Returns either
 //   [sanitized path], nil    // if the given path is valid
 //   "", error                // otherwise
 func (w *Wiki) Local(path string) (string, error) {
@@ -353,7 +353,7 @@ func (w *Wiki) Local(path string) (string, error) {
 
 Effectively, we've got two arguments. A `Wiki` pointer named `w`, and a `string` named `path`. And we've got Two return values, a `string` and an `error`<a name="note-Sun-Apr-05-180610EDT-2015"></a>[|5|](#foot-Sun-Apr-05-180610EDT-2015). A call to this looks like `aWiki.Local("some/path/here")`, and that `aWiki` part will be implicit first argument, as in most languages with object systems. Incidentally, there's no multiple dispatch here. You can't do something like `func (a *Foo, b *Bar) MethodName(baz string) ...`, and will get a compile-time error if you try.
 
-## <a name="golang-first-impressions" href="#golang-first-impressions"></a>Golang, First Impressions
+## Golang, First Impressions
 
 This is slightly lighter fare than my usual semi-literate programming articles, mainly because I really want to get to a summary of my first impressions of the language. And I get the feeling that it'll get too long if I do the usual deep-dive into every single function and method. A lot of it is pretty self-explanatory anyhow, and most of it comes with inline comments besides. If you were looking for an in-depth syntax primer, I thoroughly recommend [`x in y where x=go`](http://learnxinyminutes.com/docs/go/)
 

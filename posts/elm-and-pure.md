@@ -1,15 +1,15 @@
 Two things on the agenda today. First, Elm has gotten some improvements that might mean I end up using it in production at some point. Second, I tried a new language called [Pure](http://purelang.bitbucket.org/), which I found by searching for "dynamically typed haskell". Stick around if that sounds interesting.
 
-> EDIT:  
-> Do not bother sticking around if that sounds interesting. I ended up talking about Elm so much that I never got into Pure.  
->   
-> Tue, 18 Feb, 2014  
+> EDIT:
+> Do not bother sticking around if that sounds interesting. I ended up talking about Elm so much that I never got into Pure.
+>
+> Tue, 18 Feb, 2014
 
-### <a name="elm-lang" href="#elm-lang"></a>Elm Lang
+### Elm Lang
 
 For those of you just joining us, [Elm](http://elm-lang.org/) is a pure-functional, statically typed, optionally-type-inferring language closely based on [Haskell](http://www.haskell.org/haskellwiki/Haskell), which targets a JavaScript-hosted VM for deployment. That is, there's an `elm-runtime.js` which Elm code compiles to target, and the result is highly reactive web front-ends that don't require any mucking around with the DOM. Now that we're all on the same page...
 
-### <a name="elm-again" href="#elm-again"></a>Elm. Again.
+### Elm. Again.
 
 This came up at a recent [Code Retreat](https://bentomiso.com/events/toronto-code-retreat-2014-feb), and it looks interesting as fuck in context with the FBP stuff I've been doing at work recently. The problem we were solving at the event was autocompletion. That is, given a partial input, return possible completions from some dictionary. Here's a short<a name="note-Mon-Feb-17-150009EST-2014"></a>[|1|](#foot-Mon-Feb-17-150009EST-2014) implementation in Elm.
 
@@ -105,7 +105,7 @@ wordList = String.words "one two three four five six seven eight nine ten"
 
 These remaining lines render the input and completions to screen, and set up the extremely minimal test dictionary. That's it. What we have here is exactly what was described. An input, backed by a word list, which is cleared on either Enter or Esc, and completed on Ctrl+Space.
 
-### <a name="the-new-part" href="#the-new-part"></a>The New Part
+### The New Part
 
 None of that was new.
 
@@ -168,8 +168,8 @@ The file you'd embed that module into would look something like this<a name="not
   <body>
     <div id="auto" style="position: absolute; left: 50px; top: 50px; width: 600px; height: 100px; border: 2px dashed #000;"></div>
     <script type="text/javascript">
-      var can = Elm.embed(Elm.Autocomplete, 
-                          document.getElementById("auto"), 
+      var can = Elm.embed(Elm.Autocomplete,
+                          document.getElementById("auto"),
                           {wordList: ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"]});
       can.ports.output.subscribe(function (msg) { console.log("FROM MINIBUFFER :: ", msg) })
     </script>
@@ -177,10 +177,10 @@ The file you'd embed that module into would look something like this<a name="not
 </html>
 ```
 
-> EDIT:  
->   
-> You can find a running demo of the above [here](http://173.255.226.138/elm-sample/embed.html).  
-> Sat, 22 Feb, 2014  
+> EDIT:
+>
+> You can find a running demo of the above [here](http://173.255.226.138/elm-sample/embed.html).
+> Sat, 22 Feb, 2014
 
 The relevant bits are the positioned `div`, which will contain our program, and the `Elm.embed` call, which sets it up. Note especially the third argument; you have to do that for any input ports in the component you're embedding. Finally, note the `subscribe` call which fits that output port we defined with a listener, in this case a naive one that just prints everything it gets to the console.
 
@@ -188,12 +188,12 @@ This is awesome.
 
 It's awesome enough that I'm seriously considering Elm for some production work *at* work. Because I want to apply Elm in the places where it'll do massive amounts of good, and leave the other stuff to stateful JavaScript programs. Using the ports approach above, I can get exactly that. If there was something similar for Hskell, I'd probably have taken the plunge and built something with it by now<a name="note-Mon-Feb-17-150312EST-2014"></a>[|8|](#foot-Mon-Feb-17-150312EST-2014).
 
-### <a name="in-case-youre-reading-evancz" href="#in-case-youre-reading-evancz"></a>In Case You're Reading, [evancz](https://github.com/evancz)
+### In Case You're Reading, [evancz](https://github.com/evancz)
 
 There are still a [few minor headaches with the language](http://langnostic.blogspot.ca/2013/06/elm-in-practice.html), though thankfully I didn't have to stub my toe on most of them this time around. The only ones that ended up being annoying, or will be very shortly are
 
 
-- **No signal defaults from within `.elm` files**. This bites during development. When you have an Elm module that will depend on an outside signal for its operation, you have to set a default value for that signal outside. This is ok once you've got the embedding file together, but it does mean that that second `Autocomplete.elm` file above will give you the error 
+- **No signal defaults from within `.elm` files**. This bites during development. When you have an Elm module that will depend on an outside signal for its operation, you have to set a default value for that signal outside. This is ok once you've got the embedding file together, but it does mean that that second `Autocomplete.elm` file above will give you the error
 
 ```
 Initialization Error: port 'wordList' was not given an input!

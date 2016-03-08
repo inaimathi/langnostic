@@ -2,7 +2,7 @@ I've had occasion to work with these relatively often, and in various different 
 
 There are two basic approaches to doing routing. The table-oriented one, and the handler-oriented one.
 
-## <a name="table-oriented" href="#table-oriented"></a>Table Oriented
+## Table Oriented
 
 Is probably the most widely known at this point. You have some mechanism for defining handlers, which is entirely separated from the routing, and a central routing table somewhere that contains all the bindings of routes to handlers. You'll see this approach in Python's [Tornado](http://www.tornadoweb.org/en/stable/)
 
@@ -39,7 +39,7 @@ as well as Clojure's [`compojure`](https://github.com/weavejester/compojure) (sn
 
 These two have a few minor differences (The `compojure` version routes off to functions, and does so explicitly, while the Tornado version specifies `class`es to handle routing, and does so implicitly (the actual method call itself is generated for you). The `compojure` version is explicit about the HTTP method a particular handler takes, while the Tornado version handles that at the class level; the route targets are expected to have `.get`/`.post`/`.put`/etc. methods defined, which are called as specified by the client request. Finally, the `compojure` version explicitly gives you a `req` argument to pass to your target, which is handled behind the scenes in the Tornado version), of course, but the core concept is the same centralized table of URIs to handlers.
 
-## <a name="handler-oriented" href="#handler-oriented"></a>Handler Oriented
+## Handler Oriented
 
 Involves putting the routing and handler definition machinery together. This is the approach taken by the `go` server, `house` and `hunchentoot`.
 
@@ -60,8 +60,8 @@ func ShowEdit (wiki *Wiki) func (http.ResponseWriter, *http.Request) {
 ```lisp
 ...
 (define-handler (article) ((name :string))
-  (aif (for-all `(and (?id :file ,name) (?id :title ?title) (?id :body ?body)) 
-                :in *base* 
+  (aif (for-all `(and (?id :file ,name) (?id :title ?title) (?id :body ?body))
+                :in *base*
                 :collect (page ((str ?title) :section "blog")
                            (str ?body)
                            (:hr)
@@ -88,7 +88,7 @@ func ShowEdit (wiki *Wiki) func (http.ResponseWriter, *http.Request) {
 
 Again, minor differences. [`house`](https://github.com/Inaimathi/house) lets you annotate your parameters and handles validation, [`hunchentoot`](http://weitz.de/hunchentoot/) lets you specify a URI that's different than the procedure name, and [the `go` server](http://golang.org/pkg/net/http/) asks for a function rather than giving you a piece of syntax to define it in-line. But the common point they share is that there isn't a table being defined in one fell swoop. It's implicit, and incrementally added to by each handler you define in your codebase.
 
-## <a name="comparing" href="#comparing"></a>Comparing...
+## Comparing...
 
 First off, they're mechanically equivalent. Both of them produce some sort of lookup structure that later gets used in the decision of what response needs to be sent back to a particular client. Which means that the final output of both approaches is ultimately something like `Map URI (Params -> Response)`. The difference is how they get there, and what the implications are for you as the reader of the program.
 
@@ -106,15 +106,15 @@ It's enough to make me wonder whether you could build a hybrid system that had a
 
 Incoming context shift.
 
-## <a name="the-validation-structure" href="#the-validation-structure"></a>The Validation Structure
+## The Validation Structure
 
 Having worked with a few other web frameworks and servers lately, the main piece of `house` that I end up missing is the automated parameter validation and extraction. And as I've been saying in various real-life conversations, that's a piece that can be abstracted from any particular server. For demonstration purposes, the `article` handler above is actually a bad example
 
 ```lisp
 ...
 (define-handler (article) ((name :string))
-  (aif (for-all `(and (?id :file ,name) (?id :title ?title) (?id :body ?body)) 
-                :in *base* 
+  (aif (for-all `(and (?id :file ,name) (?id :title ?title) (?id :body ?body))
+                :in *base*
                 :collect (page ((str ?title) :section "blog")
                            (str ?body)
                            (:hr)
@@ -156,7 +156,7 @@ And if you had done that, you would have introduced the subtle bug involving a f
 
 And suddenly, a program that should only span seven characters is complex enough that you need to exert non-trivial effort to understand it. And that's without even considering the routing mechanism and actual parameter lookup. As a rule, I like to avoid this level of incidental complexity where I can. And this is a place where I can, because the machinery to automatically do this work is extensive but regular and fairly simple. The current version of `house` has a [built-in solution](https://github.com/Inaimathi/house/blob/master/define-handler.lisp), but it's bound to the handler-oriented style, and is specialized to work with the `house` server. Maybe that's not such a bad thing, but lets think about what we're doing and how we'd generalize, just for fun.
 
-## <a name="thinking-about-it" href="#thinking-about-it"></a>Thinking About It
+## Thinking About It
 
 Basically, a handler is a function of some number of parameters to a response. Which doesn't sound hard at all. The problem is that those parameters:
 

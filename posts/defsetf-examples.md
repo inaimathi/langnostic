@@ -29,7 +29,7 @@ Restarts:
 
 There are two ways of fixing this.
 
-### <a name="if-you-dont-need-clos-support" href="#if-you-dont-need-clos-support"></a>If You Don't Need CLOS Support
+### If You Don't Need CLOS Support
 
 For instance, if your `lookup` is a function rather than a method, you can get away with doing something like this
 
@@ -56,7 +56,7 @@ NEW-VAL
 CL-USER> (lookup :test foo)
 NEW-VAL
 T
-CL-USER> 
+CL-USER>
 ```
 
 This isn't satisfying if the lookup abstraction you've defined is a method though. Because then you get into this problem
@@ -105,7 +105,7 @@ Backtrace:
   ...
 ```
 
-### <a name="if-you-need-clos-support" href="#if-you-need-clos-support"></a>If You Need CLOS Support
+### If You Need CLOS Support
 
 Then you'll need to define a `setf` generic. In the example we've been using, you could do the following:
 

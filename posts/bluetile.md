@@ -2,11 +2,11 @@ Just a quick update this week; I intend to record my thoughts on Bluetile (and I
 
 To start with
 
-### <a name="why-a-tiling-wm" href="#why-a-tiling-wm"></a>Why a Tiling WM?
+### Why a Tiling WM?
 
 I actually get asked this at work, so I won't assume that you're automatically on-board with the idea of using a tiling window manager. The most common questions are "Why?" and "Isn't it hard learning all those keystrokes?" The second is the easier question, so I'll answer it first; yes. But a good window manager should let you adjust keybindings<a name="bluetilen1"></a>[|1|](#bluetilef1), and the point here is to make your environment fast, not so easy to learn that the office secretary could use your computer in a pinch.
 
-The answer to the first question is basically that. 
+The answer to the first question is basically that.
 
 It makes you faster.
 
@@ -18,13 +18,13 @@ Think about your editor. Actually, if you don't use Emacs, think about your edit
 1.   Moving, sizing and adjusting windows (especially if you've got multiple, large screens. I typically have my editor, browser, debugger, a terminal window and maybe a movie to watch in the background. As I type this, I'm watching a talk on ["Models and Theories" by Peter Norvig](http://vimeo.com/4725365), which I can heartily recommend.)
 
 
-The first point is something that you'd want a keyboard-driven browser for (I use [Conkeror](http://conkeror.org/) for preference, though most people seem to have decided to live with the mouse in the context of their browser), but 2 and 3 are both things that a good tiling window manager will solve for you. Depending on the manager, you either get a "run" command (a keystroke that brings up a little input where you can type the name of the program you want to run), or a keystroke for the most common programs, or both, which means that you don't need to rely on the mouse to run programs. You just need to hit Win-p and type emacs or (in my case) hit C-t C-e. Either of these is faster than grabbing the mouse, getting to your desktop, moving the cursor over and double-clicking on the Emacs icon. 
+The first point is something that you'd want a keyboard-driven browser for (I use [Conkeror](http://conkeror.org/) for preference, though most people seem to have decided to live with the mouse in the context of their browser), but 2 and 3 are both things that a good tiling window manager will solve for you. Depending on the manager, you either get a "run" command (a keystroke that brings up a little input where you can type the name of the program you want to run), or a keystroke for the most common programs, or both, which means that you don't need to rely on the mouse to run programs. You just need to hit Win-p and type emacs or (in my case) hit C-t C-e. Either of these is faster than grabbing the mouse, getting to your desktop, moving the cursor over and double-clicking on the Emacs icon.
 
-Moving, sizing and adjusting is typically done in order to get maximum use of your screen real-estate. For my part, I rarely want overlapping windows, but I always want as much of my screen used as possible. The way tiling WMs work is by automatically laying out any windows you open so that they take up as much space as you need (either by letting you specify splits and groups as in StumpWM, or by letting you manage layouts in xmonad). By remembering a few extra keystrokes, you free yourself entirely from the mouse. 
+Moving, sizing and adjusting is typically done in order to get maximum use of your screen real-estate. For my part, I rarely want overlapping windows, but I always want as much of my screen used as possible. The way tiling WMs work is by automatically laying out any windows you open so that they take up as much space as you need (either by letting you specify splits and groups as in StumpWM, or by letting you manage layouts in xmonad). By remembering a few extra keystrokes, you free yourself entirely from the mouse.
 
 So that's why.
 
-### <a name="bluetile-really" href="#bluetile-really"></a>Bluetile (really)
+### Bluetile (really)
 
 That brings me to [Bluetile](http://www.bluetile.org/). I've been using [StumpWM](http://www.nongnu.org/stumpwm/) for my purposes, but I wanted to try out the competition. Bluetile is a derivative of [xmonad](http://xmonad.org/), the Haskell-based tiling WM, with an aim of being easy for beginners to get into. They do this, kind of ironically, by putting in mouse-oriented controls and by running on top of Gnome instead of standalone. That's pretty sweet, actually, and it seems to be fairly easy for beginners to get into. The trouble is that it doesn't do a very good job solving the problems I mentioned above (so while it's easy to get into, I doubt it would do a good job convincing beginners that tiling WMs are worth the trouble). First, it provides on-screen icons for navigation (each of which have keyboard counterparts, I'm just bemoaning the waste of screen space), and it keeps toolbars and gaps between windows so that you can still see your start bar and background. The gaps have no reason I can see; the toolbars are kept so that you can still click on windows and drag them around, which sort of defeats the purpose.
 

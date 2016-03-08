@@ -2,9 +2,9 @@ I've been thinking about this for a bit, and I'm honestly not sure I can underst
 
 In general, having Falsy things makes it easier to use the `if` statement, and not having them means getting more explicit code. With that in mind, here's the state of play across the spectrum.
 
-### <a name="haskell" href="#haskell"></a>Haskell
+### Haskell
 
-doesn't take your shit. If you want to use `if` instead of pattern matching or guards, you're damn well going to pass it a `Bool`. 
+doesn't take your shit. If you want to use `if` instead of pattern matching or guards, you're damn well going to pass it a `Bool`.
 
 ```haskell
 GHCi, version 7.4.1: http://www.haskell.org/ghc/  :? for help
@@ -37,7 +37,7 @@ Prelude> yayNay 0
     In the first argument of `yayNay', namely `0'
     In the expression: yayNay 0
     In an equation for `it': it = yayNay 0
-Prelude> 
+Prelude>
 ```
 
 If you want to check whether something is `not empty` rather than merely `False`, check for *that*.
@@ -57,7 +57,7 @@ foo list = handleN
 
 Finally, if you want to express "this computation can fail": be explicit about it and use a `Maybe`. Then handle the `Nothing` case, whether with a `>>=` or a `case` or a `do`. Haskell likes being explicit.
 
-### <a name="python" href="#python"></a>Python
+### Python
 
 At the entirely other end of the spectrum is Python. It'll take your shit, interpreting `if` in a Pythonic™© way to mean the appropriate empty check in some contexts.
 
@@ -67,7 +67,7 @@ At the entirely other end of the spectrum is Python. It'll take your shit, inter
 ...             return "Yay!"
 ...     else:
 ...             return "Nay!"
-... 
+...
 >>> yayNay(False)
 'Nay!'
 >>> yayNay([])
@@ -82,7 +82,7 @@ At the entirely other end of the spectrum is Python. It'll take your shit, inter
 'Nay!'
 >>> yayNay(0)
 'Nay!'
->>> 
+>>>
 ```
 
 I'm not sure how to feel about that. On the one hand, yes, empty checks are easier. On the other, empty checks usually aren't what you actually want<a name="note-Fri-May-24-141347EDT-2013"></a>[|1|](#foot-Fri-May-24-141347EDT-2013), and I can't see another benefit of doing things this way. I also don't really understand why `[]` and `0` should be Falsy, but `[0]` should be Truthy. Also, it's not quite as simple as "Empty values should be Falsy". Because there are classes that are in the standard library for which this behavior would also make sense<a name="note-Fri-May-24-141352EDT-2013"></a>[|2|](#foot-Fri-May-24-141352EDT-2013), but that lack it.
@@ -93,7 +93,7 @@ I'm not sure how to feel about that. On the one hand, yes, empty checks are easi
 <Queue.Queue instance at 0x2837518>
 >>> yayNay(Queue.Queue())
 'Yay!'
->>> 
+>>>
 ```
 
 Despite those built-ins, it does seem to be possible to define your own Falsies. You can either define a `[__nonzero__](http://docs.python.org/2/reference/datamodel.html#object.__nonzero__)` method for your class, which should return the explicit boolean value you want it mapped to, or a `[__len__](http://docs.python.org/2/reference/datamodel.html#object.__len__)` method, in which case your class will be treated as Falsy if its `len` is zero.
@@ -102,7 +102,7 @@ Despite those built-ins, it does seem to be possible to define your own Falsies.
 >>> class Falsy(object):
 ...     def __nonzero__(self):
 ...             return False
-... 
+...
 >>> yayNay(Falsy())
 Nay!
 >>> class ShittyStack(object):
@@ -114,7 +114,7 @@ Nay!
 ...             self.stack.append(thing)
 ...     def pop(self):
 ...             return self.stack.pop()
-... 
+...
 >>> s = ShittyStack()
 >>> yayNay(s)
 Nay!
@@ -123,7 +123,7 @@ Nay!
 Yay!
 ```
 
-### <a name="javascript" href="#javascript"></a>JavaScript
+### JavaScript
 
 does almost the same thing as Python, but adds `null`, `undefined` and `NaN` to the list of Falsy values, and considers empty sequences *other* than the empty string Truthy. That is,
 
@@ -150,7 +150,7 @@ undefined
 
 There are no tuples in JS, so it can't do anything there. I have no idea what the reasoning is otherwise though. I especially have no idea what would possess someone to think that making the empty array Truthy *and* the empty string Falsy, unless strings are actually implemented as linked lists underneath.
 
-### <a name="common-lisp" href="#common-lisp"></a>Common Lisp
+### Common Lisp
 
 is middle-of-the road in this respect. It has a canonical `t` and `nil` as `True`/`False`, but `nil` also pulls double-duty as the empty list.
 
@@ -170,20 +170,20 @@ CL-USER> (yay-nay '())
 :NAY!
 CL-USER> (yay-nay nil)
 :NAY!
-CL-USER> 
+CL-USER>
 ```
 
 To a first approximation, it seems that the rationale here is "Sequences that you're likely to interact with through recursion should be Falsy when empty". Except that breaks down when you think about it a bit, because Common Lisp doesn't support tail call optimization either, the way that say, Scheme does.
 
 Speaking of which...
 
-### <a name="scheme" href="#scheme"></a>Scheme
+### Scheme
 
 ```scheme
 CHICKEN
 (c)2008-2011 The Chicken Team
 (c)2000-2007 Felix L. Winkelmann
-Version 4.7.0 
+Version 4.7.0
 linux-unix-gnu-x86-64 [ 64bit manyargs dload ptables ]
 compiled 2011-09-05 on gladstone.duckburg.org (Linux)
 
@@ -211,9 +211,9 @@ nay!
 #;8>
 ```
 
-Scheme, or at least [Chicken Scheme](http://www.call-cc.org/), *doesn't* seem to treat anything but an actual `#f` as false. Which is mildly bizarre, because the recursion logic would actually make sense here. 
+Scheme, or at least [Chicken Scheme](http://www.call-cc.org/), *doesn't* seem to treat anything but an actual `#f` as false. Which is mildly bizarre, because the recursion logic would actually make sense here.
 
-### <a name="clojure" href="#clojure"></a>Clojure
+### Clojure
 
 seems to do its usual and split the difference between Common Lisp and Scheme.
 
@@ -235,16 +235,16 @@ user=> (yay-nay nil)
 :nay!
 user=> (yay-nay false)
 :nay!
-user=> 
+user=>
 ```
 
 That is, empty sequences are all Truthy, `false` is obviously `false`, and `nil` is a Falsy value that doesn't double as the empty list.
 
-### <a name="conclusion" href="#conclusion"></a>Conclusion
+### Conclusion
 
 Hah! You thought I was going to conclude something?
 
-### <a name="nonconclusion" href="#nonconclusion"></a>Non-Conclusion
+### Non-Conclusion
 
 Why is `nil` Falsy in Clojure? Why is `[]` Truthy but `""` Falsy in JavaScript? Why, if a language has already decided to support empty sequences and values as Falsy, is a sequence composed of nothing but Falsy values Truthy? Why give this treatment only to some sequences and container values?
 

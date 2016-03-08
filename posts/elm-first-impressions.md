@@ -1,4 +1,4 @@
-For the past little while, I've been poking around a new language named [Elm](http://elm-lang.org/). A Haskell-like web front-end language with a heavy focus on [FRP](http://en.wikipedia.org/wiki/Functional_reactive_programming). Actually, no, it's not *like* Haskell, its [syntax](http://elm-lang.org/learn/Syntax.elm) *is* Haskell except for a few [omissions](http://elm-lang.org/learn/Syntax.elm#things-not-in-elm)<a name="note-Mon-Jun-17-232836EDT-2013"></a>[|1|](#foot-Mon-Jun-17-232836EDT-2013), a [couple](http://elm-lang.org/learn/Syntax.elm#type-annotations) justifiable [small](http://elm-lang.org/learn/Syntax.elm#records) changes, and a couple pointlessly gratuitous differences<a name="note-Mon-Jun-17-232840EDT-2013"></a>[|2|](#foot-Mon-Jun-17-232840EDT-2013). To the point that the actual, official [recommendation](http://elm-lang.org/Download.elm) is to just use [Haskell mode](http://projects.haskell.org/haskellmode-emacs/) to edit Elm files. 
+For the past little while, I've been poking around a new language named [Elm](http://elm-lang.org/). A Haskell-like web front-end language with a heavy focus on [FRP](http://en.wikipedia.org/wiki/Functional_reactive_programming). Actually, no, it's not *like* Haskell, its [syntax](http://elm-lang.org/learn/Syntax.elm) *is* Haskell except for a few [omissions](http://elm-lang.org/learn/Syntax.elm#things-not-in-elm)<a name="note-Mon-Jun-17-232836EDT-2013"></a>[|1|](#foot-Mon-Jun-17-232836EDT-2013), a [couple](http://elm-lang.org/learn/Syntax.elm#type-annotations) justifiable [small](http://elm-lang.org/learn/Syntax.elm#records) changes, and a couple pointlessly gratuitous differences<a name="note-Mon-Jun-17-232840EDT-2013"></a>[|2|](#foot-Mon-Jun-17-232840EDT-2013). To the point that the actual, official [recommendation](http://elm-lang.org/Download.elm) is to just use [Haskell mode](http://projects.haskell.org/haskellmode-emacs/) to edit Elm files.
 
 This works pretty well, except for one thing: Elm has a [built-in reader macro for Markdown](http://elm-lang.org/edit/examples/Elements/Markdown.elm) input. Using this feature in Haskell mode plays all kinds of hell with your indentation and highlighting. Enough that I thought it worth-it to hack a workaround in using [`two-mode-mode`](http://www.welton.it/freesoftware/files/two-mode-mode.el). This is far from ideal, but bear with me. You need to get `two-mode-mode` from that previous link, do a search/replace for `mode-name` into `major-mode`, and delete the line that reads `(make-local-hook 'post-command-hook)`. Then, you have to add the following to your `.emacs` somewhere:
 
@@ -10,7 +10,7 @@ This works pretty well, except for one thing: Elm has a [built-in reader macro f
 
 and then run `two-mode-mode` whenever you're editing `.elm` files. The end result is that, whenever you enter a `markdown` block with your cursor, your major mode will automatically change to `markdown-mode`, and change back to `haskell-mode` when you leave. There *has* to be a better solution than this, probably involving one of the other [Multiple Modes modules](http://www.emacswiki.org/emacs/MultipleModes), and I'll put some thought into it when I get a bit of time.
 
-### <a name="installationbasics" href="#installationbasics"></a>Installation/Basics
+### Installation/Basics
 
 Installing is ridiculously easy. If you've ever installed a module for Haskell, you won't have trouble. It's just `cabal update; cabal install elm elm-server`. Do the `update` first, like it says there; the language hasn't reached `1.0` status as of this writing, which means that it's quite likely there will be significant changes by the time you get around to following these instructions.
 
@@ -20,7 +20,7 @@ If you're like me though, you prefer to use static files for your actual front-e
 
 Enough with the minutia though. Really, I'm here to give you a paragraph or two on what I think about the language.
 
-### <a name="what-i-think-about-the-language" href="#what-i-think-about-the-language"></a>What I think about the Language
+### What I think about the Language
 
 The usual disclaimers apply.
 

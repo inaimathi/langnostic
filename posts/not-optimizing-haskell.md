@@ -1,6 +1,6 @@
 The flu can go fuck itself in its nonexistent, viral ass. This shit will not beat me. While I run down the clock, I'm profiling more things to make me feel a bit better.
 
-First off, neither GHCi nor Haskell mode doesn't come with an interactive profiler. Or, as far as I can tell, any utilities to make batch profiling any easier. The way you [profile Haskell programs](http://www.haskell.org/ghc/docs/7.0.1/html/users_guide/profiling.html) is by installing the profiling extensions 
+First off, neither GHCi nor Haskell mode doesn't come with an interactive profiler. Or, as far as I can tell, any utilities to make batch profiling any easier. The way you [profile Haskell programs](http://www.haskell.org/ghc/docs/7.0.1/html/users_guide/profiling.html) is by installing the profiling extensions
 
 ```shell
 apt-get install libghc-mtl-dev libghc-mtl-prof
@@ -25,11 +25,11 @@ So... lets automate this.
 ```emacs-lisp
 (defun ha-custom-profile-buffer ()
   (interactive)
-  (find-file-other-window 
+  (find-file-other-window
    (ha-custom-profile-haskell-file (buffer-file-name))))
 
 (defun ha-custom-profile-haskell-file (abs-filename)
-  "Compiles the given file with profiling, 
+  "Compiles the given file with profiling,
 runs it with the +RTS -p flags and returns
 the filename of the profiling output."
   (assert (string= "hs" (file-name-extension abs-filename)))
@@ -46,7 +46,7 @@ the filename of the profiling output."
 
 Those functions are both now part of my [ha-custom](https://github.com/Inaimathi/emacs-utils/blob/master/ha-custom.el) mode. The big one takes a Haskell file, compiles it to a tempfile with the appropriate flags, runs the result with the other appropriate flags, and returns the name of the profiling output file. The little function takes the current buffer and runs it through the big one, then opens the result in a new window. That should make it a bit easier to actually do the profiling.
 
-### <a name="actually-profiling-haskell" href="#actually-profiling-haskell"></a>Actually Profiling Haskell
+### Actually Profiling Haskell
 
 We started with pretty much the same thing as the Lisp code. And, I'll strip the printing elements again for the purposes of this exercise; we're not interested in how inefficient it is to actually produce a grid based on our model of the world.
 
@@ -127,7 +127,7 @@ inRange low n high = low < n && n < high
 lifeStep :: Int -> Set (Int, Int) -> Set (Int, Int)
 lifeStep worldSize cells = fromList [head g | g <- grouped cells, viable g]
   where grouped = group . sort . concatMap neighbors . toList
-        neighbors (x, y) = [(x+dx, y+dy) | dx <- [-1..1], dy <- [-1..1], 
+        neighbors (x, y) = [(x+dx, y+dy) | dx <- [-1..1], dy <- [-1..1],
                             (dx,dy) /= (0,0), inSize (dx+x) (dy+y)]
         inSize x y = inR x worldSize && inR y worldSize
         inR = inRange 0
@@ -167,7 +167,7 @@ lifeStep.inR       Main      2.9    0.0
 
 Granted, `inRange` is on the map as a cost center, but this shaved ~28 seconds off the final run time, I'm gonna call that fair enough. Given the numbers we were posting yesterday, I'm almost tempted to call this good enough. Lets see where it all goes, shall we? Step size of
 
-### <a name="" href="#"></a>50
+### 50
 
 ```
         Fri Dec 14 22:06 2012 Time and Allocation Profiling Report  (Final)
@@ -190,7 +190,7 @@ lifeStep.inR       Main      3.4    0.0
 
 We've seen 5000 already, so
 
-### <a name="" href="#"></a>50 000
+### 50 000
 
 ```
         Fri Dec 14 22:07 2012 Time and Allocation Profiling Report  (Final)
@@ -211,7 +211,7 @@ lifeStep.inSize    Main        3.8    6.0
 lifeStep.inR       Main        2.4    0.0
 ```
 
-### <a name="" href="#"></a>5 000 000
+### 5 000 000
 
 ```
         Fri Dec 14 22:37 2012 Time and Allocation Profiling Report  (Final)
@@ -236,11 +236,11 @@ It's funny, after just clipping the board, we start getting *much* better number
 
 ```haskell
 import Data.Array.Unboxed
-import Data.List (unfoldr) 
+import Data.List (unfoldr)
 
 type Grid = UArray (Int,Int) Bool
  -- The grid is indexed by (y, x).
- 
+
 life :: Int -> Int -> Grid -> Grid
 {- Returns the given Grid advanced by one generation. -}
 life w h old =
@@ -251,11 +251,11 @@ life w h old =
                 n = count [get (x + x') (y + y') |
                     x' <- [-1, 0, 1], y' <- [-1, 0, 1],
                     not (x' == 0 && y' == 0)]
- 
+
         get x y | x < x1 || x > x2 = False
                 | y < y1 || y > y2 = False
                 | otherwise       = old ! (y, x)
- 
+
 count :: [Bool] -> Int
 count = length . filter id
 
@@ -266,13 +266,13 @@ grid l = (width, height, a)
         f = map g
         g '.' = False
         g _   = True
- 
+
 printGrid :: Int -> Grid -> IO ()
 printGrid width = mapM_ f . split width . elems
   where f = putStrLn . map g
         g False = '.'
         g _     = '#'
- 
+
 split :: Int -> [a] -> [[a]]
 split n = takeWhile (not . null) . unfoldr (Just . splitAt n)
 
@@ -330,13 +330,13 @@ gosperGliderGun = grid
 
 printLife :: Int -> (Int, Int, Grid) -> IO ()
 printLife n (w, h, g) = printGrid w . last . take n $ iterate (life w h) g
- 
+
 main = printLife 50 gosperGliderGun
 ```
 
 Ok, lets rev this sucker up.
 
-### <a name="" href="#"></a>50
+### 50
 
 ```
         Fri Dec 14 22:29 2012 Time and Allocation Profiling Report  (Final)
@@ -355,7 +355,7 @@ count       Main      3.5    0.8
 life        Main      2.0    3.9
 ```
 
-### <a name="" href="#"></a>5000
+### 5000
 
 ```
         Fri Dec 14 22:32 2012 Time and Allocation Profiling Report  (Final)
@@ -412,7 +412,7 @@ I'm gonna go ahead and put that one down to a profiler error, especially since r
 Oh, well, I'm meant to be exploring. Lets pull the same incremental stuff we did with CL yesterday. Firstly, we're already using `Set` here, so the `memer` check is already as tight as it's going to get. Our last valid profiler ping told us that `lifeStep.grouped` is where the big costs are paid, so lets see if we can't reduce them somewhat.
 
 ```haskell
-import qualified Data.Map as Map 
+import qualified Data.Map as Map
   (Map, lookup, insert, adjust, delete, fromList, toList)
 
 frequencies :: [(Int, Int)] -> Map.Map (Int, Int) Int
@@ -427,7 +427,7 @@ frequencies list = rec list $ Map.fromList []
 lifeStep :: Int -> Set (Int, Int) -> Set (Int, Int)
 lifeStep worldSize cells = fromList [fst g | g <- grouped cells, viable g]
   where grouped = Data.List.filter viable . Map.toList . frequencies . concatMap neighbors . toList
-        neighbors (x, y) = [(x+dx, y+dy) | dx <- [-1..1], dy <- [-1..1], 
+        neighbors (x, y) = [(x+dx, y+dy) | dx <- [-1..1], dy <- [-1..1],
                             (dx,dy) /= (0,0), inSize (dx+x) (dy+y)]
         inSize x y = inR x worldSize && inR y worldSize
         inR = inRange 0

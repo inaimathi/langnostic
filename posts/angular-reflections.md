@@ -8,7 +8,7 @@ It's not an unreasonable way of going about things, but Angular does it better; 
 
 Lets go through some before and after shots of web-mote for illustrative purposes. Specifically, lets take a look at the controls, since that's the simpler piece. Incidentally, I'm not claiming that this is the most elegant code either before or after. I just want to show you the structural and philosophical differences between approaches.
 
-### <a name="before" href="#before"></a>Before
+### Before
 
 First, the relevant HTML markup
 
@@ -94,12 +94,12 @@ var mote = {
 if ($.browser.safari) {
     $("#controls").css({ "position": 'absolute' });
     window.onscroll = function() {
-        $("#controls").css({ 
+        $("#controls").css({
             "top" : window.pageYOffset + 'px'
         });
     };
 } else {
-    $("#controls").css({ "position": 'fixed' });    
+    $("#controls").css({ "position": 'fixed' });
 }```
 
 `command` is only relevant because it switches out the `pause` button for a `play` button when its pressed successfully. Observe that all of the rendering here is happening through DOM manipulations. We run `.append` over the result of calling the `controlBlock` template on each group of player controls, and each call to `controlBlock` itself applies the `control` template. When we need to do that button switch I mentioned, we do it by calling `.replaceWith` on the appropriate DOM selector. We probably could have avoided going to sub-templates for control buttons, but that would have saved us five lines at the outside; just the `script` tag boilerplate in the HTML markup, and that `Handlebars` helper definition.
@@ -116,14 +116,14 @@ $(document).ready(function() {
             {cmd: "forward", held: true}
           //{cmd: "step-forward"}
         ],
-         [{cmd: "volume-down", held: true}, 
-          {cmd: "volume-off"}, 
+         [{cmd: "volume-down", held: true},
+          {cmd: "volume-off"},
           {cmd: "volume-up", held: true}]]);
 });```
 
 That's that. Like I said, this isn't the most elegant code I've ever written. If I really put my mind to it, I might be able to shave off ten lines or so, and clarify my intent in a couple of places, but I think it would be pretty difficult to do *much* better without fundamentally changing the approach.
 
-### <a name="after" href="#after"></a>After
+### After
 
 HTML markup first
 
@@ -131,7 +131,7 @@ HTML markup first
 <div id="controls" ng-controller="CommandCtrl" ng-style="style">
   <ul ng-repeat="controlsList in controlTree">
     <li ng-repeat="control in controlsList" class="{{control.cmd}}" ng-switch="control.held">
-      <button class="btn" ng-switch-when="true" 
+      <button class="btn" ng-switch-when="true"
               ng-mousedown="command(control.cmd); hold(control.cmd)"
               ng-mouseup="release()" ng-mouseleave="release()">
         <i class="icon-{{control.cmd}}"></i>
@@ -152,7 +152,7 @@ function CommandCtrl ($scope, $http) {
 //   then override that with inline styles.
 // what I'm saying is that older versions of safari are assholes
     if (util.browser().agent == 'safari') {
-        window.onscroll = function() { 
+        window.onscroll = function() {
             $scope.style = { position: "absolute", top : window.pageYOffset + 'px' };
         };
     } else {
@@ -169,12 +169,12 @@ function CommandCtrl ($scope, $http) {
             {cmd: "forward", held: true}
             //{cmd: "step-forward"}
         ],
-        [{cmd: "volume-down", held: true}, 
-         {cmd: "volume-off"}, 
+        [{cmd: "volume-down", held: true},
+         {cmd: "volume-off"},
          {cmd: "volume-up", held: true}]
     ]
 
-    $scope.command = function (cmd) { 
+    $scope.command = function (cmd) {
         util.post($http, "/command", {"command": cmd})
             .success(function (data, status, headers, config) {
                 $scope.data = data;
@@ -187,7 +187,7 @@ function CommandCtrl ($scope, $http) {
         $scope.held = setInterval(function() { $scope.command(cmd) }, 200);
     }
 
-    $scope.release = function (cmd) { 
+    $scope.release = function (cmd) {
         clearInterval($scope.held);
         $scope.held = false;
     }
@@ -201,7 +201,7 @@ Unlike in the jQuery solution, there's no DOM manipulation here. We've got a mod
 if (cmd == "pause") $scope.controlTree[0][2] = {cmd: "play"}
 else if (cmd == "play") $scope.controlTree[0][2] = {cmd: "pause"}```
 
-That's part of sending a command, and all it does is change the contents of our model. The view is updated as soon as this change is made. The equivalent from **"Before"** is 
+That's part of sending a command, and all it does is change the contents of our model. The view is updated as soon as this change is made. The equivalent from **"Before"** is
 
 ```javascript
 if (cmd == "pause") {
@@ -212,25 +212,25 @@ if (cmd == "pause") {
     $("#controls .play").replaceWith(btn);
 }```
 
-Where we're back to templating ourselves. You can also see the same principles affecting that code hacking around older versions of Safari; we're just setting up some objects rather than doing DOM traversal ourselves. 
+Where we're back to templating ourselves. You can also see the same principles affecting that code hacking around older versions of Safari; we're just setting up some objects rather than doing DOM traversal ourselves.
 
 ```javascript
 if ($.browser.safari) {
   $("#controls").css({ "position": 'absolute' });
   window.onscroll = function() {
-    $("#controls").css({ 
+    $("#controls").css({
         "top" : window.pageYOffset + 'px'
     });
   };
 } else {
-  $("#controls").css({ "position": 'fixed' });    
+  $("#controls").css({ "position": 'fixed' });
 }```
 
 vs
 
 ```javascript
 if (util.browser().agent == 'safari') {
-  window.onscroll = function() { 
+  window.onscroll = function() {
     $scope.style = { position: "absolute", top : window.pageYOffset + 'px' };
   };
 } else {

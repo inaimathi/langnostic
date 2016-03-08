@@ -14,7 +14,7 @@ Specifically, highlighting a region to parenthesize it produced an extraneous cl
   "Minor mode for pseudo-structurally editing Lisp code." t)
 
 (defun custom-paredit-mode ()
-  (progn (paredit-mode +1) 
+  (progn (paredit-mode +1)
          (define-key paredit-mode-map (kbd "<C-left>") 'backward-sexp)
          (define-key paredit-mode-map (kbd "<C-right>") 'forward-sexp)))
 
@@ -31,7 +31,7 @@ Specifically, highlighting a region to parenthesize it produced an extraneous cl
 
 Right, that's the useful part out of the way. I'm going to bitch now, and I'd appreciate some privacy.
 
-### <a name="bitching" href="#bitching"></a>Bitching
+### Bitching
 
 I'm starting to feel bored with what I'm doing. The last time I felt this way was back in college, where I suddenly went from producing two finished illustrations and about ~30 sketches per week to just under .01 and 2 respectively. I doubt the same thing is going to happen with programming because of what I think programming *is*, but it's still kind of disconcerting that I'm emotionally beyond my own control. Over the past couple of months, I've been working pretty hard on three or four personal projects and one giant project at work, most of it in Python.
 
@@ -43,7 +43,7 @@ I remember reading about something called [The Curse of the Traveller](http://ww
 
 In theory, language users have an out because we can technically build a "just-right" language. In practice, it turns out that implementing your own garbage collection, optimizing compiler, streams, i/o, package management, web-server, asynchronous web-server etc. is a lot harder than just living with a reasonably popular language you already know<a name="note-Sun-Jan-06-181401EST-2013"></a>[|4|](#foot-Sun-Jan-06-181401EST-2013). Also, there are very few things lonelier than being the only one who knows your language of choice. The end result is that, while I've probably been getting more stuff done in Python/JavaScript than I'd ever gotten done in a comparable time-period, I've been getting skull-fuckingly bored doing it. And I'm really not sure what the solution is.
 
-### <a name="realistically" href="#realistically"></a>Realistically
+### Realistically
 
 This is the effect of having a single quarter wherein I
 

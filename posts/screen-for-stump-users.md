@@ -1,6 +1,6 @@
 The first part is exposition. If you're just interested in how to set up Screen as a StumpWM analogue, skip to the next heading.
 
-I've been thinking about window management again, for my own purposes and bouncing around between combination of Xmonad, StumpWM, XFCE and GNOME (as well as trying the two tiling managers standalone). 
+I've been thinking about window management again, for my own purposes and bouncing around between combination of Xmonad, StumpWM, XFCE and GNOME (as well as trying the two tiling managers standalone).
 
 Using XFCE and GNOME standalone really wasn't going to do anything for me, I already knew that. Using the lightweights on *theiir* own had a few minor annoyances that I tried to fix by running them together.
 
@@ -22,12 +22,12 @@ Bottom line; I don't need a desktop environment anymore. I'm good with the plain
 
 I've been using [GNU Screen](http://www.gnu.org/s/screen/) as a way of deploying Lisp applications, but looking over the [keybindings](http://www.gnu.org/software/screen/manual/html_node/Default-Key-Bindings.html) and `man` page, it looks like it can serve as a respectable alternative to a tiling window manager.
 
-### <a name="screen-wm" href="#screen-wm"></a>Screen WM
+### Screen WM
 
 The default control combination is `C-a` instead of `C-t`, and the keys are significantly different, and you can't extend it in Lisp<a name="note-Thu-Oct-06-114732EDT-2011"></a>[|4|](#foot-Thu-Oct-06-114732EDT-2011), but it looks like a fairly simple `.screenrc` file can turn it into Stump-Lite. Here's a quick breakdown, assuming the default bindings:
 
 
-- `C-a ?` shows you the help screen. 
+- `C-a ?` shows you the help screen.
 - `C-a c` starts a new terminal in the same session (when you re-attach later, you'll have both of these)
 - `C-a |` splits the screen vertically (note that screen doesn't automatically start a second terminal). Equivalent to `C-t S`
 - `C-a S` splits screen horizontally. Equivalent to `C-t s`

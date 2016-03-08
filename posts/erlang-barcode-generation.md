@@ -4,7 +4,7 @@ Ok, this isn't actually all Erlang. In fact, by line-count, it's a Postscript pr
 
 What I'm doing isn't quite the [LP that Knuth advocates](http://www.literateprogramming.com/) because it doesn't self-extract, share space with the executable source, or make use of variable labels to automatically update certain portions. However, it still gains me considerable reflective clarity about what the goal of the program is, and it hopefully conveys the essence to whoever happens to be reading. With that out of the way...
 
-### <a name="generating-barcodes" href="#generating-barcodes"></a>Generating Barcodes
+### Generating Barcodes
 
 As you may have noticed from the above links, there already exists a [Postscript-based barcode generator](https://code.google.com/p/postscriptbarcode/) which I'm going to use pretty shamelessly in order to generate bitmap barcodes of various descriptions. Taking a look at the [actual code](https://code.google.com/p/postscriptbarcode/downloads/detail?name=barcode-2012-04-26.ps) for that generator should make it obvious that you probably *don't* want to just echo the entire system every time you need to generate something<a name="note-Tue-May-15-220424EDT-2012"></a>[|1|](#foot-Tue-May-15-220424EDT-2012). We'll get to that though, lets start from the system side first. This is what a `.app` declaration looks like in Erlang
 
@@ -14,14 +14,14 @@ all: *.erl *.c
         make wand
         erlc -W *erl
 
-run: 
+run:
         erl -name ps_barcode@127.0.1.1 -eval 'application:load(ps_barcode).' -eval 'application:start(ps_barcode).'
 
 wand: wand.c erl_comm.c driver.c
         gcc -o wand `pkg-config --cflags --libs MagickWand` wand.c erl_comm.c driver.c
 
 clean:
-        rm wand 
+        rm wand
         rm *beam
 ```
 
@@ -64,7 +64,7 @@ start_link(Args) ->
 
 init([]) ->
     {ok, {{one_for_one, 3, 10},
-          [{tag1, 
+          [{tag1,
             {wand, start, []},
             permanent,
             brutal_kill,
@@ -102,7 +102,7 @@ That one tells Erlang which module's `start` function to call in order to start 
 ```erlang
 init([]) ->
     {ok, {{one_for_one, 3, 10},
-          [{tag1, 
+          [{tag1,
             {wand, start, []},
             permanent,
             brutal_kill,
@@ -180,12 +180,12 @@ read_until(IoDevice, StartsWith, Acc) ->
     case file:read_line(IoDevice) of
         {ok, "\n"} ->
             read_until(IoDevice, StartsWith, Acc);
-        {ok, Line} -> 
+        {ok, Line} ->
             case lists:prefix(StartsWith, Line) of
-                true -> 
+                true ->
                     lists:reverse(Acc);
-                false -> 
-                    read_until(IoDevice, StartsWith, 
+                false ->
+                    read_until(IoDevice, StartsWith,
                                [process_line(Line) | Acc])
             end;
         {error, _} -> error;
@@ -247,12 +247,12 @@ parse_encoder_meta (Name, Body, [DefArgs, Example], {A, R, S}) ->
     {list_to_atom(Name), encoder, {requires, Reqs}, Example, DefArgs, lists:append(Body)}.
 ```
 
-This is not the most elegant function. In fact, now that I look at it, it seems like I could fairly easily replace that `{A, R, S}` tuple with a list accumulator. 
+This is not the most elegant function. In fact, now that I look at it, it seems like I could fairly easily replace that `{A, R, S}` tuple with a list accumulator.
 
-> EDIT:  
-> Turns out there was a reason I did it this way; we need this data to be in the order of Renderers, Required, Suggested, but the order they're parsed in is actually Required, Suggested, Renderers (also, some components have no requirements, and some have no suggestions). The ordering is confusing enough that I just decided to keep it explicit.  
->   
-> Wed, 16 May, 2012  
+> EDIT:
+> Turns out there was a reason I did it this way; we need this data to be in the order of Renderers, Required, Suggested, but the order they're parsed in is actually Required, Suggested, Renderers (also, some components have no requirements, and some have no suggestions). The ordering is confusing enough that I just decided to keep it explicit.
+>
+> Wed, 16 May, 2012
 
 What we're doing here is breaking apart an `encoder` block, and pulling out
 
@@ -326,12 +326,12 @@ Right, that's it for the periphery, lets finally dive into
 
 help() -> gen_server:call(?MODULE, help).
 help(BarcodeType) -> gen_server:call(?MODULE, {help, BarcodeType}).
-write(DestFolder, BarcodeType, Data) -> 
+write(DestFolder, BarcodeType, Data) ->
     write(DestFolder, BarcodeType, Data, 200, 200).
 write(DestFolder, BarcodeType, Data, Width, Height) ->
     gen_server:call(?MODULE, {write, DestFolder, BarcodeType, Data, Width, Height}).
 generate(BarcodeType, Data) -> generate("/tmp/", BarcodeType, Data).
-generate(DestFolder, BarcodeType, Data) -> 
+generate(DestFolder, BarcodeType, Data) ->
     NameOfTempFile = write(DestFolder, BarcodeType, Data),
     wand:process(NameOfTempFile),
     NameOfTempFile.
@@ -366,7 +366,7 @@ make_tempname(TargetDir) ->
 write_component(preamble, Table, File) ->
     [[Pre]] = ets:match(Table, {preamble, '$1'}),
     file:write(File, Pre);
-write_component(Name, Table, File) -> 
+write_component(Name, Table, File) ->
     file:write(File, lookup_component(Name, Table)).
 
 write_barcode(File, datamatrix, _, Data)        -> format_barcode_string(File, datamatrix, "", Data);
@@ -375,8 +375,8 @@ write_barcode(File, BarcodeType, ExArgs, Data)  -> format_barcode_string(File, B
 format_barcode_string(File, BarcodeType, ExArgString, DataString) ->
     io:format(File, "10 10 moveto (~s) (~s) /~s /uk.co.terryburton.bwipp findresource exec showpage",
               [DataString, ExArgString, BarcodeType]).
-                     
-lookup_component(Name, Table) -> 
+
+lookup_component(Name, Table) ->
     Ren = ets:match(Table, {Name, renderer, '$1'}),
     Enc = ets:match(Table, {Name, encoder, '_', '_', '_', '$1'}),
     case {Ren, Enc} of
@@ -407,7 +407,7 @@ init([]) -> {ok, barcode_data:import_ets_file()}.
 That's where our data is stored, and we'll be looking up components by referring to it.
 
 ```erlang
-lookup_component(Name, Table) -> 
+lookup_component(Name, Table) ->
     Ren = ets:match(Table, {Name, renderer, '$1'}),
     Enc = ets:match(Table, {Name, encoder, '_', '_', '_', '$1'}),
     case {Ren, Enc} of
@@ -422,7 +422,7 @@ This is (again) not the most elegant code. Really, what I'd want to do is look u
 write_component(preamble, Table, File) ->
     [[Pre]] = ets:match(Table, {preamble, '$1'}),
     file:write(File, Pre);
-write_component(Name, Table, File) -> 
+write_component(Name, Table, File) ->
     file:write(File, lookup_component(Name, Table)).
 ```
 
@@ -491,12 +491,12 @@ The rest of the functions here are either `gen_server` pieces (which I won't go 
 ```erlang
 help() -> gen_server:call(?MODULE, help).
 help(BarcodeType) -> gen_server:call(?MODULE, {help, BarcodeType}).
-write(DestFolder, BarcodeType, Data) -> 
+write(DestFolder, BarcodeType, Data) ->
     write(DestFolder, BarcodeType, Data, 200, 200).
 write(DestFolder, BarcodeType, Data, Width, Height) ->
     gen_server:call(?MODULE, {write, DestFolder, BarcodeType, Data, Width, Height}).
 generate(BarcodeType, Data) -> generate("/tmp/", BarcodeType, Data).
-generate(DestFolder, BarcodeType, Data) -> 
+generate(DestFolder, BarcodeType, Data) ->
     NameOfTempFile = write(DestFolder, BarcodeType, Data),
     wand:process(NameOfTempFile),
     NameOfTempFile.
@@ -507,7 +507,7 @@ This is a set of exported functions to let outside modules easily interact with 
 
 Whew! At the risk of pulling a Yegge, this piece is turning out *a lot* longer than I though it was going to be. Lets get it wrapped up quickly.
 
-### <a name="nitrogen" href="#nitrogen"></a>Nitrogen
+### Nitrogen
 
 [Nitrogen](http://nitrogenproject.com/) is an Erlang web framework I've been playing with. I won't explain it in depth, just use it to show you how you'd go about invoking the above program for realsies. In fact, here's a `nitrogen/rel/nitrogen/site/src/index.erl` that will call out to `ps_barcode` to generate a barcode based on user input and let them download the bitmap and Postscript file:
 
@@ -526,7 +526,7 @@ body() ->
         #grid_8 { alpha=true, prefix=2, suffix=2, omega=true, body=inner_body() }
     ]}.
 
-inner_body() -> 
+inner_body() ->
     [
         #h3 { text="PS Barcode Generator" },
         #h1 { text="In MOTHERFUCKING ERLANG"},
@@ -552,11 +552,11 @@ get_example(BarcodeType) ->
 
 event(click) ->
     [_, Fname] = re:split(
-        rpc:call('ps_barcode@127.0.1.1', ps_bc, generate, 
+        rpc:call('ps_barcode@127.0.1.1', ps_bc, generate,
             [filename:absname("site/static/images"), list_to_atom(wf:q(barcode_type)), wf:q(barcode_data)]),
         "site/static", [{return, list}]),
-    wf:replace(barcode_img, 
-        #image { 
+    wf:replace(barcode_img,
+        #image {
             id=barcode_img,
             image=string:concat(Fname, ".png"),
             actions=#effect { effect=highlight }
@@ -583,7 +583,7 @@ here<a name="note-Tue-May-15-222251EDT-2012"></a>[|16|](#foot-Tue-May-15-222251E
 
 ```erlang
         ...
-        rpc:call('ps_barcode@127.0.1.1', ps_bc, generate, 
+        rpc:call('ps_barcode@127.0.1.1', ps_bc, generate,
             [filename:absname("site/static/images"), list_to_atom(wf:q(barcode_type)), wf:q(barcode_data)]),
         "site/static", [{return, list}]),
         ...

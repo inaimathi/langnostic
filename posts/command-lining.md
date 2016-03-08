@@ -4,7 +4,7 @@ This isn't about that though.
 
 I've been slowly moving towards more and more command-line oriented interfaces. It's not a recent trend, in fact it started pretty much when I first discovered Emacs. Ever since doing away with my desktop environment a little while ago, it's been more of a necessity than idle speculation. The good news is that there's almost nothing I wanted to do in X windows that I can't do via command line.
 
-### <a name="command-line-mvps" href="#command-line-mvps"></a>Command Line MVPs
+### Command Line MVPs
 
 Let me draw your attention to some command line programs that I honestly wouldn't want to go without anymore. Not counting obvious necessities like [`ssh`](http://www.openssh.com/)/[`rsync`](http://ss64.com/bash/rsync.html)/[`find`](http://en.wikipedia.org/wiki/Find)/[`grep`](http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_04_02.html)/[`tail`](http://en.wikipedia.org/wiki/Tail_(Unix)).
 
@@ -28,10 +28,10 @@ I've already written a bit about **[wicd-curses](http://manpages.ubuntu.com/manp
 
 **[gtypist](http://www.gnu.org/software/gtypist/)** is a curses-based typing tutor that has effectively replaced klavaro for me. It's mildly more entertaining to run typing drills on surrealist, minimal poetry than it is to type out old newspaper articles. The only thing about it that rustles my jimmies is that it enforces hitting space twice after a period. Which is a thing I guess? Honestly it sounds like an [anachronistic](http://www.hanselman.com/blog/TheFloppyDiskMeansSaveAnd14OtherOldPeopleIconsThatDontMakeSenseAnymore.aspx) behavior that used to make sense back when actual humans used [actual typewriters](http://crashreboot.blogspot.ca/2009/04/your-word-processor-is-no-typewriter.html). Luckily, the lessons are contained in a set of conf files, so I'll be able to do something about this.
 
-> EDIT:  
-> Aaaaand [bam](https://github.com/Inaimathi/gtypist-single-space). Enjoy.  
->   
-> Wed, 20 Jun, 2012  
+> EDIT:
+> Aaaaand [bam](https://github.com/Inaimathi/gtypist-single-space). Enjoy.
+>
+> Wed, 20 Jun, 2012
 
 **[canto](http://codezen.org/canto/)** is a command-line based RSS feed reader. I complained about [liferea](http://liferea.sourceforge.net/) earlier for its complexity, and having taken a look at a number of feed readers (both GUI and CLI), that doesn't seem to be an uncommon feature. `canto`, by contrast is ridiculously simple; set up your `conf` file, and it'll track those feeds, pulling when you tell it to (every 5 minutes by default). The [example config](http://codezen.org/canto/config/#example-config) up at the project site is pretty extensive, but I've gotten on fine with a much more minimal setup:
 
@@ -64,11 +64,11 @@ The one quirk that I have to highlight is that by default, its `update` *doesn't
 
 **[lynx](http://lynx.browser.org/)** is something I don't use on a regular basis anymore, but it is quite useful when I need to check a [discussion](http://www.antipope.org/charlie/) or [two](http://www.groklaw.net/) without booting up X. It happens every once in a while.
 
-### <a name="command-line-gaps" href="#command-line-gaps"></a>Command Line Gaps
+### Command Line Gaps
 
 There aren't as many as you'd think. In fact, for my purposes, there is exactly one, and it's sort of minor; the lack of good animated gif viewer. There is a [concerted effort at putting one together](http://www.lcdf.org/gifsicle/), but it didn't exactly blow me away. `mplayer` does a half-decent job, but chops when looping and doesn't loop by default (which is sort of helpful [when describing haters](http://cdn.smosh.com/sites/default/files/bloguploads/haters-gators-gate.gif)). `feh` is awesome for stills, but doesn't display gifs in an animated fashion, and neither does Emacs. At the moment, my workaround is to just use [chromium](http://www.chromium.org/) and call it a day.
 
-### <a name="shell-ui" href="#shell-ui"></a>Shell UI
+### Shell UI
 
 Ok, so maybe I lied a little in the previous section. The thing I really don't like about [some](http://www.gnu.org/software/tar/) command [line](http://ffmpeg.org/) programs is their sometimes inscrutable option settings and lack of sensible defaults.
 

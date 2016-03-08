@@ -1,6 +1,6 @@
 This has been one hell of a month, mostly for non-technical reasons, but I think I need to discuss some of them regardless. The following is a journal-style entry, so skip it if you're here for any kind of language discussion.
 
-### <a name="specialization" href="#specialization"></a>Specialization
+### Specialization
 
 Firstly, you may have noticed that I've been hacking Erlang lately. It's verbose, it's obtuse, it works at bizarre cross-purposes with itself, but it has endeared itself to me for reasons I've [already discussed](http://langnostic.blogspot.ca/2012/05/assumptions.html). It's not too clear to me why I have this drive to try new languages, and it's not entirely clear whether it gives me an edge or dulls it in the end. It feels like I'm making reasonable progress and gaining perspective on the process of expressing processes precisely, and maybe that's enough. The root of the chain is this bias I have against overspecialization, which may or may not be an evolutionary vestige, but it doesn't seem to have hurt me yet. It seems intuitively obvious that I'd want to avoid the situation where I don't have the right tools for a job, and that means keeping a lot of them around. Admittedly, I haven't practiced this in real life, but cognitive tools don't take up space, and are always at my call, so it's much easier to justify.
 
@@ -8,7 +8,7 @@ I've had conversations with quite a few people I respect that go the other way. 
 
 That *can't* be the correct approach, regardless of how powerful an individual language is.
 
-### <a name="make" href="#make"></a>Make
+### Make
 
 The Erlang play I've engaged in has forced me to take a serious look at [`make`](http://www.gnu.org/software/make/manual/make.html). I mentioned a while ago that I reach for [Ruby](http://www.ruby-lang.org/en/) whenever I need to do almost any small bit of scripting. Until about a week ago, this included deployment scripts. It never really occurred to me that `make` was good for something other than compiling C projects, but taking a closer look, it seems like it can do quite a bit. It has conditionals, loops and functions, and it deals with command line arguments a lot more gracefully than scripts in typical general-purpose languages.
 
@@ -35,16 +35,16 @@ ssh:
 
 That saved me about 40 lines when compared to the Ruby script that used to do the same job<a name="note-Sat-May-26-230305EDT-2012"></a>[|1|](#foot-Sat-May-26-230305EDT-2012). Granted, the `Makefile` makes me type out the `[user]@[server]` string twice, because `:` is otherwise interpreted as a control character and there's oddly no way to escape it, but that's an acceptable blemish given the overall line savings. Now that's not to say that `make` is more elegant than `Ruby`, just that it's a lot more specialized for the task. Most of the chaff from those 56 lines was doing command-line parsing and some declarations, which again hints that command line argument parsing is a hack.
 
-The other advantage of the `Makefile` is that using it gives me meaningful completions at the command line. In the above, if I tabbed on `make`, it would give me the different tasks as potential entries 
+The other advantage of the `Makefile` is that using it gives me meaningful completions at the command line. In the above, if I tabbed on `make`, it would give me the different tasks as potential entries
 
 ```
-inaimathi@hermaeus:~/project$ make 
+inaimathi@hermaeus:~/project$ make
 deploy-client-a  deploy-client-b  deploy-public  Makefile       ssh
 inaimathi@hermaeus:~/project$ make |```
 
 That's going to get more convenient the more clients we start supporting. I'm not going to go through the full `make` syntax; it's fairly self explanatory and [docs](http://www.gnu.org/software/make/manual/make.html) exist in any case. A definition looks like that `define..endef` block, calling a function looks like `$(call fn, arg1, arg2, ...)`, the `exclude` line shows you what a variable looks like, and the bit that looks like `$(foreach ...)` is a loop. That should be enough for pretty much anything you need to do with the tool.
 
-### <a name="music" href="#music"></a>Music
+### Music
 
 I had a fit of OCD the other day, and decided to finally organize my music library to prevent my phone from reporting
 
@@ -68,7 +68,7 @@ class String
     (s[1] ? s[1] : self).gsub(".ogg", "")
   end
 end
-  
+
 ARGV.each do |target|
   artist = target.gsub("/", "").naive_title_case
   FileUtils.cd(target) do
@@ -86,9 +86,9 @@ require 'fileutils'
 
 $options = {:sub => "", :downcase => nil}
 OptionParser.new do |opts|
-  opts.on('-r', '--regex REGEX', String, 
+  opts.on('-r', '--regex REGEX', String,
           'Specify the regular expression to replace') {|reg| $options[:regex] = Regexp.new(reg)}
-  opts.on('-s', '--sub SUBSTITUTE', String, 
+  opts.on('-s', '--sub SUBSTITUTE', String,
           'Specify what to replace the match with. By default, the empty string (so matches are stripped).') {|$options[:sub]|}
   opts.on('-d', '--downcase', 'If passed, all filenames will be downcased.'){|$options[:downcase]|}
 end.parse!
@@ -96,7 +96,7 @@ end.parse!
 usage unless ARGV.length > 0
 
 def rename(str)
-  ($options[:downcase] ? 
+  ($options[:downcase] ?
    str.downcase : str).gsub($options[:regex], $options[:sub])
 end
 

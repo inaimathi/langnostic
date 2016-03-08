@@ -6,7 +6,7 @@ The process of actually putting together an `.app` file and corresponding `_app.
 
 I guess this actually might be the result of being spoiled by Common Lisp's "lets handle everything from the REPL!" attitude<a name="note-Tue-May-08-175811EDT-2012"></a>[|5|](#foot-Tue-May-08-175811EDT-2012). If `true`, that's a very good reason to get out of paren-land for a little while to see what's happening with other toolchains; [overspecialization](http://tvtropes.org/pmwiki/pmwiki.php/Main/CripplingOverspecialization)<a name="note-Tue-May-08-175818EDT-2012"></a>[|6|](#foot-Tue-May-08-175818EDT-2012) is not a desirable thing.
 
-### <a name="demystifying-hot-code-swapping" href="#demystifying-hot-code-swapping"></a>Demystifying "Hot Code Swapping"
+### Demystifying "Hot Code Swapping"
 
 This is a phrase I hear pretty often [in context with Erlang](http://www.youtube.com/watch?v=OpYPKBQhSZ4), and I want to tackle it because it's typically presented as this big mysteriously awesome language feature. I get the feeling it's supposed to impress people that have never worked with anything more dynamic than [Tomcat](http://tomcat.apache.org/), because those of us working with Lisp/Python/PHP/etc. are pretty used to the idea of pushing an update without restarting the server we're pushing it at. There are complications, of course, if you want to keep existing requests valid, for example, you need to deal with server rollover. The Erlang way solves that particular problem, so I can see why it would be put together like this, it's just really annoying seeing it presented as secret sauce when it's almost too simple to be considered a language feature.
 
@@ -27,10 +27,10 @@ start() -> spawn(fun loop(Module, State) end).
 
 loop(Module, State) ->
     receive
-        foo -> 
+        foo ->
             apply(Module, handle, [foo, self(), State]),
             loop(Module, State);
-        bar -> 
+        bar ->
             apply(Module, handle, [bar, self(), State]),
             loop(Module, State);
         {switch, NewModule} -> loop(NewModule, State).
@@ -42,7 +42,7 @@ and the "callback" module, which contains the `handle` function looks like this
 %% example_callback.erl %%
 
 handle(foo, From, _State) -> From ! "You sent 'foo'";
-handle(bar, From, _State) -> 
+handle(bar, From, _State) ->
     From ! "Ok, that time, you totally sent 'bar', and that is NOT COOL.",
     From ! "Fuck you, man.",
     From ! "Fuck you.",
@@ -51,24 +51,24 @@ handle(bar, From, _State) ->
 
 You start that just by calling `start` and assigning its return value to a variable (`spawn` will return the process id of the process it `spawn`s, and `start` just passes that along), then use it by sending it messages.
 
-It hardly needs explaining at this point, but I've recently been told that things I see as obvious aren't always. 
+It hardly needs explaining at this point, but I've recently been told that things I see as obvious aren't always.
 
-So. 
+So.
 
 Remember the three requirements: at least pure-ish functional, a process structure and tail recursion. A process is just a thing that asynchronously loops forever<a name="note-Tue-May-08-175843EDT-2012"></a>[|7|](#foot-Tue-May-08-175843EDT-2012) by grabbing the next message out of its input queue and acting on it (hence why processes are required). Part of "acting on it" includes calling the next iteration of the `loop`<a name="note-Tue-May-08-175854EDT-2012"></a>[|8|](#foot-Tue-May-08-175854EDT-2012) (hence the tail-recursion requirement). Finally, if those both happen to be taking place in a pure functional system, you *can't* just set a global/effectively-global variable to track process state; you have to pass it to the next iteration as an *argument*. If the name of the module containing your `handle` function is one of those state variables you need to pass, then changing out code is as simple as making sure that your process can react to a `change` message by accepting a new module name to call. If you handle module naming properly, you can also naturally create the situation where existing requests are handled by the module that was in effect when they were made, while any new requests are handled by the new module.
 
 That's actually how it works under the covers of `[gen_server](http://www.erlang.org/doc/man/gen_server.html)`; the `behaviour` just handles setting up the code-switch-related messages and handlers for you. If you want your process to suddenly have new code, you write a new callback module
 
 ```erlang
-%% nice_callback.erl %% 
+%% nice_callback.erl %%
 
-handle(foo, From) -> 
+handle(foo, From) ->
     From ! "Thank you for sending 'foo'.";
-handle(bar, From) -> 
+handle(bar, From) ->
     From ! "Ok, I see that you're sending 'bar', we can take care of that.";
-handle(what, From) -> 
+handle(what, From) ->
     From ! "What seems to be the probem?";
-handle('bar_ok?', From) -> 
+handle('bar_ok?', From) ->
     From ! "Oh, yes, we handle 'bar' properly now. We apologize for our predecessors' lack of tact.".
 ```
 
@@ -93,11 +93,11 @@ Eshell V5.9.1  (abort with ^G)
 
 As you can see, on the next run through the loop, your process calls `nice_callback:handle` rather than `example_callback:handle`. No magic, no tricks, and no "hot-code-swapping" language feature. Just organize your system appropriately and this feature emerges.
 
-### <a name="pid-switch-youaremrbear" href="#pid-switch-youaremrbear"></a>Pid ! {switch, you_are_mr_bear}
+### Pid ! {switch, you_are_mr_bear}
 
 Skip the rest if you've heard [this one](http://c2.com/cgi/wiki?RubberDucking) before. Article's over early for you, you get to go home. Yay.
 
-There's a `(TA|lab tech|professor|IT manager|guru)` who notices that `[6789]`/10 of the questions he gets are actually resolved before he even gets to say anything. Being that he's a prick, rather than explaining this to people, he sets up a `(teddy bear|dragon|rubber duckie|moose head|pony)` on the `(wall|chair|throne|tower of mordor)` next to his `(desk|office|lab|drawbridge)` and institutes a new rule: 
+There's a `(TA|lab tech|professor|IT manager|guru)` who notices that `[6789]`/10 of the questions he gets are actually resolved before he even gets to say anything. Being that he's a prick, rather than explaining this to people, he sets up a `(teddy bear|dragon|rubber duckie|moose head|pony)` on the `(wall|chair|throne|tower of mordor)` next to his `(desk|office|lab|drawbridge)` and institutes a new rule:
 
 If you have a question, you must first explain it, out loud, to the `\2` he's helpfully provided.
 

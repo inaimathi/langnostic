@@ -16,7 +16,7 @@ cabal install
 
 Then go configure your `.emacs` properly. There; I just saved you some long, tedious, boobless hours.
 
-### <a name="the-basics" href="#the-basics"></a>The Basics
+### The Basics
 
 Installing Haskell itself is extremely easy, assuming you're on a relatively recent version of Debian.
 
@@ -28,7 +28,7 @@ should handle that nicely. That will install `ghc` (the Haskell compiler), `ghci
 
 The `documentation` flag isn't critical, just nice. It gives you some extra local docs with the libraries it downloads. I'm honestly surprised that `profiling` isn't on by default though. You just plain *can't* profile without it. If you try, you get an error telling you to install the `profiling` versions of all relevant libraries. Here's the kicker though; if you try to install profiling libraries yourself from `cabal` by using the `-p` flag, **it [does not resolve dependencies](http://stackoverflow.com/questions/1704421/cabal-not-installing-dependencies-when-needing-profiling-libraries)**. That means you get to go back through all the libraries you installed, and re-install them recursively by hand. If you do it through the `config` option I mention above, it's automatically done for you whenever you install a new library. Which seems, I dunno, a *bit* better<a name="note-Mon-Sep-17-225932EDT-2012"></a>[|1|](#foot-Mon-Sep-17-225932EDT-2012).
 
-### <a name="the-docs" href="#the-docs"></a>The Docs
+### The Docs
 
 I previously mentioned that [hoogle](http://www.haskell.org/hoogle/) is really useful, but that what you'd really want is a local copy you could search without hitting a server. Well, there is. It's a cabal package you can install with
 
@@ -41,7 +41,7 @@ That second command will make a local copy of the hoogle database for you. You c
 
 Boy, it sure would be nice to have that available from your editor, huh?
 
-### <a name="the-editor" href="#the-editor"></a>The Editor
+### The Editor
 
 If you're not an Emacs user, and are used to indenting things by hand (shudder), pick up [leksah](http://leksah.org/) and be done with it. It's pretty cool, supports incremental compilation out of the box, has some small measure of project management, and performs pretty well. If you're like me, and have gotten used to Emacs handling the tedium of indentation<a name="note-Mon-Sep-17-230239EDT-2012"></a>[|2|](#foot-Mon-Sep-17-230239EDT-2012), you'll want a better solution.
 

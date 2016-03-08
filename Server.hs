@@ -9,22 +9,22 @@ import Text.Blaze.Html hiding (text)
 import Text.Blaze.Html.Renderer.Text
 import Data.Text.Lazy (toStrict)
 
-import Cached
+import PostMap hiding (id)
 import Post
-
--- main = do
---   c <- cachePost "test.md"
---   scotty 3000 $ do
---   get "/:word" $ do
---     p <- liftIO $ readCache c
---     html $ renderHtml p
+import Pages
 
 main :: IO ()
 main = do
-  c <- cachePost "test.md"
-  runSpock 8080 $ spockT id $
-       do get root $ do
-            p <- liftIO $ readCache c
-            html $ toStrict $ renderHtml p
-       -- get ("hello" <//> var) $ \name ->
-       --     text ("Hello " <> name <> "!")
+  pm <- postMap
+  runSpock 8080 $ spockT id $ handlers pm
+
+handlers :: MonadIO m => PostMap -> SpockCtxT ctx m ()
+handlers pm = do
+  get root $ do
+    p <- liftIO $ readPost "test.md"
+    html $ toStrict $ renderHtml p
+  get ("posts" <//> var) $ \slug ->
+      case bySlug pm slug of
+        Nothing -> text "Nope. That doesn't exist."
+        Just p -> do body <- liftIO $ postBody p
+                     html $ toStrict $ renderHtml $ Pages.article $ body

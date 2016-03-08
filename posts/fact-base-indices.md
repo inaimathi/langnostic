@@ -2,15 +2,15 @@ Got through a late-night programming binge, followed by more of the same on my l
 
 Before we get to discussing any code, lets back up and discuss the idea of an `index` for a moment.
 
-### <a name="the-idea-of-an-index" href="#the-idea-of-an-index"></a>The Idea of an `index`
+### The Idea of an `index`
 
 An `index` in this context is an extra layer on top of our fact storage engine that keeps track of what we've put in/taken out in a way that makes certain things easier to look up. It's easier for fact-bases than it is for relational databases. Since every fact is made up of three components<a name="note-Tue-Mar-25-150529EDT-2014"></a>[|3|](#foot-Tue-Mar-25-150529EDT-2014), all we have to do is keep an index by one or two slots. What we're basically looking to do is a really fast lookup of some subset of all facts in a base based on one or two of those keys<a name="note-Tue-Mar-25-150535EDT-2014"></a>[|4|](#foot-Tue-Mar-25-150535EDT-2014). The way I've chosen to do it, after some advice from friends who've used systems something like this, is by maintaining hash tables<a name="note-Tue-Mar-25-150538EDT-2014"></a>[|5|](#foot-Tue-Mar-25-150538EDT-2014) in memory that give you shortcuts to some specified indices. We're trading space<a name="note-Tue-Mar-25-150541EDT-2014"></a>[|6|](#foot-Tue-Mar-25-150541EDT-2014) for time<a name="note-Tue-Mar-25-150544EDT-2014"></a>[|7|](#foot-Tue-Mar-25-150544EDT-2014).
 
-### <a name="the-postexplanation-version" href="#the-postexplanation-version"></a>The Post-Explanation Version
+### The Post-Explanation Version
 
-This was a much different article initially; I was going to discuss some bone-headed intermediate states for this code before getting to the "final"<a name="note-Tue-Mar-25-150547EDT-2014"></a>[|8|](#foot-Tue-Mar-25-150547EDT-2014). It ended up looking like a stupid idea in this particular instance because the previous versions weren't things I'd consider running after having thought through it a bit more. 
+This was a much different article initially; I was going to discuss some bone-headed intermediate states for this code before getting to the "final"<a name="note-Tue-Mar-25-150547EDT-2014"></a>[|8|](#foot-Tue-Mar-25-150547EDT-2014). It ended up looking like a stupid idea in this particular instance because the previous versions weren't things I'd consider running after having thought through it a bit more.
 
-I try to do that a fair amount these days. 
+I try to do that a fair amount these days.
 
 Not the stupid implementations thing, though that's also true. I mean sit down with another actual human being and talk them through the code I just wrote. It's not *quite* as good as blogging about it, but it's faster and turns up almost as many issues. It also has an added benefit that blogging doesn't seem to give me, which is showing me when I'm completely off my nut. Anyhow, here's what I had after I explained the thing to someone, poured some shower time into thinking about it, and drafted the first version of this post:
 
@@ -62,13 +62,13 @@ Not the stupid implementations thing, though that's also true. I mean sit down w
   (loop for ix being the hash-keys of (table state)
      for ix-table being the hash-values of (table state)
      for formatted = (format-index ix fact)
-     do (setf (gethash formatted ix-table) 
+     do (setf (gethash formatted ix-table)
               (remove fact (gethash formatted ix-table) :test #'equal :count 1))
      unless (gethash formatted ix-table) do (remhash formatted ix-table)))
 
 ;;;;; Show methods
-;; Entirely for debugging purposes. 
-;; Do not use in production. 
+;; Entirely for debugging purposes.
+;; Do not use in production.
 ;; Seriously.
 (defmethod show (thing &optional (depth 0))
   (format t "~a~a" (make-string depth :initial-element #\space) thing))
@@ -76,7 +76,7 @@ Not the stupid implementations thing, though that's also true. I mean sit down w
 (defmethod show ((tbl hash-table) &optional (depth 0))
   (loop for k being the hash-keys of tbl
      for v being the hash-values of tbl
-     do (format t "~a~5@a ->~%" 
+     do (format t "~a~5@a ->~%"
                 (make-string depth :initial-element #\space) k)
      do (show v (+ depth 8))
      do (format t "~%")))
@@ -149,7 +149,7 @@ Those both map an index type to the components they'll need for insertion/lookup
   (loop for ix being the hash-keys of (table state)
      for ix-table being the hash-values of (table state)
      for formatted = (format-index ix fact)
-     do (setf (gethash formatted ix-table) 
+     do (setf (gethash formatted ix-table)
               (remove fact (gethash formatted ix-table) :test #'equal :count 1))
      unless (gethash formatted ix-table) do (remhash formatted ix-table)))
 ```

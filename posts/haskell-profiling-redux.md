@@ -1,6 +1,6 @@
 Before we get into the [Criterion](http://hackage.haskell.org/package/criterion-0.6.0.0) benchmarking library, I guess I should actually fulfill the function of this journal of mine every so often. This is entirely unrelated to programming, so skip to the next heading if you want to get directly to benching examples.
 
-### <a name="ponies" href="#ponies"></a>Ponies
+### Ponies
 
 Before the last little while, I could have recommended [it](http://www.youtube.com/watch?v=zy6ELvVdgh4&list=PLFF6671BFA09E4AD8) to you without reservations.
 
@@ -10,17 +10,17 @@ The finale in particular was excruciating. Not that the animators and writers di
 
 So anyway, instead of
 
-> Go watch ponies, they're quite good.   
+> Go watch ponies, they're quite good.
 > -Inaimathi
 
 my recommendation now has to look something like
 
-> Go watch ponies, they're quite good. But avoid episodes 10, 11, 12 and 13 of season 3. And actually, S3E3 and S3E4 weren't up to par either. And S3E9 has some annoyingly out of character behavior. And while otherwise excellent, the season 3 premiere foreshadows some interesting character development and story hooks that never got followed up on, so don't watch that unless you're ok with getting no closure at all.   
-> -Inaimathi  
+> Go watch ponies, they're quite good. But avoid episodes 10, 11, 12 and 13 of season 3. And actually, S3E3 and S3E4 weren't up to par either. And S3E9 has some annoyingly out of character behavior. And while otherwise excellent, the season 3 premiere foreshadows some interesting character development and story hooks that never got followed up on, so don't watch that unless you're ok with getting no closure at all.
+> -Inaimathi
 
 That's ... less than a ringing endorsement, but I guess I'll stick around to see what they can pull off in season 4<a name="note-Sun-Feb-17-224008EST-2013"></a>[|2|](#foot-Sun-Feb-17-224008EST-2013). In the meantime, there are some fan projects that look really good<a name="note-Sun-Feb-17-224032EST-2013"></a>[|4|](#foot-Sun-Feb-17-224032EST-2013). [Slice of Life](http://sliceofponylife.tumblr.com/) is a tumblr based webcomic that honestly looks like what the next step for the official media *should* be; a simple, character-driven story of some minor characters introduced over the course of the first two seasons<a name="note-Sun-Feb-17-224036EST-2013"></a>[|5|](#foot-Sun-Feb-17-224036EST-2013). Also, there's [Turnabout Storm](http://www.youtube.com/playlist?list=PL347AD9B9E509804A), a fan-made FiM/Phoenix Wright crossover which treats both source series fairly respectfully. That might just be my wife's and my weird tastes showing, but we're both heavily invested.
 
-### <a name="haskell" href="#haskell"></a>Haskell
+### Haskell
 
 Right, back to the subject at hand. Last week, I finally got out to [the Haskell group](http://hacklab.to/archives/toronto-haskell-users-meetup/). They don't always meet up, and when they do it's usually in the second Wednesday of the month<a name="note-Sun-Feb-17-224040EST-2013"></a>[|6|](#foot-Sun-Feb-17-224040EST-2013), but this month, they met on a Thursday that wasn't otherwise occupied for me.
 
@@ -28,7 +28,7 @@ First impressions are that I have no idea what the fuck I'm doing.
 
 These guys are far enough beyond me in terms of math chops that I couldn't follow all of the conversation happening. I know it's a good thing to periodically be the dumbest guy in the room, but it doesn't feel good while it's happening. Anyhow, we had a long-ish presentation on [Arrows](http://www.haskell.org/arrows/) and their implications followed by some free-form discussion. One of the things I picked up was the question of how [Acid-State](http://hackage.haskell.org/package/acid-state-0.8.2) compares performance-wise to [other](http://hackage.haskell.org/package/mongoDB) data [back-ends](http://hackage.haskell.org/package/HDBC) available, and another was mention of [Criterion](http://hackage.haskell.org/package/criterion-0.6.0.0). The first is something I aim to get to next time, the second is a profiling library for Haskell that doesn't require you to go through any of that [GHC compilation flag bullshit I took you through last time](http://langnostic.blogspot.ca/2012/12/not-optimizing-haskell.html). So I figured I'd crack it open and see if it can provide decent output for me.
 
-### <a name="profiling-haskell-with-criterion" href="#profiling-haskell-with-criterion"></a>Profiling Haskell with Criterion
+### Profiling Haskell with Criterion
 
 Criterion doesn't work on the same level as the GHC profiler. Specifically, it works on individual functions rather than complete programs. It lets you specify labels and benchmark groups, and it takes your hardware into consideration. In concrete terms, lets take that Life module from [a while ago](http://langnostic.blogspot.ca/2012/12/not-optimizing-haskell.html) for a spin.
 
@@ -43,7 +43,7 @@ inRange low n high = low < n && n < high
 lifeStep :: Integer -> Set (Integer, Integer) -> Set (Integer, Integer)
 lifeStep worldSize cells = fromList [head g | g <- grouped cells, viable g]
   where grouped = group . sort . concatMap neighbors . toList
-        neighbors (x, y) = [(x+dx, y+dy) | dx <- [-1..1], dy <- [-1..1], 
+        neighbors (x, y) = [(x+dx, y+dy) | dx <- [-1..1], dy <- [-1..1],
                             (dx,dy) /= (0,0), inSize (dx+x) (dy+y)]
         inSize x y = inR x worldSize && inR y worldSize
         inR = inRange 0
@@ -78,7 +78,7 @@ main = defaultMain [
      bench "Glider" $ whnf step Life.glider,
      bench "Blinker" $ whnf step Life.blinker
      ],
-  bgroup "runLife" [ 
+  bgroup "runLife" [
      bench "Gun" $ whnf run Life.gosperGliderGun,
      bench "Glider" $ whnf run Life.glider,
      bench "Blinker" $ whnf run Life.blinker

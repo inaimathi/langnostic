@@ -8,7 +8,7 @@ It has certain characteristics which seem intrinsic to sorts that prevent it fro
 
 The end result is a sort function that defers a lot of its work, and does save you a lot of time if you only happen to want the first bit of a list sorted, *and* it even saves you a little bit of time if you want to run several lazy functions in succession on its output, but it doesn't quite do enough to get the label "lazy" without a massive asterisk next to it.
 
-### <a name="how-to-implement-a-lazy-sort" href="#how-to-implement-a-lazy-sort"></a>How to implement a lazy* sort
+### How to implement a lazy* sort
 
 First up, here's the Python code.
 
@@ -122,7 +122,7 @@ This is a direct translation of the [Wikipedia Heapsort pseudo-code](http://en.w
         1    0.000    0.000    0.000    0.000 {method 'get' of 'dict' objects}
 
 
->>> 
+>>>
 ```
 
 This is that work deferring thing happening. The call to `heapsort.lazy` doesn't give you a sorted list; it gives you a generator you can traverse to get that list. The call to `heapsort.eager` does give you the whole sorted list, and takes very slightly less time than the lazy version if you happen to need the whole list. As I said before though; if you're only after the first 10% or so elements, there's no contest in terms of execution time, *even if* you're trying to be semi-functional by copying out the input instead of destructively modifying it.
@@ -141,12 +141,12 @@ Oh, before anyone gets the wrong idea
         1    0.002    0.002    0.002    0.002 {sorted}
 
 
->>> 
+>>>
 ```
 
 My stupid little heapsort implementation isn't meant to showcase how slow Python is or anything like that. It's a learning exercise to show how you'd go about implementing a deferred sort in principle, not go into the nuts-and-bolts tuning process that comes once you've got your algorithm and data structures down. In other words, see it as a direct comparison of a shitty sort to the equivalent-except-lazy shitty sort.
 
-### <a name="second-verse-same-as-the-first" href="#second-verse-same-as-the-first"></a>Second verse, same as the first
+### Second verse, same as the first
 
 Except with more parentheses. And I actually try to think through the problem rather than mindlessly parroting back an algorithm outline pilfered from Wikipedia.
 
@@ -165,7 +165,7 @@ Except with more parentheses. And I actually try to think through the problem ra
   (let* ((len (length seq))
          (heap-vector (heapify seq len predicate)))
     (loop for i from (- len 1) downto 0
-       unless (= 0 i) 
+       unless (= 0 i)
        collect (heappop! heap-vector i predicate))))
 
 (defun heapify (seq len predicate)
@@ -201,7 +201,7 @@ Except with more parentheses. And I actually try to think through the problem ra
         (child-r (+ 2 (* 2 ix))))
     (cond ((> child-l bounds) nil)
           ((> child-r bounds) (list child-l nil))
-          (t (if (compare heap-vector child-l child-r predicate) 
+          (t (if (compare heap-vector child-l child-r predicate)
                  (list child-l child-r)
                  (list child-r child-l))))))
 
@@ -231,7 +231,7 @@ Now then, most of the actual `heapsort.lisp` code is implementing a heap. Again,
   (let* ((len (length seq))
          (heap-vector (heapify seq len predicate)))
     (loop for i from (- len 1) downto 0
-       unless (= 0 i) 
+       unless (= 0 i)
        collect (heappop! heap-vector i predicate))))
 ```
 
@@ -246,7 +246,7 @@ We take a list, `heapify` it, then collect `heappop!`ed elements and return the 
     (funcall (next (heapify seq (length seq) predicate)))))
 ```
 
-The lazy version is mildly more interesting 
+The lazy version is mildly more interesting
 
 ```lisp
 (defun heapsort-lazy (seq &optional (predicate #'>))
@@ -358,7 +358,7 @@ That's going to do something to each `child-ix` in the result of `heap-children-
         (child-r (+ 2 (* 2 ix))))
     (cond ((> child-l bounds) nil)
           ((> child-r bounds) (list child-l nil))
-          (t (if (compare heap-vector child-l child-r predicate) 
+          (t (if (compare heap-vector child-l child-r predicate)
                  (list child-l child-r)
                  (list child-r child-l))))))
 ```

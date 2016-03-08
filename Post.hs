@@ -1,20 +1,15 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Post where
+module Post (readPost) where
 
 import Text.Pandoc
 import Text.Pandoc.Walk (walk)
 import Text.Blaze.Html (Html)
 
-import Cached
-
-cachePost :: FilePath -> IO (Cache Html)
-cachePost fpath = newCache (minutes 30) readPost fpath
-
 readPost :: FilePath -> IO Html
 readPost fpath = do
   f <- readFile fpath
   return $ case readMarkdown def f of
-    Right p -> writeHtml def . footnotes $ walk linkedHeaders p
+    Right p -> writeHtml def $ walk linkedHeaders p
     _ -> error $ "Invalid post: " ++ fpath
 
 ----------
@@ -28,7 +23,7 @@ linkedHeaders node = node
 -- Transform footnote "links" into footnotes
 footnotes :: Pandoc -> Pandoc
 footnotes doc = Pandoc meta $ content ++ compileFootnotes tbl
-    where tbl = flip zip [1..] $ queryWith extractFootnotes doc
+    where tbl = flip zip [0..] $ queryWith extractFootnotes doc
           Pandoc meta content = walk (replaceFootnote tbl) doc
 
 extractFootnotes :: Inline -> [Inline]
@@ -45,6 +40,7 @@ replaceFootnote tbl elem@(Link _ content _) =
 replaceFootnote _ elem = elem
 
 compileFootnotes :: [(Inline, Int)] -> [Block]
+compileFootnotes [] = []
 compileFootnotes fs = [ HorizontalRule
                       , Header 3 ("", [], []) [Str "Footnotes"]
                       , BulletList $ map toFootList fs]
@@ -55,6 +51,3 @@ compileFootnotes fs = [ HorizontalRule
 anchor :: String -> [Inline]
 anchor name = [ RawInline (Format "html") ("<a name=\"" ++ name ++ "\">")
               , RawInline (Format "html") "</a>"]
-
-replaceFootnotes :: Inline -> Inline
-replaceFootnotes (Link _ _ ("footnote",_)) = Str ""

@@ -2,7 +2,7 @@ Fuck it.
 
 I can't show you the insides, but I can damn well talk about it. And I kinda have to, because there are already a few things that surprised me while writing my own LISP in C implementation, and a couple of things I need to make decisions on before making more progress.
 
-### <a name="its-easier-than-you-think" href="#its-easier-than-you-think"></a>It's Easier Than You Think
+### It's Easier Than You Think
 
 Seriously.
 
@@ -22,7 +22,7 @@ See, if you discount leading `-` signs, you can pretty much write a full LISP re
 
 Unless it's acceptable that users can't enter negative number literals, you have to deal with this ambiguity. I *don't* think it's acceptable, but the only way it would be was if we had a specific negation procedure. And *that* semi-leads us into part one of what I'm considering right now.
 
-### <a name="the-roi-of-variadic-functions" href="#the-roi-of-variadic-functions"></a>The ROI of Variadic Functions
+### The ROI of Variadic Functions
 
 In the vast majority<a name="note-Mon-Dec-01-211224EST-2014"></a>[|2|](#foot-Mon-Dec-01-211224EST-2014) of LISP interpreters available today, you can do this:
 
@@ -33,7 +33,7 @@ In the vast majority<a name="note-Mon-Dec-01-211224EST-2014"></a>[|2|](#foot-Mon
 -1
 > (- 5 6 7)
 -8
-> 
+>
 ```
 
 That's right. The built-in `-` function dispatches on the number of arguments it receives to determine its behavior. If you pass it one argument, it acts as negation, if you pass it two, it's vanilla subtraction, and if you pass it more, it acts like a `fold` of `-` over the arguments, starting with the first one as the memo.
@@ -52,11 +52,11 @@ It's worth noting that even this basic kind of composition feels mildly restrict
 
 Optional arguments are useful in that they allow you to punch your future self *directly in the mouth* during the prototyping phases of most projects. And I've sort of been trying to avoid being too hard on future me lately. He's got enough problems. So it wouldn't particularly hurt to lose those. Anywhere you could put an optional argument, you could instead put a keyword argument. And *those* are worth their weight in gold in terms of maintaining compatibility with future instances of the same function. However, I can sort of imagine a system wherein you *could* implicitly partially apply key args<a name="note-Mon-Dec-01-211345EST-2014"></a>[|4|](#foot-Mon-Dec-01-211345EST-2014), so I'm unsure that the features can't coexist. I'll let you know how it goes, I guess.
 
-### <a name="part-two" href="#part-two"></a>Part Two
+### Part Two
 
 I mentioned earlier that contemplating the `rest`-args vs. implicit partial application dichotomy was *part one* of the things I'm considering. Here's another:
 
-What the ever-loving *fuck* do I do about built-in symbols? Not built in *functions*, certain symbol literals that are literally part of the dispatch table found in the internals of `eval`. Specifically: 
+What the ever-loving *fuck* do I do about built-in symbols? Not built in *functions*, certain symbol literals that are literally part of the dispatch table found in the internals of `eval`. Specifically:
 
 ```
 true
@@ -86,7 +86,7 @@ If I go route 1, suddenly checks against these symbols get expensive<a name="not
 
 Route 2 has the property that the definition of memory gets incidentally cumbersome. Suddenly there are a bunch more names I need to keep around outside of the scope of regular memory, and I need to make sure to mark each of them on every garbage collector pass. Woo. Not only that, but it suddenly gets really tricky to have a local variable named `quote`, and outright *dangerous* to have one named `unquote` or `splice`, because they'll share symbol identity with the built ins and behave radically differently in certain contexts.
 
-### <a name="part-three" href="#part-three"></a>Part Three
+### Part Three
 
 I've been reading up on [Standard ML](http://sml-family.org/) lately. I think I have to learn it. If for no reason other than that the most vocal ML critics tend to be ML developers and designers, and that's something I have to respect. One of the papers linked from that SML page is entitled ["A Critique of Standard ML"](http://sml-family.org/papers/Appel-critique-SML.pdf), written by [Andrew Appel](https://en.wikipedia.org/wiki/Andrew_Appel), and goes over some of the positive and negative points with the Standard ML language.
 
@@ -100,8 +100,8 @@ Go read it right now. Seriously, it'll save you a lot of time in the long run. T
 
 The first one reads
 
-> This is clearly an advantage, not a disadvantage. For the programmer to have to calculate a string-to-string rewrite of the program before any semantic analysis invites problems of the worst kind. Where macros are used to attain the effect of in-line expansion of functions, they are doing something that should be done by an optimizing compiler. Where macros are used to attain call-by-name, the effect can be obtained by passing a suspension as an argument; in ML this is written with the syntax `fn()=>` which though admittedly ugly is fairly concise, and is better than tolerating the semantic havoc wrought by macros.  
-> --Andrew Appel, [A Critique of Standard ML](http://sml-family.org/papers/Appel-critique-SML.pdf)  
+> This is clearly an advantage, not a disadvantage. For the programmer to have to calculate a string-to-string rewrite of the program before any semantic analysis invites problems of the worst kind. Where macros are used to attain the effect of in-line expansion of functions, they are doing something that should be done by an optimizing compiler. Where macros are used to attain call-by-name, the effect can be obtained by passing a suspension as an argument; in ML this is written with the syntax `fn()=>` which though admittedly ugly is fairly concise, and is better than tolerating the semantic havoc wrought by macros.
+> --Andrew Appel, [A Critique of Standard ML](http://sml-family.org/papers/Appel-critique-SML.pdf)
 
 Some of this makes me believe that he must be talking about C-style macros, but the two desired effects are ones you are commonly said to want when reaching for Lisp macros. Not sure, and in any event, I'm unconvinced by the argument here. In addition to offering the effect of inlining and delayed functions, having macros in a language gives you the opportunity to write more of the language in itself than you would otherwise be able to. So I'm certainly keeping them, but will keep an ear out for further arguments of this kind<a name="note-Mon-Dec-01-211357EST-2014"></a>[|6|](#foot-Mon-Dec-01-211357EST-2014).
 

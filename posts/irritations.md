@@ -1,12 +1,12 @@
 Just a short update this time, involving things I keep stubbing my toe on in Lisp and Erlang.
 
-### <a name="common-lisp-is-not-object-oriented" href="#common-lisp-is-not-object-oriented"></a>Common Lisp is not Object Oriented
+### Common Lisp is not Object Oriented
 
 The object orientation support is bugging me again. Not just me, either<a name="note-Mon-Aug-06-013854EDT-2012"></a>[|1|](#foot-Mon-Aug-06-013854EDT-2012), because a bunch of modules I've been making use of lately have functions with names like `time-difference` or `queue-push`, which is precisely what the generic functions are supposed to save you from doing. It recently annoyed the fuck out of me while putting together a simple, caching [implementation of a thread-safe queue](https://github.com/Inaimathi/Common-Lisp-Actors/blob/master/queue.lisp). I wanted that construct to have `push`, `pop` and `length`, but because those names already designate top-level **functions**, it's not quite as simple as declaring them.
 
 I'm not about to be dumb enough to propose that this makes Common Lisp an [unacceptable language](http://steve-yegge.blogspot.ca/2006/04/lisp-is-not-acceptable-lisp.html), especially since it looks like this could easily be fixed within the spec as it exists today, and I already [quasi-proposed a semi-solution](http://langnostic.blogspot.ca/2011/11/objective-lisp.html). I just have to give voice to that minor frustration, and point out that what you'd really want in this situation is access to a lot of the basic [CLHS symbols](http://www.lispworks.com/documentation/HyperSpec/Front/X_AllSym.htm) **as methods** rather than functions. Not having this has now bitten me directly in the ass no less than twice<a name="note-Mon-Aug-06-014123EDT-2012"></a>[|2|](#foot-Mon-Aug-06-014123EDT-2012), and signs that it might be worth fixing are showing in various CL libraries.
 
-### <a name="erlang-should-be-more-like-javascript" href="#erlang-should-be-more-like-javascript"></a>Erlang Should Be More Like JavaScript
+### Erlang Should Be More Like JavaScript
 
 Wow, do [records](http://www.erlang.org/doc/reference_manual/records.html) suck donkey dong!
 
@@ -22,7 +22,7 @@ But.
 
 Records are basically tuples, wearing a bunch of reader macros and syntactic sugar. That means they're potentially faster than using a dynamic data structure for the same purpose, but it means that you can't just *pass a record* between two otherwise decoupled systems. If you want the same sort of behavior that you'd get out of native k/v support, you have three options I can see, and they all make me want to glare menacingly at Joe Armstrong, or at least whoever decided that records were a satisfactory solution.
 
-## <a name="option-duplicate-records" href="#option-duplicate-records"></a>Option 1: Duplicate Records
+## Option 1: Duplicate Records
 
 You declare the same record in both systems, then send records across.
 
@@ -36,13 +36,13 @@ Now, we can't just make this change in the model component, because if you had d
 
 This is not the sort of brittleness that I expect from a key/value construct.
 
-## <a name="option-shared-records" href="#option-shared-records"></a>Option 2: Shared Records
+## Option 2: Shared Records
 
 You can write one file, lets say `records.hrl`, put all your record declarations in there and then include that file in both projects.
 
 *This* sucks balls because now you don't actually have two decoupled projects at all. You've got one giant, mostly disjoint project with shared data declarations. It's not *horrible*, to be fair, but remember that having a run-time construct rather than a compile-time record system wouldn't even require this much additional planning.
 
-## <a name="option-sending-tuples-or-proplists" href="#option-sending-tuples-or-proplists"></a>Option 3: Sending Tuples or Proplists
+## Option 3: Sending Tuples or Proplists
 
 This is the option I went with for a recent project, and I'm honestly not sure it was the right approach, but there would have been record name collisions otherwise, so whatever, I guess.
 

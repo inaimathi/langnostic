@@ -16,7 +16,7 @@ Step two is the meat of the algorithm. It works like this:
 
 Each line eliminates some seams that continued from above; that's intentional, not accidental. We're not looking for all possible seams sorted by total cost, we want the seam with the lowest possible total cost *that's also cheaper at each step than its neighbors*.
 
-### <a name="at-the-event" href="#at-the-event"></a>At The Event
+### At The Event
 
 It turns out that this isn't an easy problem to approach if this is your first time seeing it, so the code we wrote *at* the event mostly doesn't work very well.
 
@@ -24,7 +24,7 @@ My [first pairing](https://github.com/CodeRetreatTO/projects/blob/master/2014-10
 
 The [second "pairing"](https://github.com/CodeRetreatTO/projects/blob/master/2014-10-seam-carving/dann-josiah-and-inaimathi.lisp) was together with [Dann](https://github.com/dxnn) and Josiah<a name="note-Wed-Oct-22-234855EDT-2014"></a>[|5|](#foot-Wed-Oct-22-234855EDT-2014), and we forged ahead in Common Lisp. I'll admit to making a tweak or two on the way home, but we had the essentials of the algorithm down before breaking. Instead of indexing observed characters, this group decided to just use the numeric char codes representing each character. This meant the spread was a bit uneven, but it didn't seem to affect the quality of scaling much, if at all. We also got enough time to consider real seams, rather than just columns. The effectful approach we took ended up fighting us on it though. Consequently, we had to explicitly copy seams, where we should just have been functionally `cons`ing them up. To be fair, my focus was on presenting a mini guided tour of CLOS rather than keeping things pure...
 
-### <a name="later" href="#later"></a>Later
+### Later
 
 ...which is why I reached for Haskell when I [tried it out by myself](https://github.com/CodeRetreatTO/projects/blob/master/2014-10-seam-carving/inaimathi.hs) the following day. So lets finally get to some code I want to show, rather than hand-wave away.
 
@@ -76,7 +76,7 @@ main = do f <- fmap lines $ readFile "scene.txt"
 type Score = [[Integer]]
 type Image = [String]
 
-data Seam = Seam { weight :: Integer, sIxs :: [Integer] } deriving (Eq, Ord, Show) 
+data Seam = Seam { weight :: Integer, sIxs :: [Integer] } deriving (Eq, Ord, Show)
 
 add :: Seam -> Integer -> Integer -> Seam
 add (Seam w ixs) newWeight newIx = Seam (w + newWeight) $ newIx:ixs

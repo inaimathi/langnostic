@@ -1,6 +1,6 @@
 At a recent [CodeRetreat](https://github.com/CodeRetreatTO), we tackled [Langton's Ant](http://en.wikipedia.org/wiki/Langton%27s_ant) as the problem. It's another two-state cellular automaton, except that the rules are centered around a cursor named the "ant", rather than each cells' neighborhood. As of this writing, [`rabraham`](https://github.com/rabraham) and I are the only ones who've posted their solution. Although, to be fair, what you'll see [here](https://github.com/CodeRetreatTO/projects/blob/master/2014-09-langtons-ant/rabraham-and-inaimathi.hs) is *not* the raw solution, but rather the result of the raw solution with another hour or two of polish put on it after the fact. Lets go sequentially though, starting with [what we actually wrote](https://github.com/CodeRetreatTO/projects/blob/961fc0376e0074e8af34c9f93e55a6121b5c2981/2014-09-langtons-ant/rabraham-and-inaimathi.hs) at the event from the initial state in [history](https://github.com/CodeRetreatTO/projects/commits/master/2014-09-langtons-ant/rabraham-and-inaimathi.hs).
 
-#### <a name="langtons-haskelly-ant-take-one" href="#langtons-haskelly-ant-take-one"></a>Langton's Haskelly Ant, Take One
+#### Langton's Haskelly Ant, Take One
 
 ```haskell
 module Langton where
@@ -9,7 +9,7 @@ import Prelude hiding (Left, Right, flip)
 
 data Direction = Up | Right | Down | Left deriving (Eq, Enum, Show)
 
-right :: Direction -> Direction 
+right :: Direction -> Direction
 right Left = Up
 right dir = succ dir
 
@@ -61,7 +61,7 @@ We'll be defining our own `Left` and `Right` constructors, and a different `flip
 ```haskell
 data Direction = Up | Right | Down | Left deriving (Eq, Enum, Show)
 
-right :: Direction -> Direction 
+right :: Direction -> Direction
 right Left = Up
 right dir = succ dir
 
@@ -165,12 +165,12 @@ World (Ant 4 5 Left) [(5,5),(5,4),(4,4)]
 
 World (Ant 7 3 Down) [(7,2),(6,2),(5,3),(6,4),(4,5),(3,4),(2,1),(1,1),(0,1),(-1,0),(-2,0),(-2,1),(0,0),(-1,-1),(1,-2),(0,-2),(2,-1),(3,1),(4,1),(5,1),(6,0),(7,-1),(7,-2),(6,-2),(7,0),(8,-1),(9,1),(9,0),(8,2),(5,2),(6,7),(7,7),(8,7),(9,8),(10,8),(10,7),(8,8),(9,9),(7,10),(8,10),(6,9),(5,7),(4,7),(3,7),(2,8),(1,9),(1,10),(2,10),(1,8),(0,9),(-1,7),(-1,8),(0,6),(3,6),(7,5),(7,4),(8,5),(1,3),(1,4),(0,3),(7,3),(1,5)]
 World (Ant 8 3 Right) [(7,2),(6,2),(5,3),(6,4),(4,5),(3,4),(2,1),(1,1),(0,1),(-1,0),(-2,0),(-2,1),(0,0),(-1,-1),(1,-2),(0,-2),(2,-1),(3,1),(4,1),(5,1),(6,0),(7,-1),(7,-2),(6,-2),(7,0),(8,-1),(9,1),(9,0),(8,2),(5,2),(6,7),(7,7),(8,7),(9,8),(10,8),(10,7),(8,8),(9,9),(7,10),(8,10),(6,9),(5,7),(4,7),(3,7),(2,8),(1,9),(1,10),(2,10),(1,8),(0,9),(-1,7),(-1,8),(0,6),(3,6),(7,5),(7,4),(8,5),(1,3),(1,4),(0,3),(1,5)]
-*Langton> 
+*Langton>
 ```
 
 You'll note that some of those coordinates are negative, since we intentionally didn't restrict our `Ant` from walking off the edge of the board. This is what we came up with at the meetup itself, and I mentioned at the time that we probably would have taken a while to write a print routine, as well as handle multiple `Ant`s. I mentioned, half-jokingly, that the printing code would probably be more difficult than the extra cursors. I think I'm going to have to shut up about that, because as you'll see in the next two chunks of this article, neither are particularly complicated<a name="note-Sat-Sep-20-133941EDT-2014"></a>[|2|](#foot-Sat-Sep-20-133941EDT-2014).
 
-#### <a name="langtons-haskelly-ant-take-two-m-m-m-m-multiant" href="#langtons-haskelly-ant-take-two-m-m-m-m-multiant"></a>Langton's Haskelly Ant, Take Two: M m m m multi-ant!
+#### Langton's Haskelly Ant, Take Two: M m m m multi-ant!
 
 Here's what I wrote on the subway, on my way home from the event:
 
@@ -181,7 +181,7 @@ import Prelude hiding (Left, Right)
 
 data Direction = Up | Right | Down | Left deriving (Eq, Enum, Show)
 
-right :: Direction -> Direction 
+right :: Direction -> Direction
 right Left = Up
 right dir = succ dir
 
@@ -267,12 +267,12 @@ World [Ant 4 4 Down,Ant 3 7 Right] [(2,7),(4,3),(2,8),(3,3),(3,8),(3,4),(4,7),(4
 
 ... and so on ...
 
-*Langton> 
+*Langton>
 ```
 
 Now then...
 
-#### <a name="langtons-haskelly-ant-take-three-printing" href="#langtons-haskelly-ant-take-three-printing"></a>Langton's Haskelly Ant, Take Three: Printing
+#### Langton's Haskelly Ant, Take Three: Printing
 
 Part two of my subway trip was devoted to printing this world in a more pleasing way.
 
@@ -284,7 +284,7 @@ import Data.Set (Set(..), member, insert, delete, fromList)
 
 data Direction = Up | Right | Down | Left deriving (Eq, Enum, Show)
 
-right :: Direction -> Direction 
+right :: Direction -> Direction
 right Left = Up
 right dir = succ dir
 
@@ -380,217 +380,217 @@ Ok, modules loaded: Langton.
 Loading package array-0.4.0.1 ... linking ... done.
 Loading package deepseq-1.3.0.1 ... linking ... done.
 Loading package containers-0.5.0.0 ... linking ... done.
-           
-           
-           
-           
-    +      
-           
-           
-   +       
-           
-           
-           
 
-           
-           
-           
-           
-    O+     
-           
-   +       
-   O       
-           
-           
-           
 
-           
-           
-           
-           
-    OO     
-     +     
-   O+      
-   O       
-           
-           
-           
 
-           
-           
-           
-           
-    OO     
-    +O     
-   OO      
-   O+      
-           
-           
-           
 
-           
-           
-           
-           
-    +O     
-    OO     
-   OO      
-   +O      
-           
-           
-           
+    +
 
-           
-           
-           
-           
-   + O     
-    OO     
-   OO      
-    O      
-   +       
-           
-           
 
-           
-           
-           
-   +       
-   O O     
-    OO     
-   OO      
-    O      
-  +O       
-           
-           
+   +
 
-           
-           
-           
-   O+      
-   O O     
-    OO     
-   OO      
-  + O      
-  OO       
-           
-           
 
-           
-           
-           
-   OO      
-   O+O     
-    OO     
-   OO      
-  O+O      
-  OO       
-           
-           
 
-           
-           
-           
-   OO      
-   +OO     
-    OO     
-   OO      
-  OOO      
-  O+       
-           
-           
 
-           
-           
-           
-   OO      
-    OO     
-   +OO     
-   OO      
-  OOO      
-  O +      
-           
-           
 
-           
-           
-           
-   OO      
-    OO     
-  +OOO     
-   OO      
-  OOO      
-  O O      
-    +      
-           
 
-           
-           
-           
-   OO      
-  + OO     
-  OOOO     
-   OO      
-  OOO      
-  O O      
-   +O      
-           
 
-           
-           
-           
-   OO      
-  O+OO     
-  OOOO     
-   OO      
-  OOO      
-  O+O      
-   OO      
-           
 
-           
-           
-           
-   OO      
-  OOOO     
-  O+OO     
-   OO      
-  OOO      
-  OO+      
-   OO      
-           
+    O+
 
-           
-           
-           
-   OO      
-  OOOO     
-  O +O     
-   OO      
-  OO+      
-  OO       
-   OO      
-           
+   +
+   O
 
-           
-           
-... and a few more ...           
-           
-   OO      
-  O  O     
- O   O     
-O   O      
-+O    +O   
-  O  OOO   
-   O  O    
-    OO     
 
-*Langton> 
+
+
+
+
+
+
+    OO
+     +
+   O+
+   O
+
+
+
+
+
+
+
+
+    OO
+    +O
+   OO
+   O+
+
+
+
+
+
+
+
+
+    +O
+    OO
+   OO
+   +O
+
+
+
+
+
+
+
+
+   + O
+    OO
+   OO
+    O
+   +
+
+
+
+
+
+
+   +
+   O O
+    OO
+   OO
+    O
+  +O
+
+
+
+
+
+
+   O+
+   O O
+    OO
+   OO
+  + O
+  OO
+
+
+
+
+
+
+   OO
+   O+O
+    OO
+   OO
+  O+O
+  OO
+
+
+
+
+
+
+   OO
+   +OO
+    OO
+   OO
+  OOO
+  O+
+
+
+
+
+
+
+   OO
+    OO
+   +OO
+   OO
+  OOO
+  O +
+
+
+
+
+
+
+   OO
+    OO
+  +OOO
+   OO
+  OOO
+  O O
+    +
+
+
+
+
+
+   OO
+  + OO
+  OOOO
+   OO
+  OOO
+  O O
+   +O
+
+
+
+
+
+   OO
+  O+OO
+  OOOO
+   OO
+  OOO
+  O+O
+   OO
+
+
+
+
+
+   OO
+  OOOO
+  O+OO
+   OO
+  OOO
+  OO+
+   OO
+
+
+
+
+
+   OO
+  OOOO
+  O +O
+   OO
+  OO+
+  OO
+   OO
+
+
+
+
+... and a few more ...
+
+   OO
+  O  O
+ O   O
+O   O
++O    +O
+  O  OOO
+   O  O
+    OO
+
+*Langton>
 ```
 
 Now, that's cool and all. And it's all I had time for on my subway ride home, but it did seem kind of a shame to have this newly pretty-ish representation printed to the REPL. So the next day, I whipped out [Haste](http://haste-lang.org/).
 
-#### <a name="langtons-haskelly-ant-bonus-stage-the-dom" href="#langtons-haskelly-ant-bonus-stage-the-dom"></a>Langton's Haskelly Ant, Bonus Stage: The DOM
+#### Langton's Haskelly Ant, Bonus Stage: The DOM
 
 ```haskell
 module Main where
@@ -604,7 +604,7 @@ import qualified Data.Map as Map
 
 data Direction = Up | Right | Down | Left deriving (Eq, Enum, Show)
 
-right :: Direction -> Direction 
+right :: Direction -> Direction
 right Left = Up
 right dir = succ dir
 

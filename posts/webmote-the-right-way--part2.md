@@ -1,22 +1,22 @@
 And we're back. Part one was the previous article, so I'm not going to bother linking you to it. This time around we're taking a look at one possible back-end to the web-based media interface we cooked up last time. [The github has been updated](https://github.com/Inaimathi/web-mote), by the by. First off, there ended up being some change required to the front-end, mostly for browser compatibility purposes.
 
-First, some browsers apparently don't pick up content from a jQuery ajax request. I ran into this with an older version of [Safari](http://www.apple.com/safari/), and comparably recent versions of [Conkeror](http://conkeror.org/). If you try to do 
+First, some browsers apparently don't pick up content from a jQuery ajax request. I ran into this with an older version of [Safari](http://www.apple.com/safari/), and comparably recent versions of [Conkeror](http://conkeror.org/). If you try to do
 
 ```javascript
-$.ajax({url: "foo", 
-        data: {...}, 
-        success: function (data) { 
-           alert(JSON.stringify(data)); 
+$.ajax({url: "foo",
+        data: {...},
+        success: function (data) {
+           alert(JSON.stringify(data));
         }});
 ```
 
 what you'll get is not `"Stuff the page sent you"`, but rather `""`. I have no idea why this is; checking the return value from the server confirmed that it was sending the correct stuff, but it wasn't making it to client side for some reason. I know it's a *browser* issue because Iceweasel and Chromium both did what I was expecting them to and returned the request contents. I solved *that* by using the jQuery `jqXHR` object return value available in reasonably recent versions of the framework. In other words
 
 ```javascript
-$.ajax({url: "foo", 
-        data: {...}, 
-        success: function (data, status, jq) { 
-           alert(JSON.stringify(jq.responseText)); 
+$.ajax({url: "foo",
+        data: {...},
+        success: function (data, status, jq) {
+           alert(JSON.stringify(jq.responseText));
         }});
 ```
 
@@ -32,12 +32,12 @@ Styling the control panel at runtime solves that problem, assuming the styleshee
 if ($.browser.safari) {
     $("#controls").css({ "position": 'absolute' });
     window.onscroll = function() {
-        $("#controls").css({ 
+        $("#controls").css({
             "top" : window.pageYOffset + 'px'
         });
     };
 } else {
-    $("#controls").css({ "position": 'fixed' });    
+    $("#controls").css({ "position": 'fixed' });
 }
 ```
 
@@ -62,15 +62,15 @@ Oh, actually, I also ended up making those handler changes mentioned last time. 
 - `/play`
 - `/shuffle-directory`
 - `/command`
- 
+
 
 That's it for changes to the front-end since last time, but let me share some random thoughts before going on to the server-side.
 
-### <a name="interlude-the-state-of-lisp-web-development-on-arm" href="#interlude-the-state-of-lisp-web-development-on-arm"></a>Interlude - The State of Lisp Web Development on ARM
+### Interlude - The State of Lisp Web Development on ARM
 
 My usual web development stack is [Hunchentoot](http://weitz.de/hunchentoot/) on top of [SBCL](http://www.sbcl.org/platform-table.html), which turns out to be a problem. You may have noticed that there's no ARM port in that SBCL link. Not "no Debian package", no port period. I guess I could technically grab the source, and laboriously `gcc` up my own, but I'm honestly neither patient nor smart enough to. [GCL doesn't play nice with quicklisp](http://savannah.gnu.org/support/?107611#discussion) which kind of makes that a non-starter for me regardless of how mind-bogglingly fast it claims to be, [CMUCL](http://packages.debian.org/sid/cmucl-source) requires [a working CMUCL system](http://xkcd.com/754/) to be built from source and isn't in the Wheezy repos, which leaves [CLISP](http://www.clisp.org/)<a name="note-Mon-Oct-08-140353EDT-2012"></a>[|2|](#foot-Mon-Oct-08-140353EDT-2012).
 
-Which I *would* use if it played nicely with [external-program](https://github.com/sellout/external-program/wiki/API). Sadly, 
+Which I *would* use if it played nicely with [external-program](https://github.com/sellout/external-program/wiki/API). Sadly,
 
 ```lisp
 *** - CLISP does not support supplying streams for input or output.
@@ -92,7 +92,7 @@ Anyway, the long and the short of it is that putting together a Common Lisp solu
 
 Which is why this first stab is written in Python, and a follow-up is probably going to be using Haskell rather than CL.
 
-### <a name="webmote-the-right-way-server-side" href="#webmote-the-right-way-server-side"></a>WebMote the Right Way™© -- Server Side
+### WebMote the Right Way™© -- Server Side
 
 First off, have an updated tree
 
@@ -233,7 +233,7 @@ commands = {
     'omxplayer':
         {'rewind-big': "\x1B[B", 'rewind': "\x1B[D", 'ff': "\x1B[C", 'ff-big': "\x1B[A",
          'volume-down': "+", 'mute': " ", #omxplayer doesn't have a mute, so we pause instead
-         'volume-up': "-", 
+         'volume-up': "-",
          'stop': "q", 'pause': " ", 'play': " "}
     }
 
@@ -314,7 +314,7 @@ def entriesToJSON(entries):
 
 def dirToJSON(directory):
     entries = entriesToDicts(
-        map(lambda p: os.path.join(directory, p), 
+        map(lambda p: os.path.join(directory, p),
             sorted(os.listdir(directory))))
     if directory in conf.root:
         entries.insert(0, {'path': "root", 'name': "..", 'type': "directory"})

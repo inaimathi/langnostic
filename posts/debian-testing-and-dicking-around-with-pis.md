@@ -2,13 +2,13 @@ That was a vacation, I guess.
 
 It was suspiciously taxing, all in all. Time off from work hasn't been nearly as relaxing since we had a kid, but that's a digression. Over the past little while, I've managed to finally make use the 120G solid state drive I picked up half a year ago, install various distros, and put together about one third of a utility to ease a project or two I'm working on in my spare time.
 
-### <a name="new-drive" href="#new-drive"></a>New Drive
+### New Drive
 
 It's at once larger and smaller than the last one. On the one hand, thanks to its smaller physical profile, I can fit it into my laptop with no mods. On the other hand, `df -h` says `106G`<a name="note-Sat-Jan-04-174331EST-2014"></a>[|1|](#foot-Sat-Jan-04-174331EST-2014) instead of `~28G`.
 
 That's it, nothing else to see here.
 
-### <a name="fresh-install" href="#fresh-install"></a>Fresh Install
+### Fresh Install
 
 Since I was between drives anyhow, I took the opportunity to get the fresh version of [Debian](http://www.debian.org/devel/debian-installer/) up and running. That was worth it, by the by, if for no other reason than they've apparently poured enough bucketfulls of time into the networking code that I can now reliably connect to my wifi access point even if I'm not within two meters of it. They also seemed to lick a problem I kept running into wherein the shutdown process would hang the machine<a name="note-Sat-Jan-04-174334EST-2014"></a>[|2|](#foot-Sat-Jan-04-174334EST-2014).
 
@@ -47,7 +47,7 @@ Which covers pretty much everything. Oh, one thing. I spent about half an hour f
   (= (aref path 0) ?.))
 
 (defun list-subdirectories (path)
-  (let ((all (mapcar 
+  (let ((all (mapcar
               (lambda (name) (concat (file-name-as-directory path) name))
               (remove-if #'starts-with-dot-p (directory-files path)))))
     (remove-if-not #'file-directory-p all)))
@@ -64,7 +64,7 @@ then called this near the top of that `.emacs` file:
 
 This let me continue as normal. The only omission from that emacs package list is [`slime`](http://common-lisp.net/project/slime/), which I've lately been installing from `sbcl` or what-have-you with `(ql:quickload :quicklisp-slime-helper)` rather than through Emacs itself. It works exactly as well as you'd expect, which is to say flawlessly.
 
-### <a name="dicking-around-with-pis" href="#dicking-around-with-pis"></a>Dicking Around With Pis
+### Dicking Around With Pis
 
 Doing that got me into an installing mood, so I also formatted a fresh couple of SD cards with the latest versions of [ARM Arch](http://archlinuxarm.org/platforms/armv6/raspberry-pi) and [Raspbian](http://www.raspbian.org/) respectively. I did this with the vague intention of getting `deal` to work with one or both, and it looks like *that*'ll take a bit more work than just a straight-up `ql:quickload`. Differences before I get to that though.
 
@@ -78,7 +78,7 @@ Specifically, `clisp` segfaults on both ARM Arch *and* Raspbian when you try to 
 
 I'll be trying to fix that over the next little while.
 
-### <a name="clgitfs" href="#clgitfs"></a>cl-git-fs
+### cl-git-fs
 
 Finally, on a merely semi-related note, I'm working on a couple of projects on my own time that are eventually going to want to do some sort of file management. And I figured it would be nice not to have to bring `git` into it manually after the fact. To that end, I took a look at how [`gitit`](http://gitit.net/) manages the trick of using git as a faux-database for its wiki pages. It's [not that complicated](http://hackage.haskell.org/package/filestore-0.3.2/docs/src/Data-FileStore-Git.html), as it turns out. And [here's](https://github.com/Inaimathi/cl-git-fs) the result of spending an hour or two porting that piece of functionality to Common Lisp.
 

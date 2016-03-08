@@ -4,38 +4,38 @@ Thus began the research...
 
 There are the usual set of resources over there in the sidebar<a name="note-Mon-Apr-30-004835EDT-2012"></a>[|1|](#foot-Mon-Apr-30-004835EDT-2012), but do also take the time to check out [this vimeo piece featuring Joe Armstrong](http://vimeo.com/12307912). It won't really give you much insight into how to use the language, but it will show you a bit of the history and intent. Like I said, entirely worth it to hear the man talk, but here are the big points, as extracted by yours truly; he highlighted three things that were missing from Erlang<a name="note-Mon-Apr-30-004855EDT-2012"></a>[|2|](#foot-Mon-Apr-30-004855EDT-2012), one big mistake, two not-too-bad ideas and three fairly nice ideas that the team had when developing the language. He noted that these are controversial, but I tend to agree with a pretty large number of his assessments. Then again, I'm the crazy motherfucker who regularly blogs about his experiences with Lisp, Smalltalk, Erlang and Ruby, so maybe I'm not the best person to gauge what a mainstream opinion is supposed to look like.
 
-## <a name="three-missing-things" href="#three-missing-things"></a>Three Missing Things
+## Three Missing Things
 **Hash Maps** - JSON-style key/value data structures. Not just adding them to the system, but making them the fundamental data-type rather than tuples or arrays. I can see why, too; if you look at any tutorial or piece of Erlang code, you'll see things that fake key/value pairs using tuples. Things like `{shopping_list, [{oranges, 3}, {apples, 4}, {bread, 1}]}`, which would be better expressed as a JSON structure<a name="note-Mon-Apr-30-005108EDT-2012"></a>[|3|](#foot-Mon-Apr-30-005108EDT-2012).
 
 **Higher Order Modules** - code in Erlang is organized into modules, which is par for the course these days, but you can't programmatically introspect on them at runtime. Joe mentioned the example of being able to send a particular standardized message and getting back a list of messages supported by the target. I guess this probably might get built into the existing language piecemeal by convention rather than specification. I'm imagining a situation where a given team agrees that they'll write all their modules to accept a `help` message which would return a list of the functions it provides and a specification of inputs they'd each accept. Thing is, 1. that wouldn't be a language-wide standard, and 2. it would take additional explicit work by the developers. If it was handled at the language level, everyone would have access to the same introspection facilities, and they'd be handled with no additional thought or deed on the developers' part.
 
 **The Ability to `receive` a `fun`** - Erlang is a higher-order language, and you can send around function names whenever and wherever you damn well please, but apparently the built-in `receive` directive won't let you pass it an anonymous function. Ok, this isn't one you could solve with macros, but I'm not entirely sure it would be a good idea in the first place. The thing on the other end of the line isn't necessarily code you can trust, but it would certainly add more flexibility.
 
-## <a name="one-big-mistake" href="#one-big-mistake"></a>One Big Mistake
+## One Big Mistake
 **Lost Too Much Prolog** - Joe's a big [Prolog](http://www.gprolog.org/manual/gprolog.html) fan, which should come as no surprise to anyone who's read any Erlang tutorials, watched any [Erlang talks](http://www.youtube.com/watch?v=9uIhawQ1G0I&feature=BFa&list=PL6810EA9B7933465F), or indeed, [written any Erlang code](http://www.tryerlang.org/). I'm not qualified to comment, never having done anything approaching serious development in Prolog<a name="note-Mon-Apr-30-005141EDT-2012"></a>[|4|](#foot-Mon-Apr-30-005141EDT-2012).
 
-## <a name="two-not-too-bad-ideas" href="#two-not-too-bad-ideas"></a>Two Not Too Bad Ideas
+## Two Not Too Bad Ideas
 He gave this talk to an American audience, so he had to have a section with Good™ and Great™ ideas, though he would have preferred to be more modest about it. In deference to his preference, I'm keeping his intended titles.
 
-**Lightweight Processes Are Ok** - 
+**Lightweight Processes Are Ok** -
 
-  
-> "... we've shown that you can do processes in the language, and we've shown there's no need for threads. Threads are intrinsically evil, and [shouldn't] be used. Threads were sort of this 'Oh my goodness, processes aren't efficient enough, so lets use this abomination to...' horrible things."  
->  
-> -- Joe Armstrong  
-  
+
+> "... we've shown that you can do processes in the language, and we've shown there's no need for threads. Threads are intrinsically evil, and [shouldn't] be used. Threads were sort of this 'Oh my goodness, processes aren't efficient enough, so lets use this abomination to...' horrible things."
+>
+> -- Joe Armstrong
+
 For my part, I've got a half-written piece about `[cl-actors](https://github.com/naveensundarg/Common-Lisp-Actors)` sitting in my drafts folder. It's a pretty good, lightweight implementation of the [actor model](http://en.wikipedia.org/wiki/Actor_model) built on top of `[bordeaux-threads](http://common-lisp.net/project/bordeaux-threads/)`. And if you like the Erlang-style message passing, do give it a shot, but it doesn't quite do the same thing as Erlang manages. The threading model means you can't expect to reliably spawn thousands of `cl-actors` on a typical machine. For comparison, [the Pragmatic book](http://pragprog.com/book/jaerlang/programming-erlang) has an example on pg 149/150 wherein Joe removes the built-in safety limit of 32 767 processes and has Erlang spawn 200 000 without breaking a sweat<a name="note-Mon-Apr-30-005314EDT-2012"></a>[|5|](#foot-Mon-Apr-30-005314EDT-2012). That seems like at least part of the story behind those [mind-boggling benchmarks](http://www.sics.se/~joe/apachevsyaws.html) that you've all probably seen by now.
 
 **OTP Behaviours** - The correct way to think of Behaviours, Joe says, is to consider them the process equivalent of higher-order functions. They formalize basic request patterns between processes letting individuals focus on the differences. I don't actually have enough experience with them yet, but if Joe's description is accurate, I can see them being very useful when constructing complex systems with a reliability requirement.
 
-## <a name="three-fairly-nice-ideas" href="#three-fairly-nice-ideas"></a>Three Fairly Nice Ideas
+## Three Fairly Nice Ideas
 **Bit Syntax** - Is frequently useful when setting up low-level communications with non-Erlang processes, and reading files. Joe calls this out as the first of three very useful features, and it really is elegant. If you've never seen it, I encourage you to [take a quick look](http://www.erlang.org/documentation/doc-5.6/doc/programming_examples/bit_syntax.html). Short version: the notation they've set up gives you access to the same pattern matching facilities you can expect from the rest of the language, which in turn makes it very simple to decode and process binary data.
 
 **Formalized Inter-process Relationships** - This is another feature that typical "Erlang-style" systems miss. They're useful as fuck when you're building multi-processing systems, but it seems like you could add them on later if you picked your primary primitives properly. The idea is that you can [explicitly link various processes](http://www.erlang.org/doc/reference_manual/processes.html) in certain ways. For instance, you can tell a group of processes to all fail if one of them fails, or you can tell a specific process to monitor another, restarting it in the event of an error.
 
 **Offensive Programming** - He called it "non-[defensive programming](http://en.wikipedia.org/wiki/Defensive_programming)", but I like the negative name better. Offensive programming is the technique of programming only for the successful case, and letting any error take down the process involved (someone will be along to pick up the pieces and restart it shortly). That *would* sound crazy in your typical language, but starts looking like a good idea when your principal method of organization is a completely isolated process.
 
-### <a name="the-ffi" href="#the-ffi"></a>The FFI
+### The FFI
 
 Aside from historical notes and tutorials, I've been looking at how I'd go about interfacing Erlang to other languages. The standard seems to be doing it the same way you'd interface different Erlang processes. Except that where Erlang nodes already know how to talk to each other, the protocol needs to be implemented manually for other languages. It works consistently whether you're talking to [Python](http://erlport.org/), [Ruby](https://github.com/mojombo/erlectricity), [Common Lisp](http://common-lisp.net/project/cleric/), [Java](http://www.erlang.org/documentation/doc-5.1/lib/jinterface-1.2.1/doc/html/java/index.html) or [C](http://www.erlang.org/doc/tutorial/cnode.html)<a name="note-Mon-Apr-30-005524EDT-2012"></a>[|6|](#foot-Mon-Apr-30-005524EDT-2012). All the languages I've taken a look at so far come with an established protocol to talk to Erlang in some way.
 
@@ -68,7 +68,7 @@ int write_cmd(byte *buff, int len) {
   byte li;
   li = (len >> 8) & 0xff;
   write_exact(&li, 1);
-  
+
   li = len & 0xff;
   write_exact(&li, 1);
 
@@ -135,7 +135,7 @@ int main(){
   while (read_cmd(buff) > 0) {
     thumb = chop_path(buff);
     result = thumbnail(buff, thumb);
-    
+
     buff[0] = result;
     write_cmd(buff, 1);
   }
@@ -176,7 +176,7 @@ int thumbnail (char *image_name, char *thumbnail_name){
   magick_wand=NewMagickWand();
   status=MagickReadImage(magick_wand, image_name);
   if (status == MagickFalse) ThrowWandException(magick_wand, 1);
-  
+
   /* Turn the images into a thumbnail sequence. */
   MagickResetIterator(magick_wand);
   while (MagickNextImage(magick_wand) != MagickFalse)
@@ -187,7 +187,7 @@ int thumbnail (char *image_name, char *thumbnail_name){
   if (status == MagickFalse) ThrowWandException(magick_wand, 2);
   magick_wand=DestroyMagickWand(magick_wand);
   MagickWandTerminus();
-  
+
   return 0;
 }
 ```
@@ -228,7 +228,7 @@ loop(Port) ->
             Port ! {self(), {command, Msg}},
             receive
                 {Port, {data, Data}} ->
-                    Caller ! {wand, decode(Data)}    
+                    Caller ! {wand, decode(Data)}
             end,
             loop(Port);
         stop ->
