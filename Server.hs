@@ -28,3 +28,9 @@ handlers pm = do
         Nothing -> text "Nope. That doesn't exist."
         Just p -> do body <- liftIO $ postBody p
                      html $ toStrict $ renderHtml $ Pages.article $ body
+  get "archive" $ do
+    m <- liftIO postMap
+    html $ toStrict $ renderHtml $ Pages.archive m
+  get ("archive" <//> "by-tag" <//> var) $ \tag -> do
+    m <- liftIO postMap
+    html $ toStrict $ renderHtml $ Pages.archive $ filter ((tag `elem`) . tags) m

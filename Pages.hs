@@ -6,6 +6,7 @@ import Text.Blaze.Html5 hiding (map, article)
 import Text.Blaze.Html5.Attributes hiding (title, span)
 import qualified Text.Blaze.Html5.Attributes as A
 
+import Data.Char
 import Data.Monoid
 import Control.Monad
 import qualified Data.Text as Txt
@@ -19,13 +20,14 @@ data Section = Blog | Archive | Links | Meta | Feed deriving (Eq, Ord, Show)
 navItem :: Section -> Section -> Html
 navItem s item
     | s == item = toMarkup $ show item
-navItem _ item = a ! href (toValue $ "/" <> (show item)) $ toMarkup $ show item
+navItem _ item = a ! href (toValue $ "/" <> (map toLower $ show item)) $ toMarkup $ show item
 
 navBar :: Section -> Html
 navBar s = div ! class_ "top-menu-container" $ do
              ul ! class_ "top-menu" $
                 forM_ [Blog, Archive, Links, Meta, Feed] (li . navItem s)
 
+pageFooter :: Html
 pageFooter = div ! class_ "license" $ do
                a ! rel "license" ! href "http://creativecommons.org/licenses/by-sa/3.0/" $ do
                                         img ! alt "Creative Commons License" ! A.style "border-width:0;float: left; margin: 0px 15px 15px 0px;" ! src "http://i.creativecommons.org/l/by-sa/3.0/88x31.png"
@@ -67,7 +69,7 @@ template section pageTitle content =
 archive :: [BlogPost] -> Html
 archive posts =
     template Archive "The Archive" $
-             forM_ posts (\p -> do a ! href "link-goes-here" $ "A Title")
+             ul $ forM_ posts (\p -> do li $ a ! href (toValue $ "/posts/" <> (P.file p)) $ toMarkup $ P.title p)
 
 article :: Html -> Html
 article content =

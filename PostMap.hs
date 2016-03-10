@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 module PostMap ( PostMap, postMap, bySlug, byTags, postBody
-               , BlogPost, PostMap.id, title, edited, posted, tags) where
+               , BlogPost, PostMap.id, title, file, edited, posted, tags) where
 
 import Data.Aeson
 import Data.List (intersect)
