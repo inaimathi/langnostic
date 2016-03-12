@@ -1,11 +1,11 @@
-So I'm now officially a Clojure programmer. Which is to say, I have now been paid actual money to write Clojure. That brings the tally 12 of the 14 languages in my title-bar *(the last two are Smalltalk and SML, in case you were wondering)*. Clojure wasn't a requirement for the project. But the stated aims included a few things that made a JVM language very attractive, so I rolled with it. In particular:
+So I'm now officially a Clojure programmer[^or-rather]. Which is to say, I have now been paid actual money to write Clojure. That brings the tally to 12 of the 14 languages in my title-bar *(the last two are Smalltalk and SML, in case you were wondering)*. Clojure wasn't a requirement for the project. But the stated aims included a few things that made a JVM language very attractive, so I rolled with it. In particular:
 
-1. we want a cross-platform, thick-client, complete with GUI
+1. we want a cross-platform thick-client, complete with desktop GUI
 2. the end result needs to be a single-click-launching application, because our targets are non-programmers
 
-I can't give you details or source code, because this is internal stuff that doesn't make sens for public consumption, but I can talk a bit about the high level and the libraries used. That second goal is going to be hit by `lein uberjar`, which will create a self-contained file, complete with all project dependencies other than `java` itself. A library called [Seesaw](https://github.com/daveray/seesaw) will help with the first.
+I can't give you details or source code, because this is internal stuff that doesn't make sense for public consumption. What I *can* tell you is that [`leiningen`s]() `uberjar` capability hits the second goal for us, and a library called [Seesaw](https://github.com/daveray/seesaw) hits the first. There's also a bunch of observations I can make about the process without getting into any concrete code. And this is occasionally a journal about my programming experiences. So lets do this thing.
 
-# Seesaw Summary
+## Seesaw
 
 Seesaw is a bearable wrapper around [Swing](TODO). I should note, by the way, that literally everything I've heard about swing prepared me for it being a trashy, slow, unsafe, fugly UI toolkit. I mean, I dunno; maybe there's better ones out there, but compared to steaming piles like Ruby's [`green_shoes`](TODO), or half-way-decent-but-external-dependency-ridden things like [mcclim](TODO), Seesaw is pretty damn good. It's composeable, minimal, robust *and* cross-platform enough for my purposes.
 
@@ -15,11 +15,9 @@ Not sure if that takes my Lisp-cred down a peg or two, but whatever.
 
 There's already a [short tutorial](TODO - seesaw REPL tutorial), so I won't take up too much space with talking about it. But I do recommend that you go check it out.
 
-# General Notes About Clojure Development
+## Non-Strictness (Sometimes)
 
-There's a bunch of things that took me mildly by surprise about Clojure programming in general. Which I note here more for my future reference than your enlightenment, but it may be useful to you nontheless.
-
-Firstly, Clojure is non-strict in a bunch of ways. I hadn't realized this initially, but it became obvious rather quickly. The more I learn about the language, the more I think that it's less
+Clojure is non-strict in a bunch of ways. I hadn't realized this initially, but it became obvious rather quickly. The more I learn about the language, the more I think that it's less
 
 > Split the difference between Common Lisp/Scheme
 
@@ -27,7 +25,9 @@ and more
 
 > Split the difference between Scheme/Haskell
 
-Which I like, as you might be able to deduce from the afore-mentioned language bar. Kinda wish it gave me a few more compile-time guarantees, but I'm not about to complain too hard, given what I've been working with lately.
+Which I like, as you might be able to deduce from the afore-mentioned title-bar. Kinda wish it gave me a few more compile-time guarantees, but I'm not about to complain too hard, given [what](TODO - ruby) I've [been](TODO - javascript) working with lately.
+
+### Non-Strict `map`
 
 Anyway, it's sometimes non-strict. And that came back to bite me in the ass exactly twice. The first one was a situation that looked something like
 
@@ -43,12 +43,14 @@ When I called `foobar` from the REPL, everything worked fine. But the place I ca
 ```clojure
 (defn do-a-thing [blah]
   ...
-  (foobar things)
+  (foobar a b c d e f)
   (show-request-sent-message)
   ...)
 ```
 
-Apparently, this means that the `map`s inside of `foobar` are never forced (since we never look at their return values), but the attached effectful operations never happen either. The solution in my case was to re-write `foobar` using `doseq` instead of `map`, which has exactly the behavior I want here.
+Apparently, this means that the `map`s inside of `foobar` are never forced *(since we never look at their return values)*, but the attached effectful operations never happen either. The solution in my case was to re-write `foobar` using `doseq` instead of `map`, which had exactly the behavior I want here.
+
+### Lazy IO
 
 The second one had to do with `line-seq`. Basically, I was trying to process an incoming file line-by line. Something like
 
@@ -58,7 +60,7 @@ The second one had to do with `line-seq`. Basically, I was trying to process an 
     (map (fn [ln] ...) (line-seq f))))
 ```
 
-The trouble here is that `line-seq` tries to be lazy about its output. And we've already seen that `map` does the same. However, `with-open` _doesn't_. So, when I call `transform-lines-somehow` later on, what I get instead of a sequence of transformed lines is
+The trouble here is that `line-seq` tries to be lazy about its output. And we've already seen that `map` does the same. However, `with-open` _doesn't_. So, when I call `transform-lines-somehow` later in the program, what I get instead of a sequence of transformed lines is
 
 ```
 IOException Stream closed  java.io.BufferedReader.ensureOpen (BufferedReader.java:115)
@@ -66,7 +68,7 @@ IOException Stream closed  java.io.BufferedReader.ensureOpen (BufferedReader.jav
 
 This is less than ideal.
 
-What I ended up having to do is wrap that `map` in a [`doall`](https://clojuredocs.org/clojure.core/doall), which is basically a strictness annotation. So ...
+Wrapping that `map` in a [`doall`](https://clojuredocs.org/clojure.core/doall)[^strictness-annotation] does the right thing. So ...
 
 ```clojure
 (defn transform-lines-somehow [fname]
@@ -76,11 +78,77 @@ What I ended up having to do is wrap that `map` in a [`doall`](https://clojuredo
 
 in this situation will do exactly what you think it will.
 
+## `leiningen` Is Fucking Awesome
 
-- overriding names defined in `clojure.core` is annoying, but the error doesn't show up until you try to `lein (uber)?jar` your project, at which point it complains about weird pointer errors
-- `lein uberjar` is fucking awesome for distributing to non-developers
-- lacks a real `parse-integer`. The alternatives are either `read-string` (which might come back with arbitrary values) or an `int . bigint` cast (which I have no particular objection to, except that you then suddenly have to bust out `try`/`catch`)
-- `contains?` doesn't do what you think it does
-- impenetrable errors. So far,
-1. the above `uberjar` error for shadowing clojure.core functions
-2. a warning for a `seesaw` dependency chain ended up manifesting as the inability to load `test.check`
+In general, [`lein`](TODO) is either the best, or one of the best build/dependency management tools I've ever used. It's wider in scope than either [`quicklisp`](TODO) or [`bundler`](TODO) because it manages your language version as well as your libraries. It's simpler to use and less error-prone than [`cabal`](TODO) or [`pip`](). And it seems more easily extensible than any of them. At some point, I need to sit down and read the thing so I can understand how to either port or generalize it to every language ever. I mean, granted, maybe that's basically `nix`, but it still sounds like a fun exercise to build your own.
+
+Apart from managing library installs and versions of `clojure`, it also gives you basic testing capability[^testing-landscape], project templating and binary-ish distribution out-of-the-box in the form of `lein test`, `lein new` and `lein uberjar` respectively. "Binary-ish", because when you ship someone the standalone `.jar` file generated by `uberjar`, they still need an appropriate version of the [`JVM`](TODO) to run it[^external-dependencies], but this seems like it might be Good Enough for the general case.
+
+## `Mis(sing|named)` Functions
+
+There's no `parse-integer`. The alternatives are either using `read-string`, or `(comp int bigint)` (that is, cast the string to a `bigint`, then cast the result to an `int`). Neither of these are particularly satisfactory, although when push comes to shove, I think I'd rather take the second one.
+
+The problem with `read-string` is that it can come back with arbitrary values, not just numbers, so I need to do the typecheck afterwards. And while `(read-string "(sh \"rm -rf /*\")")` isn't *quite* as bad as it looks, I'd still rather steer as far away from the possibiliy when dealing with strings potentially making their way to me through the network. Clojure doesn't have reader macros, so this also *isn't* quite as bad as the Common Lisp arbitrary-code-at-read-time thing that would hit you in the equivalent situation
+
+The cast composition might fail. In particular, since we might be dealing with strings from untrusted sources,
+
+```clojure
+user=> ((comp int bigint) "foo")
+NumberFormatException For input string: "foo"  java.lang.NumberFormatException.forInputString (NumberFormatException.java:65)
+user=>
+```
+
+we'd have to bust out the `try`/`catch` in order to prevent the above situation.
+
+In a similar vein, there is no general `member?` function. There _is_ a [`contains?`](TODO - clojure docs), but it doesn't do what you think it will. Apparently, it's a [common misconception](TODO - SO answer about it being the top FAQ). It takes a collection and a value, and tells you if that value is present *as a key* in that collection. So `(contains? [:a :b :c] :b)` will give you back `false`, while `(contains? [:a :b :c] 1)` will return `true`. To be fair, it's relatively easy to define your own, just make sure you catch the edge-cases regarding `false` and `nil` in the different collection types. This still smacks of [the `min` situation in Go](TODO - link to that damn discussion again) though, and it seems like it would be much more satisfying to friggin' include a definition of `member?` or `in?` in `clojure.core`. Not entirely sure why it hasn't happened yet.
+
+## Unhelpful Error Reporting
+
+The error-reporting here is among the worst I've ever personally witnessed[^worst-error-reporting]. Every error gives a giant JVM stack trace. If you're very *very* lucky, the top 30 items won't be language dispatch mechanisms, and you can get a function name in your own module to go and debug. Far more often, I've gotten generic `java.NullPointerException` errors leading either to something like `java.io`, or one of the other assorted infrastructure pieces. It would be very nice to know which part of the code I wrote is responsible for the error I'm seeing.
+
+Strangest so far were errors stemming from naming conflicts, and module dependencies.
+
+For example, overriding `clojure.core` names in your own modules doesn't error at all. You're perfectly free to define a namespace called `foo`, and then within it to define `foo/get`. Things will work fine. You'll be able to run `lein repl` and even `lein run` perfectly well. But when you try to run `lein uberjar`, you will spontaneously get a
+
+    TODO - insert error trace here
+
+Which[^unless-experienced] doesn't really do a good job pointing at the real problem. There's apparently a [workaround](TODO - SO answer about the workaround), but I ended up just renaming the offending functions. There were few enough of them that it wasn't too big a deal this time.
+
+For another example, early on I got this warning a lot:
+
+    TODO - insert warning text
+
+I'm quasi-used to ignoring warnings, because they tend to be ignorable, so I didn't think much of it. However, the above seemingly caused sporadic issues that manifested as errors *in other libraries*. Like [this one](TODO - link to the conch issue I reported). I'm convinced that issue was actually caused by the above warning, because it stopped happening entirely once the warning was fixed, but I never would have come to that conclusion based only on the diagnostic messages.
+
+The _helpful_ errors are name resolution things. `Can't resolve foo in scope bar` immediately tells me what went wrong, where, and gives me an accurate idea of how to fix it. Basically, any time you're stuck looking further into the stack trace than the first line, you may as well give up hope. I guess Java programmers won't mind this so much, but having grown up on Common Lisp and Scheme, this is a profoundly annoying part of constructing and debugging programs here. It's still not more annoying than the available alternatives for this particular project, so I'm happy on balance, but there really is more pain involved than there ought to be. Especially when you also consider the relatively slow startup of `lein repl` versus `cabal repl`, `sbcl` or `sml`.
+
+## `test.check` Limitations
+
+Absolute last thing, and this is really a nitpick given how seldom this situation comes up for me: `test.check` doesn't seem to be capable of file IO in properties. No idea why, but I tried writing something along the lines of
+
+```
+(prop/for-all [csv dummy-csv-generator]
+  (with-temp-file [tmp "test" ".csv"]
+    (spit tmp (str/join \newline (map (partial str/join ",") tmp)))
+    (= (map first csv) (get-first-column tmp))))
+```
+
+and got `NullPointerExceptions` thrown back at me every time. The workaround ended up being just using `deftest` instead of `defspec` to test the finger-quotes functions that had to do disk IO. That's probably good enough, but I've got mildly less confidence that there won't be a bug unearthed at some point in the future by some (un)lucky output.
+
+# Conclusions
+
+I stand by my [earlier recommendation](TODO - which lisp should I learn). If you're a programmer who's familiar with the JVM, and you don't hate it, and you're looking to learn your first Lisp, Clojure is very probably the way to go for you. The language is pretty clean and elegant, and it has excellent [interop cpabilities](TODO - calling Java from Clojure and Clojure from Java) with the Java ecosystem, even when no one bothers writing fantastic wrapper libraries like [Seesaw](TODO - seesaw github). So, absolutely, thumbs up. If you're in the situation I describe above, you could certainly do worse.
+
+If you're *already* familiar with a Lisp or two, and already have some experience working with [good](Ocaml) type [systems](Standard ML), it may be a less valuable but still fun addition to your language arsenal.
+
+[^or-rather]: Or rather, I have been for about two weeks now. Did I mention it's getting harder and harder for me to dedicate time to writing this blog? At this point, anything you see come up here effectively happened last month. That's a *really* shit lag, but I'm not sure I can do anything about it.
+
+[^strictness-annoation]: Which is basically a strictness annotation.
+
+[^testing-landscape]: Mild tangent; there has apparently been movement in the Clojure testing landscape since `lein` was first written. Because, while it gives you `clojure.test` by default, there seem to be lots of people that use `midje`. At least enough of them for the Travis CI guys and gals to write up [this](TODO - midje with Travis) guide for running continuous integration with it. This at once showcases how bad an idea it is to make that kind of assumption in the build tools, and demonstrates `lein`s level of flexibilty.
+
+[^external-dependencies]: And if you introduce external dependencies by using [`conch`](TODO) or [`sh`](TODO), they'll need those too, obviously.
+
+[^worst-error-reporting]: The worst would probably go to one of Prolog, or C. I've been told Scala gives you some pretty inscrutable things, but I haven't worked with it.
+
+[^unless-experienced]: Unless you're an experienced Clojurer, or Javanaut, I assume. It seems like you might be able to ese meaning out of this one with sufficient background, but I'm not inclined to bet on it one way or the other.
