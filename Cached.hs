@@ -75,9 +75,10 @@ insert cacheMap diff fname = do
   _ <- writeIORef (ref cacheMap) $ Map.insert fname c m
   return c
 
--- lookup :: CMap a -> FilePath -> IO (Maybe a)
--- lookup cacheMap fname = do
---   m <- ref cacheMap
---   case Map.lookup fname m of
---     Nothing -> Nothing
---     Just looked -> Just $ readCache looked
+lookup :: CMap a -> FilePath -> IO (Maybe a)
+lookup cacheMap fname = do
+  m <- readIORef $ ref cacheMap
+  case Map.lookup fname m of
+    Nothing -> return $ Nothing
+    Just looked -> do c <- readCache looked
+                      return $ Just c
