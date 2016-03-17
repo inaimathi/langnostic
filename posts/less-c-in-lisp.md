@@ -132,7 +132,7 @@ There's at least one thing there that should have set off definite alarms though
             (setq source-list (cdr source-list)))))
 ```
 
-![Jackie Chan contemplating the setq special form](/static/img/My-mind-is-full-of-setq.jpg)
+![](/static/img/My-mind-is-full-of-setq.jpg)
 
 The kind that designates a procedure built out of dead things, most of which you'd really rather not think about.
 

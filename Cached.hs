@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Cached ( Cache, readCache, newCache
-              , CMap, newCacheMap, insert -- , Cached.lookup
-              , minutes, hours) where
+              , CMap, newCacheMap, insert, Cached.lookup
+              , minutes, hours ) where
 
 import System.Time
 import System.Directory

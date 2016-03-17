@@ -13,13 +13,8 @@ body { width: 100%; margin:0px; padding: 0px; font-family: sans-serif; }
 
 h1 { color: #CC0606; margin-bottom: 0px; }
 .posted { font-style: oblique; color: #AAA; display: block; font-size: small; text-align: right; margin-bottom: 10px;}
-h2 a, h3 a, h4 a, h5 a, h6 a { display:block; position: absolute; width: 20%; height: 26px; transform: translateX(-80%); }
-h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, h6 a:hover { 
-    background-image: url(/static/img/link-icon.png); 
-    background-repeat: no-repeat; 
-    background-size: auto 10px; 
-    background-position: 75% 50%;
-}
+h2 a, h3 a, h4 a, h5 a, h6 a { text-decoration: none; color: black; }
+h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, h6 a:hover { color: #666; }
 
 .content img { margin: auto; margin-bottom: 10px; padding: 10px; display: block; max-width: 80%; border: 1px solid #CC0606; }
 .content p code { background-color: #EEE; padding: 1px 3px; }
