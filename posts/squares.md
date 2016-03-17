@@ -8,7 +8,7 @@ That's what I'm thinking.
 
 And here's an attempt at forcing this primitive tool called "English" to explain what it means in my head.
 
-First off, [this](http://langnostic.blogspot.ca/2013/04/hardware-and-squares.html) is what I was thinking [previously](http://langnostic.blogspot.ca/2013/04/conduits-and-more-squares.html). Which is to say, not much in particular; just working my way up to meaningfully tearing into the problem. The basic problem is that there are lots of ways to [dissect a square into smaller, integer-sized squares](http://oeis.org/A045846), and brute-forcing it isn't going to be viable for very high `n`s. In fact, from what I've observed, it took multiple days of compute time to solve for 16, and that's not encouraging.
+First off, [this](/posts/hardware-and-squares) is what I was thinking [previously](/posts/conduits-and-more-squares). Which is to say, not much in particular; just working my way up to meaningfully tearing into the problem. The basic problem is that there are lots of ways to [dissect a square into smaller, integer-sized squares](http://oeis.org/A045846), and brute-forcing it isn't going to be viable for very high `n`s. In fact, from what I've observed, it took multiple days of compute time to solve for 16, and that's not encouraging.
 
 Thing is, there are lots of little ways to cut out a *lot* of the brute-force work required for the calculation. An approach that starts from the universe of possibilities and filters isn't going to get very far, but we can constrain that universe pretty significantly if we pick our model carefully, and I think I have.
 

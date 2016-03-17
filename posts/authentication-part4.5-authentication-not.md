@@ -1,7 +1,7 @@
-> We don't need authentication  
-> We don't need access control  
-> No dark sarcasm in the network  
-> Servers leave them kids alone  
+> We don't need authentication
+> We don't need access control
+> No dark sarcasm in the network
+> Servers leave them kids alone
 
 ![The cover image from Pink Floyd's 'The Wall'](/static/img/the-wall.jpg)
 
@@ -9,7 +9,7 @@
 
 Despite the authentication theme, this update is probably going to be a mishmash of content, given how fast my head is spinning at the moment. First, I want to [bring](http://www.groklaw.net/article.php?story=20120712151437524) a couple [things](http://www.theatlantic.com/business/archive/2012/07/why-there-are-too-many-patents-in-america/259725/) to your attention. Not quite enough to earn this post the "Intellectual Property Bullshit" tag, but interesting nonetheless.
 
-Also, before I move on, I polished up what I went over [last time](http://langnostic.blogspot.ca/2012/06/authentication-authentication.html), and put it [up on github](https://github.com/Inaimathi/auth). The differences between what went up and what was discussed are minimal, though I did add some automated testing and polished off one or two odd corners that I glossed over in the writeup. I didn't commit a front-end at all, so you'll need to hook that up yourself if you plan to use it, but what's up there should give you all the plumbing you need. Let me know if that was a false statement.
+Also, before I move on, I polished up what I went over [last time](/posts/authentication-part4), and put it [up on github](https://github.com/Inaimathi/auth). The differences between what went up and what was discussed are minimal, though I did add some automated testing and polished off one or two odd corners that I glossed over in the writeup. I didn't commit a front-end at all, so you'll need to hook that up yourself if you plan to use it, but what's up there should give you all the plumbing you need. Let me know if that was a false statement.
 
 It's not done yet, two-factor auth coming rather soon, but the existing API isn't going to change at this point. I may put another layer on top just to simplify the external interface, and maybe make it easier to expose this system as a web-service, but that's about it.
 
@@ -54,7 +54,7 @@ These are things like, oh, for example *your bank*. This isn't a publication sys
 The kicker here, the reason I get the feeling that these institutions are fine with enforcing crappy password and security practices for their users is that they don't really trust this whole internet thing. Here, let me regale you with a snippet from [the TOU agreement my former bank puts forth](https://online.pcmastercard.ca/PCB_Consumer/AcctTermsOutside.do)
 
 **2.1 Security and privacy.** You acknowledge that the Internet is not a secure medium and privacy cannot be guaranteed or ensured.
-> 
+>
 > --PC Mastercard Terms of Use
 
 In other words, "sure have your account, we're still calling you, or expecting you to come into a branch physically for the big stuff". I'm not entirely convinced this is a bad idea.

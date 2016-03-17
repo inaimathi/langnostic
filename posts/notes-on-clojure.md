@@ -110,9 +110,15 @@ WARNING!!! version ranges found for:
 Consider using [seesaw "1.4.2" :exclusions [org.clojure/clojure]].
 ```
 
-I'm quasi-used to ignoring warnings, because they tend to *be* ignorable, so I didn't think much of it. However, the above seemingly caused sporadic issues that manifested as errors *in other libraries*. Like [this one](https://github.com/Raynes/conch/issues/27). I'm convinced that issue was actually caused by the above warning, because it stopped happening entirely once I changed the `seesaw` include in my `project.clj` to `[seesaw "1.4.2"] => [seesaw "1.4.2" :exclusions [org.clojure/clojure]]`, but I never would have come to that conclusion based only on the diagnostic messages.
+I'm quasi-used to ignoring warnings, because they tend to *be* ignorable, so I didn't think much of it. However, the above seemingly caused sporadic issues that manifested as errors *in other libraries*. Like [this one](https://github.com/Raynes/conch/issues/27). I'm convinced that issue was actually caused by the above warning, because it stopped happening entirely once I changed the `seesaw` include in my `project.clj` from `[seesaw "1.4.2"]` to `[seesaw "1.4.2" :exclusions [org.clojure/clojure]]`, but I never would have come to that conclusion based only on the diagnostic messages.
 
-The _helpful_ errors are name resolution things. `Can't resolve foo in scope your.module.name.here` immediately tells me what went wrong, where, and gives me an accurate idea of how to fix it. Basically, any time you're stuck looking further into the stack trace than the first line, you may as well give up all hope. I guess Java programmers won't mind this so much, but having grown up on Common Lisp and Scheme, this is a profoundly annoying part of constructing and debugging programs in Clojure-land. It's still not more annoying than the available alternatives for this particular project, so I'm happy on balance, but there really is more pain involved than there ought to be. Especially when you also consider the relatively slow startup of `lein repl` versus `cabal repl`, `sbcl` or `sml`.
+The _helpful_ errors are name resolution things.
+
+```
+Can't resolve foo in scope your.module.name.here
+```
+
+immediately tells me what went wrong, where, and gives me an accurate idea of how to fix it. Basically, any time you're stuck looking further into the stack trace than the first line, you may as well give up all hope. I guess Java programmers won't mind this so much, but having grown up on Common Lisp and Scheme, this is a profoundly annoying part of constructing and debugging programs in Clojure-land. It's still not more annoying than the available alternatives for this particular project, so I'm happy on balance, but there really is more pain involved than there ought to be. Especially when you also consider the relatively slow startup of `lein repl` versus `cabal repl`, `sbcl` or `sml`.
 
 ## `test.check` Limitations
 
@@ -129,7 +135,9 @@ and got `NullPointerExceptions` thrown back at me every time. The "fix" ended up
 
 ## Conclusions
 
-I stand by my [earlier recommendation](http://langnostic.inaimathi.ca/posts/recommendations). If you're a programmer who's familiar with the JVM, and you don't hate it, and you're looking to learn your first Lisp, Clojure is very probably the way to go for you. The language is clean, elegant, [well documented](https://clojuredocs.org/), and it has excellent [interop cpabilities](http://clojure.org/reference/java_interop) with the Java ecosystem, even when no one bothers writing fantastic wrapper libraries like [Seesaw](https://github.com/daveray/seesaw). So, absolutely, thumbs up. If you're in the situation I describe above, you could certainly do worse.
+I stand by my [earlier recommendation](/posts/recommendations).
+
+If you're a programmer who's familiar with the JVM, and you don't hate it, and you're looking to learn your first Lisp, Clojure is very probably the way to go for you. The language is clean, elegant, [well documented](https://clojuredocs.org/), and it has excellent [interop cpabilities](http://clojure.org/reference/java_interop) with the Java ecosystem, even when no one bothers writing fantastic wrapper libraries like [Seesaw](https://github.com/daveray/seesaw). So, absolutely, thumbs up. If you're in the situation I describe above, you could certainly do worse.
 
 If you're *already* familiar with a [Lisp](https://common-lisp.net/) or [two](http://schemers.org/), and already have some experience working with [good](https://ocaml.org/) type [systems](http://sml-family.org/), it may be a less valuable but still fun addition to your language arsenal.
 

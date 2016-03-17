@@ -1,10 +1,10 @@
-Ever since I was made [keenly aware of my shortcomings](http://langnostic.blogspot.com/2011/04/game-jam.html), I've been reading up on a various things including [CLOS](http://cl-cookbook.sourceforge.net/clos-tutorial/index.html) and [the OO interface to CLSQL](http://clsql.b9.com/manual/ch02s02.html). Probably the best resource available right now is the [CLSQL documentation](http://clsql.b9.com/documentation.html) itself, and that's not a compliment. It's basically a (not particularly complete) reference piece that gives you a function listing and some minor explanation. As far as I can tell, it doesn't get you significantly more information than a few `describe` and `inspect` calls.
+Ever since I was made [keenly aware of my shortcomings](/posts/game-jam), I've been reading up on a various things including [CLOS](http://cl-cookbook.sourceforge.net/clos-tutorial/index.html) and [the OO interface to CLSQL](http://clsql.b9.com/manual/ch02s02.html). Probably the best resource available right now is the [CLSQL documentation](http://clsql.b9.com/documentation.html) itself, and that's not a compliment. It's basically a (not particularly complete) reference piece that gives you a function listing and some minor explanation. As far as I can tell, it doesn't get you significantly more information than a few `describe` and `inspect` calls.
 
 Searching for [clsql tutorial](http://www.google.ca/search?q=clsql+tutorial) brings up a Bill Clementson [column on CLSQL basics](http://bc.tech.coop/blog/040608.html) and a pretty long forum argument between Slobodan Blazeski and (among others) [Holger Schauer](http://hillview.1on.de/authors/2-Holger-Schauer), [Zach Beane](http://www.xach.com/) and [Geoff Wozniak](http://wozniak.ca/) about the seeming poor quality of a webapp tutorial by Slobodan to illustrate CLSQL in conjunction with Hunchentoot. I say "seemingly" because the original was apparently put up as a PDF on MegaUpload, then taken down in favor of being posted on Slobodan's personal site, and then taken down altogether (all of the links in that thread currently lead to 404 errors).
 
 And that's it.
 
-So, I figured I could put something together. At first it was going to be the standard "Hello World" of webapps (a [blog](http://docs.racket-lang.org/continue/index.html)), but then I figured, fuck it, lets make [4chan](http://www.4chan.org/). 
+So, I figured I could put something together. At first it was going to be the standard "Hello World" of webapps (a [blog](http://docs.racket-lang.org/continue/index.html)), but then I figured, fuck it, lets make [4chan](http://www.4chan.org/).
 
 <div class="note assumptions">### Assumptions Note
     ### Things this tutorial assumes:
@@ -27,12 +27,12 @@ So, I figured I could put something together. At first it was going to be the st
     I assume you're using a Common Lisp (and not a Scheme or one of the mongrels like [newLISP](http://www.reddit.com/r/lisp/comments/ghqxs/introduction_to_newlisp_wikibook/c1noc0d) or [Arc](http://www.paulgraham.com/arc.html)), and that said Common Lisp is compatible with both [Hunchentoot](http://weitz.de/hunchentoot/) and [CLSQL](http://clsql.b9.com/platforms.html). Other than that though, go nuts.
     **You are psychic**
     I'll try specifically to explain the things that were less than obvious to me while I was learning this material. Some stuff tends to get accidentally glossed over as trivial (it's also possible that I'm just thick, in which case, skip the obvious bits).
-  
+
 </div>
 
 So lets get right to it.
 
-Start a new file and get this into it, then save it as `cl-chan.lisp` 
+Start a new file and get this into it, then save it as `cl-chan.lisp`
 
 ```lisp
 (defpackage :cl-chan (:use :cl :cl-who :hunchentoot))
@@ -72,7 +72,7 @@ Then hop into your REPL and load :cl-who + :hunchentoot, followed by cl-chan
     That same statement will load local copies if you already have them installed, by the way. After all that, load your original file by typing
 
     (load "path-to/cl-chan.lisp")
-  
+
 </div>
 
 then crack a browser open and head on over to `http://localhost:4242` to see the default Hunchentoot page.
@@ -98,10 +98,10 @@ Add the following just below that `defvar`:
 and refresh your browser.
 
 <div class="note beginner">### Beginner Note
-The first bit we did was define a namespace ("package") called `:cl-chan`. You can find specifics and some more advanced uses [here](http://www.gigamonkeys.com/book/programming-in-the-large-packages-and-symbols.html), but the basic reason for this is to manage how the symbols we'll be defining interact on the global level. The basic `:use` directive we used specified that our package would import all exported symbols from three other packages; 
+The first bit we did was define a namespace ("package") called `:cl-chan`. You can find specifics and some more advanced uses [here](http://www.gigamonkeys.com/book/programming-in-the-large-packages-and-symbols.html), but the basic reason for this is to manage how the symbols we'll be defining interact on the global level. The basic `:use` directive we used specified that our package would import all exported symbols from three other packages;
 
 
-- `:cl` (all the basic Common Lisp functions; if you get into the situation where you've defined a package and odd things are happening in expressions that really shouldn't error, what's probably going on is that you forgot to include `:cl`), 
+- `:cl` (all the basic Common Lisp functions; if you get into the situation where you've defined a package and odd things are happening in expressions that really shouldn't error, what's probably going on is that you forgot to include `:cl`),
 - `:cl-who` (an HTML generation library) and
 - `:hunchentoot` (a lisp-based web-server). We'll talk about namespace conflicts a later.
 
@@ -111,7 +111,7 @@ The first bit we did was define a namespace ("package") called `:cl-chan`. You c
     The `defvar` line defines a new variable, stores an acceptor there and starts a server listening on port 4242 using the `start` method. You can later stop the server by evaluating `(stop *web-server*)` (you don't need to at the moment).
 
     Finally, the `define-easy-handler` line sets up a handler at "localhost:4242/" that will return a simple page. The `:cl-who` markup you see should be self-explanatory if you know HTML.
-  
+
 </div>
 
 Right. So a chan is a collection of boards, each of which is a collection of threads, each of which is a collection of comments. Lets start at the bottom, since that'll be the fastest way of getting something relevant on screen. A comment is composed of
@@ -148,8 +148,8 @@ Which is an awful lot of repetitious typing. Almost enough that I'm tempted to w
 So, lets try it out.
 
 ```lisp
-(defparameter test-comment 
-  (make-instance 'comment 
+(defparameter test-comment
+  (make-instance 'comment
                  :author "me" :email "my@email.com" :subject "FRIST!!1!one!"
                  :body "I am most certainly the first poster in this fine establishment"
                  :date (get-universal-time)))
@@ -157,7 +157,7 @@ So, lets try it out.
 
 <div class="note beginner">### Beginner Note
     A parameter is like a [variable](http://www.lispworks.com/documentation/HyperSpec/Body/m_defpar.htm#defvar), except that they act differently if you try to define one with an existing name. If you `defvar` a variable that already exists, it keeps the old value (you actually have to use `setf` explicitly), whereas if you `defparameter` a parameter that exists, it gets the new value. `(get-universal-time)` is a function that returns the current number of seconds since the epoch (in Common Lisp, that's 00:00 Jan 1, 1900 GMT, as it happens). We won't need to do anything with it 'till later.
-  
+
 </div>
 
 Hop on over to the REPL and kick the tires a bit;
@@ -182,11 +182,11 @@ Backtrace:
  --more--
 ```
 
-So that didn't work out so well. Remember, we defined all of these slots as having a `:reader`, not an `:accessor`. We could have given them both, or just an accessor, but we won't really be needing to mess with a comment once it's been posted, so this should be ok. Use the `ABORT` restart to get back into the REPL. 
+So that didn't work out so well. Remember, we defined all of these slots as having a `:reader`, not an `:accessor`. We could have given them both, or just an accessor, but we won't really be needing to mess with a comment once it's been posted, so this should be ok. Use the `ABORT` restart to get back into the REPL.
 
 <div class="note beginner">### Beginner Note
     I'm not sure how it works elsewhere, but if you're using Emacs, you can invoke a restart by typing the number next to it and hitting Return. So in this case, it'll be `1 RET`
-  
+
 </div>
 
 Ok, now lets show that. Head over to that `define-easy-handler` from earlier and change the contents of the body tag to
@@ -194,10 +194,10 @@ Ok, now lets show that. Head over to that `define-easy-handler` from earlier and
 ```lisp
 (:body (with-slots (author email subject body date-time) test-comment
          (htm (:div :class "comment"
-                    (:span :class "header" 
-                           (str author) (str email) 
+                    (:span :class "header"
+                           (str author) (str email)
                            (str date-time) (str subject))
-                    (:span :class "body" 
+                    (:span :class "body"
                            (:p (str body)))))))
 ```
 
@@ -205,7 +205,7 @@ and evaluate the function again.
 
 <div class="note beginner">### Beginner Note
     You can certainly do that by using the same `(load "path-to/cl-chan.lisp")` statement as earlier, or by copy-pasting the function into your REPL. If you're using Emacs, you can also just get your cursor somewhere in the body of the function and hit `C-M-x`. Other environments probably have similar functionality.
-  
+
 </div>
 
 Refreshing your browser should show you a fairly poorly formatted comment across two lines. Hey, it's a start. The first two things to notice are the `htm` and `str` tokens. These are part of the `:cl-who` library; they're actually tokens for the HTML generator, and not real functions so they'll error if you try to use them outside a `with-html-...` macro. They're just escapes to let you write dynamic HTML as part of `:cl-who` markup (without the `htm` after `with-slots`, you'd get `undefined function` errors for `:div`, `:span` and `:p`.
@@ -215,8 +215,8 @@ The `with-slots` macro is something you can use to address several slots from an
 One comment does not a board make, though. So lets get another in here. Add this one below the first `test-comment`
 
 ```lisp
-(defparameter test-comment2 
-  (make-instance 'comment 
+(defparameter test-comment2
+  (make-instance 'comment
                  :author "someone else" :email "you@fmail.com" :subject "Stop being a douchebag"
                  :date-time (get-universal-time)))
 ```
@@ -228,10 +228,10 @@ and load it into your lisp. Now, it would obviously be annoying as fuck to write
   (with-html-output-to-string (*standard-output* nil :indent t)
     (with-slots (author email subject body date-time) a-comment
       (htm (:div :class "comment"
-                 (:span :class "header" 
-                        (str author) (str email) 
+                 (:span :class "header"
+                        (str author) (str email)
                         (str date-time) (str subject))
-                 (:span :class "body" 
+                 (:span :class "body"
                         (:p (str body))))))))
 ```
 
@@ -280,7 +280,7 @@ Re-evaluate it and refresh your browser; you should now be seeing both poorly-fo
 Note that we didn't specify `:initform`s for `comments` or `:board` because every thread has those filled (there wouldn't be a thread otherwise). And, lets get a test-thread going. Add this to your file and evaluate it.
 
 ```lisp
-(defparameter test-thread 
+(defparameter test-thread
   (make-instance 'thread
                  :board "a"
                  :comments (list test-comment test-comment2)))
@@ -289,12 +289,12 @@ Note that we didn't specify `:initform`s for `comments` or `:board` because ever
 And lets get another couple of comments in there for good measure;
 
 ```lisp
-(defparameter test-comment3 (make-instance 'comment 
+(defparameter test-comment3 (make-instance 'comment
                                            :subject "You must be new here"
                                            :body "trolled-softly.jpg"
                                            :date-time (get-universal-time)))
 
-(defparameter test-comment4 (make-instance 'comment 
+(defparameter test-comment4 (make-instance 'comment
                                            :body "[Something vaguely anti-semetic.]"
                                            :date-time (get-universal-time)))
 ```
@@ -303,17 +303,17 @@ We defined our first `:accessor` earlier, by the way. It's no different from a `
 
 ```lisp
 > (comments test-thread)
-(#<COMMENT {C1F3AF9}> #<COMMENT {100425C101}>) 
+(#<COMMENT {C1F3AF9}> #<COMMENT {100425C101}>)
 
 > ;; your comment will probably look slightly different; that's ok
 ; No Value
 
-> (setf (comments test-thread) 
-           (append (comments test-thread) 
+> (setf (comments test-thread)
+           (append (comments test-thread)
                    (list test-comment3 test-comment4)))
-(#<COMMENT {C1F3AF9}> 
- #<COMMENT {10048B3291}> 
- #<COMMENT {10048B32F1}> 
+(#<COMMENT {C1F3AF9}>
+ #<COMMENT {10048B3291}>
+ #<COMMENT {10048B32F1}>
  #<COMMENT {100425C101}>)
 ```
 
@@ -325,10 +325,10 @@ There. Now that we have a thread with four comments, lets show that.
     (with-html-output (*standard-output* nil :indent t)
       (with-slots (author email subject body date-time) first-comment
         (htm (:div :class "thread"
-                   (:span :class "header" 
-                          (str author) (str email) 
+                   (:span :class "header"
+                          (str author) (str email)
                           (str date-time) (str subject))
-                   (:span :class "body" 
+                   (:span :class "body"
                           (:p (str body)))
                    (dolist (r (cdr (comments thread)))
                      (str (echo r))))))))
@@ -341,7 +341,7 @@ There. Now that we have a thread with four comments, lets show that.
 (dolist (r (cdr (comments thread))) (echo r))
 ```
 
-  
+
 </div>
 
 A method for the `thread` object! This is the other difference between a `method` and an `un`; you can have multiple `method`s with the same name which specialize on different objects. If you call `echo` on a `comment`, it'll evaluate the first one we defined. If you call it on a `thread`, it'll evaluate this new one (also note that part of our definition of `echo` for threads involves calling `echo` on each reply to the thread, which means that every element of `(cdr (comments thread))` must be an `echo`able object). Amend your `front-page` `:body` again;
@@ -377,9 +377,9 @@ then redefine your `front-page` to
 finally, add this at the bottom of the file:
 
 ```lisp
-(push 
- (create-static-file-dispatcher-and-handler 
-  "/cl-chan.css" (merge-pathnames "cl-chan.css")) 
+(push
+ (create-static-file-dispatcher-and-handler
+  "/cl-chan.css" (merge-pathnames "cl-chan.css"))
  *dispatch-table*)
 ```
 
@@ -387,7 +387,7 @@ finally, add this at the bottom of the file:
     If you really want to do it right, you should probably create a sub-directory for the CSS files and make that `create-folder-dispatcher-and-handler` instead.
 
     You might also want to look into the existing [CSS generators](http://www.cliki.net/CSS) in Lisp instead of doing the work by hand, although it probably won't save you much typing on something this minimal.
-  
+
 </div>
 
 `create-static-file-dispatcher-and-handler` takes a uri relative to your site and a file path, and serves up that path when that uri is requested.
@@ -401,7 +401,7 @@ Refreshing after *that* should get you something slightly better than plain text
 ```lisp
 (defmethod echo-header ((comment comment))
   (with-html-output (*standard-output*)
-    (:span :class "header" 
+    (:span :class "header"
            (dolist (elem '(author email date-time subject))
              (htm (:span :class (format nil "~(~a~)" elem) (str (slot-value comment elem))))))))
 ```
@@ -414,7 +414,7 @@ We're resorting to `slot-value` and `dolist` instead of using `with-slots` becau
     (with-html-output (*standard-output* nil :indent t)
       (htm (:div :class "thread"
                  (echo-header comment)
-                 (:span :class "body" 
+                 (:span :class "body"
                         (:p (str (body first-comment))))
                  (dolist (r (cdr (comments thread)))
                    (str (echo r))))))))
@@ -423,7 +423,7 @@ We're resorting to `slot-value` and `dolist` instead of using `with-slots` becau
   (with-html-output-to-string (*standard-output* nil :indent t)
     (htm (:div :class "comment"
                (echo-header comment)
-               (:span :class "body" 
+               (:span :class "body"
                       (:p (str (body comment))))))))
 ```
 
@@ -453,10 +453,10 @@ And define the test board
 (defparameter test-board
   (make-instance 'board
                  :name "a"
-                 :threads (list test-thread 
-                                test-thread2 
-                                test-thread 
-                                test-thread2 
+                 :threads (list test-thread
+                                test-thread2
+                                test-thread
+                                test-thread2
                                 test-thread)))
 ```
 
@@ -470,11 +470,11 @@ Now, we know how to echo a thread (output all of its comments with the first one
     (with-html-output (*standard-output* nil :indent t)
       (:div :class "thread"
             (echo-header first-comment)
-            (:span :class "body" 
+            (:span :class "body"
                    (:p (str (body first-comment))))
             (when (> omitted-count 0)
-              (htm (:p :class "omitted" 
-                       (str (format nil "~a comments omitted (and we don't do pictures yet)" 
+              (htm (:p :class "omitted"
+                       (str (format nil "~a comments omitted (and we don't do pictures yet)"
                                     omitted-count)))))
             (dolist (r preview-comments)
               (str (echo r)))))))
@@ -503,8 +503,8 @@ There's really nothing new in either of these code blocks (other than my obvious
             (:a :href "/thread" "Reply")
             (:span :class "body" (:p (str (body first-comment))))
             (when (> omitted-count 0)
-              (htm (:p :class "omitted" 
-                       (str (format nil "~a comments omitted (and we don't do pictures yet)" 
+              (htm (:p :class "omitted"
+                       (str (format nil "~a comments omitted (and we don't do pictures yet)"
                                     omitted-count)))))
             (dolist (r (cdr preview-comments)) (str (echo r)))))))
 ```
@@ -562,7 +562,7 @@ It's [a library](https://github.com/Inaimathi/formlets) I wrote a little while a
 (define-formlet (post-comment-form)
     ((author text) (email text) (subject text) (body textarea) (captcha recaptcha))
   (let ((new-comment (make-instance 'comment
-                                    :author author :email email 
+                                    :author author :email email
                                     :subject subject :body body
                                     :date-time (get-universal-time))))
     (setf (replies test-thread)
@@ -570,7 +570,7 @@ It's [a library](https://github.com/Inaimathi/formlets) I wrote a little while a
     (redirect "/thread")))
 ```
 
-Since we're using [recaptcha](http://www.google.com/recaptcha), you'll also need to do 
+Since we're using [recaptcha](http://www.google.com/recaptcha), you'll also need to do
 
 ```lisp
 (setf formlets:*public-key* [my-public-key] formlets:*private-key* [my-private-key])
@@ -601,7 +601,7 @@ Despite the fact that relying on the client isn't always the best idea, it would
      (body textarea :validation ((longer-than? 5) "You need to type at least six characters here."))
      (captcha recaptcha))
   (let* ((new-comment (make-instance 'comment
-                                     :author author :email email 
+                                     :author author :email email
                                      :subject subject :body body
                                      :date-time (get-universal-time)))
          (new-thread (make-instance 'thread :board "a" :first-comment new-comment)))
@@ -635,7 +635,7 @@ and re-evaluate it. That should cause an error. Ok, ok, I promise to stop teasin
     Namespace conflicts happen sometimes. Packages you want to include both export the same, perfectly reasonable name and when you `:use` them both without specifying what to do about the conflict, your Lisp throws you an error.
 
     In this case, the conflict is with the symbol `select`. `:formlets` exports a `select` class (named after the HTML [Select](http://www.w3schools.com/tags/tag_select.asp) tag that it models) and `:clsql` exports a `select` function (named after the SQL [SELECT](http://www.w3schools.com/sql/sql_select.asp) statement that *it* models). Both packages made the right choice of name for the thing they're trying to represent, but they wouldn't play nice in the same namespace. So it's a good thing Lisp has built-in namespace management.
-    
+
     Now, if we weren't planning on using `select` at all, we could just add a shadow statement like so:
 
 ```lisp
@@ -651,7 +651,7 @@ and re-evaluate it. That should cause an error. Ok, ok, I promise to stop teasin
 ```
 
     That tells Lisp to import the `select` symbol from the `:clsql` package, and shadow the rest of them.
-  
+
 </div>
 
 Ok, first thing to do is make sure you have a database and user set up in whatever db engine you use. You'll need to create a user too, and give the user permissions to the database (for this tutorial, you can just use your root user instead of creating a new one, but you shouldn't do that on a production server). The process varies depending on DB, so check the docs for yours.
@@ -660,7 +660,7 @@ Next, we need to change our defclass statements slightly. Lets start with `comme
 
 ```lisp
 (def-view-class comment ()
-  ((id :accessor id :initarg :id :type integer 
+  ((id :accessor id :initarg :id :type integer
        :db-constraints (:not-null :auto-increment) :db-kind :key)
    (thread-id :reader thread-id :initarg :thread-id :type integer)
    (author :reader author :initarg :author :initform nil :type string)
@@ -681,33 +681,33 @@ Note that `date-time` is of type `wall-time` rather than `integer` which means w
 and call it instead of `(get-universal-time)` to set the `date-time` slot on a comment (you can just do a search-and-replace here; we haven't used `univeral-time`s for anything else).
 
 <div class="note package">### Package Note
-A point of interest, `clsql-sys` has plenty of similar utility functions, but they're not documented anywhere other than in the code itself (check out the test suite buried in the clsql-sys source) and in [three half-line blurbs about wall-time, date and duration](http://clsql.b9.com/manual/def-view-class.html) in the official documentation. This kind of poor visibility is what led me to re-invent the wheel [last time](http://langnostic.blogspot.com/2011/03/clsql-and-nothing-else.html) in defining my own `mysql-time` function the hard way.
+A point of interest, `clsql-sys` has plenty of similar utility functions, but they're not documented anywhere other than in the code itself (check out the test suite buried in the clsql-sys source) and in [three half-line blurbs about wall-time, date and duration](http://clsql.b9.com/manual/def-view-class.html) in the official documentation. This kind of poor visibility is what led me to re-invent the wheel [last time](/posts/clsql) in defining my own `mysql-time` function the hard way.
 
 Other stuff you might find interesting (some of which we will touch on later):
-    
+
 ```lisp
 make-duration
 parse-timestring
 parse-datestring
-time-difference ;; it has all the usual arithmetic items too, 
+time-difference ;; it has all the usual arithmetic items too,
                 ;; this just happens to be the most useful, IMO
-print-date ;; which, oddly, takes a `wall-time`, 
-           ;; not a `date`, and accepts the following 
-           ;; format options: 
-           ;;    :time-of-day :long-day :month :month-year 
+print-date ;; which, oddly, takes a `wall-time`,
+           ;; not a `date`, and accepts the following
+           ;; format options:
+           ;;    :time-of-day :long-day :month :month-year
            ;;    :full :full+weekday :daytime :day
 clsql-sys:date->time
 clsql-sys:time->date
 clsql-sys::days-in-month ;;yup, not even external
 ```
-  
+
 </div>
 
 The transformation of a thread is a little more interesting.
 
 ```lisp
 (def-view-class thread ()
-  ((id :accessor id :initarg :id :type integer 
+  ((id :accessor id :initarg :id :type integer
        :db-constraints (:not-null :auto-increment) :db-kind :key)
    (board-id :reader board-id :initarg :board-id :type integer)
    (comments :accessor comments :db-kind :join
@@ -728,7 +728,7 @@ The boards declaration shouldn't present any surprises
 
 ```lisp
 (def-view-class board ()
-  ((id :accessor id :initarg :id :type integer 
+  ((id :accessor id :initarg :id :type integer
        :db-constraints (:not-null :auto-increment) :db-kind :key)
    (name :reader name :initarg :name :type (string 5))
    (threads :accessor threads :db-kind :join
@@ -778,7 +778,7 @@ Notice also that the `:where` clause is expressed as a keyword argument. The squ
 (file-enable-sql-reader-syntax)
 ```
 
-to your file (just below the `in-package` line), as well as evaluate 
+to your file (just below the `in-package` line), as well as evaluate
 
 ```lisp
 > (enable-sql-reader-syntax)
@@ -794,9 +794,9 @@ at the REPL. If you don't, you'll get some odd undefined-variable errors. We'll 
      (captcha recaptcha))
   (let* ((thread-id (update-records-from-instance
                      (make-instance 'thread :board-id 1)))
-         (new-comment (make-instance 'comment 
+         (new-comment (make-instance 'comment
                                      :thread-id thread-id
-                                     :author author :email email 
+                                     :author author :email email
                                      :subject subject :body body
                                      :date-time (now))))
     (update-records-from-instance new-comment)
@@ -829,12 +829,12 @@ near the top of your file and evaluate it. Go ahead and refresh, and you should 
 
 ```lisp
 (define-formlet (post-comment-form)
-    ((thread-id hidden) 
+    ((thread-id hidden)
      (author text) (email text) (subject text) (body textarea)
      (captcha recaptcha))
   (let ((new-comment (make-instance 'comment
                                     :thread-id (parse-integer thread-id)
-                                    :author author :email email 
+                                    :author author :email email
                                     :subject subject :body body
                                     :date-time (now))))
     (update-records-from-instance new-comment)
@@ -861,12 +861,12 @@ Note that we've got a new field to let us know which thread is being replied to 
 
     One, if you feel like calling `get-parameter` manually, you call it with the lower-cased string. Above, it would be `(get-parameter "thread-id")`, not `(get-parameter :thread-id)` or `(get-parameter "THREAD-ID")`. Those are all different things (the second one will throw an error, I think, the third one will just return NIL).
 
-    Two, any values you get back this way are **strings**, no matter what they actually represent. It doesn't matter in this case because the `CLSQL` reader macro handles it intelligently, and `formlets` converts anything it gets into a string anyway. However, if we wanted to create a new DB object (as in the formlet above), or do a standard numeric comparison, however, we'd need to convert from string. So, 
+    Two, any values you get back this way are **strings**, no matter what they actually represent. It doesn't matter in this case because the `CLSQL` reader macro handles it intelligently, and `formlets` converts anything it gets into a string anyway. However, if we wanted to create a new DB object (as in the formlet above), or do a standard numeric comparison, however, we'd need to convert from string. So,
 
 ```lisp
     (= 1 (parse-integer thread-id))
 ```
-    
+
     and not
 
 ```lisp
@@ -874,7 +874,7 @@ Note that we've got a new field to let us know which thread is being replied to 
 ```
 
     the-more-you-know.jpg
-  
+
 </div>
 
 Finally, change the reply link in the `summarize` method to point to `(format nil "/thread?thread-id=~a" (id thread))` instead of `"/thread"` (so that you can just click on the "Reply" link to get around). Go ahead and add some threads, then respond to them. You should be able to at this point.

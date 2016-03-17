@@ -1,9 +1,9 @@
 Two things on the agenda today. First, Elm has gotten some improvements that might mean I end up using it in production at some point. Second, I tried a new language called [Pure](http://purelang.bitbucket.org/), which I found by searching for "dynamically typed haskell". Stick around if that sounds interesting.
 
-> EDIT:  
-> Do not bother sticking around if that sounds interesting. I ended up talking about Elm so much that I never got into Pure.  
->   
-> Tue, 18 Feb, 2014  
+> EDIT:
+> Do not bother sticking around if that sounds interesting. I ended up talking about Elm so much that I never got into Pure.
+>
+> Tue, 18 Feb, 2014
 
 ### <a name="elm-lang" href="#elm-lang"></a>Elm Lang
 
@@ -168,8 +168,8 @@ The file you'd embed that module into would look something like this<a name="not
   <body>
     <div id="auto" style="position: absolute; left: 50px; top: 50px; width: 600px; height: 100px; border: 2px dashed #000;"></div>
     <script type="text/javascript">
-      var can = Elm.embed(Elm.Autocomplete, 
-                          document.getElementById("auto"), 
+      var can = Elm.embed(Elm.Autocomplete,
+                          document.getElementById("auto"),
                           {wordList: ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"]});
       can.ports.output.subscribe(function (msg) { console.log("FROM MINIBUFFER :: ", msg) })
     </script>
@@ -177,10 +177,10 @@ The file you'd embed that module into would look something like this<a name="not
 </html>
 ```
 
-> EDIT:  
->   
-> You can find a running demo of the above [here](http://173.255.226.138/elm-sample/embed.html).  
-> Sat, 22 Feb, 2014  
+> EDIT:
+>
+> You can find a running demo of the above [here](http://173.255.226.138/elm-sample/embed.html).
+> Sat, 22 Feb, 2014
 
 The relevant bits are the positioned `div`, which will contain our program, and the `Elm.embed` call, which sets it up. Note especially the third argument; you have to do that for any input ports in the component you're embedding. Finally, note the `subscribe` call which fits that output port we defined with a listener, in this case a naive one that just prints everything it gets to the console.
 
@@ -190,10 +190,10 @@ It's awesome enough that I'm seriously considering Elm for some production work 
 
 ### <a name="in-case-youre-reading-evancz" href="#in-case-youre-reading-evancz"></a>In Case You're Reading, [evancz](https://github.com/evancz)
 
-There are still a [few minor headaches with the language](http://langnostic.blogspot.ca/2013/06/elm-in-practice.html), though thankfully I didn't have to stub my toe on most of them this time around. The only ones that ended up being annoying, or will be very shortly are
+There are still a [few minor headaches with the language](/posts/elm-in-practice), though thankfully I didn't have to stub my toe on most of them this time around. The only ones that ended up being annoying, or will be very shortly are
 
 
-- **No signal defaults from within `.elm` files**. This bites during development. When you have an Elm module that will depend on an outside signal for its operation, you have to set a default value for that signal outside. This is ok once you've got the embedding file together, but it does mean that that second `Autocomplete.elm` file above will give you the error 
+- **No signal defaults from within `.elm` files**. This bites during development. When you have an Elm module that will depend on an outside signal for its operation, you have to set a default value for that signal outside. This is ok once you've got the embedding file together, but it does mean that that second `Autocomplete.elm` file above will give you the error
 
 ```
 Initialization Error: port 'wordList' was not given an input!

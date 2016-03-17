@@ -1,4 +1,4 @@
-Ok, yes, I know the last time I disagreed with Yegge, I wound up [eating my own hat](http://langnostic.blogspot.ca/2010/09/yegge-strikes-back-from-grave.html), but I hereby suggest that [partitioning the software industry into Libs vs. Cons](https://plus.google.com/110981030061712822816/posts/KaSKeg4vQtz) is a stupid idea, and gains us nothing.
+Ok, yes, I know the last time I disagreed with Yegge, I wound up [eating my own hat](/posts/yegge-strikes-back), but I hereby suggest that [partitioning the software industry into Libs vs. Cons](https://plus.google.com/110981030061712822816/posts/KaSKeg4vQtz) is a stupid idea, and gains us nothing.
 
 Firstly, because those terms are already loaded with enough political emotional baggage that people are going to have a hard time letting go<a name="note-Sat-Aug-11-153625EDT-2012"></a>[|1|](#foot-Sat-Aug-11-153625EDT-2012), and that's going to lead to<a name="note-Sat-Aug-11-153633EDT-2012"></a>[|2|](#foot-Sat-Aug-11-153633EDT-2012) the same kind of partisan garbage that US politics is well known for.
 
@@ -31,15 +31,15 @@ Steven... I disagree. And I won't be adopting your thought framework until you c
 * * *
 ##### Footnotes
 
-1 - <a name="foot-Sat-Aug-11-153625EDT-2012"></a>[|back|](#note-Sat-Aug-11-153625EDT-2012) - If you take a look at the [HN](http://news.ycombinator.com/item?id=4365255), [/.](http://developers.slashdot.org/story/12/08/10/1250231/software-engineering-has-its-own-political-axis-from-conservative-to-liberal) and [G+](https://plus.google.com/110981030061712822816/posts/KaSKeg4vQtz) discussions, you'll already see people conflating the political meanings with the proposed software-oriented labels. Less so on slashdot, where most seem to simply dismiss the point of view, but there's a comment on the Google Plus page that reads 
+1 - <a name="foot-Sat-Aug-11-153625EDT-2012"></a>[|back|](#note-Sat-Aug-11-153625EDT-2012) - If you take a look at the [HN](http://news.ycombinator.com/item?id=4365255), [/.](http://developers.slashdot.org/story/12/08/10/1250231/software-engineering-has-its-own-political-axis-from-conservative-to-liberal) and [G+](https://plus.google.com/110981030061712822816/posts/KaSKeg4vQtz) discussions, you'll already see people conflating the political meanings with the proposed software-oriented labels. Less so on slashdot, where most seem to simply dismiss the point of view, but there's a comment on the Google Plus page that reads
 
-> Dynamic typing has been shown through research to reduce maintainability compared to static typing.  
-> -Lars Ivar Igesund  
+> Dynamic typing has been shown through research to reduce maintainability compared to static typing.
+> -Lars Ivar Igesund
 
 Which is, near as I can tell, Utter Horseshit™©. If you bother reading on, when someone asks for a citation, the response is
 
-> The research was done by a friend of mine while working at one of those famous, private research centers (yes, one you've heard of), but to my knowledge it has not been released. I don't remember the statically typed language used in the study, but I Imagine it was Java. The dynamically typed language was Ruby. This I can't point you to it, I just hope that you believe me when I tell you the conclusion of it. It certainly jives with mine experiences.  
-> -Lars Ivar Igesund  
+> The research was done by a friend of mine while working at one of those famous, private research centers (yes, one you've heard of), but to my knowledge it has not been released. I don't remember the statically typed language used in the study, but I Imagine it was Java. The dynamically typed language was Ruby. This I can't point you to it, I just hope that you believe me when I tell you the conclusion of it. It certainly jives with mine experiences.
+> -Lars Ivar Igesund
 
 That's about what I was expecting; "This guy I hang out with told me my opinion was totally right". Oh, by the way, 16 upvotes, or plusses, or whatever the fuck. Never-mind the fact that a methodology isn't outlined, or that the definition of "maintainability" isn't mentioned, or that the languages involved are "I Imagine ...  Java" and Ruby, or that we don't know if/how the researcher controlled for differences among teams/programmers/projects or (in case this was a single team doing to separate projects) the teams' innate preferences/learning over the course of the experiment.
 

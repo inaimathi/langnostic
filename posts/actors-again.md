@@ -1,4 +1,4 @@
-That [`cl-actors` fork](https://github.com/Inaimathi/Common-Lisp-Actors) has gotten a few hours thrown at it. This time around, I integrated the [Optima pattern-matching library](https://github.com/m2ym/optima), and made certain things a little easier. I'm nowhere near done yet though; in addition to the rest of the ToDos from [last time](http://langnostic.blogspot.ca/2013/03/actors.html), and seeing what I can do with [green threads](https://github.com/deliciousrobots/green-threads), I need to settle things that the Erlang guys have clearly been thinking about for a few years.
+That [`cl-actors` fork](https://github.com/Inaimathi/Common-Lisp-Actors) has gotten a few hours thrown at it. This time around, I integrated the [Optima pattern-matching library](https://github.com/m2ym/optima), and made certain things a little easier. I'm nowhere near done yet though; in addition to the rest of the ToDos from [last time](/posts/actors), and seeing what I can do with [green threads](https://github.com/deliciousrobots/green-threads), I need to settle things that the Erlang guys have clearly been thinking about for a few years.
 
 ## <a name="first" href="#first"></a>First
 
@@ -8,9 +8,9 @@ How do you deal with error reporting/handling here? And I specifically mean
 (defmethod initialize-instance :after ((self actor) &amp;key)
   "Uses the main function name to create a thread"
   (with-slots (behavior in name thread) self
-    (setf thread 
-          (bt:make-thread 
-           (lambda () 
+    (setf thread
+          (bt:make-thread
+           (lambda ()
              (loop
                 (handler-case
                     (let ((res (funcall behavior (dequeue in))))

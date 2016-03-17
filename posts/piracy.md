@@ -1,4 +1,4 @@
-So I've gotten my x220 all set up the way I like. I ended up using XFCE as my desktop environment again, because if nothing else, I sometimes like an external monitor. Really, I expect to spend most of my time in [Screen](http://langnostic.blogspot.com/2011/10/screenwm-follow-up.html) now that I've set up [wicd](http://en.wikipedia.org/wiki/Wicd). By the way, in case you're trying to get it to work and failing, you actually need to specify what wireless device it should use to connect to networks. This device is almost always `wlan0`, but a default isn't set so you need to do `Shift+p` and type it in manually in the preferences screen.
+So I've gotten my x220 all set up the way I like. I ended up using XFCE as my desktop environment again, because if nothing else, I sometimes like an external monitor. Really, I expect to spend most of my time in [Screen](/posts/screen-wm-followup) now that I've set up [wicd](http://en.wikipedia.org/wiki/Wicd). By the way, in case you're trying to get it to work and failing, you actually need to specify what wireless device it should use to connect to networks. This device is almost always `wlan0`, but a default isn't set so you need to do `Shift+p` and type it in manually in the preferences screen.
 
 I'm still debating window managers, and currently have both [StumpWM](http://stumpwm.org/) and [XMonad](http://xmonad.org/) installed. I've been using Stump pretty consistently lately, but I have noticed some inconveniences with it related to how window management works. The main things keeping me on it are the home-row mod "key" and the ability to override that "key" in case the program I'm using needs the keystroke. Taking a look at what XMonad config can do these days, here's how I would do the same
 
@@ -27,21 +27,21 @@ main = xmonad $ xfceConfig { modMask = mod4Mask }
        , ("C-t <Return>", spawn_term)
        , ("C-t w", nextScreen)
        , ("C-t e", prevScreen)
-         
+
        , ("C-t j", windows S.focusDown)
        , ("C-t S-j", windows S.swapDown)
        , ("C-t k", windows S.focusUp)
        , ("C-t S-k", windows S.swapUp)
        , ("C-t g", goToSelected defaultGSConfig)
-         
+
        , ("C-t <Space>", sendMessage NextLayout)
        , ("C-t h", sendMessage Shrink)
        , ("C-t l", sendMessage Expand)
        , ("C-t t", withFocused $ windows . S.sink)
-         
+
        , ("C-t C-t", spawn "xdotool key ctrl+t") -- this is a lie
        ]
-       
+
 dmenu_launch = spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\""
 spawn_term = spawn "xterm"
 ```
@@ -96,7 +96,7 @@ Now I hope you've been paying attention, because here comes the curveball.
 **Sony/RIAA/MPAA/et al:** No, all pirates should be executed (or at least fined their life savings and prevented from going near a computer ever again.)
 **You:**[your answer here]
 
-I hope you can see how both of the extreme stances are a bit ridiculous, and that a nuanced view needs to prevail if we're going to continue this decade with any semblance of freedom. And if we refer to the thought framework I proposed earlier, it's fairly obvious *why* each of the extreme views are ridiculous. 
+I hope you can see how both of the extreme stances are a bit ridiculous, and that a nuanced view needs to prevail if we're going to continue this decade with any semblance of freedom. And if we refer to the thought framework I proposed earlier, it's fairly obvious *why* each of the extreme views are ridiculous.
 
 It is not ok to take the output of others' creative work without their permission and distribute it for your own profit without sharing any of the proceeds<a name="note-Tue-Dec-27-221721EST-2011"></a>[|5|](#foot-Tue-Dec-27-221721EST-2011). That sort of activity is not sharing, and probably should be a criminal act. The people who do this are spiritual descendants of the original book pirates; the guys who would set up a press to run off a few thousand Dickens or Twains and sell them to line their own pockets without supporting the original writers. That's one of the few forms of copyright infringements that you can call "theft" without me getting pissed off at you about the implications. There is clear harm being done to the author and legitimate publishers, there is money being made, the work is not transformitive, there are multitudes of copies, those copies are public, *and* the copyrighted work is central to the exercise. Lock those fuckers up.
 

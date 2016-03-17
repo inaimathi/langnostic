@@ -1,6 +1,6 @@
-> **EDITOR'S NOTE:**  
-> *This is a piece I wrote about three years ago, then sat down to copy-edit and polish up today. It was very focused on a few particular, topical anecdotes that my then-co-workers were throwing about. Having read over it equipped with three extra years of hindsight, I'm not sure I'd still be quite as vehement about my opinions as I was here, but don't disagree on any large points.*  
-> Sun, 10 Nov, 2013  
+> **EDITOR'S NOTE:**
+> *This is a piece I wrote about three years ago, then sat down to copy-edit and polish up today. It was very focused on a few particular, topical anecdotes that my then-co-workers were throwing about. Having read over it equipped with three extra years of hindsight, I'm not sure I'd still be quite as vehement about my opinions as I was here, but don't disagree on any large points.*
+> Sun, 10 Nov, 2013
 
 I'm writing this post because I've seen one too many comments of the sort "Well, if PHP is so shitty, then why is it so popular?". Typically this is the main claim in a rebuttal to "PHP is a shit language"<a name="note-Sun-Nov-10-173728EST-2013"></a>[|1|](#foot-Sun-Nov-10-173728EST-2013), and the end result seems to be that a lot of people just sit back and think "Oh yeah, I guess it is popular. It must not be shit, but rugged." Substitute  "manly", or "quirky" or similar if you like. As in, yeah, it has flaws, but they're endearing flaws. Like [`mysql_escape`](http://us2.php.net/mysql_escape_string) being the deprecated precursor to a different function named [`mysql_real_escape_string`](http://php.net/manual/en/function.mysql-real-escape-string.php) (itself also deprecated). And [static functions having an odd interpretation of "this"](http://bugs.php.net/bug.php?id=12622). And the complete list of [deprecated functions](http://stackoverflow.com/questions/6822446/what-does-php-do-with-deprecated-functions) being longer than my average blog post thanks to the fact that they never actually get removed.
 
@@ -65,7 +65,7 @@ The fourth one is the previous answer on a macro scale; *"We'll keep using what 
 
 ### <a name="how-does-the-first-company-in-an-industry-pick-their-tools" href="#how-does-the-first-company-in-an-industry-pick-their-tools"></a>How does the first company in an industry pick their tools?
 
-Regardless of any other decision factors, the answer is almost by definition "before they really know what problems those tools will have to solve", and I've already discussed that one [pretty thoroughly](http://langnostic.blogspot.ca/2012/02/self-titled.html). There are no clients, so they can't pick that way, there are no other companies or vendors so there is no industry standard. They might look at what similar industries do. Would they use the best possible tool for the job though? Well, no. They're likely to go the *"What do our developers know how to use?"* route, which we've already discussed above.
+Regardless of any other decision factors, the answer is almost by definition "before they really know what problems those tools will have to solve", and I've already discussed that one [pretty thoroughly](/posts/self-titled). There are no clients, so they can't pick that way, there are no other companies or vendors so there is no industry standard. They might look at what similar industries do. Would they use the best possible tool for the job though? Well, no. They're likely to go the *"What do our developers know how to use?"* route, which we've already discussed above.
 
 The big reasons **teams**<a name="note-Sun-Nov-10-173906EST-2013"></a>[|13|](#foot-Sun-Nov-10-173906EST-2013) pick a given technology include
 
@@ -94,7 +94,7 @@ Don't let me stop you from eating it, but I remember what it tastes like so I wo
 * * *
 ##### Footnotes
 
-1 - <a name="foot-Sun-Nov-10-173728EST-2013"></a>[|back|](#note-Sun-Nov-10-173728EST-2013) - Which I happen to agree with, actually. If you're looking for details on what language**s**(Spoiler warning) I'd recommend learning, you're better off reading [this](http://langnostic.blogspot.ca/2013/03/what-programming-language-should-i-learn.html) instead.
+1 - <a name="foot-Sun-Nov-10-173728EST-2013"></a>[|back|](#note-Sun-Nov-10-173728EST-2013) - Which I happen to agree with, actually. If you're looking for details on what language**s**(Spoiler warning) I'd recommend learning, you're better off reading [this](/posts/what-language-should-i-learn) instead.
 
 2 - <a name="foot-Sun-Nov-10-173736EST-2013"></a>[|back|](#note-Sun-Nov-10-173736EST-2013) - Except for that.
 
