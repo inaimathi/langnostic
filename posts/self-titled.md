@@ -1,8 +1,8 @@
 I read a [question on SO](http://stackoverflow.com/questions/9286318/why-choose-lisp-for-a-project) the other day that asks "Why choose Lisp for a project?". It's was closed with an almost surprisingly swift consensus, but not before three answers were thrown in (and one accepted). And that's pretty good because, as far as I'm concerned, it's the wrong question. "Why choose a language for a project?" is closely related to a second question, which I'll let Peter Norvig describe the shape of:
 
-> I guess the way I look at it is; the best language to use is the one that you and your friends are most productive with. It just turned out that when Google was started, the four programmers that were there first were all C++ programmers, and they were very effective with that, and they kept going with it.   
->   
-> --Peter Norvig, [Ask Me Anything](http://www.youtube.com/watch?v=hE7k0_9k0VA#t=03m10s)  
+> I guess the way I look at it is; the best language to use is the one that you and your friends are most productive with. It just turned out that when Google was started, the four programmers that were there first were all C++ programmers, and they were very effective with that, and they kept going with it.
+>
+> --Peter Norvig, [Ask Me Anything](http://www.youtube.com/watch?v=hE7k0_9k0VA#t=03m10s)
 
 I agree with his sentiments here. The language you should use when you're working on a professional project<a name="note-Thu-Feb-16-222424EST-2012"></a>[|1|](#foot-Thu-Feb-16-222424EST-2012) is one that your team knows and already thinks in. It would be a mistake for me, today, to start something serious up at the office using Smalltalk because I don't think in it naturally yet. Norvig's response to "What language should I choose?" begs a second question though, because if the best language is one you're already familiar with, then you need to ask
 
@@ -19,9 +19,9 @@ The first option happens if you're an `x` programmer, or if all your friends are
 
 The second option is hard because, I'll lay this down as an axiom, at **no point** in a project **will you know less** about what shape the output will take than you do before you've assembled a team. That situation screams "Lisp" at me, although I guess any language with sufficient ease of [DSL](http://en.wikipedia.org/wiki/Domain-specific_language) creation would do. Perhaps it screams other things to other people; I knew a guy at a former place who said
 
-As far as I'm concerned, unless there's a really good reason not to, you should just use PHP for web development.
+> As far as I'm concerned, unless there's a _really_ good reason not to, you should just use PHP for web development.
 
-I'm not poking fun of the guy either; his reasoning is that since the standard LAMP stack is in place at half a scrillion servers around the world and counting, any bugs likely to bite over the course of a development cycle have already been found. That's the same principle as [Raymond's statement of Linus' Law](http://en.wikipedia.org/wiki/Linus'_Law#By_Eric_Raymond). The trouble is that it leaves you faffing about with PHP even when the entire team knows a more powerful, more abstract language like Python or Ruby.
+I'm not poking fun of the guy either; his reasoning is that since the standard LAMP stack is in place at half a scrillion servers around the world and counting, any bugs likely to bite over the course of a development cycle have already been found. That's the same principle as [Raymond's statement of Linus' Law](http://en.wikipedia.org/wiki/Linus'_Law#By_Eric_Raymond). The trouble is that it leaves you faffing about with PHP even when the entire team knows a more powerful, more consistent language like Python or Ruby.
 
 In fact, applied globally, this principle would have every developer on earth using [some combination of Java, C, C++ and/or C#](http://www.tiobe.com/index.php/content/paperinfo/tpci/index.html), because odds are that every developer could scrape up ten buddies that are at least marginally proficient with those. There's a tension between "powerful languages" and "popular languages", because each brings benefits to the table. Powerful means you'll be more likely to crack through whatever problem you run into, while Popular means that a lot of problems have been pre-solved for you. Power means you'll be able to move mountains with small teams, Popularity means you'll be able to get big teams together reliably. That begs a third question, because if you've got a specific project in mind, you have to ask
 
@@ -35,7 +35,7 @@ Are you trying to solve problems for which there are no existing solutions (or f
 
 Norvig says (in effect): switch with your friends. Which may explain why people [switch away from Lisp](http://www.aaronsw.com/weblog/rewritingreddit), even if Graham is right about the shape of the language pyramid. What good is knowing the superior language, if no other human you know speaks it?
 
-## <a name="when-should-i-switch-languages" href="#when-should-i-switch-languages"></a>When Should **I** Switch Languages?
+## <a name="when-should-i-switch-languages" href="#when-should-i-switch-languages"></a>When Should _I_ Switch Languages?
 
 A couple of days ago, my dad called me up. Apparently, he got a web design offer from a friend of his, but the requirements weren't exactly his field. What they meant was "Web UI Developer", and would I be interested? I asked for the specifics; it's a big company, I'd be working for a billing department somewhere, the pay was excellent, and the skill/experience requirements were
 

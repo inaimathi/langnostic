@@ -1,11 +1,11 @@
-So I said a little while ago, I said I'd switch to jEdit. 
+So I said a little while ago, I said I'd switch to jEdit.
 
-![The jEdit logo](/static/img/jedit-logo.jpeg)
+![The jEdit logo](/static/img/jedit-logo.jpg)
 
 It turns out that Emacs has bedeviled me, though, and I've been trying very hard to figure it out. Given my infatuation with LISP in general, it was pretty likely that I'd eventually stumble across the [Emacs Extension Guide(pdf)](http://www.emacs.uniyar.ac.ru/doc/O'Reilly_Emacs/Writing%20GNU%20Emacs%20Extensions.PDF).
 This appeals to me as perhaps nothing else can. I can develop my programming skills in [a precursor to] [my favorite language](http://www.plt-scheme.org/), while improving the usability of my editor.
 
-The default usability is still pretty bad in most respects. 
+The default usability is still pretty bad in most respects.
 
 - The arcane shortcuts
 - the insistence on making it ridiculously hard to turn off auto-indent (even in a mode where trying to auto-indent does nothing but raise an error)
