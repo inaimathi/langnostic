@@ -20,9 +20,11 @@ data Section = Blog | Archive | Links | Meta | Feed deriving (Eq, Ord, Show)
 archive :: [BlogPost] -> Html
 archive posts =
     template Archive "The Archive" $
-             ul $ forM_ posts (\p -> do li $ a ! href (toValue $ "/posts/" <> (P.file p)) $ toMarkup $ P.title p)
+             ul $ forM_ posts (\p -> do li $ a ! postHref p $ toMarkup $ P.title p)
 
--- article :: StrHtml -> Html
+-- article :: [BlogPost] -> BlogPost -> Html
+
+article :: Html -> Html -> Html -> Html
 article title posted body =
     template Blog "A Blog Post" $ do
       h1 title
@@ -50,6 +52,32 @@ template section pageTitle content =
                 pageFooter
 
 ---------- Template Components
+postLinks :: (Maybe BlogPost, Maybe BlogPost) -> Html
+postLinks (prev, next) =
+    div ! class_ "post-nav" $ do
+      case prev of
+        (Just p) -> a ! class_ "prev-post" ! postHref p $ do
+                              "<-"
+                              toMarkup $ P.title p
+        _ -> ""
+      case next of
+        (Just n) -> a ! class_ "next-post" ! postHref n $ do
+                              toMarkup $ P.title n
+                              "->"
+
+adjacents :: Eq a => [a] -> a -> (Maybe a, Maybe a)
+adjacents (a:b:c:haystack) needle
+    | needle == a = (Nothing, Just b)
+    | needle == b = (Just a, Just c)
+    | otherwise = adjacents (b:c:haystack) needle
+adjacents (a:b:[]) needle
+    | needle == a = (Nothing, Just b)
+    | needle == b = (Just a, Nothing)
+    | otherwise = (Nothing, Nothing)
+adjacents [] _ = (Nothing, Nothing)
+
+postHref p = href . toValue $ "/posts/" <> (P.file p)
+
 stylesheet :: AttributeValue -> Html
 stylesheet url = link ! rel "stylesheet" ! href url ! type_ "text/css" ! media "screen"
 
