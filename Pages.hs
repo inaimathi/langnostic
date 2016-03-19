@@ -22,14 +22,13 @@ archive posts =
     template Archive "The Archive" $
              ul $ forM_ posts (\p -> do li $ a ! postHref p $ toMarkup $ P.title p)
 
--- article :: [BlogPost] -> BlogPost -> Html
-
-article :: Html -> Html -> Html -> Html
-article title posted body =
+article :: [BlogPost] -> BlogPost -> Html -> Html
+article posts p body =
     template Blog "A Blog Post" $ do
-      h1 title
-      span ! class_ "posted" $ posted
+      h1 $ toMarkup $ P.title p
+      span ! class_ "posted" $ toMarkup $ P.posted p
       body
+      postLinks $ adjacents posts p
 
 plain :: Section -> Html -> Html
 plain s content =
@@ -64,6 +63,7 @@ postLinks (prev, next) =
         (Just n) -> a ! class_ "next-post" ! postHref n $ do
                               toMarkup $ P.title n
                               "->"
+        _ -> ""
 
 adjacents :: Eq a => [a] -> a -> (Maybe a, Maybe a)
 adjacents (a:b:c:haystack) needle

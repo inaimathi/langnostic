@@ -32,7 +32,7 @@ handlers pm = do
       case bySlug pm slug of
         Nothing -> text "Nope. That doesn't exist."
         Just p -> do body <- liftIO $ postBody p
-                     html $ toStrict $ renderHtml $ Pages.article (toMarkup $ title p) (toMarkup $ posted p) body
+                     html $ toStrict $ renderHtml $ Pages.article (posts pm) p $ toMarkup body
   get "archive" $ do
     m <- liftIO postMap
     html $ toStrict $ renderHtml $ Pages.archive m

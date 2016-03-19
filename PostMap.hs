@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module PostMap ( PostMap, postMap, bySlug, byTags, postBody
+module PostMap ( PostMap, postMap, bySlug, byTags, postBody, posts
                , BlogPost, PostMap.id, title, file, edited, posted, tags) where
 
 import Data.Aeson
@@ -45,9 +45,12 @@ byTags pm ts = filter hasSome pm
                            _ -> True
 
 postMap :: IO PostMap
-postMap = posts "posts.json"
+postMap = fetchPosts "posts.json"
 
-posts :: FilePath -> IO [BlogPost]
-posts fname = do
+posts :: PostMap -> [BlogPost]
+posts = Prelude.id
+
+fetchPosts :: FilePath -> IO [BlogPost]
+fetchPosts fname = do
   f <- BS.readFile fname
   return $ catMaybes . map decode $ C8.split '\n' f
