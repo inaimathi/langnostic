@@ -1,12 +1,16 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Pages (archive, article, meta) where
+module Pages (Section(..), archive, article, meta, template) where
 
 import Prelude hiding (head, id, div, span)
 import Text.Blaze.Html5 hiding (map, article)
 import Text.Blaze.Html5.Attributes hiding (title, span)
 import qualified Text.Blaze.Html5.Attributes as A
 
+import Data.List (sortBy)
+import Data.Function (on)
 import Data.Char
+import Data.Map (Map)
+import qualified Data.Map as Map
 import Data.Monoid
 import Control.Monad
 import qualified Data.Text as Txt
@@ -19,20 +23,20 @@ data Section = Blog | Archive | Links | Meta | Feed deriving (Eq, Ord, Show)
 
 archive :: [BlogPost] -> Html
 archive posts =
-    template Archive "The Archive" $
-             ul $ forM_ posts (\p -> do li $ a ! postHref p $ toMarkup $ P.title p)
+    template Archive "The Archive" $ do
+             ul $ forM_ posts (\p -> li $ a ! postHref p $ toMarkup $ P.title p)
+             h3 "Tags"
+             ul ! class_ "tags-list" $
+                forM_ (tagsTable posts) (\(tag, ct) -> li $ do
+                                                         a ! href (toValue $ "/archive/by-tag/" ++ tag) $ toMarkup tag
+                                                         toMarkup $ concat ["(", show ct, ")"])
 
 article :: [BlogPost] -> BlogPost -> Html -> Html
-article posts p body =
-    template Blog "A Blog Post" $ do
+article posts p body = do
       h1 $ toMarkup $ P.title p
       span ! class_ "posted" $ toMarkup $ P.posted p
       body
       postLinks $ adjacents posts p
-
-plain :: Section -> Html -> Html
-plain s content =
-    template s "A Page" content
 
 ---------- Main template
 -- template :: Section -> String -> Html -> Html
@@ -65,17 +69,7 @@ postLinks (prev, next) =
                               "->"
         _ -> ""
 
-adjacents :: Eq a => [a] -> a -> (Maybe a, Maybe a)
-adjacents (a:b:c:haystack) needle
-    | needle == a = (Nothing, Just b)
-    | needle == b = (Just a, Just c)
-    | otherwise = adjacents (b:c:haystack) needle
-adjacents (a:b:[]) needle
-    | needle == a = (Nothing, Just b)
-    | needle == b = (Just a, Nothing)
-    | otherwise = (Nothing, Nothing)
-adjacents [] _ = (Nothing, Nothing)
-
+postHref :: BlogPost -> Attribute
 postHref p = href . toValue $ "/posts/" <> (P.file p)
 
 stylesheet :: AttributeValue -> Html
@@ -88,8 +82,8 @@ navBar s = div ! class_ "top-menu-container" $ do
 
 navItem :: Section -> Section -> Html
 navItem s item
-    | s == item = toMarkup $ show item
-navItem _ item = a ! href (toValue $ "/" <> (map toLower $ show item)) $ toMarkup $ show item
+    | s == item = toMarkup $ map toLower $ show item
+navItem _ item = a ! href (toValue $ "/" <> (map toLower $ show item)) $ toMarkup $ map toLower $ show item
 
 pageFooter :: Html
 pageFooter = div ! class_ "license" $ do
@@ -111,3 +105,21 @@ pageFooter = div ! class_ "license" $ do
                  " flickr stream and released under a "
                  a ! href "https://creativecommons.org/licenses/by/2.0/" $ "CC-BY"
                  " license."
+
+
+adjacents :: Eq a => [a] -> a -> (Maybe a, Maybe a)
+adjacents (a:b:c:haystack) needle
+    | needle == a = (Nothing, Just b)
+    | needle == b = (Just a, Just c)
+    | otherwise = adjacents (b:c:haystack) needle
+adjacents (a:b:[]) needle
+    | needle == a = (Nothing, Just b)
+    | needle == b = (Just a, Nothing)
+    | otherwise = (Nothing, Nothing)
+adjacents [] _ = (Nothing, Nothing)
+
+tagsTable :: [BlogPost] -> [(String, Int)]
+tagsTable posts = sortBy (flip compare `on` snd) $ Map.toList tally
+    where tally = foldl tallyPost Map.empty posts
+          tallyPost t post = foldl count t (P.tags post)
+          count t tag = Map.insertWith (+) tag 1 t
