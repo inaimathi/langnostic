@@ -25,7 +25,7 @@ data Section = Blog | Archive | Links | Meta | Feed | Error deriving (Eq, Ord, S
 
 archive :: [BlogPost] -> Html
 archive posts =
-    template Archive "The Archive" $ do
+    template Archive "Archive" $ do
              ul $ forM_ posts (\p -> li $ a ! postHref p $ toMarkup $ P.title p)
              h3 "Tags"
              ul ! class_ "tags-list" $

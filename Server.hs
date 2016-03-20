@@ -34,7 +34,7 @@ handlers pm = do
       case bySlug pm slug of
         Nothing -> text "Nope. That doesn't exist."
         Just p -> do body <- liftIO $ postBody p
-                     html . toStrict . renderHtml . Pages.template Blog "A Blog Post" $ Pages.article (posts pm) p $ toMarkup body
+                     html . toStrict . renderHtml . Pages.template Blog (toMarkup $ title p) $ Pages.article (posts pm) p $ toMarkup body
   get "archive" $ html $ toStrict $ renderHtml $ Pages.archive $ posts pm
   get ("archive" <//> "by-tag" <//> var) $ \tag -> do
     html $ toStrict $ renderHtml $ Pages.archive $ filter ((tag `elem`) . tags) $ posts pm
