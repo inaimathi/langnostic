@@ -53,13 +53,7 @@ newCache cacheLimit reader fname = do
   val <- reader fname
   newIORef $ Cached { reader = reader, file = fname, cacheLimit = cacheLimit, value = val, lastChecked = now }
 
-minutes :: Int -> TimeDiff
-minutes ms = TimeDiff { tdYear = 0, tdMonth = 0, tdDay = 0, tdHour = 0, tdMin = ms, tdSec = 0, tdPicosec = 0 }
-
-hours :: Int -> TimeDiff
-hours hs = TimeDiff { tdYear = 0, tdMonth = 0, tdDay = 0, tdHour = hs, tdMin = 0, tdSec = 0, tdPicosec = 0 }
-
-
+---------- Cache Map infrastructure
 data CMap a = CMap { fn :: (FilePath -> IO a)
                    , ref :: IORef (Map FilePath (Cache a)) }
 
@@ -82,3 +76,12 @@ lookup cacheMap fname = do
     Nothing -> return $ Nothing
     Just looked -> do c <- readCache looked
                       return $ Just c
+
+---------- Diff utilities
+minutes :: Int -> TimeDiff
+minutes ms = zero { tdMin = ms }
+
+hours :: Int -> TimeDiff
+hours hs = zero { tdHour = hs }
+
+zero = TimeDiff { tdYear = 0, tdMonth = 0, tdDay = 0, tdHour = 0, tdMin = 0, tdSec = 0, tdPicosec = 0 }
