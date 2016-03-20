@@ -21,7 +21,7 @@ import Post
 import PostMap (BlogPost)
 import qualified PostMap as P
 
-data Section = Blog | Archive | Links | Meta | Feed deriving (Eq, Ord, Show)
+data Section = Blog | Archive | Links | Meta | Feed | Error deriving (Eq, Ord, Show)
 
 archive :: [BlogPost] -> Html
 archive posts =

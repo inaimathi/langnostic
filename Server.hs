@@ -3,6 +3,7 @@ module Main where
 
 import Web.Spock.Safe
 import Network.Wai.Middleware.Static
+import Network.HTTP.Types
 
 import Data.Monoid (mconcat)
 import Control.Monad.Trans
@@ -49,6 +50,10 @@ handlers pm = do
                 html $ toStrict $ renderHtml $ atom $ filter ((tag `elem`) . tags) $ posts pm
   get ("feed" <//> "atom" <//> "by-tag" <//> var) $ \tag -> do
                 html $ toStrict $ renderHtml $ atom $ filter ((tag `elem`) . tags) $ posts pm
+  hookAny GET $ \url -> do
+                setStatus status404
+                p <- liftIO $ readPost "static/content/404.md"
+                html $ toStrict $ renderHtml $ Pages.template Error "Not Found" p
 
 home pm = do
   intro <- liftIO $ readPost "static/content/intro.md"
