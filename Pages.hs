@@ -6,6 +6,8 @@ import Text.Blaze.Html5 hiding (map, article)
 import Text.Blaze.Html5.Attributes hiding (title, span)
 import qualified Text.Blaze.Html5.Attributes as A
 
+import System.Time
+
 import Data.List (sortBy)
 import Data.Function (on)
 import Data.Char
@@ -34,7 +36,7 @@ archive posts =
 article :: [BlogPost] -> BlogPost -> Html -> Html
 article posts p body = do
       h1 $ toMarkup $ P.title p
-      span ! class_ "posted" $ toMarkup $ P.posted p
+      span ! class_ "posted" $ toMarkup $ show $ TOD (P.posted p) 0
       body
       postLinks $ adjacents posts p
 
@@ -119,7 +121,7 @@ adjacents (a:b:[]) needle
 adjacents [] _ = (Nothing, Nothing)
 
 tagsTable :: [BlogPost] -> [(String, Int)]
-tagsTable posts = sortBy (flip compare `on` snd) $ Map.toList tally
+tagsTable posts = sortBy (compare `on` fst) $ Map.toList tally
     where tally = foldl tallyPost Map.empty posts
           tallyPost t post = foldl count t (P.tags post)
           count t tag = Map.insertWith (+) tag 1 t

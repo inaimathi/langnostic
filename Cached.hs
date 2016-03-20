@@ -12,46 +12,53 @@ import Data.Ratio
 
 import Control.Monad
 
+import Data.Maybe (fromJust)
+
 import Data.Map (Map)
 import qualified Data.Map as Map
 
 data Cached a = Cached { reader :: (FilePath -> IO a)
                        , file :: FilePath
                        , cacheLimit :: TimeDiff
-                       , lastChecked :: ClockTime
-                       , value :: a }
+                       , lastChecked :: Maybe ClockTime
+                       , value :: Maybe a }
 
 type Cache a = IORef (Cached a)
+
+newCache :: TimeDiff -> (FilePath -> IO a) -> FilePath -> IO (Cache a)
+newCache cacheLimit reader fname = do
+  val <- reader fname
+  newIORef $ Cached { reader = reader, file = fname, cacheLimit = cacheLimit, value = Nothing, lastChecked = Nothing }
 
 readCache :: Cache a -> IO a
 readCache cache = do
   now <- getClockTime
   c <- readIORef cache
-  let diff = now `diffClockTimes` (lastChecked c)
-  if (cacheLimit c) >= diff
-  then return $ value c
-  else do stat <- getFileStatus (file c)
-          if (lastChecked c) > (epochToClockTime $ modificationTime stat)
-          then do _ <- writeIORef cache $ c { lastChecked = now }
-                  return $ value c
-          else do newVal <- (reader c) (file c)
-                  _ <- writeIORef cache $ c { value = newVal, lastChecked = now }
-                  return $ newVal
+  case lastChecked c of
+    Nothing -> readNew cache c now
+    Just last -> let diff = now `diffClockTimes` last
+                 in if (cacheLimit c) >= diff
+                    then return . fromJust $ value c
+                    else do stat <- getFileStatus (file c)
+                            if last > (epochToClockTime $ modificationTime stat)
+                            then do _ <- writeIORef cache $ bumpTime now c
+                                    return . fromJust $ value c
+                            else readNew cache c now
 
+cacheValue :: Cached a -> IO a
+cacheValue c = (reader c) (file c)
 
-epochToClockTime :: Real a => a -> ClockTime
-epochToClockTime x =
-    TOD seconds secfrac
-    where ratval = toRational x
-          seconds = floor ratval
-          secfrac = floor $ (ratval - (seconds % 1) ) * picosecondfactor
-          picosecondfactor = 10 ^ 12
+bumpTime :: ClockTime -> Cached a -> Cached a
+bumpTime now c = c { lastChecked = Just now }
 
-newCache :: TimeDiff -> (FilePath -> IO a) -> FilePath -> IO (Cache a)
-newCache cacheLimit reader fname = do
-  now <- getClockTime
-  val <- reader fname
-  newIORef $ Cached { reader = reader, file = fname, cacheLimit = cacheLimit, value = val, lastChecked = now }
+bumpValue :: a -> Cached a -> Cached a
+bumpValue v c = c { value = Just v }
+
+readNew :: Cache a -> Cached a -> ClockTime -> IO a
+readNew cache c now = do
+  newVal <- cacheValue c
+  _ <- writeIORef cache . bumpValue newVal $ bumpTime now c
+  return $ newVal
 
 ---------- Cache Map infrastructure
 data CMap a = CMap { fn :: (FilePath -> IO a)
@@ -77,7 +84,15 @@ lookup cacheMap fname = do
     Just looked -> do c <- readCache looked
                       return $ Just c
 
----------- Diff utilities
+---------- Time utilities
+epochToClockTime :: Real a => a -> ClockTime
+epochToClockTime x =
+    TOD seconds secfrac
+    where ratval = toRational x
+          seconds = floor ratval
+          secfrac = floor $ (ratval - (seconds % 1) ) * picosecondfactor
+          picosecondfactor = 10 ^ 12
+
 minutes :: Int -> TimeDiff
 minutes ms = zero { tdMin = ms }
 

@@ -2,6 +2,8 @@
 module PostMap ( PostMap, postMap, bySlug, byTags, postBody, posts
                , BlogPost, PostMap.id, title, file, edited, posted, tags) where
 
+import System.Time
+
 import Data.Aeson
 import Data.List (intersect)
 import Data.Maybe (catMaybes)
@@ -10,7 +12,6 @@ import qualified Data.ByteString.Lazy as BS
 import qualified Data.ByteString.Lazy.Char8 as C8
 
 import Post
-import Cached
 
 data BlogPost = BlogPost {
       id :: Integer
@@ -21,7 +22,8 @@ data BlogPost = BlogPost {
 
 instance FromJSON BlogPost where
     parseJSON = withObject "post" $ \o ->
-                BlogPost <$> o .: "id"
+                BlogPost
+                <$> o .: "id"
                 <*> o .: "title"
                 <*> o .: "file"
                 <*> o .: "edited"

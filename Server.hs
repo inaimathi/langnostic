@@ -14,6 +14,7 @@ import Data.Text.Lazy (toStrict)
 import PostMap hiding (id)
 import Post
 import Pages
+import Feed
 
 main :: IO ()
 main = do
@@ -33,18 +34,21 @@ handlers pm = do
         Nothing -> text "Nope. That doesn't exist."
         Just p -> do body <- liftIO $ postBody p
                      html . toStrict . renderHtml . Pages.template Blog "A Blog Post" $ Pages.article (posts pm) p $ toMarkup body
-  get "archive" $ do
-    m <- liftIO postMap
-    html $ toStrict $ renderHtml $ Pages.archive m
+  get "archive" $ html $ toStrict $ renderHtml $ Pages.archive $ posts pm
   get ("archive" <//> "by-tag" <//> var) $ \tag -> do
-    m <- liftIO postMap
-    html $ toStrict $ renderHtml $ Pages.archive $ filter ((tag `elem`) . tags) m
+    html $ toStrict $ renderHtml $ Pages.archive $ filter ((tag `elem`) . tags) $ posts pm
   get "links" $ do
     pg <- liftIO $ readPost "static/content/links.md"
     html $ toStrict $ renderHtml $ Pages.template Links "Links" pg
   get "meta" $ do
     pg <- liftIO $ readPost "static/content/meta.md"
     html $ toStrict $ renderHtml $ Pages.template Meta "Meta" pg
+  get "feed" $ html $ toStrict $ renderHtml $ atom $ posts pm
+  get ("feed" <//> "atom") $ html $ toStrict $ renderHtml $ atom $ posts pm
+  get ("feed" <//> "atom" <//> var) $ \tag -> do
+                html $ toStrict $ renderHtml $ atom $ filter ((tag `elem`) . tags) $ posts pm
+  get ("feed" <//> "atom" <//> "by-tag" <//> var) $ \tag -> do
+                html $ toStrict $ renderHtml $ atom $ filter ((tag `elem`) . tags) $ posts pm
 
 home pm = do
   intro <- liftIO $ readPost "static/content/intro.md"

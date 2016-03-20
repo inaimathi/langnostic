@@ -11,12 +11,15 @@
 
 ## ToDo
 
-- Format timestamps. Consider storing them in some other format (but ideally, we'd parse from the provided UNIX timestamps)
-- Put together a feed page
+- Re-factor project into something sane
+	- PostMap and Post shouldn't be separate modules; just one named Posts
+	- Don't worry; plenty mode. Add to this list as you go.
 
 - `BGG Data Sifting`, `cl-notebook Thoughts` and `cl-notebook introductory thoughts` all have issues with the translation-from-markdown approach. Figure out what to do about this (also, `cl-notebook` obviously needs an export-to-markdown feature)
+
 - Make OL styles consistent (you've got `1.   foo` in some places, and it should be just `1. foo`)
 - Properly number the OLs. You've still got a few that just start with consecutive `1.`s
 - Add title text to remaining images
 - Fix up one or two more images (grep for `![](`, and check the ones that don't start with a `/`)
 - Re-write some of the earlier articles that start with parentheses
+- Convert to new footnote format (thank you, Pandoc)
