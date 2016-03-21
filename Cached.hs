@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Cached ( Cache, readCache, newCache
-              , CacheMap, newCacheMap, insert, Cached.lookup
+              , CacheMap, newCacheMap, insert, Cached.lookup, fromList
               , minutes, hours ) where
 
 import System.Time
@@ -30,7 +30,7 @@ readCache cache = do
     Nothing -> readNew cache c now
     Just last -> let diff = now `diffClockTimes` last
                  in if (cacheLimit c) >= diff
-                    then return . fromJust $ value c
+                    then return $ fromJust $ value c
                     else readNew cache c now
 
 bumpTime :: ClockTime -> Cached a -> Cached a
@@ -68,6 +68,12 @@ lookup cacheMap name = do
     Nothing -> return $ Nothing
     Just looked -> do c <- readCache looked
                       return $ Just c
+
+fromList :: Ord b => TimeDiff -> (b -> IO a) ->  [b] -> IO (CacheMap a b)
+fromList limit handle names = do
+  cache <- newCacheMap handle
+  _ <- mapM_ (\name -> insert cache limit name) names
+  return $ cache
 
 ---------- Time utilities
 epochToClockTime :: Real a => a -> ClockTime
