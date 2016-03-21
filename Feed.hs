@@ -5,6 +5,9 @@ import PostMap
 import System.Time
 import System.Locale
 
+import Data.List (sortBy)
+import Data.Function (on)
+
 import Prelude hiding (head, id, div, span)
 import Text.Blaze.Html5 hiding (map, article, title)
 import Text.Blaze.Html5.Attributes hiding (title, span, id)
@@ -19,7 +22,7 @@ atom posts = preEscapedString $
                     , "<subtitle>Langnostic Atom Feed</subtitle>"
                     , "<link href=\"http://langnostic.inaimathi.ca/feed/atom\" rel=\"self\" />"
                     , "<link href=\"http://langnostic.inaimathi.ca\" />"
-                    , concatMap atomPost posts
+                    , concatMap atomPost $ sortBy (flip compare `on` posted) posts
                     , "</feed>"
                     ]
 
