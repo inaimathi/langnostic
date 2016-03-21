@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Cached ( Cache, readCache, newCache
-              , CMap, newCacheMap, insert, Cached.lookup
+              , CacheMap, newCacheMap, insert, Cached.lookup
               , minutes, hours ) where
 
 import System.Time
@@ -61,22 +61,22 @@ readNew cache c now = do
   return $ newVal
 
 ---------- Cache Map infrastructure
-data CMap a = CMap { fn :: (FilePath -> IO a)
+data CacheMap a = CacheMap { fn :: (FilePath -> IO a)
                    , ref :: IORef (Map FilePath (Cache a)) }
 
-newCacheMap :: (FilePath -> IO a) -> IO (CMap a)
+newCacheMap :: (FilePath -> IO a) -> IO (CacheMap a)
 newCacheMap f = do
   r <- newIORef $ Map.empty
-  return $ CMap { fn = f, ref = r }
+  return $ CacheMap { fn = f, ref = r }
 
-insert :: CMap a -> TimeDiff -> FilePath -> IO (Cache a)
+insert :: CacheMap a -> TimeDiff -> FilePath -> IO (Cache a)
 insert cacheMap diff fname = do
   m <- readIORef (ref cacheMap)
   c <- newCache diff (fn cacheMap) fname
   _ <- writeIORef (ref cacheMap) $ Map.insert fname c m
   return c
 
-lookup :: CMap a -> FilePath -> IO (Maybe a)
+lookup :: CacheMap a -> FilePath -> IO (Maybe a)
 lookup cacheMap fname = do
   m <- readIORef $ ref cacheMap
   case Map.lookup fname m of
@@ -99,4 +99,5 @@ minutes ms = zero { tdMin = ms }
 hours :: Int -> TimeDiff
 hours hs = zero { tdHour = hs }
 
+zero :: TimeDiff
 zero = TimeDiff { tdYear = 0, tdMonth = 0, tdDay = 0, tdHour = 0, tdMin = 0, tdSec = 0, tdPicosec = 0 }
