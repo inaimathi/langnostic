@@ -1,8 +1,12 @@
 {-# LANGUAGE OverloadedStrings #-}
-module PostMap ( PostMap, postMap, bySlug, byTags, postBody, posts
-               , BlogPost, PostMap.id, title, file, edited, posted, tags) where
+module Posts ( PostMap, postMap, bySlug, byTags, postBody, posts
+               , BlogPost, Posts.id, title, file, edited, posted, tags, readPost) where
 
 import System.Time
+
+import Text.Pandoc
+import Text.Pandoc.Walk (walk)
+import Text.Blaze.Html (Html)
 
 import Data.Aeson
 import Data.List (intersect)
@@ -10,8 +14,6 @@ import Data.Maybe (catMaybes)
 import Text.Blaze.Html (Html)
 import qualified Data.ByteString.Lazy as BS
 import qualified Data.ByteString.Lazy.Char8 as C8
-
-import Post
 
 data BlogPost = BlogPost {
       id :: Integer
@@ -56,3 +58,21 @@ fetchPosts :: FilePath -> IO [BlogPost]
 fetchPosts fname = do
   f <- BS.readFile fname
   return $ catMaybes . map decode $ C8.split '\n' f
+
+readPost :: FilePath -> IO Html
+readPost fpath = do
+  f <- readFile fpath
+  return $ case readMarkdown def f of
+    Right p -> writeHtml def $ walk linkedHeaders p
+    _ -> error $ "Invalid post: " ++ fpath
+
+----------
+-- Transform headers into mid-post anchors
+linkedHeaders :: Block -> Block
+linkedHeaders (Header n opts@(slug,_,_) content) = Header n opts linked
+    where linked = (anchor slug) ++ [ Link ("",[],[]) content ("#" ++ slug, "") ]
+linkedHeaders node = node
+
+anchor :: String -> [Inline]
+anchor name = [ RawInline (Format "html") ("<a name=\"" ++ name ++ "\">")
+              , RawInline (Format "html") "</a>"]

@@ -1,7 +1,5 @@
 module Feed (atom) where
 
-import PostMap
-
 import System.Time
 import System.Locale
 
@@ -13,6 +11,8 @@ import Text.Blaze.Html5 hiding (map, article, title)
 import Text.Blaze.Html5.Attributes hiding (title, span, id)
 import Text.Blaze.Html.Renderer.Text
 import qualified Text.Blaze.Html5.Attributes as A
+
+import Posts
 
 atom :: [BlogPost] -> Html
 atom posts = preEscapedString $

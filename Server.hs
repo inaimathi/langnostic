@@ -12,8 +12,7 @@ import Text.Blaze.Html.Renderer.Text
 import Text.Blaze.Html5 (hr)
 import Data.Text.Lazy (toStrict)
 
-import PostMap hiding (id)
-import Post
+import Posts hiding (id)
 import Pages
 import Feed
 

@@ -17,9 +17,8 @@ import Data.Monoid
 import Control.Monad
 import qualified Data.Text as Txt
 
-import Post
-import PostMap (BlogPost)
-import qualified PostMap as P
+import Posts (BlogPost)
+import qualified Posts as P
 
 data Section = Blog | Archive | Links | Meta | Feed | Error deriving (Eq, Ord, Show)
 
@@ -40,7 +39,7 @@ article posts p body = do
       body
       postLinks $ adjacents posts p
 
----------- Main template
+
 -- template :: Section -> String -> Html -> Html
 template section pageTitle content =
     html $ do
