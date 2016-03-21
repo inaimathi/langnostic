@@ -6,11 +6,15 @@ Two things this time. First...
 
 I'm weak.
 
-It turns out there are exactly two things I'm willing to run non-free software for, and one is wifi access<a name="note-Fri-Mar-22-212851EDT-2013"></a>[|1|](#foot-Fri-Mar-22-212851EDT-2013). Another other option is of course, buying an [Atheros wifi card](https://www.thinkpenguin.com/gnu-linux/penguin-wireless-n-usb-req-antennas), which I intend to do eventually but don't have the spare $100 right at this very moment. Lets move on and say no more about this.
+It turns out there are exactly two things I'm willing to run non-free software for, and one is wifi access[^note-1]. Another other option is of course, buying an [Atheros wifi card](https://www.thinkpenguin.com/gnu-linux/penguin-wireless-n-usb-req-antennas), which I intend to do eventually but don't have the spare $100 right at this very moment. Lets move on and say no more about this.
+
+[^note-1]: The other is vintage gaming. Which doesn't pollute my main machine, but I do have a desktop set up at home which has a virtual Win XP machine where I installed a bunch of games from the golden age of fantasy gaming; copies of [Icewind Dale 2](http://www.planetbaldursgate.com/iwd2/), [Planescape Torment](http://www.amazon.com/Planescape-Torment-Pc/dp/B00002EPZ2), [Baldur's Gate 2](http://web.archive.org/web/20000815213945/http://www.interplay.com/bgate2/), and [Dungeon Keeper](http://en.wikipedia.org/wiki/Dungeon_Keeper).
 
 ### Actors
 
-I've been on vacation for a little while now, which finally gave me the chance to get back into some Common Lisp<a name="note-Fri-Mar-22-212856EDT-2013"></a>[|2|](#foot-Fri-Mar-22-212856EDT-2013). You know, since I've mostly been hacking Python at work for the past five months or so. Specifically, I got to do some long-overdue thinking on [that Actors library I forked](https://github.com/Inaimathi/Common-Lisp-Actors) forever and a fucking day ago.
+I've been on vacation for a little while now, which finally gave me the chance to get back into some Common Lisp[^note-2]. You know, since I've mostly been hacking Python at work for the past five months or so. Specifically, I got to do some long-overdue thinking on [that Actors library I forked](https://github.com/Inaimathi/Common-Lisp-Actors) forever and a fucking day ago.
+
+[^note-2]: And a bunch of sketching, but this isn't the place for that. If you're interested, go to [my deviantart](http://inaimathi.deviantart.com/) instead, I'll be uploading a new batch shortly.
 
 The big problem with actors as they're implemented here is that, while they don't care where their messages come from, they very much *do* care where their messages go. To be fair, this seems to be a very common implementation, and not limited to cl-actors, so I don't think it's worth holding against the author. What it does is force you to choose between three fairly shitty alternatives for composeability:
 
@@ -109,7 +113,9 @@ As far as I can see, oh and thanks to [Paul Tarvydas](https://github.com/guitarv
 (send *greeter* "whoeverthefuck")
 ```
 
-which concentrates the links entirely into that call to `link`, and leaves the actors themselves cheerfully oblivious to what they're interacting with at the time. It also separates out the general patterns of communication<a name="note-Fri-Mar-22-212912EDT-2013"></a>[|3|](#foot-Fri-Mar-22-212912EDT-2013) from the business logic of an actor body, so your `define-actor`s are *only* dealing with the stuff they want to do, rather than the minutia of who needs to do the next bit. So, here's how we do it. Firstly, we'll want to change the definition of an `actor` to take into account the fact that others may be watching.
+which concentrates the links entirely into that call to `link`, and leaves the actors themselves cheerfully oblivious to what they're interacting with at the time. It also separates out the general patterns of communication[^note-3] from the business logic of an actor body, so your `define-actor`s are *only* dealing with the stuff they want to do, rather than the minutia of who needs to do the next bit. So, here's how we do it. Firstly, we'll want to change the definition of an `actor` to take into account the fact that others may be watching.
+
+[^note-3]: Though, as you'll see later, those could probably be separated further still. I'll be working on it for the next little while.
 
 ```lisp
 (defclass actor ()
@@ -160,7 +166,9 @@ Finally, we'll need to change what each cycle through the message queue does.
 
 so, instead of just `apply`ing `behavior` to each message, we get the result and send it on to any watchers. The `TODO` is there because, as written, an `actor` *always* notifies *all* watchers, and we might want to do something like round-robin scheduling instead. The main reason I'm thinking along those lines is that I'm planning to use this library in the construction of a non-blocking web-server, where I'd want a single listener but multiple, parallel parsers/response-generators picking up some percentage of total load. Doing something other than "send one to everyone" is an integral part of that strategy. We'll see how it goes.
 
-I should note that you don't have to decide to use only one of `send`/`link` here; even with the connection system working<a name="note-Fri-Mar-22-212925EDT-2013"></a>[|4|](#foot-Fri-Mar-22-212925EDT-2013) there are use cases where you really do want a manual `send` in an actor body. To be fair, most of those use cases seem to be places where you wouldn't really want to use actors in the first place, but I've reserved judgment and left in both options in the interests of flexibility.
+I should note that you don't have to decide to use only one of `send`/`link` here; even with the connection system working[^note-4] there are use cases where you really do want a manual `send` in an actor body. To be fair, most of those use cases seem to be places where you wouldn't really want to use actors in the first place, but I've reserved judgment and left in both options in the interests of flexibility.
+
+[^note-4]: And in most cases, producing much more elegant and flexible code, I might add.
 
 ### Still ToDo
 
@@ -175,14 +183,3 @@ While I'm at *that*, it would be nice if actors automatically responded to certa
 The reason I'm just listing these rather than building them *right now* is that some of them would require a fundamental change to the way the system works. For one thing, accepting default messages implies that we're taking a message which is only one object that we then [pattern](https://github.com/arielnetworks/cl-pattern)-[match](https://github.com/m2ym/optima) on. For another, things like `prune` imply either a centralized storage method for all actors, or imply two-way links between nodes, neither of which I'm sure is a good idea. It might be better to assume that connections are only going to be created at startup.
 
 Anyhow, in the meanwhile, what I've got here is a trivially composeable actor system, which lets you re-use any of them at will in any context that applies. That by itself makes the effort worth it as far as I'm concerned. I'll see what I can do for the next pass.
-
-
-<hr />
-##### Footnotes
-
-1 - <a name="foot-Fri-Mar-22-212851EDT-2013"></a>[|back|](#note-Fri-Mar-22-212851EDT-2013) - The other is vintage gaming. Which doesn't pollute my main machine, but I do have a desktop set up at home which has a virtual Win XP machine where I installed a bunch of games from the golden age of fantasy gaming; copies of [Icewind Dale 2](http://www.planetbaldursgate.com/iwd2/), [Planescape Torment](http://www.amazon.com/Planescape-Torment-Pc/dp/B00002EPZ2), [Baldur's Gate 2](http://web.archive.org/web/20000815213945/http://www.interplay.com/bgate2/), and [Dungeon Keeper](http://en.wikipedia.org/wiki/Dungeon_Keeper).
-
-2 - <a name="foot-Fri-Mar-22-212856EDT-2013"></a>[|back|](#note-Fri-Mar-22-212856EDT-2013) - And a bunch of sketching, but this isn't the place for that. If you're interested, go to [my deviantart](http://inaimathi.deviantart.com/) instead, I'll be uploading a new batch shortly.
-
-3 - <a name="foot-Fri-Mar-22-212912EDT-2013"></a>[|back|](#note-Fri-Mar-22-212912EDT-2013) - Though, as you'll see later, those could probably be separated further still. I'll be working on it for the next little while.
-4 - <a name="foot-Fri-Mar-22-212925EDT-2013"></a>[|back|](#note-Fri-Mar-22-212925EDT-2013) - And in most cases, producing much more elegant and flexible code, I might add.
