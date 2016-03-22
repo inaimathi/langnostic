@@ -11,7 +11,8 @@
 
 ## ToDo
 
-- Update the intro and meta to reflect Haskelliness, then we can throw out Go
+- Revisit old blogs. NOW AT: `id:3`
+
 - Re-factor project into something sane
 	- PostMap and Post shouldn't be separate modules; just one named Posts
 	- Don't worry; plenty mode. Add to this list as you go.
