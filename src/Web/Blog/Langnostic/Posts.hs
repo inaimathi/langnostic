@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Posts ( PostMap, newPostMap, bySlug, byTags, postBody, bodyByPath, posts
-             , PostCache, newPostCache
-             , BlogPost(..), path) where
+module Web.Blog.Langnostic.Posts ( PostMap, newPostMap, bySlug, byTags, postBody, bodyByPath, posts
+                                 , PostCache, newPostCache
+                                 , BlogPost(..), path) where
 
 import System.Time
 
@@ -16,7 +16,8 @@ import Text.Blaze.Html (Html)
 import qualified Data.ByteString.Lazy as BS
 import qualified Data.ByteString.Lazy.Char8 as C8
 
-import Cached
+import Web.Blog.Langnostic.Cached
+import qualified Web.Blog.Langnostic.Cached as Cached
 
 data BlogPost = BlogPost {
       id :: Integer

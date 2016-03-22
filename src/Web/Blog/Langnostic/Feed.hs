@@ -1,4 +1,4 @@
-module Feed (atom) where
+module Web.Blog.Langnostic.Feed (atom) where
 
 import System.Time
 import System.Locale
@@ -12,7 +12,7 @@ import Text.Blaze.Html5.Attributes hiding (title, span, id)
 import Text.Blaze.Html.Renderer.Text
 import qualified Text.Blaze.Html5.Attributes as A
 
-import Posts
+import Web.Blog.Langnostic.Posts
 
 atom :: [BlogPost] -> Html
 atom posts = preEscapedString $

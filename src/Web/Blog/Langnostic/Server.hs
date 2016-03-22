@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Main where
+module Web.Blog.Langnostic.Server where
 
 import Web.Spock.Safe
 import Network.Wai.Middleware.Static
@@ -13,13 +13,14 @@ import Text.Blaze.Html.Renderer.Text
 import Text.Blaze.Html5 (hr)
 import Data.Text.Lazy (toStrict)
 
-import Posts hiding (id)
-import Pages
-import qualified Cached as C
-import Feed
+import Web.Blog.Langnostic.Posts hiding (id)
+import Web.Blog.Langnostic.Pages
+import qualified Web.Blog.Langnostic.Pages as Pages
+import qualified Web.Blog.Langnostic.Cached as C
+import Web.Blog.Langnostic.Feed
 
-main :: IO ()
-main = do
+serve :: Int -> IO ()
+serve port = do
   pc <- newPostCache
   pm <- newPostMap pc
   _ <- mapM_ (\path -> C.insert pc (C.minutes 30) path) [
@@ -28,7 +29,7 @@ main = do
        ,"static/content/meta.md"
        ,"static/content/404.md"
        ]
-  runSpock 8080 $ spockT id $ (appMiddleware >> handlers pm)
+  runSpock port $ spockT id $ (appMiddleware >> handlers pm)
 
 appMiddleware :: SpockT IO ()
 appMiddleware = do

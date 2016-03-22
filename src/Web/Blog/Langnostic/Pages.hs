@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Pages (Section(..), archive, article, meta, template) where
+module Web.Blog.Langnostic.Pages (Section(..), archive, article, meta, template) where
 
 import Prelude hiding (head, id, div, span)
 import Text.Blaze.Html5 hiding (map, article)
@@ -17,8 +17,8 @@ import Data.Monoid
 import Control.Monad
 import qualified Data.Text as Txt
 
-import Posts (BlogPost)
-import qualified Posts as P
+import Web.Blog.Langnostic.Posts (BlogPost)
+import qualified Web.Blog.Langnostic.Posts as P
 
 data Section = Blog | Archive | Links | Meta | Feed | Error deriving (Eq, Ord, Show)
 

@@ -1,7 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Cached ( Cache, readCache, newCache
-              , CacheMap, newCacheMap, insert, Cached.lookup, hasKey, keys, fromList
-              , minutes, hours ) where
+module Web.Blog.Langnostic.Cached ( Cache, readCache, newCache
+                                  , CacheMap, newCacheMap, insert, hasKey, keys, fromList
+                                  , Web.Blog.Langnostic.Cached.lookup
+                                  , minutes, hours ) where
 
 import System.Time
 import Data.IORef
