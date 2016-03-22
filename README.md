@@ -11,10 +11,10 @@
 
 ## ToDo
 
+- Update the intro and meta to reflect Haskelliness, then we can throw out Go
 - Re-factor project into something sane
 	- PostMap and Post shouldn't be separate modules; just one named Posts
 	- Don't worry; plenty mode. Add to this list as you go.
-- Hook up the Cached system
 
 - `BGG Data Sifting`, `cl-notebook Thoughts` and `cl-notebook introductory thoughts` all have issues with the translation-from-markdown approach. Figure out what to do about this (also, `cl-notebook` obviously needs an export-to-markdown feature)
 

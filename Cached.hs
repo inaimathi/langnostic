@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Cached ( Cache, readCache, newCache
-              , CacheMap, newCacheMap, insert, Cached.lookup, fromList
+              , CacheMap, newCacheMap, insert, Cached.lookup, hasKey, keys, fromList
               , minutes, hours ) where
 
 import System.Time
@@ -60,6 +60,18 @@ insert cacheMap diff name = do
   c <- newCache diff $ (mapHandle cacheMap) name
   _ <- writeIORef (ref cacheMap) $ Map.insert name c m
   return c
+
+keys :: Ord b => CacheMap a b -> IO [b]
+keys cacheMap = do
+  c <- readIORef (ref cacheMap)
+  return $ Map.keys c
+
+hasKey :: Ord b => CacheMap a b -> b -> IO Bool
+hasKey cacheMap k = do
+  c <- readIORef (ref cacheMap)
+  return $ case Map.lookup k c of
+    Just _ -> True
+    Nothing -> False
 
 lookup :: Ord b => CacheMap a b -> b -> IO (Maybe a)
 lookup cacheMap name = do

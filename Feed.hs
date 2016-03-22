@@ -30,7 +30,7 @@ atomPost :: BlogPost -> String
 atomPost b = concat [ "<entry>"
                     , "<title>", title b, "</title>"
                     , "<updated>", editedTime b, "</updated>"
-                    , "<link href=\"http://langnostic.inaimathi.ca/posts/", file b, "\" />"
+                    , "<link href=\"http://langnostic.inaimathi.ca/posts/", slug b, "\" />"
                     , "<author><name>inaimathi</name></author>"
                     , "</entry>"
                     ]

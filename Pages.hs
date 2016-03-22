@@ -71,7 +71,7 @@ postLinks (prev, next) =
         _ -> ""
 
 postHref :: BlogPost -> Attribute
-postHref p = href . toValue $ "/posts/" <> (P.file p)
+postHref p = href . toValue $ "/posts/" <> (P.slug p)
 
 stylesheet :: AttributeValue -> Html
 stylesheet url = link ! rel "stylesheet" ! href url ! type_ "text/css" ! media "screen"
