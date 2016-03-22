@@ -4,7 +4,7 @@ Secondly, I ended up having to put together two front-ends; an Angular-based pag
 
 Thirdly, I [deployed it](http://goget.inaimathi.ca/). It doesn't run under HTTPS yet, so don't put in anything illegal or embarrassing, but that's a usable shopping list synchronizer which I intend to use. Let me know if you try it and anything explodes.
 
-### <a name="on-to-the-code" href="#on-to-the-code"></a>On to the code!
+### On to the code!
 
 At the moment, I've got the [jQuery](http://jquery.com/) and [Angular](http://angularjs.org/) versions separated into different branches, but I'll merge them shortly and just provide each as a separate front-end<a name="note-Sat-Feb-16-205448EST-2013"></a>[|2|](#foot-Sat-Feb-16-205448EST-2013). On a scale this small, it turns out not to matter much how you write the interface. If you check out the line-count on both those front-ends, the reactive version saves about 10 lines of HTML and 15 of JavaScript. It stacks up in larger applications, and if there's an option to use less JS, I'll take it, but in this case, the elegant solution doesn't work, so whatever. Lets start with the HTML markup first. Here's the **Angular**
 
@@ -16,7 +16,7 @@ At the moment, I've got the [jQuery](http://jquery.com/) and [Angular](http://an
     <title>GoGet - Because I Can't Be Expected to Remember This Shit</title>
   </head>
   <body ng-app="goget">
-    
+
     <div ng-controller="GoGetCtrl">
       <div ng-show="!user.loggedIn" class="user-form">
         <div ng-show="authError" class="error">{{authError}}</div>
@@ -25,18 +25,18 @@ At the moment, I've got the [jQuery](http://jquery.com/) and [Angular](http://an
         <a class="register" ng-click="register(user.name, user.passphrase)">Register</a>
         <button class="btn login" ng-click="login(user.name, user.passphrase)"><i class="icon-check"></i> Login</button>
       </div>
-        
+
       <ul ng-show="user.loggedIn" class="shopping-list">
         <li class="{{itm.status}}" ng-repeat="itm in itemList"
             ng-mouseover="itm.hovered = true" ng-mouseout="itm.hovered = false">
-          <span class="count">{{itm.count}}x</span> 
-          <span class="name">{{itm.name}}</span> 
+          <span class="count">{{itm.count}}x</span>
+          <span class="name">{{itm.name}}</span>
           <button class="btn" ng-click="got(itm.name)" ng-show="itm.status=='Need'"><i class="icon-check"></i></button>
           <button class="btn" ng-click="need(itm.name)" ng-show="itm.status=='Got'"><i class="icon-exclamation-sign"></i></button>
           <p class="comment" ng-show="itm.hovered">{{itm.comment}}</p>
         </li>
         <li class="controls">
-          <input type="text" placeholder="Item Name" ng-model="newItem.name" /> 
+          <input type="text" placeholder="Item Name" ng-model="newItem.name" />
           <input type="text" placeholder="Comment" ng-model="newItem.comment" />
           <input type="text" placeholder="Count" ng-model="newItem.count">
           <button class="btn" ng-click="add(newItem.name, newItem.comment, newItem.count)"><i class="icon-plus"></i></button>
@@ -50,14 +50,14 @@ At the moment, I've got the [jQuery](http://jquery.com/) and [Angular](http://an
     <link rel="stylesheet" href="/static/css/bootstrap.min.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="/static/css/bootstrap-responsive.min.css" type="text/css" media="screen" />
 
-    <link rel="stylesheet" href="/static/css/style.css" type="text/css" media="screen" />    
+    <link rel="stylesheet" href="/static/css/style.css" type="text/css" media="screen" />
 
     <!-- ------- -->
     <!-- Scripts -->
     <!-- ------- -->
     <script src="/static/js/underscore-min.js" type="text/javascript"></script>
-    <script src="/static/js/angular.min.js" type="text/javascript"></script>    
-    
+    <script src="/static/js/angular.min.js" type="text/javascript"></script>
+
     <script src="/static/js/goget.js" type="text/javascript"></script>
   </body>
 </html>
@@ -72,7 +72,7 @@ and here's the **jQuery**
     <meta charset="UTF-8" />
     <title>GoGet - Because I Can't Be Expected to Remember This Shit</title>
   </head>
-  <body> 
+  <body>
 
     <!-- templates -->
     <script id="tmp-item" type="text/x-handlebars-template">
@@ -104,7 +104,7 @@ and here's the **jQuery**
       </ul>
       <ul class="shopping-list-controls">
         <li class="controls">
-          <input type="text" class="name" placeholder="Item Name" /> 
+          <input type="text" class="name" placeholder="Item Name" />
           <input type="text" class="comment" placeholder="Comment" />
           <input type="text" class="count" placeholder="Count" value="1" />
           <button class="btn" onclick="util.applyToVals(goget.add, '.controls ', ['.name', '.comment', '.count'])"><i class="icon-plus"></i></button>
@@ -118,15 +118,15 @@ and here's the **jQuery**
     <link rel="stylesheet" href="/static/css/bootstrap.min.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="/static/css/bootstrap-responsive.min.css" type="text/css" media="screen" />
 
-    <link rel="stylesheet" href="/static/css/style.css" type="text/css" media="screen" />    
+    <link rel="stylesheet" href="/static/css/style.css" type="text/css" media="screen" />
 
     <!-- ------- -->
     <!-- Scripts -->
     <!-- ------- -->
     <script src="/static/js/underscore-min.js" type="text/javascript"></script>
-    <script src="/static/js/handlebars.js" type="text/javascript"></script>    
-    <script src="/static/js/jquery.min.js" type="text/javascript"></script>    
-    
+    <script src="/static/js/handlebars.js" type="text/javascript"></script>
+    <script src="/static/js/jquery.min.js" type="text/javascript"></script>
+
     <script src="/static/js/goget.js" type="text/javascript"></script>
   </body>
 </html>
@@ -188,11 +188,11 @@ App.controller('GoGetCtrl', function ($scope, $http) {
                 $scope.newItem = { count: 1 }
             })
     }
-    
+
     $scope.need = function (itemName) {
         itemPost("/app/item/need", {itemName: itemName});
     }
-    
+
     $scope.got = function (itemName) {
         itemPost("/app/item/got", {itemName: itemName});
     }
@@ -279,7 +279,7 @@ var goget = {
     got: function (itemName) {
         goget.itemPost("/app/item/got", {itemName: itemName});
     }
-    
+
 }
 ```
 
@@ -303,7 +303,7 @@ How do we do that in Angular?
 
 ```html
         <li class="controls">
-          <input type="text" placeholder="Item Name" ng-model="newItem.name" /> 
+          <input type="text" placeholder="Item Name" ng-model="newItem.name" />
           <input type="text" placeholder="Comment" ng-model="newItem.comment" />
           <input type="text" placeholder="Count" ng-model="newItem.count">
           <button class="btn" ng-click="add(newItem.name, newItem.comment, newItem.count)"><i class="icon-plus"></i></button>

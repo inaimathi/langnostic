@@ -1,6 +1,6 @@
 So [here's](https://github.com/Inaimathi/experimentalisp) something I poured a few days into so far. It's because I'm curious about a few things, and it seemed like a good idea at the time. Here's what I've found out so far:
 
-## <a name="manual-memory-management-sucks-balls" href="#manual-memory-management-sucks-balls"></a>Manual Memory Management Sucks Balls
+## Manual Memory Management Sucks Balls
 
 In [a previous piece](/article?name=write-myself-a-scheme.html), I mentioned that a C implementation of a simple LISP ran something like 1600 lines of code. Firstly, that 1600 lines still has some odd corners; the finished implementation is going to be closer to 2k. Secondly, the vast majority of it concerns itself with memory layout. It turns out that just cutting out memory management, and relying on the underlying platforms' ability to optimize tail calls gets rid of most of the complexity.
 
@@ -25,7 +25,7 @@ and lest you say "Well of course it's more concise to implement a LISP *in* a LI
 
 Granted, the [Racket](racket-lang.org/) version currently has a slight edge on features, but when I get around to experimenting heavily with reader macros, I'll have to re-implement most of the built-in reader to support them properly. At that point we'll be in a situation where a LISP-in-Racket is about as verbose as a LISP-in-Haskell, so it's not just that my substrate has s-expressions this time. The situation supports an off-handed comment I heard that most of the hard work of a Scheme-like is in the memory manager, and in making sure tail calls are optimized properly.
 
-## <a name="partials-and-rest-args-might-get-along" href="#partials-and-rest-args-might-get-along"></a>Partials And Rest Args Might Get Along
+## Partials And Rest Args Might Get Along
 
 Still speculative, since I haven't gotten around to mixing them yet, but here's what we've got in the Racket implementation
 
@@ -52,8 +52,8 @@ Still speculative, since I haven't gotten around to mixing them yet, but here's 
 (define (arglist-env! env arglist args)
   (if (and (null? arglist) (null? args))
       env
-      (arglist-env! 
-       (bind! env (car arglist) (car args)) 
+      (arglist-env!
+       (bind! env (car arglist) (car args))
        (cdr arglist) (cdr args))))
 ...
 ```
@@ -78,7 +78,7 @@ There's few more utility functions whose operations should be obvious from their
                 ((procedure? f)
                  (eval-sequence (body-of f) new-env))
                 ((fexpr? f)
-                 (exp-eval 
+                 (exp-eval
                   (eval-sequence (body-of f) new-env)
                   env))))
         p)))
@@ -120,8 +120,8 @@ We figure out how many arguments we're still expecting, save that partial list a
 (define (arglist-env! env arglist args)
   (if (and (null? arglist) (null? args))
       env
-      (arglist-env! 
-       (bind! env (car arglist) (car args)) 
+      (arglist-env!
+       (bind! env (car arglist) (car args))
        (cdr arglist) (cdr args))))
 ```
 
@@ -138,8 +138,8 @@ EXP>> (+ 2)
 EXP>> ((+ 2) 4)
 6
 
-EXP>> (def map 
-  (fn (f lst) 
+EXP>> (def map
+  (fn (f lst)
     (if (= lst '())
       '()
       (cons (f (car lst))
@@ -149,7 +149,7 @@ EXP>> (def map
 EXP>> (map (+ 2) '(1 2 3 4 5))
 '(3 4 5 6 7)
 
-EXP>> 
+EXP>>
 ```
 
 Now. I'm not sure this is the correct model for partials. That's sort of the point of this project; finding out these little truths through experimentation so that I can understand what it is that you'd actually want. But, the implementation you see above would co-exist just fine with functions that have `&rest` or `&key`. The cost would be that you can't partially apply more arguments after you've applied the mandatory ones. So for instance, if you had a function like
@@ -160,19 +160,19 @@ Now. I'm not sure this is the correct model for partials. That's sort of the poi
 
 you *could* do `((foo 5) 6)`, or `((foo 5) 6 7 8 9 10)` or even `(foo 5 6 7 8 9 10)`. You just couldn't do `((foo 5 6) 7 8 9 10)` because `(foo 5 6)` is already a complete application, and will therefore be evaluated to its result before getting the rest of the arguments passed<a name="note-Fri-Dec-12-094216EST-2014"></a>[|1|](#foot-Fri-Dec-12-094216EST-2014).
 
-## <a name="fexprs-are-surprisingly-easy" href="#fexprs-are-surprisingly-easy"></a>Fexprs Are Surprisingly Easy
+## Fexprs Are Surprisingly Easy
 
 It's about a four-line change to a `fexpr`-less scheme interpreter to add in `fexpr` support. You already saw them in scheme up above, in the exp-apply function. So lets take a look at the Haskell version, just to keep you on your toes
 
 ```haskell
 apply :: LispVal -> LispVal -> Environment -> (LispVal, Environment)
-apply exp args env = 
+apply exp args env =
     case eval exp env of
-      (Primitive fn arglist, env') -> 
+      (Primitive fn arglist, env') ->
           fn $ arglist_env (extend env') arglist $ eval_args args env'
-      (Procedure local_env arglist body, env') -> 
+      (Procedure local_env arglist body, env') ->
           eval_sequence body $ arglist_env (extend local_env) arglist $ eval_args args env'
-      (Fexpr local_env arglist body, env') -> 
+      (Fexpr local_env arglist body, env') ->
           eval res env'
                 where (res, _) = eval_sequence body $ arglist_env (extend local_env) arglist args
       _ -> error $ "Undefined function '" ++ show exp ++ "'"
@@ -182,7 +182,7 @@ The main difference between this one and the Racket version is that this one nee
 
 ```haskell
 ...
-(Fexpr local_env arglist body, env') -> 
+(Fexpr local_env arglist body, env') ->
     eval res env'
           where (res, _) = eval_sequence body $ arglist_env (extend local_env) arglist args
 ...
@@ -192,19 +192,19 @@ If you're applying a `Fexpr` to some arguments, you're going to pass it the **un
 
 This *isn't* [what macros are](http://axisofeval.blogspot.ca/2010/07/whats-phase-separation-and-when-do-you.html). The main difference being that macros literally don't exist at run time. Which is why they're overall more efficient, and why you have problems when you try to `(apply and {args})` in most LISPs.
 
-## <a name="lisp-interpreters-are-fundamentally-effectful" href="#lisp-interpreters-are-fundamentally-effectful"></a>LISP Interpreters are Fundamentally Effectful
+## LISP Interpreters are Fundamentally Effectful
 
 Lets take a closer look at that Haskell implementation of `apply`
 
 ```haskell
 apply :: LispVal -> LispVal -> Environment -> (LispVal, Environment)
-apply exp args env = 
+apply exp args env =
     case eval exp env of
-      (Primitive fn arglist, env') -> 
+      (Primitive fn arglist, env') ->
           fn $ arglist_env (extend env') arglist $ eval_args args env'
-      (Procedure local_env arglist body, env') -> 
+      (Procedure local_env arglist body, env') ->
           eval_sequence body $ arglist_env (extend local_env) arglist $ eval_args args env'
-      (Fexpr local_env arglist body, env') -> 
+      (Fexpr local_env arglist body, env') ->
           eval res env'
                 where (res, _) = eval_sequence body $ arglist_env (extend local_env) arglist args
       _ -> error $ "Undefined function '" ++ show exp ++ "'"
@@ -228,7 +228,7 @@ For contrast, compare this to the Racket version from earlier
                 ((procedure? f)
                  (eval-sequence (body-of f) new-env))
                 ((fexpr? f)
-                 (exp-eval 
+                 (exp-eval
                   (eval-sequence (body-of f) new-env)
                   env))))
         p)))
@@ -239,7 +239,7 @@ Based just on reading the Racket version, you might come to the conclusion that 
 ```haskell
 -- Evaluator.hs
 ...
-(Procedure local_env arglist body, env') -> 
+(Procedure local_env arglist body, env') ->
     eval_sequence body $ arglist_env (extend local_env) arglist $ eval_args args env'
 ...
 ```

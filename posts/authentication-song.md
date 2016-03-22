@@ -1,16 +1,16 @@
-> Type your name, click "login",  
-> Now count to three  
->   
-> Come with me and you'll be  
-> In a world of pure authentication  
-> Take a look and you'll see  
-> Into web authorization  
-> We'll commence with a glance  
-> at classic watchword authentication  
-> Where we'll try for complete explanation  
->   
-> If you wish real security  
-> Use RSA to guarantee it...  
+> Type your name, click "login",
+> Now count to three
+>
+> Come with me and you'll be
+> In a world of pure authentication
+> Take a look and you'll see
+> Into web authorization
+> We'll commence with a glance
+> at classic watchword authentication
+> Where we'll try for complete explanation
+>
+> If you wish real security
+> Use RSA to guarantee it...
 
 
 ![Willie Wonka looking at you](/static/img/wonka.jpg)
@@ -23,7 +23,7 @@ Reading material on the subject includes one [pretty good statement of the probl
 
 At the high-level, there's two ways of doing this (which could, and probably should, be combined):
 
-## <a name="prove-that-you-can-read-this" href="#prove-that-you-can-read-this"></a>Prove that you can read this
+## Prove that you can read this
 
 1. The server sends the user a random ~64 byte code, encrypted with the users' public key
 2. The user decrypts the key and sends back the plain-text
@@ -31,7 +31,7 @@ At the high-level, there's two ways of doing this (which could, and probably sho
       - If it does, that code is revoked and the user is given access.
       - If it doesn't, boot the fucker
 
-## <a name="prove-that-you-can-sign-this" href="#prove-that-you-can-sign-this"></a>Prove that you can sign this
+## Prove that you can sign this
 
 1. The server sends the user a random ~64 code
 2. The user signs that plain-text and sends the result back
@@ -41,9 +41,9 @@ At the high-level, there's two ways of doing this (which could, and probably sho
 
 Like I said, you could combine them at low effort, though I'm not actually sure it would add any kind of security boost over one-or-the-other. The trouble, I assume, is the UI; the simplest possible way to implement this system involves some pretty odd (odd for the average computer user on the interwebs today) steps for the user.
 
-First, logging in becomes a minimum two-step process. Three, really, if you count decrypting/signing as a step. Because the server needs to know who you're trying to log in as *before* generating and sending your code, you can't identify yourself and send the answer at the same time the way you can with password systems. You need one, *then* the other. 
+First, logging in becomes a minimum two-step process. Three, really, if you count decrypting/signing as a step. Because the server needs to know who you're trying to log in as *before* generating and sending your code, you can't identify yourself and send the answer at the same time the way you can with password systems. You need one, *then* the other.
 
-Second, the user needs to decrypt/sign output from the server. This is non-trivial for most people, or at least, that's the only conclusion I can draw from the fact that most email is not encrypted. Barring trickery, this would need to be done manually; copy the message out of an HTML page, paste it into your PGP/GPG client 
+Second, the user needs to decrypt/sign output from the server. This is non-trivial for most people, or at least, that's the only conclusion I can draw from the fact that most email is not encrypted. Barring trickery, this would need to be done manually; copy the message out of an HTML page, paste it into your PGP/GPG client
 and have it do its thing.
 
 Third, the user is now effectively tied down to a single computer for their browsing experience, since you can't exactly carry an RSA key around as easily as a passphrase/password. At minimum, you'd need a USB key, and you'd need to trust that computers you were using it with didn't secretly keep a decrypted copy of your key around for nefarious purposes. Good luck with that, I guess.
@@ -56,7 +56,7 @@ The [forever hack](http://www.codinghorror.com/blog/2007/05/phishing-the-forever
 
 In other words, if we could solve that UI problem in a semi-automated way, this would be an altogether better way of doing web authentication.
 
-### <a name="the-plan" href="#the-plan"></a>The Plan
+### The Plan
 
 I actually intend to build this, because having such a system would be a good thing from my perspective personally, as well as for web security in general. If no one's done it before, I guess I may as well take a crack at it. The steps are already outlined above
 

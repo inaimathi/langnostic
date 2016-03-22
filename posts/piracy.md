@@ -90,7 +90,7 @@ Many of the things we call "piracy" today are things that were considered either
 
 Now I hope you've been paying attention, because here comes the curveball.
 
-### <a name="do-you-support-piracy" href="#do-you-support-piracy"></a>Do you support piracy?
+### Do you support piracy?
 
 **Richard Stallman:** Attacking ships and killing the entire crew to take the cargo is very bad. Now, if you mean sharing, of course you should share. Sharing is good.
 **Sony/RIAA/MPAA/et al:** No, all pirates should be executed (or at least fined their life savings and prevented from going near a computer ever again.)

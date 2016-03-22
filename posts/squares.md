@@ -12,17 +12,17 @@ First off, [this](/posts/hardware-and-squares) is what I was thinking [previousl
 
 Thing is, there are lots of little ways to cut out a *lot* of the brute-force work required for the calculation. An approach that starts from the universe of possibilities and filters isn't going to get very far, but we can constrain that universe pretty significantly if we pick our model carefully, and I think I have.
 
-## <a name="characteristics-of-the-optimal-dissection-model" href="#characteristics-of-the-optimal-dissection-model"></a>Characteristics of the Optimal Dissection Model
+## Characteristics of the Optimal Dissection Model
 
-### <a name="cut-at-the-base" href="#cut-at-the-base"></a>Cut at the base
+### Cut at the base
 
 A huge contribution to the final tally of work is going to be figuring out where `1x1` squares can fit. If you look at each of them as a `Place`ment, you'll be overwhelmed pretty quickly. An easy way out of that is picking a model that lets you ignore 1x1 squares, and the easiest obvious way to do *that* is using a sparse array with the understanding that any unrecorded placements actually represent 1x1 squares. This lets you ignore a bunch of `StartingPoint`s too (more on that in a moment).
 
-### <a name="take-symmetry-into-account" href="#take-symmetry-into-account"></a>Take symmetry into account
+### Take symmetry into account
 
 A second huge contribution to the bottom line of work for this problem is that you need to recompute a lot of dissections which you must then de-duplicate later. I don't think we can lick this one entirely; we'll still need to do `Set` insertions at some point in the process just to make sure we're not counting anything twice. *But*. We can cut out a lot of them. Specifically, since the problem already mentions rotations and reflections, we don't need to `Place` any squares that we *know* will be picked up by some other permutations' reflections or rotations. That can greatly reduce the number potential starting nodes these placement trees. It also means we'll want a representation where `rotate` and `reflect` are really, *really* fast operations. The sparse array approach seems to be better than using an explicit grid, but I'm not quite convinced it's optimal.
 
-### <a name="bring-it-all-together" href="#bring-it-all-together"></a>Bring it all together
+### Bring it all together
 
 So what we've got as a 10000-foot-view for the process is this:
 

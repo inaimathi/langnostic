@@ -1,4 +1,4 @@
-### <a name="deal-journal-interlude-three-being-a-brief-musing-on-session-mechanisms-and-their-implementation" href="#deal-journal-interlude-three-being-a-brief-musing-on-session-mechanisms-and-their-implementation"></a>Deal Journal - Interlude Three -- Being a brief Musing on Session Mechanisms and Their Implementation
+### Deal Journal - Interlude Three -- Being a brief Musing on Session Mechanisms and Their Implementation
 
 I'm going to get to the reflections piece eventually, I swear. Or maybe I won't. Fuck I don't know.
 
@@ -6,7 +6,7 @@ Anyhow, sessions are things you'll need to deal with if you want to build any ki
 
 What they have to do is hand you some piece of data, and ask you to hand it back to them every time you visit. Usually this takes the form of a cookie, and if they've done their job sufficiently well, they can now take any bunch of requests they got with the same cookie and reasonably assume that it came from the same user.
 
-## <a name="how-well-is-sufficiently" href="#how-well-is-sufficiently"></a>How Well is "Sufficiently"?
+## How Well is "Sufficiently"?
 
 Something should be obvious there. First, unless you're using SSL, that piece of state you've been handed is trivially sniffable. Which means that if you have a habit of logging into a server that doesn't make you use `https`, well, I hope you're not keeping anything *really* secret there. Second, unless your session state is pretty hard to guess, someone who wants to impersonate you probably can.
 
@@ -20,7 +20,7 @@ From a server operators' perspective, the `https` thing is easy. Just use SSL<a 
 
 And that's close enough to the specification of a [CSPRNG](http://en.wikipedia.org/wiki/Cryptographically_secure_pseudorandom_number_generator) that if we had one, we could just use it. The absolute simplest way to do that is to use a secure block cipher on a randomly initialized counter. As it happens, Common Lisp Has That©™.
 
-## <a name="generating-session-tokens-with-ironclad" href="#generating-session-tokens-with-ironclad"></a>Generating Session Tokens with Ironclad
+## Generating Session Tokens with Ironclad
 
 So, basically what we need is for our server to generate a secret key<a name="note-Tue-Oct-15-222959EDT-2013"></a>[|6|](#foot-Tue-Oct-15-222959EDT-2013), then use that to encrypt the output of a counter, starting at some random point or possibly just modified by a random number.
 
@@ -65,14 +65,14 @@ CL-USER> (new-session-token)
 "zckWhe4EJk8hrvVl-y8UeoC0Zqfb5nZAJtyhof66hAlzAN2OkHoCXgR9iTJhcKLVOjM1OTA4NzE1ODk."
 CL-USER> (new-session-token)
 "_kQaKM6Ck8GiaRY1ZO4Y_gj0o6LuQT54oSXYSrCIMMORe5hazv0uz5TGPiod4m3NMzo6MzU5MDg3MTU5MA.."
-CL-USER> 
+CL-USER>
 ```
 
 And, just to make sure,
 
 ```lisp
 CL-USER> (loop repeat 1000000 do (new-session-token))
-  seconds  |     gc     |     consed    |   calls   |  sec/call  |  name  
+  seconds  |     gc     |     consed    |   calls   |  sec/call  |  name
 ---------------------------------------------------------------
     27.586 |      0.692 | 5,610,325,328 | 1,000,000 |   0.000028 | NEW-SESSION-TOKEN
 ---------------------------------------------------------------
@@ -82,7 +82,7 @@ estimated total profiling overhead: 1.79 seconds
 overhead estimation parameters:
   1.6000001e-8s/call, 1.7919999e-6s total profiling, 7.4400003e-7s internal profiling
 NIL
-CL-USER> 
+CL-USER>
 ```
 
 the profiler says session generation probably isn't going to be my bottleneck. Though I could probably tune it if I liked, not that I could see the gains offsetting the readability hit we'd take. If I *had* to start cutting somewhere, I'd make sure to only generate one key per server session, and figure out a more efficient way than `format` to put the key content together.
@@ -109,7 +109,7 @@ Random key, check. Counter starting at a random number, check. And this should c
 ```
 CL-USER> (loop repeat 1000000 do (new-session-token))
 measuring PROFILE overhead..done
-  seconds  |     gc     |     consed    |   calls   |  sec/call  |  name  
+  seconds  |     gc     |     consed    |   calls   |  sec/call  |  name
 ---------------------------------------------------------------
      8.637 |      0.644 | 5,423,965,408 | 1,000,000 |   0.000009 | NEW-SESSION-TOKEN
 ---------------------------------------------------------------
@@ -119,31 +119,31 @@ estimated total profiling overhead: 1.82 seconds
 overhead estimation parameters:
   8.000001e-9s/call, 1.816e-6s total profiling, 7.92e-7s internal profiling
 NIL
-CL-USER> 
+CL-USER>
 ```
 
 Yup.
 
 Of course, I still don't have enough confidence in my own assessment to just run with all this, so I'll be asking questions first.
 
-> EDIT:  
->   
-> It turns out that [`:ironclad` has a built-in CSPRNG option](http://method-combination.net/lisp/ironclad/#prng) that implements [Fortuna](http://en.wikipedia.org/wiki/Fortuna_(PRNG)). If we use that, our implementation gets much simpler, but mildly slower<a name="note-Wed-Oct-16-165818EDT-2013"></a>[|9|](#foot-Wed-Oct-16-165818EDT-2013).  
->   
+> EDIT:
+>
+> It turns out that [`:ironclad` has a built-in CSPRNG option](http://method-combination.net/lisp/ironclad/#prng) that implements [Fortuna](http://en.wikipedia.org/wiki/Fortuna_(PRNG)). If we use that, our implementation gets much simpler, but mildly slower<a name="note-Wed-Oct-16-165818EDT-2013"></a>[|9|](#foot-Wed-Oct-16-165818EDT-2013).
+>
 > ```lisp
 > (ql:quickload (list :ironclad :cl-base64))
-> 
+>
 > (let ((prng (ironclad:make-prng :fortuna)))
 >   (defun new-session-token ()
 >     (cl-base64:usb8-array-to-base64-string
 >      (ironclad:random-data 32 prng) :uri t)))
 > ```
->   
-> That's it.  
->   
-> No encryption, no fiddling with `random`, no assigning results of `make-random-state` calls. Just initialize a `:fortuna` instnce, and collect random output in batches of 32.  
->   
-> Wed, 16 Oct, 2013  
+>
+> That's it.
+>
+> No encryption, no fiddling with `random`, no assigning results of `make-random-state` calls. Just initialize a `:fortuna` instnce, and collect random output in batches of 32.
+>
+> Wed, 16 Oct, 2013
 
 Other than that, what's left is putting together a session table with its own lock to store session information indexed by these IDs. Oh, and also sending them out to the client. I guess that's kind of important. Both are waiting for next time though, or this will quickly cease being "brief".
 

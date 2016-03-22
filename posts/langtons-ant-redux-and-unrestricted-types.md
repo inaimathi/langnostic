@@ -1,6 +1,6 @@
 So this past Wednesday was the monthly [Toronto Haskell](https://github.com/HaskellTO/projects) User [Group](https://groups.google.com/forum/#!forum/toronto-haskell) meeting, and I used the opportunity to A) show off [my Langton's Ant implementation](https://github.com/CodeRetreatTO/projects/blob/master/2014-09-langtons-ant/rabraham-and-inaimathi.hs) to people that might be able to offer pointers and B) ask a question about types that I'd been thinking about. We'll handle those in reverse order, with a bit of exposition on the question.
 
-### <a name="splay-trees" href="#splay-trees"></a>Splay Trees
+### Splay Trees
 
 Here's a Haskell implementation of a [Splay Tree](https://en.wikipedia.org/wiki/Splay_tree) not interesting enough to dwell on:
 
@@ -22,7 +22,7 @@ rotateL (Node val left (Node child rl rr)) = Node child (Node val left rl) rr
 
 insertRaw :: Ord a => Tree a -> a -> Tree a
 insertRaw Empty a = Node a Empty Empty
-insertRaw tree@(Node val left right) a 
+insertRaw tree@(Node val left right) a
     | a == val = tree
     | a > val = Node val left $ insertRaw right a
     | otherwise = Node val (insertRaw left a) right
@@ -66,7 +66,7 @@ deleteRoot tree@(Node val left right) = Node (leftLeaf right) left (trim right)
           leftLeaf (Node _ left _) = leftLeaf left
           trim (Node _ Empty Empty) = Empty
           trim (Node _ Empty right) = right
-          trim (Node val left right) = Node val (trim left) right 
+          trim (Node val left right) = Node val (trim left) right
 ```
 
 Notice in particular that the `Tree` type has an unrestricted `a` in it.
@@ -74,7 +74,7 @@ Notice in particular that the `Tree` type has an unrestricted `a` in it.
 ```haskell
 --        v
 data Tree a = Nod...
---        ^ 
+--        ^
 ```
 
 but most of the manipulation functions that act on a `Tree a` *do* have a restriction
@@ -105,29 +105,29 @@ data Ord a => Tree a = Nod...
 
 To paraphrase [Ben Darwin](https://github.com/bcdarwin) and [Albert Lai](http://www.cs.toronto.edu/~trebla/personal/index.html),
 
-### <a name="you-dont-want-that" href="#you-dont-want-that"></a>You Don't Want That
+### You Don't Want That
 
 As it happens, they managed to convince me of this. Here's a paraphrase of the argument they used; maybe it'll work on you too.
 
-> There are only two ways you'll ever want to export your type. You either want to export it as a black box, or you want to export it in a non-opaque way so that your users can see some or all of its implementation details. If you're going the black box route  
->   
+> There are only two ways you'll ever want to export your type. You either want to export it as a black box, or you want to export it in a non-opaque way so that your users can see some or all of its implementation details. If you're going the black box route
+>
 > ```haskell
 > module Foo (YourTypeConstructor, apiFn, apiFn', apiFn''...) where ...
 > ```
->   
-> then your users are *only* going to be interacting with your type through your API functions, which are already suitably annotated, and restricted to valid inputs, so there's no need to redundantly restrict the type. If you're going the non-opaque route<a name="note-Fri-Sep-26-113506EDT-2014"></a>[|1|](#foot-Fri-Sep-26-113506EDT-2014),   
->   
+>
+> then your users are *only* going to be interacting with your type through your API functions, which are already suitably annotated, and restricted to valid inputs, so there's no need to redundantly restrict the type. If you're going the non-opaque route<a name="note-Fri-Sep-26-113506EDT-2014"></a>[|1|](#foot-Fri-Sep-26-113506EDT-2014),
+>
 > ```haskell
 > module Foo (YourTypeConstructor(..), apiFn, apiFn', apiFn''...) where ...
 > ```
->   
-> then your users might ignore some or all of your API, and just use your structure. In doing so, they may find a purpose for it that *doesn't* require its elements to be members of `Ord`. In this case, you would be doing them a disservice by restricting your type declaration.  
+>
+> then your users might ignore some or all of your API, and just use your structure. In doing so, they may find a purpose for it that *doesn't* require its elements to be members of `Ord`. In this case, you would be doing them a disservice by restricting your type declaration.
 
 And I'll buy that.
 
 So I don't really want a restricted `Tree`, I just want restricted manipulation functions, which I have. Case closed.
 
-### <a name="langtons-haskelly-ant-redux" href="#langtons-haskelly-ant-redux"></a>Langton's Haskelly Ant Redux
+### Langton's Haskelly Ant Redux
 
 I also ended up showing off [my ants implementation](/article?name=langtons-ant-writeup.html). I'm near the bottom in terms of Haskell skill-level at the group, so the explanation went quite quickly. The only part there was any confusion about was the admittedly over-complicated `animate` function. I mentioned that ideally, I'd want to write something like
 

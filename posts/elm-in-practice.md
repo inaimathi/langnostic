@@ -1,6 +1,6 @@
 So I've gotten some time in with it. Not quite enough to finalize the new interface, though I do have an unstyled 95% version running on my local with an apropos [choice of music](http://www.youtube.com/watch?v=YR4TDBXebWc). Firstly, here's the code.
 
-## <a name="the-code" href="#the-code"></a>The Code
+## The Code
 
 ```haskell
 module Mote where
@@ -36,7 +36,7 @@ cmdButton name = height 42 $ width 80 $ command.button (Just name) name
 
 controls = flow down [ box 48 $ flow right $ map cmdButton ["backward", "stop", "pause", "forward"]
                      , box 50 $ flow right $ map cmdButton ["volume-down", "volume-off", "volume-up"]]
-           
+
 entry { name, path, entryType } = let btn = if | entryType == "return" -> files.button path
                                                | entryType == "directory" -> files.button path
                                                | otherwise -> playing.button (Just path)
@@ -47,7 +47,7 @@ showEntries res = case res of
   _ -> plainText "Waiting..."
 
 showMe entries = flow down [ box 100 $ controls
-                           , showEntries entries ] 
+                           , showEntries entries ]
 
 main = showMe <~ dir
 ```
@@ -107,7 +107,7 @@ cmdButton name = height 42 $ width 80 $ command.button (Just name) name
 
 controls = flow down [ box 48 $ flow right $ map cmdButton ["backward", "stop", "pause", "forward"]
                      , box 50 $ flow right $ map cmdButton ["volume-down", "volume-off", "volume-up"]]
-           
+
 entry { name, path, entryType } = let btn = if | entryType == "return" -> files.button path
                                                | entryType == "directory" -> files.button path
                                                | otherwise -> playing.button (Just path)
@@ -118,7 +118,7 @@ showEntries res = case res of
   _ -> plainText "Waiting..."
 
 showMe entries = flow down [ box 100 $ controls
-                           , showEntries entries ] 
+                           , showEntries entries ]
 
 main = showMe <~ dir
 ```
@@ -129,13 +129,13 @@ This is the meat of the front-end. `box` is just a positioning helper function. 
 
 Now that we've got that out of the way, here's what I think.
 
-## <a name="what-i-think" href="#what-i-think"></a>What I Think
+## What I Think
 
 To summarize, very good, but obviously not finished yet. Which makes sense, since it's only at `0.8`. I'm going to go through the headaches first, then note the things I particularly like about working with it.
 
-## <a name="headaches" href="#headaches"></a>Headaches
+## Headaches
 
-### <a name="signal-hell" href="#signal-hell"></a>Signal Hell
+### Signal Hell
 
 Or, alternately, "Type Hell". I'm putting this one front-and-center, because Elm's author is fiercely [anti-callback](http://elm-lang.org/learn/Escape-from-Callback-Hell.elm), but seems to be just fine with introducing a similar situation with the type system.
 
@@ -145,7 +145,7 @@ Now, I'm *not* disagreeing with this argument, but take a look at the bottom of 
 
 ```haskell
 showMe entries = flow down [ box 100 $ controls
-                           , showEntries entries ] 
+                           , showEntries entries ]
 
 main = showMe <~ dir
 ```
@@ -160,7 +160,7 @@ I have to write a separate callback-like function to accept the sanitized signal
 
 This is the same situation as callback hell. The only difference is that callbacks separate your code at boundaries determined by asynchronous calls, while these signal display functions do it at boundaries determined by the type system. I guess one of those might be better than the other if you squint hard enough, but I'm not seeing it from here.
 
-### <a name="very-few-event-options" href="#very-few-event-options"></a>Very Few Event Options
+### Very Few Event Options
 
 A `button` or `customButton` send signals when they're clicked. `input` of `type="text"`, `password`s, `checkbox`es, and `dropDown`s send signals when their value changes. `textarea` and radio buttons don't exist. And that's all.
 
@@ -170,11 +170,11 @@ What do you do if you want a given form to submit when you hit `Ret` in a releva
 
 and `SignalOptions` is something like  `{ click : a, mouseEnter: a, mouseLeave: a, mouseDown: a, mouseUp: a, keyDown: a }`. Granted, maybe that shouldn't be a `button`, but rather a different multi-signal element, but it would give quite a bit more flexibility to front-end developers. If you had an element like that, you could easily implement any of the interactions I mention above.
 
-### <a name="no-encodingdecoding-outofthebox" href="#no-encodingdecoding-outofthebox"></a>No Encoding/Decoding Out-of-the-box
+### No Encoding/Decoding Out-of-the-box
 
 I'll probably implement something here when I get around to poking at the language again, but there's no built-in way to call `encodeURI` or `encodeURIComponent` from Elm. Which means that as written, this front-end will fail to play files with `&` in their name. That's less than ideal. I get the feeling it wouldn't be too hard to implement using the [JS FFI](http://elm-lang.org/learn/Syntax.elm#javascript-ffi), but I'm not diving into that right now.
 
-### <a name="gimped-case" href="#gimped-case"></a>Gimped Case
+### Gimped Case
 
 The Elm `case` statement doesn't pattern-match on strings. There's no mention of that behavior in the docs, so I'm not sure whether this is a bug or an unimplemented feature or what, but I missed it once in a ~50 line program. Specifically, in `entries`
 
@@ -187,19 +187,19 @@ entry { name, path, entryType } = let btn = if | entryType == "return" -> files.
 
 where I had to resort to using the new, otherwise unnecessary multi-branch `if`. Unfortunately ...
 
-### <a name="gimped-if-indentation" href="#gimped-if-indentation"></a>Gimped `if` Indentation
+### Gimped `if` Indentation
 
 Because there's no `elm-mode` yet, you're stuck using `haskell-mode` for editing `.elm`s. `haskell-mode` craps out on indentation of that multi-branch `if` statement I just mentioned. If you try to indent the following line, it'll yell at you about parse errors rather than inserting the appropriate amount of white-space, which makes working with an already unnecessary-feeling operator just that little bit more annoying. This is similar to that `[markdown| |]` tag indentation issue I mentioned last time, it's just that the Web Mote front-end port didn't happen to need any `markdown`.
 
-### <a name="gratuitous-differences" href="#gratuitous-differences"></a>Gratuitous Differences
+### Gratuitous Differences
 
 [Type annotation](http://elm-lang.org/learn/Syntax.elm#type-annotations) (`::`) and `cons` (`:`) from Haskell have been switched for no obvious reason, and [`if`](http://elm-lang.org/learn/Syntax.elm#conditionals) seems to have a similar treatment. Unlike most of the other things I bumped into, this and the `case` "bug" have no hope in hell of being solved by a mere user of the language, so hopefully the designer does something about them.
 
-## <a name="nitpicks" href="#nitpicks"></a>Nitpicks
+## Nitpicks
 
 These aren't big things, and they're not really related to the language itself, but I noticed them and they were annoying.
 
-### <a name="no-singlefile-option" href="#no-singlefile-option"></a>No Single-File Option
+### No Single-File Option
 
 This is just a nice to have. It would have made this front-end marginally easier to deploy, but I'm not sure how it would work if you *needed* more than one file served for your program. Elm targets JavaScript as a platform, which means that the base language is deployed as a `js` file that you have to host manually if you're not using the `elm-server`. When you compile an Elm project, you have an option that looks like this
 
@@ -212,15 +212,15 @@ It's slightly misleading, because what it actually does is specify where to load
 
 Anyhow, it would be nice if there was a compiler option you could activate to just have this runtime inlined in your compiled result, rather than served separately.
 
-### <a name="unstable-website" href="#unstable-website"></a>Unstable Website
+### Unstable Website
 
 [elm-lang.org](http://elm-lang.org/) is down pretty frequently. It seems to be up at the moment, but I'm not sure how long that's going to be the case. It happens often enough that I just went ahead and did a checkout from [its github](https://github.com/evancz/elm-lang.org). Then I found out that the `"Documentation"` pages happen to be missing from that repo...
 
-## <a name="highlights" href="#highlights"></a>Highlights
+## Highlights
 
 Anything I didn't mention above is *good*, which is to say "most of it", but there are two things I like about the language enough to call out.
 
-### <a name="records" href="#records"></a>Records
+### Records
 
 [This](http://elm-lang.org/learn/Syntax.elm#records) is brilliant. Take a bow, you've nailed record interaction. The approach probably wouldn't fit trivially into GHC, but it would solve [some of the problems](http://hackage.haskell.org/trac/ghc/wiki/Records) their records have. It's also something the Erlang devs should probably keep an eye on, because it's much *much* better than [what I remember having access to in Erl-land](http://stackoverflow.com/q/10821930). Probably the biggest win is that Elm records get first-class treatment in terms of the languages' pattern matching facilities, which lets you do things like
 
@@ -233,11 +233,11 @@ That's something I miss in almost every single language that has both pattern ma
 
 This dynamic record syntax also lets you trivially handle JSON input from a server. In case you didn't notice, the stuff I was passing into `entry` originates in ajax responses from the server.
 
-### <a name="haskellgrade-terseness" href="#haskellgrade-terseness"></a>Haskell-grade Terseness
+### Haskell-grade Terseness
 
 Just a reminder. Despite all those flaws I pointed out above, the Elm version of this particular program weighs in at about 1/4 the code of the reactive Angular.js version, let alone the traditional plain DOM/jQuery approach. It's also more pleasant to work with than JS, but that's an entirely subjective point. Improvements can still be made here; implementing haskell-style sections and multi-line definitions would save a bit of typing, though, to be fair, not as much as I thought it would.
 
-## <a name="conclusions" href="#conclusions"></a>Conclusions
+## Conclusions
 
 I've already mentioned that I'm going to take a swing at putting together some SSE support, `encodeURI(component)?` calls and a more appropriate Emacs mode for Elm, but it probably won't be very soon. Thanks to a tip-off from Dann, I managed to squeak into the registration for the [Lisp In Summer Projects](http://lispinsummerprojects.org/) event, which looks very much like a multi-month [NaNoWriMo](http://www.nanowrimo.org/) with parentheses instead of character development and sleep.
 

@@ -5,11 +5,11 @@ Two things on the agenda today. First, Elm has gotten some improvements that mig
 >
 > Tue, 18 Feb, 2014
 
-### <a name="elm-lang" href="#elm-lang"></a>Elm Lang
+### Elm Lang
 
 For those of you just joining us, [Elm](http://elm-lang.org/) is a pure-functional, statically typed, optionally-type-inferring language closely based on [Haskell](http://www.haskell.org/haskellwiki/Haskell), which targets a JavaScript-hosted VM for deployment. That is, there's an `elm-runtime.js` which Elm code compiles to target, and the result is highly reactive web front-ends that don't require any mucking around with the DOM. Now that we're all on the same page...
 
-### <a name="elm-again" href="#elm-again"></a>Elm. Again.
+### Elm. Again.
 
 This came up at a recent [Code Retreat](https://bentomiso.com/events/toronto-code-retreat-2014-feb), and it looks interesting as fuck in context with the FBP stuff I've been doing at work recently. The problem we were solving at the event was autocompletion. That is, given a partial input, return possible completions from some dictionary. Here's a short<a name="note-Mon-Feb-17-150009EST-2014"></a>[|1|](#foot-Mon-Feb-17-150009EST-2014) implementation in Elm.
 
@@ -105,7 +105,7 @@ wordList = String.words "one two three four five six seven eight nine ten"
 
 These remaining lines render the input and completions to screen, and set up the extremely minimal test dictionary. That's it. What we have here is exactly what was described. An input, backed by a word list, which is cleared on either Enter or Esc, and completed on Ctrl+Space.
 
-### <a name="the-new-part" href="#the-new-part"></a>The New Part
+### The New Part
 
 None of that was new.
 
@@ -188,7 +188,7 @@ This is awesome.
 
 It's awesome enough that I'm seriously considering Elm for some production work *at* work. Because I want to apply Elm in the places where it'll do massive amounts of good, and leave the other stuff to stateful JavaScript programs. Using the ports approach above, I can get exactly that. If there was something similar for Hskell, I'd probably have taken the plunge and built something with it by now<a name="note-Mon-Feb-17-150312EST-2014"></a>[|8|](#foot-Mon-Feb-17-150312EST-2014).
 
-### <a name="in-case-youre-reading-evancz" href="#in-case-youre-reading-evancz"></a>In Case You're Reading, [evancz](https://github.com/evancz)
+### In Case You're Reading, [evancz](https://github.com/evancz)
 
 There are still a [few minor headaches with the language](/posts/elm-in-practice), though thankfully I didn't have to stub my toe on most of them this time around. The only ones that ended up being annoying, or will be very shortly are
 

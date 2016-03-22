@@ -29,7 +29,7 @@ By the way, so you know in advance, this article is going to feel pretty disjoin
 
 Before I move on to the rest of my reading list, lets dissect the two things I've implemented so far. In an effort to potentially help someone else understand them, *and* with the hope that if I've gotten anything seriously wrong, I'll be yelled at by the internet shortly-ish.
 
-### <a name="hash-tables" href="#hash-tables"></a>Hash Tables
+### Hash Tables
 
 A hash table is a key/value storage structure that's meant to give you as close to constant time access/insertion as possible<a name="note-Sun-Jul-13-194350EDT-2014"></a>[|1|](#foot-Sun-Jul-13-194350EDT-2014). The way you do that is using a vector of linked lists and a hash function. The idea is that when you want to store a value, you hash it and take a modulus to figure out which bucket it goes in, remove that key from the bucket if it already exists, and insert the new key/value pair. You need to keep a list of such pairs<a name="note-Sun-Jul-13-194353EDT-2014"></a>[|2|](#foot-Sun-Jul-13-194353EDT-2014), *and* you need to keep the un-hashed key around, because there might be collisions under your hash function in the set of values you want to be able to store as keys. If you knew enough about your key space in advance that you could guarantee no collisions, you can probably do something more efficient, if less flexible, than hashes..
 
@@ -44,7 +44,7 @@ Here are some implementations, minus a couple of key bits that I'll talk about i
    (buckets :reader buckets :initarg :buckets)))
 
 (defun make-my-hash-table (&key (bucket-count 16) (hash-fn #'my-hash) (comparison-fn #'equal))
-  (make-instance 
+  (make-instance
    'my-hash-table
    :bucket-count bucket-count
    :hash-fn hash-fn
@@ -55,7 +55,7 @@ Here are some implementations, minus a couple of key bits that I'll talk about i
   (mod (funcall (hash-fn table) key) (bucket-count table)))
 
 (defun make-my-hash-table (&key (bucket-count 16) (hash-fn #'my-hash) (comparison-fn #'equal))
-  (make-instance 
+  (make-instance
    'my-hash-table
    :bucket-count bucket-count
    :hash-fn hash-fn
@@ -72,7 +72,7 @@ Here are some implementations, minus a couple of key bits that I'll talk about i
   (let ((h (hash-mod table key))
         (cmp (comparison-fn table)))
     (setf (aref (buckets table) h)
-          (cons (cons key value) 
+          (cons (cons key value)
                 (remove-if (lambda (k/v) (funcall cmp (car k/v) key))
                            (aref (buckets table) h))))
     value))
@@ -105,7 +105,7 @@ class my_hash_table:
 module Main where
 
 import Data.Char
-import Data.Array 
+import Data.Array
 
 data HashTable a b = Hash { tblBuckets :: Array Integer [(a, b)]
                           , tblBucketCount :: Integer
@@ -144,7 +144,7 @@ Also, none of the above tables grow. In a real situation, they'd have an additio
 
 With that out of the way, lets step through these and compare.
 
-#### <a name="constructors" href="#constructors"></a>Constructors
+#### Constructors
 
 ```lisp
 (defclass my-hash-table ()
@@ -154,7 +154,7 @@ With that out of the way, lets step through these and compare.
    (buckets :reader buckets :initarg :buckets)))
 
 (defun make-my-hash-table (&key (bucket-count 16) (hash-fn #'my-hash) (comparison-fn #'equal))
-  (make-instance 
+  (make-instance
    'my-hash-table
    :bucket-count bucket-count
    :hash-fn hash-fn
@@ -191,7 +191,7 @@ In the Python variant, I decided to do the hash/mod composition once in the cons
 
 The Haskell version is pretty short and sweet thanks to the record syntax. It's also the only one that clearly states what the hash function is expected to be; a function from your key type to `Integer`<a name="note-Sun-Jul-13-194413EDT-2014"></a>[|6|](#foot-Sun-Jul-13-194413EDT-2014), as well as being the only one to enforce homogeneous key and value types. It sounds mildly annoying, but I can't really think of a situation where I'd really *want* heterogeneous ones, so it doesn't sound like a big deal.
 
-#### <a name="lookup" href="#lookup"></a>Lookup
+#### Lookup
 
 ```lisp
 (defmethod get-hash ((table my-hash-table) key)
@@ -226,14 +226,14 @@ The Python approach sounds the least appetizing, but the other two sound fairly 
 
 When you say it like that, it sounds like the Haskell approach is outright better, but I've seen enough aspiring Haskellers get tripped up over the use of `Maybe` that I'm not so sure.
 
-#### <a name="setting" href="#setting"></a>Setting
+#### Setting
 
 ```lisp
 (defmethod set-hash! ((table my-hash-table) key value)
   (let ((h (hash-mod table key))
         (cmp (comparison-fn table)))
     (setf (aref (buckets table) h)
-          (cons (cons key value) 
+          (cons (cons key value)
                 (remove-if (lambda (k/v) (funcall cmp (car k/v) key))
                            (aref (buckets table) h))))
     value))
@@ -264,7 +264,7 @@ That's really the only difference here though. Each of the setters takes a `tabl
 
 Ok, on to the next thing.
 
-### <a name="trie" href="#trie"></a>Trie
+### Trie
 
 This is just an interesting data structure I came across while reading the rest of the tree stuff. It's fairly interesting because it can search for things by prefixes, making it pretty handy in situations where you want string completion. The only real concrete use case I'm thinking of for them at the moment is storage for titles/names at my blog<a name="note-Sun-Jul-13-194438EDT-2014"></a>[|10|](#foot-Sun-Jul-13-194438EDT-2014), so that you'd be able to navigate to one by knowing only the prefix of the appropriate title.
 
@@ -309,7 +309,7 @@ TRIE> (completions-of "G" *trie*)
 NIL
 TRIE> (completions-of "" *trie*)
 ("trie" "test" "batman" "banana" "testing")
-TRIE> 
+TRIE>
 ```
 
 I'm still not sure if the right thing to return on insertion is the entire `trie`. I guess the newly inserted value would be more in character for Common Lisp. Also, because of that use case I mentioned, I didn't bother implementing a `delete!` either<a name="note-Sun-Jul-13-194442EDT-2014"></a>[|11|](#foot-Sun-Jul-13-194442EDT-2014).
@@ -324,7 +324,7 @@ I'm still not sure if the right thing to return on insertion is the entire `trie
                    (if res
                        (recur (cdr lst) res)
                        (let ((new (list (car lst) nil)))
-                         (push (recur (cdr lst) new) 
+                         (push (recur (cdr lst) new)
                                (cddr trie)))))
                  (setf (cadr trie) str))
              trie))
@@ -411,7 +411,7 @@ Once we get back the result of `lookup-to`, we establish an initially empty resu
                    (if res
                        (recur (cdr lst) res)
                        (let ((new (list (car lst) nil)))
-                         (push (recur (cdr lst) new) 
+                         (push (recur (cdr lst) new)
                                (cddr trie)))))
                  (setf (cadr trie) str))
              trie))

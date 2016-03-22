@@ -20,7 +20,7 @@ You may have noticed that this *isn't* an animated gif. It hangs there for somet
 So as a result, I sat down and took the precise opposite approach to traversal that I tried last time. Instead of trying to keep it elegant and lazy, lets make it hacky and eager. Here's our problem, once again:
 
 ```lisp
-(for-all (?id :user ?name) 
+(for-all (?id :user ?name)
          :in *base* :get (list ?id ?name))
 ```
 
@@ -33,14 +33,14 @@ should basically be the same as
 and
 
 ```lisp
-(for-all (and (?id :user ?name) (?id :time ?time) (?id :number 62) 
+(for-all (and (?id :user ?name) (?id :time ?time) (?id :number 62)
          :in *base* :get ?time))
 ```
 
 should more or less be equivalent to
 
 ```lisp
-(loop for (a b c) in (current *base*) 
+(loop for (a b c) in (current *base*)
    when (eq b :user)
    append (loop for (d e f) in (current *base*)
              when (and (eq d a) (eq e :time)))
@@ -51,7 +51,7 @@ should more or less be equivalent to
 
 Except, you know, it should be smarter about using indices where it can. But that's a pretty straight-forward specification.
 
-### <a name="lookup-and-decideindex-changes-take-" href="#lookup-and-decideindex-changes-take-"></a>`lookup` and `decide-index` changes - take 1
+### `lookup` and `decide-index` changes - take 1
 
 The first thing I had to do was change `lookup` and `decide-index` a bit, because I wanted them to be mildly less naive. And yeah, I broke down and added some macrology to pull out all the repetition in the index-related functions. Turns out that was a good thing.
 
@@ -59,7 +59,7 @@ The first thing I had to do was change `lookup` and `decide-index` a bit, becaus
 (defmacro lookup-index (state &rest indices)
   (with-gensyms (st)
     `(let ((,st ,state))
-       (cond ,@(loop for i in indices 
+       (cond ,@(loop for i in indices
                   for syms = (key->symbols i)
                   collect `((and (indexed? (index ,st) ,i)
                                  ,@syms)
@@ -89,7 +89,7 @@ Short version is, the function now takes a `fact-base` in addition to an `a`, `b
 
 Actually, lets fix it right now.
 
-### <a name="lookup-and-decideindex-changes-take-" href="#lookup-and-decideindex-changes-take-"></a>`lookup` and `decide-index` changes - take 2
+### `lookup` and `decide-index` changes - take 2
 
 ```lisp
 (defmethod lookup ((state fact-base) &key a b c)
@@ -115,12 +115,12 @@ That more complicated version of lookup expects two values instead of one; which
   (with-gensyms (ix ideal applicable?)
     `(let ((,ix (index ,state))
            (,ideal))
-       ,@(loop for i in indices 
+       ,@(loop for i in indices
             for syms = (key->symbols i)
             collect `(let ((,applicable? (and ,@syms)))
                        (when (and (null ,ideal) ,applicable?) (setf ,ideal ,i))
                        (when (and (indexed? ,ix ,i) ,applicable?)
-                         (return-from decide-index 
+                         (return-from decide-index
                            (values (list ,i ,@syms) ,ideal)))))
        (values nil ,ideal))))
 
@@ -132,7 +132,7 @@ Say what you will about imperative programming; it's efficient. That's a single 
 
 With those modifications, I can pull some fancier crap in translating `for-all` calls into `loop`s. Specifically, I can do this:
 
-### <a name="this" href="#this"></a>This
+### This
 
 ```lisp
 (defun goal->destructuring-form (goal &key (bindings (make-hash-table)))
@@ -158,8 +158,8 @@ With those modifications, I can pull some fancier crap in translating `for-all` 
                   nil)
                  (t elem))))
     (destructuring-bind (a b c) goal
-      `(lookup ,base 
-               :a ,(->ix a) 
+      `(lookup ,base
+               :a ,(->ix a)
                :b ,(->ix b)
                :c ,(->ix c)))))
 
@@ -174,12 +174,12 @@ With those modifications, I can pull some fancier crap in translating `for-all` 
     (labels ((single-goal (destruct lookup tail)
                `(loop for ,destruct in ,lookup ,@tail))
              (rec (goals)
-               ;; We want to generate the lookups first, 
+               ;; We want to generate the lookups first,
                ;; because the bindings are going to be generated
-               ;; from the result of the lookup. Meaning, if the bindings 
+               ;; from the result of the lookup. Meaning, if the bindings
                ;; are established in a given destruct clause,
                ;; they won't be usable until the NEXT lookup.
-               ;; Therefore, even though it isn't immediately obvious, 
+               ;; Therefore, even though it isn't immediately obvious,
                ;; order matters in this let* form
 
                (let* ((lookup (goal->lookup base (first goals) :bindings bindings))
@@ -214,11 +214,11 @@ should expand directly into something like
 
 ```lisp
 (LET ((#:BASE1122 *BASE*))
-  (LOOP FOR (?ID #:G1123 ?NAME) 
+  (LOOP FOR (?ID #:G1123 ?NAME)
      IN (LOOKUP #:BASE1122 :A NIL :B :USER :C NIL)
-     APPEND (LOOP FOR (#:G1124 #:G1125 ?TIME) 
+     APPEND (LOOP FOR (#:G1124 #:G1125 ?TIME)
                IN (LOOKUP #:BASE1122 :A ?ID :B :TIME :C NIL)
-               APPEND (LOOP FOR (#:G1126 #:G1127 #:G1128) 
+               APPEND (LOOP FOR (#:G1126 #:G1127 #:G1128)
                          IN (LOOKUP #:BASE1122 :A ?ID :B :NUMBER :C 62)
                          COLLECT (LIST ?ID ?TIME ?NAME)))))
 ```
@@ -264,8 +264,8 @@ In order to do that, we have to replace everything *other* than variables with `
                   nil)
                  (t elem))))
     (destructuring-bind (a b c) goal
-      `(lookup ,base 
-               :a ,(->ix a) 
+      `(lookup ,base
+               :a ,(->ix a)
                :b ,(->ix b)
                :c ,(->ix c)))))
 ```
@@ -306,12 +306,12 @@ Easy, right? grab the results of `goal->lookup` and `goal->destructuring-form` a
     (labels ((single-goal (destruct lookup tail)
                `(loop for ,destruct in ,lookup ,@tail))
              (rec (goals)
-               ;; We want to generate the lookups first, 
+               ;; We want to generate the lookups first,
                ;; because the bindings are going to be generated
-               ;; from the result of the lookup. Meaning, if the bindings 
+               ;; from the result of the lookup. Meaning, if the bindings
                ;; are established in a given destruct clause,
                ;; they won't be usable until the NEXT lookup.
-               ;; Therefore, even though it isn't immediately obvious, 
+               ;; Therefore, even though it isn't immediately obvious,
                ;; order matters in this let* form
                (let* ((lookup (goal->lookup base (first goals) :bindings bindings))
                       (destruct (goal->destructuring-form (first goals) :bindings bindings)))
@@ -344,12 +344,12 @@ I haven't yet put together an equivalent facility for the old `apply` keyword ar
 
 This concludes the part of this post wherein I talk about implementation details. The rest is just one or two interesting notes about traversals. If you're getting bored, or tired, this is a pretty good break-point for you.
 
-### <a name="traversal-notes" href="#traversal-notes"></a>Traversal Notes
+### Traversal Notes
 
 Near the beginning of this piece, I said
 
-> ...this is probably the worst way to write this particular query...  
-> --Inaimathi  
+> ...this is probably the worst way to write this particular query...
+> --Inaimathi
 
 referring to
 
@@ -362,11 +362,11 @@ and the reason should be fairly obvious now that we know exactly how we go about
 
 ```lisp
 (LET ((#:BASE1262 *BASE*))
-  (LOOP FOR (?ID #:G1263 ?NAME) 
+  (LOOP FOR (?ID #:G1263 ?NAME)
     IN (LOOKUP #:BASE1262 :A NIL :B :USER :C NIL)
-    APPEND (LOOP FOR (#:G1264 #:G1265 ?TIME) 
+    APPEND (LOOP FOR (#:G1264 #:G1265 ?TIME)
               IN (LOOKUP #:BASE1262 :A ?ID :B :TIME :C NIL)
-              APPEND (LOOP FOR (#:G1266 #:G1267 #:G1268) 
+              APPEND (LOOP FOR (#:G1266 #:G1267 #:G1268)
                         IN (LOOKUP #:BASE1262 :A ?ID :B :NUMBER :C 62)
                         COLLECT (LIST ?ID ?TIME ?NAME)))))
 ```
@@ -375,7 +375,7 @@ and just so that we're perfectly clear on what that means, here's the Lisp-esque
 
 ```lisp
 (for-each goal-1
-    append (for-each goal-2 
+    append (for-each goal-2
                append (for-each goal-3
                           collect [some list of components])))
 ```
@@ -417,9 +417,9 @@ And I get bored.
 
 (defmethod test-generate! (n)
   (loop repeat n
-     do (multi-insert! 
-         *base* `((:number ,(random 100)) (:type :digit) 
-                  (:time ,(get-universal-time)) 
+     do (multi-insert!
+         *base* `((:number ,(random 100)) (:type :digit)
+                  (:time ,(get-universal-time))
                   (:user ,(nth (random 7) '("Inaimathi" "Anon" "Someone Else" "Albert" "Beatrice" "Charles" "Daria")))))))
 
 (test-generate! 10000)
@@ -431,11 +431,11 @@ And I get bored.
 
 4 - <a name="foot-Sat-Apr-12-205533EDT-2014"></a>[|back|](#note-Sat-Apr-12-205533EDT-2014) - if it has been bound by a previous `destructuring-form`, it'll be assigned by this point, which means we'll be able to index by it. Otherwise, `gethash` will return `nil`, which is exactly what we want.
 
-5 - <a name="foot-Sat-Apr-12-205537EDT-2014"></a>[|back|](#note-Sat-Apr-12-205537EDT-2014) - This is where we could be a bit more efficient, in case you're interested. If we wanted to be very precise about it, we'd say that we *could* use a compound form with variables as an index, provided that all of its variables have been bound prior to this point in the traversal. I'm leaving it out for now because 
+5 - <a name="foot-Sat-Apr-12-205537EDT-2014"></a>[|back|](#note-Sat-Apr-12-205537EDT-2014) - This is where we could be a bit more efficient, in case you're interested. If we wanted to be very precise about it, we'd say that we *could* use a compound form with variables as an index, provided that all of its variables have been bound prior to this point in the traversal. I'm leaving it out for now because
 
 
-- it would further complicate an already tricky chunk of code 
-- I'm not sure how often this edge case would happen in practice and 
+- it would further complicate an already tricky chunk of code
+- I'm not sure how often this edge case would happen in practice and
 - if it *does* happen, the current result will be a slightly less efficient traversal, which doesn't sound too bad. If the consequence were incorrect results instead, I'd have reconsidered
 
 

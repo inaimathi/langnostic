@@ -4,7 +4,7 @@ Other than raising a child<a name="note-Sun-Feb-10-150629EST-2013"></a>[|1|](#fo
 
 [Last time](http://barbershop.inaimathi.ca/), I worked with [Happstack](http://happstack.com/clck/view-page-slug/1/home), which is the best looking web framework available in the language, as far as I'm concerned. This time, I just pulled out [warp](http://hackage.haskell.org/package/warp-1.3.7.2), the [wai](https://github.com/yesodweb/wai)-based server, and went frameworkless.
 
-### <a name="why-wai-without-y" href="#why-wai-without-y"></a>Why wai without Y?
+### Why wai without Y?
 
 Using a framework binds you to it. [Yesod](http://www.yesodweb.com/) especially seems to have a stick up its ass about using something other than Haskell to build pieces of a project. You may recall that [I theorized](http://langnostic.blogspot.ca/2012/09/js-frameworks.html) about keeping front and back-ends entirely separate a little while ago. Well, I'm still on that. So as much as framework maintainers want me to use or [Hamlet](http://hackage.haskell.org/package/hamlet-1.1.3.1) or whatever, doing so would be counter-productive for me. Yesod actually goes one further and has [a JS-generation language too](http://www.yesodweb.com/blog/2012/01/wiki-chat-subsite). The idea is supposed to be that *all* of your code then goes through the same rigorous type checks and optimizations that the ML family is famous for. In practice, what it means is that you're more-or-less forced to use jQuery<a name="note-Sun-Feb-10-150633EST-2013"></a>[|2|](#foot-Sun-Feb-10-150633EST-2013), and it means that all of your project is in Haskell<a name="note-Sun-Feb-10-150637EST-2013"></a>[|3|](#foot-Sun-Feb-10-150637EST-2013) and it means that your server-side code is doing everything<a name="note-Sun-Feb-10-150641EST-2013"></a>[|4|](#foot-Sun-Feb-10-150641EST-2013). I think I'll stick to the manual trio for the front-end and just let Haskell do the heavy database lifting.
 
@@ -12,11 +12,11 @@ The easiest way to do that seems to be to basically keep the model and a control
 
 So, let's give this a whirl.
 
-### <a name="haskell-dev-general-thoughts" href="#haskell-dev-general-thoughts"></a>Haskell Dev General Thoughts
+### Haskell Dev General Thoughts
 
 Before I get to the code in my usual self-review fashion, let me let you in on some lessons I had to learn the hard way by [hitting my head up against the language](http://stackoverflow.com/questions/14721720/ambiguous-type-variable-in-acidstate-functions).
 
-Firstly, don't try to do bottom-up design here. Or, at least, slow down with it until you get fairly good with the language, fairly familiar with the documentation/conventions, and fairly good at understanding how GHCi works. The techniques of [wishful thinking](http://c2.com/cgi/wiki?WishfulThinking) and [building the language up](http://www.paulgraham.com/progbot.html) towards your problem are still applicable, but Haskell has a way of focusing pretty relentlessly on types. Even though it infers a lot of type information without your help, the most common pieces of advice I get from other Haskellers is to 
+Firstly, don't try to do bottom-up design here. Or, at least, slow down with it until you get fairly good with the language, fairly familiar with the documentation/conventions, and fairly good at understanding how GHCi works. The techniques of [wishful thinking](http://c2.com/cgi/wiki?WishfulThinking) and [building the language up](http://www.paulgraham.com/progbot.html) towards your problem are still applicable, but Haskell has a way of focusing pretty relentlessly on types. Even though it infers a lot of type information without your help, the most common pieces of advice I get from other Haskellers is to
 
 
 1.   work out what the type of my function is going to be before writing the function itself and
@@ -29,7 +29,7 @@ Secondly, don't trust GHCi completely. As a Lisper, this sort of blew my mind be
 
 Thirdly, it's possible<a name="note-Sun-Feb-10-150705EST-2013"></a>[|9|](#foot-Sun-Feb-10-150705EST-2013) to apply the venerable technique of [debugging by `printf`](http://en.wikipedia.org/wiki/Debugging#Techniques). At first glance, it seems like it wouldn't be, since doing any output from a function pollutes its type with `IO`, which then cascades to all of the callers of that function and causes you to rewrite half the project if you want to add some output in one place. Oh, and then rewrite it back once you're done looking at debugging output. There's a library called [`Debug.Trace`](http://www.haskell.org/ghc/docs/latest/html/libraries/base//Debug-Trace.html) that lets you pull off something similar enough. It highlights very clearly that this isn't meant for production use though; what you're supposed to do, near as I can tell, is `import qualified Debug.Trace as Debug`, then sprinkle `Debug.trace "A trace message goes here..." $ {{the thing you want trace output for}` throughout your code, and run `M-x query-replace-regexp Debug.trace ".*?" ` later to replace these calls with nothing. It's possible that there's an automatic way of removing them, but I didn't bother finding it for a project this size.
 
-### <a name="routing" href="#routing"></a>Routing
+### Routing
 
 ```haskell
 {-# LANGUAGE OverloadedStrings #-}
@@ -57,7 +57,7 @@ import Network.HTTP.Types (ok200, unauthorized401, status404)
 import Control.Exception (bracket)
 import Control.Concurrent.Chan (Chan, newChan, dupChan, writeChan)
 import Control.Monad.Trans.Resource (ResourceT)
-    
+
 import TypeSynonyms
 import Util
 import Model
@@ -68,26 +68,26 @@ routes db session req = do
   let Just (sessionLookup, sessionInsert) = Vault.lookup session (vault req)
   user <- sessionLookup "user"
   case pathInfo req of
-    ("app":rest) -> 
+    ("app":rest) ->
       loggedInRoutes db user rest req
     ("auth":rest) ->
       authRoutes db sessionLookup sessionInsert rest req
-    ["static", subDir, fileName] -> 
+    ["static", subDir, fileName] ->
       serveStatic subDir fileName
-    [] -> 
+    [] ->
       resFile "text/html" "static/index.html"
-    ["favicon.ico"] -> 
+    ["favicon.ico"] ->
       resPlaceholder
     _ -> res404
 
 authRoutes :: DB ->  LookupFN -> InsertFN -> [Text.Text] -> Request -> RES
 authRoutes db sLookup sInsert path req = do
   withPostParams req ["name", "passphrase"] route
-  where route [name, pass] = 
+  where route [name, pass] =
           case path of
-            ["login"] -> 
+            ["login"] ->
               login db sInsert name pass
-            ["register"] -> 
+            ["register"] ->
               case pass of
                 "" -> resError "At least pick a non-empty passphrase"
                 _  -> register db sInsert name pass
@@ -101,15 +101,15 @@ loggedInRoutes db maybeUserName path req = do
       maybeAccount <- query' db $ AccountByName name
       case maybeAccount of
         Just user -> case path of
-          ("item":rest) -> 
+          ("item":rest) ->
             withParams params ["itemName"] route
             where route [itemName] = itemRoutes db user itemName rest params
-          ["list"] -> 
+          ["list"] ->
             listItems db user
-          ["new"] -> 
+          ["new"] ->
             withParams params ["itemName", "comment", "count"] new
             where new [name, comment, count] = newItem db user name comment (read count :: Integer)
-          ["change-passphrase"] -> 
+          ["change-passphrase"] ->
             withParams params ["newPassphrase"] change
             where change [newPass] = changePassphrase db user newPass
           _ -> res404
@@ -120,11 +120,11 @@ itemRoutes :: DB -> Account -> String -> [Text.Text] -> BSAssoc -> RES
 itemRoutes db user itemName path params = do
   case getOne $ (accountItems user) @= itemName of
     Just item -> case path of
-      ["need"] -> 
+      ["need"] ->
         needItem db user item
-      ["got"] -> 
+      ["got"] ->
         gotItem db user item
-      ["delete"] -> 
+      ["delete"] ->
         deleteItem db user item
       ["edit"] ->
         edit $ extractOptional params ["comment", "count"]
@@ -136,7 +136,7 @@ itemRoutes db user itemName path params = do
 main = do
   session <- Vault.newKey
   store <- mapStore_
-  bracket (openLocalState initialDB) (createCheckpointAndClose) 
+  bracket (openLocalState initialDB) (createCheckpointAndClose)
     (\db -> run 3000 . withSession store (fromString "SESSION") def session $ routes db session)
 
 ```
@@ -188,7 +188,7 @@ I mentioned that this is new to me. That's because the various Python/Ruby frame
 
 Lets take a look at these simplified handlers we're passing stuff on to.
 
-### <a name="the-handlers" href="#the-handlers"></a>The Handlers
+### The Handlers
 
 ```haskell
 module Handlers ( listItems, needItem, gotItem, editItem, deleteItem, newItem
@@ -219,7 +219,7 @@ listItems db user = do
 needItem :: DB -> Account -> Item -> RES
 needItem db user item = do
   update' db $ ChangeItem user new
-  resIxItems $ updateIx (itemName item) new (accountItems user) 
+  resIxItems $ updateIx (itemName item) new (accountItems user)
     where new = item { itemStatus = Need }
 
 gotItem :: DB -> Account -> Item -> RES
@@ -269,7 +269,7 @@ register db sessionInsert name passphrase = do
     _ -> resError "User already exists"
 
 login :: DB -> InsertFN -> String -> String -> RES
-login db sessionInsert name passphrase = do 
+login db sessionInsert name passphrase = do
   res <- query' db $ AccountByName name
   case res of
     Just user -> case verifyPass defaultParams (Pass $ BS.pack passphrase) pass of
@@ -287,7 +287,7 @@ The authentication functions are predictably complicated, but I'll get to them l
 needItem :: DB -> Account -> Item -> RES
 needItem db user item = do
   update' db $ ChangeItem user new
-  resIxItems $ updateIx (itemName item) new (accountItems user) 
+  resIxItems $ updateIx (itemName item) new (accountItems user)
     where new = item { itemStatus = Need }
 ```
 
@@ -295,32 +295,32 @@ It's not expecting an account name and item ID to reference by. It's expecting a
 
 Really, I could have made one more general function along the lines of `editItem`, then called it for `need`, `got`, and separate handlers for `changeComment` and `changeCount`. In fact, that was officially a `note to self`.
 
-> EDIT:  
->   
-> The item-related section now reads  
->   
+> EDIT:
+>
+> The item-related section now reads
+>
 > ```haskell
 > needItem :: DB -> Account -> Item -> RES
 > needItem db user item = updateItem db user new
 >   where new = item { itemStatus = Need }
-> 
+>
 > gotItem :: DB -> Account -> Item -> RES
 > gotItem db user item = updateItem db user new
 >   where new = item { itemStatus = Got }
-> 
+>
 > editItem :: DB -> Account -> Item -> Maybe String -> Maybe String -> RES
 > editItem db user item newComment newCount = updateItem db user new
 >   where new = item { itemComment = comment, itemCount = count }
 >         comment = fromMaybe (itemComment item) newComment
 >         count = fromMaybe (itemCount item) (maybeRead newCount :: Maybe Integer)
-> 
+>
 > updateItem :: DB -> Account -> Item -> RES
 > updateItem db user newItem = do
 >   update' db $ ChangeItem user newItem
 >   resIxItems $ updateIx (itemName newItem) newItem (accountItems user)
 > ```
->   
-> Sat, 09 Feb, 2013  
+>
+> Sat, 09 Feb, 2013
 
 The way it's currently written, the most complex of the item-related handlers is `editItem`, and that's because it needs to optionally change the `comment`, `count` or both depending on what's passed in. This is the price you pay for automatic currying and maximally terse partials; those features don't share space well with optional/keyword/rest arguments. The result is that when you need the latter, you need to represent them as mandatory `Maybe` args, or as a custom type argument. We've already gone through an example of the first approach. You can see the second if you squint at `verifyPass` and `encryptPass`. Specifically, the second argument, `defaultParams` is of type `ScryptParams`, which is defined as
 
@@ -328,7 +328,7 @@ The way it's currently written, the most complex of the item-related handlers is
 data ScryptParams = Params { logN, r, p, bufLen :: Integer} deriving (Eq)
 ```
 
-which is really a way of representing keyword args in a language without any. `defaultParams` itself is defined as 
+which is really a way of representing keyword args in a language without any. `defaultParams` itself is defined as
 
 ```haskell
 defaultParams :: ScryptParams
@@ -347,13 +347,13 @@ Since we're here, and since I'm the guy who's been going on and on about this, s
 
 Lets see, where were we. Oh, right, all those functions beginning with `res` in the `Handlers` and `Main` modules aren't built-ins. They're defined in a generically named `Util` module.
 
-### <a name="util" href="#util"></a>Util
+### Util
 
 ```haskell
 {-# LANGUAGE OverloadedStrings #-}
 module Util ( resOk, res404, resError, resNO, resFile, resIxItems, serveStatic
             , resPlaceholder
-            , extractOptional, withParams, withPostParams 
+            , extractOptional, withParams, withPostParams
             , maybeRead) where
 
 import Data.String (fromString)
@@ -395,7 +395,7 @@ resFile :: BS.ByteString -> FilePath -> RES
 resFile contentType filename = return $ ResponseFile ok200 [("Content-Type", contentType)] filename Nothing
 
 serveStatic :: Text.Text -> Text.Text -> RES
-serveStatic subDir fName = 
+serveStatic subDir fName =
   case sub of
     "js" -> serve "text/javascript"
     "css" -> serve "text/css"
@@ -410,9 +410,9 @@ withPostParams req paramNames fn = do
   withParams params paramNames fn
 
 withParams :: BSAssoc -> [BS.ByteString] -> ([String] -> RES) -> RES
-withParams params paramNames fn = 
+withParams params paramNames fn =
   case extractParams params paramNames of
-    Just paramVals -> 
+    Just paramVals ->
       fn paramVals
     Nothing ->
       resError $ concat ["Need '", paramsList, "' parameters"]
@@ -446,7 +446,7 @@ That's ... really it. I'm struggling to describe these a bit more than I usually
 
 The last module left is the model; the one that actually takes all this information and stores it in some way.
 
-### <a name="the-model" href="#the-model"></a>The Model
+### The Model
 
 Before we dive into the code on this one, I want to highlight two things.
 
@@ -460,7 +460,7 @@ Without further ado
 
 ```haskell
 {-# LANGUAGE DeriveDataTypeable, GeneralizedNewtypeDeriving, RecordWildCards, TemplateHaskell, TypeFamilies, OverloadedStrings #-}
- 
+
 module Model ( initialDB
              , GoGetDB(..), Account(..), Item(..), ItemStatus(..)
              , NewAccount(..), UpdateAccount(..), AccountByName(..), GetAccounts(..)
@@ -503,15 +503,15 @@ instance ToJSON Item where
   toJSON (Item name comment status count) = object [ "name" .= name
                                                    , "comment" .= comment
                                                    , "status" .= show status
-                                                   , "count" .= count 
+                                                   , "count" .= count
                                                    ]
 
 ---------- Account
 data Account = Account { accountId :: AccountId
-                       , accountName :: String 
+                       , accountName :: String
                        , accountPassphrase :: ByteString
                        , accountItems :: IxSet Item
-                       } deriving (Eq, Show, Data, Typeable) 
+                       } deriving (Eq, Show, Data, Typeable)
 
 instance Ord Account where
   a `compare` b = (accountId a) `compare` (accountId b)
@@ -519,7 +519,7 @@ instance Ord Account where
 deriveSafeCopy 0 'base ''Account
 instance Indexable Account where
   empty = ixSet [ ixFun $ (:[]) . accountId
-                , ixFun $ (:[]) . accountName 
+                , ixFun $ (:[]) . accountName
                 ]
 
 instance ToJSON Account where
@@ -546,7 +546,7 @@ newAccount name passphrase = do
                         , accountItems = empty
                         }
   put $ db { nextAccountId = succ nextAccountId
-           , accounts = insert account accounts 
+           , accounts = insert account accounts
            }
   return account
 
@@ -598,10 +598,10 @@ I want to draw your attention to a few things.
 ```haskell
 ---------- Account
 data Account = Account { accountId :: AccountId
-                       , accountName :: String 
+                       , accountName :: String
                        , accountPassphrase :: ByteString
                        , accountItems :: IxSet Item
-                       } deriving (Eq, Show, Data, Typeable) 
+                       } deriving (Eq, Show, Data, Typeable)
 
 instance Ord Account where
   a `compare` b = (accountId a) `compare` (accountId b)
@@ -609,7 +609,7 @@ instance Ord Account where
 deriveSafeCopy 0 'base ''Account
 instance Indexable Account where
   empty = ixSet [ ixFun $ (:[]) . accountId
-                , ixFun $ (:[]) . accountName 
+                , ixFun $ (:[]) . accountName
                 ]
 
 instance ToJSON Account where
@@ -626,7 +626,7 @@ Next, note the type of `accountPassphrase`. If you take a look at the `login` ha
 
 ```haskell
 login :: DB -> InsertFN -> String -> String -> RES
-login db sessionInsert name passphrase = do 
+login db sessionInsert name passphrase = do
   res <- query' db $ AccountByName name
   case res of
     Just user -> case verifyPass defaultParams (Pass $ BS.pack passphrase) pass of

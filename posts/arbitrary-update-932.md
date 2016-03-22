@@ -1,6 +1,6 @@
 It's been a while. Sadly/happily, I've been busy working on the [`house` write-up](https://github.com/Inaimathi/500lines/blob/master/async-web-server/writeup.md) for [AOSA 4](http://aosabook.org/blog/) and thinking pretty hard about a [`cl-notebook`](https://github.com/Inaimathi/cl-notebook)-related submission to [this](http://www.future-programming.org/call.html), so any spare writing time I've had has been getting pointed directly away from this blog. This is going to be a pretty incoherent update, mainly focused at getting various things out of my head rather than making any kind of sense. It's a quick cross-section/pressure-release related to things I've been thinking about lately, not a catalyst for learning or external discussion.
 
-### <a name="clnotebookfactbase" href="#clnotebookfactbase"></a>cl-notebook/fact-base
+### cl-notebook/fact-base
 
 I'm noticing that there's a very common pattern in the [`cl-notebook`](https://github.com/Inaimathi/cl-notebook) use-case for [`fact-base`](https://github.com/Inaimathi/fact-base). Specifically, the deletion of a record followed by the insertion of a very similar new record.
 
@@ -17,7 +17,7 @@ I'm noticing that there's a very common pattern in the [`cl-notebook`](https://g
 
 What I'm trying to express there is a change in an existing record. It's mildly annoying for two reasons. First, it means that I need to effectively store every change twice in the form of a before-and-after shot (which, granted, I kind of need to keep doing if I want easy reversibility on edits). Second, and more importantly, it means that a history interface for something being backed by a fact base is going to need to be more complex than I'd like. Instead of naively displaying states, I'll need to make sure to intelligently handle the situation where a user moves history to a point between a deletion and new insertion of a particular fact. I'm going to shortly be making such an interface for `cl-notebook`, so this is going to get painfully relevant very soon. This has me seriously considering adding a third token to `fact-base`, `:modify`, specifically to address this.
 
-### <a name="memory" href="#memory"></a>Memory
+### Memory
 
 ![](/static/img/thinkin-bout-memory-management.png)
 
@@ -28,15 +28,15 @@ Whatever language you're currently using, managing memory is something that you'
 
 The general approaches seem to be
 
-## <a name="not" href="#not"></a>Not
+## Not
 
 For sufficiently short-running programs, a reasonable approach is to just build up junk constantly and let it come out in the wash after the program ends. This is a pretty narrow use case, since you can't clobber memory held by another program, and you can't use more memory than exists on the machine running you, but it's sometimes an option. I'm... not actually aware of a language that takes this approach.
 
-## <a name="manual" href="#manual"></a>Manual
+## Manual
 
 This is the C/C++ approach. You, the programmer, get to declare exactly what pieces are being used and when. Whether that's on a procedure-by-procedure or datastructure-by-datastructure basis, you're ultimately responsible for memory yourself directly. The upside is that there's no garbage collection overhead. The downside is that every procedure/datastructure has to manage memory acceptably, otherwise things start blowing up in various hard-to-diagnose ways.
 
-## <a name="markandsweep-and-variants" href="#markandsweep-and-variants"></a>Mark-and-sweep and variants
+## Mark-and-sweep and variants
 
 One of the automatic memory management approaches. The general idea here is
 
@@ -47,15 +47,15 @@ One of the automatic memory management approaches. The general idea here is
 
 A variant on this known as **generational garbage collection** is keeping several buckets of allocated things, rather than one. You'd partition objects based on how long they've been around so that you don't waste much time traversing long-lived data every time through. This is the variant that I've seen discussed most often, and I kind of get the impression that it's also the one getting the most research time thrown at it, but I'm not entirely sure why. Oh, incidentally, languages like Common Lisp, Java and Python use this one.
 
-## <a name="referencecounting" href="#referencecounting"></a>Reference-counting
+## Reference-counting
 
 Another automatic approach, also known as **deterministic garbage collection**. As far as I understand, Perl does this. The idea is to keep a special eye on language primitives that create or destroy references to objects, and to keep track of how many references to a particular object exist. Every time a relevant primitive is called, modify the reference count for the target, and collect it if that count is zero afterwards. I'm not sure what the pitfalls are in practice, but there seems to be a lot less discussion about this approach than about the previous.
 
-## <a name="circular-memory" href="#circular-memory"></a>Circular Memory
+## Circular Memory
 
 I only vaguely understand this one, and from what I understand, it's fairly limited, but here goes. The situation you'd want to use this or something like it is when a particular allocation is only needed for a short time before being discarded, and can be discarded sequentially. If you're in that situation, what you can do is figure out how much memory you have, then allocate things to it in order and hop back to the beginning when you're done. You need a pointer to the next block you can use (which you update every time you need to allocate a new thing), and a pointer to the first still-relevant block (which you update every time you free something). If the two ever overlap, you know you have a problem. Shapes other than circular are possible. For instance, you could have some sort of self-referential tree structure that accomplishes the same thing for mildly different use cases.
 
-### <a name="decentralization" href="#decentralization"></a>Decentralization
+### Decentralization
 
 This isn't a thing related to memory; this is separate.
 

@@ -1,31 +1,31 @@
 I was in a particularly blah mood today, so I decided to sharpen my teeth on a problem I had half-solved from earlier. Solving Sudoku in Haskell. The code for the solution is up at [the appropriate github](https://github.com/Inaimathi/sudoku/blob/master/sudoku.hs).
 
-### <a name="interlude" href="#interlude"></a>Interlude
+### Interlude
 
 Before we get to the actual code though, do you remember [that page](http://www.haskell.org/haskellwiki/Sudoku) I linked, chock full of Sudoku solvers written in Haskell? Well, there aren't as many there as I thought. About half the links from that page actually lead to 404 pages of various intricacies instead of to the examples they promise. The ones you can see source for are all there, but that's really all you can guarantee.
 
 Also, I'll have to take it back.
 
 
->   The [appropriate Rosetta Code page](http://rosettacode.org/wiki/Sudoku) doesn't have any solutions that leave me gobsmacked by elegance the way that [the Clojure Game of Life](http://rosettacode.org/wiki/Conway%27s_Game_of_Life#Clojure) did.  
->   
-> -Inaimathi  
+>   The [appropriate Rosetta Code page](http://rosettacode.org/wiki/Sudoku) doesn't have any solutions that leave me gobsmacked by elegance the way that [the Clojure Game of Life](http://rosettacode.org/wiki/Conway%27s_Game_of_Life#Clojure) did.
+>
+> -Inaimathi
 
 
 That's false. Specifically, once I sat down to actually read *read* the examples there instead of just flipping through them, I got caught by [one that I passed over the first time](http://web.math.unifi.it/users/maggesi/haskell_sudoku_solver.html). The code actually on the Haskellwiki page is even shorter than that, but it does it by omitting the type declarations, which is borderline cheating in Haskell. It took me an embarrassingly long time to understand the approach in my bones, so I'll go over it in depth in a [follow-up article](http://langnostic.blogspot.ca/2013/06/sudoku-reredux.html) just in case I'm not the only one.
 
-### <a name="sudoku" href="#sudoku"></a>Sudoku
+### Sudoku
 
 
->   So all [these people](http://www.haskell.org/haskellwiki/Sudoku) are using Haskell to commit sudoku? Oh what a world...  
->   
-> -Anonymous  
+>   So all [these people](http://www.haskell.org/haskellwiki/Sudoku) are using Haskell to commit sudoku? Oh what a world...
+>
+> -Anonymous
 
 
 
-> ![Simon Peyton Jones' face photoshopped into an 'Oh You' image macro](/static/img/oh-you-spj.jpeg)  
->   
-> -Inaimathi  
+> ![Simon Peyton Jones' face photoshopped into an 'Oh You' image macro](/static/img/oh-you-spj.jpeg)
+>
+> -Inaimathi
 
 
 Like I said, we did Sudoku solvers at the last Toronto Code Retreat. The group of three I worked in for the Haskell attempt came up with [this](https://github.com/Inaimathi/sudoku/blob/f3b442ce84b58cbe953817a4a96b2b5bfa4c0e5c/sudoku.hs). And I've since expanded that to a solver that works in the general case, although admittedly, *very slowly*<a name="note-Sun-Jun-02-173100EDT-2013"></a>[|1|](#foot-Sun-Jun-02-173100EDT-2013).
@@ -44,9 +44,9 @@ import Data.Char (intToDigit)
 import Data.Maybe (fromJust)
 
 ---------- Class Definition, constructors and sample data
-data Board = Board { values :: [[Int]], 
+data Board = Board { values :: [[Int]],
                      empty :: Set (Int, Int),
-                     size :: Int, 
+                     size :: Int,
                      ixs :: [Int],
                      blockSize :: Int } deriving (Eq)
 
@@ -124,7 +124,7 @@ naiveSolve functions board = rec functions board
           _ -> rec nextFns new
           where new = (head fns) $ board
                 nextFns = if new == board then tail fns else functions
-        
+
 ---------- The solve stages
 obvious :: Board -> Board
 obvious board = findEmpties $ board { values = newVals }
@@ -202,9 +202,9 @@ Just over 110 lines of pretty ham-fisted Haskell, not counting the example data 
 First off, we've changed our definition of a board from a naive 2D array to a more complex type that keeps some needed info around...
 
 ```haskell
-data Board = Board { values :: [[Int]], 
+data Board = Board { values :: [[Int]],
                      empty :: Set (Int, Int),
-                     size :: Int, 
+                     size :: Int,
                      ixs :: [Int],
                      blockSize :: Int } deriving (Eq)
 ```
@@ -264,33 +264,33 @@ Loading package containers-0.4.2.1 ... linking ... done.
 Loading package split-0.2.1.2 ... linking ... done.
 
  71|4  |  5
-   | 5 | 8 
-  3|9 7|6  
+   | 5 | 8
+  3|9 7|6
 -----------
-   |  1|   
+   |  1|
  9 |8 6|  3
-   |   |82 
+   |   |82
 -----------
  6 | 4 |7 8
-3  |   | 9 
-   | 85|   
+3  |   | 9
+   | 85|
 
 *Main> let obv board = if o == board then board else obv o where o = obvious board
 *Main> obv sample
 
  71|4 8| 35
-   | 53| 8 
-  3|9 7|6  
+   | 53| 8
+  3|9 7|6
 -----------
-   |  1|   
+   |  1|
  9 |8 6|  3
-   |  4|82 
+   |  4|82
 -----------
  6 | 49|7 8
-3  |  2| 9 
-   | 85|   
+3  |  2| 9
+   | 85|
 
-*Main> 
+*Main>
 ```
 
 This is how far repeatedly solving the obvious blocks gets us. **BUT**, there are still squares there that have unambiguous solutions. Specifically
@@ -298,15 +298,15 @@ This is how far repeatedly solving the obvious blocks gets us. **BUT**, there ar
 ```haskell
  71|4 8| 35
    | 53| 8X
-  3|9 7|6  
+  3|9 7|6
 -----------
-   |  1|   
+   |  1|
  9 |8 6|  3
-   |  4|82 
+   |  4|82
 -----------
  6 | 49|7 8
-3  |  2| 9 
-   | 85|X  
+3  |  2| 9
+   | 85|X
 ```
 
 Those two have only one possible value. If you take a look at their possibilities list, it doesn't look that way
@@ -316,7 +316,7 @@ Those two have only one possible value. If you take a look at their possibilitie
 fromList [1,2,4,7,9]
 *Main> possibilities (obv sample) (6, 8)
 fromList [1,2,3,4]
-*Main> 
+*Main>
 ```
 
 but if you take a look at only the intersecting values something becomes clear.
@@ -324,15 +324,15 @@ but if you take a look at only the intersecting values something becomes clear.
 ```haskell
  7.|. .| 35
    | ..| 8X
-  .|. 7|6  
+  .|. 7|6
 -----------
-   |  .|   
+   |  .|
  . |. .|  3
-   |  .|.. 
+   |  .|..
 -----------
  . | ..|7 8
-3  |  .| 9 
-   | ..|X  
+3  |  .| 9
+   | ..|X
 ```
 
 Because of the placements of `7`s, and the existing values in block `6,0`, the *only* remaining space in that block that could contain a `7` is `(8, 1)`. The same situation is happening with `3`s in block `6,6`. Because our `possibilities` function is only doing a set subtraction, it fails to detect this.
@@ -344,13 +344,13 @@ I get the feeling that this is what Josh was getting in my first group; what you
    | 53|X8X
   3|9 7|6XX
 -----------
-   |  1|   
+   |  1|
  9 |8 6|  3
-   |  4|82 
+   |  4|82
 -----------
  6 | 49|7 8
-3  |  2| 9 
-   | 85|  
+3  |  2| 9
+   | 85|
 ```
 
 have these possibilities:
@@ -362,7 +362,7 @@ have these possibilities:
 [1,2,4,7,9]
 [1,4]
 [1,2,4]
-*Main> 
+*Main>
 ```
 
 As you can see, only one of those possibility sets contains `7`, whereas the other values could go in more than one place. What we want, in terms of our existing board definition, is a way to put that value in the place it can uniquely occupy. That's done here:
@@ -377,14 +377,14 @@ uniqueInBlock board (x, y) = singles $ concatMap (toList . thd) posMap
                       in (x, y, n)
 ```
 
-That function takes a `Board` and an `(x, y)`, and returns the coordinates and values of each unique value in `block board (x, y)`. In our example board, 
+That function takes a `Board` and an `(x, y)`, and returns the coordinates and values of each unique value in `block board (x, y)`. In our example board,
 
 ```haskell
 *Main> uniqueInBlock (obv sample) (6, 0)
 [(8,1,7)]
 *Main> uniqueInBlock (obv sample) (6, 6)
 [(6,8,3)]
-*Main> 
+*Main>
 ```
 
 `blockwise` just takes that result and returns a board which includes those values. Last one:
@@ -407,17 +407,17 @@ I mentioned earlier that the way this works is by trying to repeatedly solve the
 
  71|4 8| 35
    | 53| 87
-  3|9 7|6  
+  3|9 7|6
 -----------
-   |  1|   
+   |  1|
  9 |8 6|  3
-   |  4|82 
+   |  4|82
 -----------
  6 |349|7 8
-3  |  2| 9 
+3  |  2| 9
    | 85|3 2
 
-*Main> 
+*Main>
 ```
 
 Which is a board where the only remaining moves are ones where we need to guess...
@@ -431,36 +431,36 @@ guess board = map (\v -> findEmpties $ board { values = newVals v }) vs
         es = toList $ empty board
 ```
 
-... which is done by picking the space with the fewest number of possibilities, and returning all possible next boards. In other words, 
+... which is done by picking the space with the fewest number of possibilities, and returning all possible next boards. In other words,
 
 ```haskell
 *Main> guess $ naiveSolve [obvious, blockwise] sample
 [
  71|4 8| 35
  2 | 53| 87
-  3|9 7|6  
+  3|9 7|6
 -----------
-   |  1|   
+   |  1|
  9 |8 6|  3
-   |  4|82 
+   |  4|82
 -----------
  6 |349|7 8
-3  |  2| 9 
+3  |  2| 9
    | 85|3 2
 ,
  71|4 8| 35
  4 | 53| 87
-  3|9 7|6  
+  3|9 7|6
 -----------
-   |  1|   
+   |  1|
  9 |8 6|  3
-   |  4|82 
+   |  4|82
 -----------
  6 |349|7 8
-3  |  2| 9 
+3  |  2| 9
    | 85|3 2
 ]
-*Main> 
+*Main>
 ```
 
 Note space `(1, 1)` there. Finally, we need to solve that.
@@ -493,7 +493,7 @@ That function takes a board, runs `naiveSolve` on it, and returns it if solved. 
 387|612|594
 149|785|362
 
-*Main> 
+*Main>
 ```
 
 That particular solution gets returned in under a second, even in `GHCi`. I mentioned that it works "in the general case". What I mean by that is that it can solve boards which are obvious, *and* those which require guessing, **and** those which are non-standard sizes<a name="note-Sun-Jun-02-173523EDT-2013"></a>[|2|](#foot-Sun-Jun-02-173523EDT-2013)

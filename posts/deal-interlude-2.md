@@ -1,6 +1,6 @@
-### <a name="being-the-thoughts-on-implementation-minutia-of-custom-http-servers" href="#being-the-thoughts-on-implementation-minutia-of-custom-http-servers"></a>Being The Thoughts on Implementation Minutia of Custom HTTP Servers
+### Being The Thoughts on Implementation Minutia of Custom HTTP Servers
 
-### <a name="on-the-mechanisms-of-stopping-a-server" href="#on-the-mechanisms-of-stopping-a-server"></a>On the Mechanisms of Stopping A Server...
+### On the Mechanisms of Stopping A Server...
 
 The [last prototype](http://langnostic.blogspot.ca/2013/09/deal-journal-interlude-one-treatise-on.html) I posted had a laughably mis-named `stop` function
 
@@ -18,7 +18,7 @@ See, because the server I'm putting together is single-threaded, you need to `C-
 (defvar *socket-handle* nil)
 
 (defun start (port &optional (log-stream *standard-output*))
-  (stop)  
+  (stop)
   (setf *socket-handle* (socket-listen "127.0.0.1" port :reuse-address t))
   (let ((conns (list *socket-handle*))
         (buffers (make-hash-table)))
@@ -65,7 +65,7 @@ The much more elegant way of solving this is by using `unwind-protect`:
 
 That'll automatically clean up on any kind of error, including an Emacs interrupt, *and* it completely removes the need for `stop` and `*socket-handle*`. The above also uses `usocket:*wildcard-host*` instead of `"127.0.0.1"`, but that's a tiny change.
 
-### <a name="on-the-mechanism-for-listening-to-sockets" href="#on-the-mechanism-for-listening-to-sockets"></a>On The Mechanism for Listening to Sockets
+### On The Mechanism for Listening to Sockets
 
 There's a less obvious place that I wanted to figure something out for. Here's the above server with elided chunklets, just so we can focus in on the relevant details
 

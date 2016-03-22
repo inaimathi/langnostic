@@ -6,7 +6,7 @@ I read a [question on SO](http://stackoverflow.com/questions/9286318/why-choose-
 
 I agree with his sentiments here. The language you should use when you're working on a professional project<a name="note-Thu-Feb-16-222424EST-2012"></a>[|1|](#foot-Thu-Feb-16-222424EST-2012) is one that your team knows and already thinks in. It would be a mistake for me, today, to start something serious up at the office using Smalltalk because I don't think in it naturally yet. Norvig's response to "What language should I choose?" begs a second question though, because if the best language is one you're already familiar with, then you need to ask
 
-## <a name="when-should-i-choose-a-language" href="#when-should-i-choose-a-language"></a>When Should I Choose a Language?
+## When Should I Choose a Language?
 
 Ideally (from the perspective of making the best choice possible), you'd choose it as late as possible because, even though it's fairly difficult to explain this to non-computer people, different languages do have different trade-offs. So you either want to pick your language at the point where you have the most possible information about what the shape of your project is going to be, or you want to pick a language that's flexible enough to be used for pretty much anything.
 
@@ -25,17 +25,17 @@ I'm not poking fun of the guy either; his reasoning is that since the standard L
 
 In fact, applied globally, this principle would have every developer on earth using [some combination of Java, C, C++ and/or C#](http://www.tiobe.com/index.php/content/paperinfo/tpci/index.html), because odds are that every developer could scrape up ten buddies that are at least marginally proficient with those. There's a tension between "powerful languages" and "popular languages", because each brings benefits to the table. Powerful means you'll be more likely to crack through whatever problem you run into, while Popular means that a lot of problems have been pre-solved for you. Power means you'll be able to move mountains with small teams, Popularity means you'll be able to get big teams together reliably. That begs a third question, because if you've got a specific project in mind, you have to ask
 
-## <a name="what-kind-of-project-will-this-be" href="#what-kind-of-project-will-this-be"></a>What kind of Project will this Be?
+## What kind of Project will this Be?
 
 Are you trying to solve problems for which there are no existing solutions (or for which no satisfactory solutions exist) or are you looking to create incremental improvements to existing solutions? Do you want the ability to scale to hundreds of developers under your roof, or do you want a team of 5, 10 at the outside? Do you know specifically what you want, or is the spec going to change dramatically as you move on? Do you already have a team put together, or have you resigned yourself to the hell of Hiring Humans? You will want different languages depending on your answers to these questions, regardless of what language you currently happen to know. But that begs a fourth question, because if the objectively right thing to do on a project is use a language you don't know, you have to ask
 
-## <a name="when-should-i-switch-languages" href="#when-should-i-switch-languages"></a>When Should I Switch Languages?
+## When Should I Switch Languages?
 
 [Graham says](http://www.paulgraham.com/avg.html) that "[a]fter a certain age, programmers rarely switch languages voluntarily". Which is perfectly understandable, because in light of NALT, it's really only reasonable to switch once you and all your friends are more effective with a new language than with your current language, and that takes the sort of off-hours dedication that I'm already having trouble finding at ~27<a name="note-Thu-Feb-16-222928EST-2012"></a>[|3|](#foot-Thu-Feb-16-222928EST-2012). The "why" of it, pragmatically, is also hidden in the statement (although it's a different opinion from Graham than it is from Norvig). The Graham Awesome Language Theory states that there is a pyramid of languages, and you should switch when you realize that there's a higher one than what you already know. That fails to take the team dynamic into account though. If "switch" means "start practising the higher language on your own time", well, sure, sounds reasonable. But if you've got a team of 10<a name="note-Thu-Feb-16-223158EST-2012"></a>[|4|](#foot-Thu-Feb-16-223158EST-2012), is it not a mistake to kneecap short-term progress and set yourself up for pain later<a name="note-Thu-Feb-16-223219EST-2012"></a>[|5|](#foot-Thu-Feb-16-223219EST-2012) in exchange for potential gains at the language level?
 
 Norvig says (in effect): switch with your friends. Which may explain why people [switch away from Lisp](http://www.aaronsw.com/weblog/rewritingreddit), even if Graham is right about the shape of the language pyramid. What good is knowing the superior language, if no other human you know speaks it?
 
-## <a name="when-should-i-switch-languages" href="#when-should-i-switch-languages"></a>When Should _I_ Switch Languages?
+## When Should **I** Switch Languages?
 
 A couple of days ago, my dad called me up. Apparently, he got a web design offer from a friend of his, but the requirements weren't exactly his field. What they meant was "Web UI Developer", and would I be interested? I asked for the specifics; it's a big company, I'd be working for a billing department somewhere, the pay was excellent, and the skill/experience requirements were
 
@@ -58,7 +58,7 @@ So I shouldn't switch languages. Explaining that to someone who isn't at ground 
 
 It's also not really fair to say that the employer in this case made the wrong decision. Working on a web-app for a billing department isn't likely to run them up against fundamentally unsolved problems, they likely have a large number of small teams, the business guys (non-programmers) are in charge, and I have a hunch that their turnover is something above the industry average. Given the context, would you seriously recommend Haskell or Common Lisp to these people? They may be superior tools, but they're superior in precisely the way that corporate shops *don't* care about.
 
-## <a name="what-were-we-talking-about-again" href="#what-were-we-talking-about-again"></a>What were we talking about again?
+## What were we talking about again?
 
 Choosing languages. The fact is that so many factors play into what's the correct answer (if there even is one), from project goals, to company goals to the preferences your particular group. And all that is without even discussing things like technical features, platform availability, deployment strategies or performance. If you have to ask something like "Why choose Lisp for a project?", your entire perspective of the problem could probably use some re-thinking.
 

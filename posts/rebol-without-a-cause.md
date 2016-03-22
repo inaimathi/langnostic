@@ -10,7 +10,7 @@ REBOL []
 map-f: func [ fn a-list ] [
     res: make block! 5
     foreach elem a-list [ append res do [fn elem] ]
-    res    
+    res
 ]
 
 group: func [ a-list ] [
@@ -68,7 +68,7 @@ res
 
 Don't worry; there's a way around this which I'll discuss later. After the event, I made a few refinements and got it up to
 
-### <a name="the-second-crack" href="#the-second-crack"></a>The Second Crack
+### The Second Crack
 
 ```rebol
 REBOL []
@@ -180,7 +180,7 @@ res
 
 Anyhow, it technically runs. As long as you don't nest `map` or `frequency` calls. After a trip over to the [Rebol/Red chat room on SO](http://chat.stackoverflow.com/rooms/291/rebol-and-red) for some quick review by actual rebollers<a name="note-Sat-Jul-27-122340EDT-2013"></a>[|3|](#foot-Sat-Jul-27-122340EDT-2013), I got to
 
-### <a name="the-third-crack" href="#the-third-crack"></a>The Third Crack
+### The Third Crack
 
 ```rebol
 REBOL []
@@ -225,8 +225,8 @@ read-hand: func [ hand-string ] [
     suits-table: [ #"H" &#9829;  #"C" &#9827;  #"D" &#9830;  #"S" &#9824; ]
     ranks-table: "--23456789TJQKA"
     fn/map func [ c ] [
-        to-path reduce [ 
-            select suits-table c/2 
+        to-path reduce [
+            select suits-table c/2
             offset? ranks-table find c/1 ranks-table ]
     ] parse hand-string " "
 ]
@@ -281,7 +281,7 @@ fn/map func [ a ] [ a + 1] [ 1 2 3 4 5 ]
 res
 == "Foobarbaz"
 
->> 
+>>
 ```
 
 and you can safely nest `fn/map`/`fn/frequencies` calls.
@@ -303,17 +303,17 @@ Script: "Untitled" Version: none Date: none
 read-hand "1H 2C 3C 4D 5S"
 == [&#9829;/1 &#9827;/2 &#9827;/3 &#9830;/4 &#9824;/5]
 
->> 
+>>
 ```
 
 Apparently the original author found that he was doing sequence splicing more than actual `append`ing. But instead of writing a separate `[splice](http://www.rebol.com/r3/docs/functions/splice.html)` function, or maybe a `/splice` refinement to `append`, he made splicing `append`s' default behavior. No, I have no idea what he was smoking at the time.
 
 In order to get the behavior you'd probably expect from plain `append`, you have to run the refinement `/only`, which as far as I can tell, generally means "do what you actually wanted to do" on any function it's provided for. A guy calling himself [Hostile Fork](http://hostilefork.com/) [says it](https://docs.google.com/presentation/d/1pmDE7eNsZtFb3ey8KXvNz8RF21NXZeFqvDKfR5D-dI4/edit#slide=id.geceb89b9_0210) better than I could:
 
->   We don't tell someone to take out the garbage and then they shoot the cat if you don't say *"Oh...wait... I meant `ONLY` take out the garbage"*! The name `ONLY` makes no semantic sense; if it *did* make sense, then it's what should be done by the operation without any refinements!  
-> --Hostile Fork  
+>   We don't tell someone to take out the garbage and then they shoot the cat if you don't say *"Oh...wait... I meant `ONLY` take out the garbage"*! The name `ONLY` makes no semantic sense; if it *did* make sense, then it's what should be done by the operation without any refinements!
+> --Hostile Fork
 
-### <a name="afermath" href="#afermath"></a>Afermath
+### Afermath
 
 So that's that. I didn't get to a working solution yet, because this script doesn't compare two hands to determine a winner (or a draw), and it doesn't handle the aces-low edge case, but I'll leave those as an exercise for the reader. It'll tell you what hand you have, and it can elegantly read the specified input. At the language level, REBOL3 is interesting. And the community is both enthusiastic and smart. And I really hope the r2/3 transition gives them the excuse to clean up the few counter-intuitive things that slipped in over time. It's enough that I'm making an addition to the logo bar, which I don't do lightly<a name="note-Sat-Jul-27-122350EDT-2013"></a>[|4|](#foot-Sat-Jul-27-122350EDT-2013).
 

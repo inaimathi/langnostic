@@ -2,7 +2,7 @@ I made an off-the-cuff remark [earlier](/posts/elm-first-impressions) to the eff
 
 The first reflex is to reach for callbacks. Which, [as was already discussed](http://elm-lang.org/learn/Escape-from-Callback-Hell.elm), is the exact opposite of what Elm is trying to do. The real trouble begins when you consider how you'd do the same thing *without* callbacks in order to preserve that purity of purpose.
 
-### <a name="first-pass" href="#first-pass"></a>First Pass
+### First Pass
 
 The obvious solution is to use a bunch of signals everywhere. One for each of the element-based events. Let the user specify signal values on elements, and dispatch on their results at the other end.
 
@@ -10,7 +10,7 @@ Except thats quite complex.
 
 At first glance, you're looking at twenty or so global signals, *each* of which are going to have the kind of isolated, complicated dispatch we saw in [that Tic Tac Toe example](http://www.grzegorzbalcerek.net/elm/TicTacToe.elm). That sounds worse in every way than callback hell; all your dispatch needs to be centralized, which means that behavior under various circumstances will by definition be separated from the element it pertains to, and you suddenly can't understand any component of your program without understanding the central signal dispatch code.
 
-### <a name="second-pass" href="#second-pass"></a>Second Pass
+### Second Pass
 
 Another approach might be not to let the user specify signal values. Make them hooks to the relevant element. Expose some kind of interface to the user so that they can pipe other signal values into various properties of that element, and call it a day.
 
@@ -18,7 +18,7 @@ Also, we don't really need to have a signal per HTML event. For the situations I
 
 You'd then have some idea of what needs to be moved as a result.
 
-### <a name="user-side" href="#user-side"></a>User Side
+### User Side
 
 Of course, that's all base implementation stuff. On the client side, you don't want to have to do things like maintain your own table of draggables to dispatch a signal to when relevant. You'd want to be able to do something like
 
@@ -38,7 +38,7 @@ and I have no idea what the appropriate way to express that is in the framework 
 
 It sounds like it might just be easier to avoid those interactions while I'm starting out. [SSEs](http://www.w3schools.com/html/html5_serversentevents.asp) sound like they'd be a much easier first feature, actually.
 
-### <a name="sses" href="#sses"></a>SSEs
+### SSEs
 
 The reason being that, when you think about it, this fits perfectly into the FRP paradigm. A source is a signal whose value is the latest matching message body and/or id. That's it. You'd want the declaration to look something like
 

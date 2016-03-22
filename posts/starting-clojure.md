@@ -1,4 +1,4 @@
-So I've been going to this [Coding Dojo](http://www.meetup.com/Toronto-Coding-Dojo/) thing, I guess. In an attempt to finally get off my ass and into Clojure, but also into 
+So I've been going to this [Coding Dojo](http://www.meetup.com/Toronto-Coding-Dojo/) thing, I guess. In an attempt to finally get off my ass and into Clojure, but also into
 
 
 - socializing with functional programmers outside of the Lisp group<a name="note-Thu-Aug-23-161334EDT-2012"></a>[|1|](#foot-Thu-Aug-23-161334EDT-2012)
@@ -7,7 +7,7 @@ So I've been going to this [Coding Dojo](http://www.meetup.com/Toronto-Coding-Do
 
 For the past two weeks, we've been (unsuccessfully so far, but no one is about to give up yet) trying to run through the poker hand kata in Clojure. Half the point here is trying out the language, and I've successfully procrastinated until they got a fantastic, standardized build system going so that I don't have to fuck around installing libraries by hand, which seems like it'll be very gratifying after the bunch of time spent in the Erlang world lately.
 
-### <a name="installing-clojure" href="#installing-clojure"></a>Installing Clojure
+### Installing Clojure
 
 [Clojure the debian package](http://packages.debian.org/sid/devel/clojure) is actually not in the free repos. You *can* `apt-get install clojure`, but only after [adding `contrib` *and* `non-free`](http://wiki.debian.org/Clojure) to your `sources.list`, which I don't particularly want to do. In case you haven't noticed yet, I'm the sort of person who occasionally runs `vrms`, just to make sure. It turns out though, that the [Clojure build tool](http://packages.debian.org/unstable/java/leiningen) can handle the task of installing the language for you, and provide faux-quicklisp/quickproject functionality *and* **is** in the free repos as of [`wheezy`](http://www.debian.org/releases/wheezy/). So, one
 
@@ -39,7 +39,7 @@ Given that I'm a professional Common Lisper these days, I had exactly zero chanc
 ;; inferior-lisp support.
 ;; Because fuck you, that's why.
 (add-hook 'clojure-mode-hook
-          '(lambda () 
+          '(lambda ()
              (define-key clojure-mode-map (kbd "C-c C-c") 'lisp-eval-defun)
              (define-key clojure-mode-map (kbd "C-x C-e") 'lisp-eval-last-sexp)
              (define-key clojure-mode-map (kbd "C-c C-e") 'lisp-eval-last-sexp)
@@ -50,7 +50,7 @@ Given that I'm a professional Common Lisper these days, I had exactly zero chanc
 
 After all that, `run-lisp` in a Clojure buffer will start up a Clojure REPL, and the keyboard shortcuts I'm used to from `common-lisp-mode` will more or less work as before. `clojure-run-test` is mind-numbingly slow, and I don't get completions or arglist hints, but it's good enough for a start.
 
-### <a name="trying-clojure" href="#trying-clojure"></a>Trying Clojure
+### Trying Clojure
 
 The first thought that struck me was "Wait a minute, this looks a hell of a lot like Scheme". And really, that turns out to be pretty on the money, from what I can see so far at least. **Clojure is a JVM Scheme with curlies, brackets, an Arc-esque obsession with counting characters needed in the source code, and heavy emphasis on immutability.** That was bolded because, if you're in a hurry, you can basically stop reading now. If I were to offer advice about whether to learn it or not, I'd say
 
@@ -60,7 +60,7 @@ The first thought that struck me was "Wait a minute, this looks a hell of a lot 
 3.   if you already know Scheme or Common Lisp, and are comfortable with it, and don't go in for this JVM nonsense, don't bother learning Clojure because it'll teach you nothing new in the [Perlis](http://www.cs.yale.edu/quotes.html) sense
 
 
-The differences are mostly in minutia, rather than the general principles of the language. I'll go through the few that are obvious from cursory poking, but if you're interested at all, you should take in [Clojure for Lisp Programmers Part 1](http://blip.tv/clojure/clojure-for-lisp-programmers-part-1-1319721) and [Part 2](http://blip.tv/clojure/clojure-for-lisp-programmers-part-2-1319826), in which Rich Hickey tells you basically everything I'm about to and a few more things besides. 
+The differences are mostly in minutia, rather than the general principles of the language. I'll go through the few that are obvious from cursory poking, but if you're interested at all, you should take in [Clojure for Lisp Programmers Part 1](http://blip.tv/clojure/clojure-for-lisp-programmers-part-1-1319721) and [Part 2](http://blip.tv/clojure/clojure-for-lisp-programmers-part-2-1319826), in which Rich Hickey tells you basically everything I'm about to and a few more things besides.
 
 There are probably bigger differences than the ones I'll point out, consider this a "preliminary impressions" note, because I've yet to do anything more serious than an attempt at that poker hand kata.
 
@@ -78,7 +78,7 @@ user=>(def foo [1 2 3 4])
        user=> (let [[a b c d] foo] (list a b c d))
        (1 2 3 4)
 ```
- 
+
 - which means that I could start doing this much more frivolously.
 - **Curlies and Brackets** Obviously. It's not as though CL *doesn't* have them, but they tend to get used very sparingly as part of reader macros. Clojure uses curlies to designate hash-maps/sets and `[]` to designate (among other things) vectors. Personally, I don't miss the JavaScript/jQuery matching hell that comes with nesting all three of them, but they don't seem to be mutually nesting in a lot of places, and [`paredit`](http://emacswiki.org/emacs/ParEdit) helps a lot anyway.
 - **Whitespace Commas** The quote and backquote still work as expected, but the "unquote" modifier is `~` rather than `,`. This is another one that I see as frivolous, though I guess it could reduce cognitive friction for people who are used to delimiting lists with things other than spaces.
@@ -106,7 +106,7 @@ but if you want to get detailed, explicit, and compiler-checked, you have the op
 (defn read-card [card-string]
   {:doc "Takes a card string and returns a card hash with a :rank, :suit and :name"
    :pre [(string? card-string) (= 2 (count card-string))]
-   :post [(= clojure.lang.PersistentArrayMap (class %))]}  
+   :post [(= clojure.lang.PersistentArrayMap (class %))]}
   (let [rank (or (get rank-map (first card-string)) (read-string (str (first card-string))))
         suit (get suit-map (second card-string))
         name (get name-map rank)]

@@ -2,7 +2,7 @@
 
 ![Me holding a new keyboard tray](/static/img/tray.jpg)
 
-Pretty good as far as keyboard trays go, but I still find myself wanting one of those squishy wrist-rest pads. The default wrist bit on this tray isn't *terribly* uncomfortable, but it doesn't quite compress right. And for all the awesome work PFU did on [this little beast](http://www.fentek-ind.com/happyhacking.htm) in terms of key placement/spacing/spring system, they didn't put any effort at all into making the wrist comfortable. That's the one thing I miss from my [old behemoth](http://www.microsoft.com/hardware/mouseandkeyboard/productdetails.aspx?pid=043) (which is now comfortably at the office). I still prefer the HHL2 for speed; the keys are actually spaced close enough together (and consistently sized enough) that I get a fairly significant boost just from using it (on average 5 wpm). 
+Pretty good as far as keyboard trays go, but I still find myself wanting one of those squishy wrist-rest pads. The default wrist bit on this tray isn't *terribly* uncomfortable, but it doesn't quite compress right. And for all the awesome work PFU did on [this little beast](http://www.fentek-ind.com/happyhacking.htm) in terms of key placement/spacing/spring system, they didn't put any effort at all into making the wrist comfortable. That's the one thing I miss from my [old behemoth](http://www.microsoft.com/hardware/mouseandkeyboard/productdetails.aspx?pid=043) (which is now comfortably at the office). I still prefer the HHL2 for speed; the keys are actually spaced close enough together (and consistently sized enough) that I get a fairly significant boost just from using it (on average 5 wpm).
 
 It's a +5 Keyboard of Speed. Together with my +1 Trackball of Accuracy and +2 Monitors of Insight, as well as the Hard Drive of Premonition, my home machine is now *significantly* better, in all ways, than my work setup.
 
@@ -12,11 +12,11 @@ There's this little slide-out sub-tray for the mouse, but since I have a tiny ke
 
 The only complaint I have is that Fellowes are fucking liars. In fact, *anyone* that tells you their keyboard tray has "easy installation" is a fucking liar, and you can tell them I said so. It was a pain in the ass. Granted, in this case it was worth it for the extra space and long-term comfort I got out of it, but there was significant short-term *dis*comfort.))
 
-### <a name="define-officefollowup" href="#define-officefollowup"></a>(define (office-follow-up)
+### (define (office-follow-up)
 
 '(Almost done configuring my dev environment for work. It's been bearable for a few days actually, so I've managed to get some work done at least, but there's still kinks here and there. The current plan is to get everything I need together in one place (and for the record, it's about twice as much as the documentation would have me believe I need), then create a bootable flash-drive with a dev-environment shell script to take care of everything other than the OS installation. I should be able to announce a dev-environment-on-a-stick (with your choice of editor) next week.))
 
-### <a name="define-updateemacs" href="#define-updateemacs"></a>(define (update-emacs)
+### (define (update-emacs)
 
 '(I'm still updating my .emacs and associated files. The other day, I finally got off my ass and installed [nXhtml mode](http://ourcomments.org/Emacs/nXhtml/doc/nxhtml.html). Which I'm not using right now, incidentally, I prefer the vanilla html-mode for my everyday editing, but nXhtml provides a lot of much-needed functionality for editing PHP, JSP and mixed HTML/JS/CSS files (I try to minimize that last group, but you still run across them sometimes).
 

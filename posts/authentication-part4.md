@@ -1,30 +1,30 @@
-> Authentication  
-> Authentication  
-> Authentication!  
-> 
-> Authentication  
-> Authentication  
-> Authentication  
-> Authentication  
-> 
-> Authentication  
-> Authentication  
-> Authentication  
-> 
-> Authentication  
-> Authentication  
-> Authentication  
-> 
-> Authentication  
-> Authentication  
-> Authentication  
-> Authenticatiooooooooooon!  
+> Authentication
+> Authentication
+> Authentication!
+>
+> Authentication
+> Authentication
+> Authentication
+> Authentication
+>
+> Authentication
+> Authentication
+> Authentication
+>
+> Authentication
+> Authentication
+> Authentication
+>
+> Authentication
+> Authentication
+> Authentication
+> Authenticatiooooooooooon!
 
 ![](/static/img/imaginationland-guy.jpg)
 
 Gentlemen...
 
-### <A NAME="BEHOLD" HREF="#BEHOLD"></A>BEHOLD!
+### BEHOLD!
 
 ```erlang
 -module(rsa_auth).
@@ -46,7 +46,7 @@ new_key(UserId, Pubkey) -> gen_server:call(?MODULE, {new_key, UserId, Pubkey}).
 gen_secret(UserId, IP) -> gen_server:call(?MODULE, {gen_secret, UserId, IP}).
 verify(UserId, IP, Sig) -> gen_server:call(?MODULE, {verify, UserId, IP, Sig}).
 
-handle_call({gen_secret, UserId, IP}, _From, State) -> 
+handle_call({gen_secret, UserId, IP}, _From, State) ->
     Pubkey = find({key, UserId}),
     P = binary_to_hex(crypto:sha(crypto:rand_bytes(32))),
     Ciphertext = binary_to_list(m2crypto:encrypt(Pubkey, P)),
@@ -57,10 +57,10 @@ handle_call({verify, UserId, IP, Sig}, _From, State) ->
     Pubkey = find({key, UserId}),
     Secrets = find({secrets, UserId, IP}),
     Res = lists:any(
-            fun({T, S}) -> verify_key({T, S}, Pubkey, Sig) end, 
+            fun({T, S}) -> verify_key({T, S}, Pubkey, Sig) end,
             Secrets),
     {reply, Res, State};
-handle_call({new_key, UserId, Pubkey}, _From, State) -> 
+handle_call({new_key, UserId, Pubkey}, _From, State) ->
     Res = case exists_p(UserId) of
               false -> Fname = make_tempname("/tmp"),
                        file:write_file(Fname, Pubkey),
@@ -88,11 +88,11 @@ verify_key({T, S}, Pubkey, Sig) ->
 revoke_secret(T) ->
     db:transaction(fun() -> mnesia:delete({secret, T}) end).
 
-old_secret_p(T) -> 
+old_secret_p(T) ->
     %% it's old if the timestamp is older than 5 minutes
     300 < (now_to_seconds(now()) - now_to_seconds(T)).
 
-exists_p(UserId) -> 
+exists_p(UserId) ->
     try
         find({key, UserId})
     catch
@@ -100,12 +100,12 @@ exists_p(UserId) ->
     end.
 
 %%% DB related
-find({key, UserId}) -> 
+find({key, UserId}) ->
     [Rec] = db:do(qlc:q([X#pubkey.pubkey || X <- mnesia:table(pubkey), X#pubkey.user_id =:= UserId])),
     Rec;
-find({secrets, UserId, IP}) -> 
-    db:do(qlc:q([{X#secret.timestamp, X#secret.plaintext} || 
-                    X <- mnesia:table(secret), 
+find({secrets, UserId, IP}) ->
+    db:do(qlc:q([{X#secret.timestamp, X#secret.plaintext} ||
+                    X <- mnesia:table(secret),
                     X#secret.user_id =:= UserId,
                     X#secret.ip =:= IP])).
 
@@ -156,7 +156,7 @@ new_key(UserId, Pubkey) -> gen_server:call(?MODULE, {new_key, UserId, Pubkey}).
 gen_secret(UserId, IP) -> gen_server:call(?MODULE, {gen_secret, UserId, IP}).
 verify(UserId, IP, Sig) -> gen_server:call(?MODULE, {verify, UserId, IP, Sig}).
 
-handle_call({gen_secret, UserId, IP}, _From, State) -> 
+handle_call({gen_secret, UserId, IP}, _From, State) ->
     Pubkey = find({key, UserId}),
     P = binary_to_hex(crypto:sha(crypto:rand_bytes(32))),
     Ciphertext = binary_to_list(m2crypto:encrypt(Pubkey, P)),
@@ -167,10 +167,10 @@ handle_call({verify, UserId, IP, Sig}, _From, State) ->
     Pubkey = find({key, UserId}),
     Secrets = find({secrets, UserId, IP}),
     Res = lists:any(
-            fun({T, S}) -> verify_key({T, S}, Pubkey, Sig) end, 
+            fun({T, S}) -> verify_key({T, S}, Pubkey, Sig) end,
             Secrets),
     {reply, Res, State};
-handle_call({new_key, UserId, Pubkey}, _From, State) -> 
+handle_call({new_key, UserId, Pubkey}, _From, State) ->
     Res = case exists_p(UserId) of
               false -> Fname = make_tempname("/tmp"),
                        file:write_file(Fname, Pubkey),
@@ -206,7 +206,7 @@ verify_key({T, S}, Pubkey, Sig) ->
 revoke_secret(T) ->
     db:transaction(fun() -> mnesia:delete({secret, T}) end).
 
-old_secret_p(T) -> 
+old_secret_p(T) ->
     %% it's old if the timestamp is older than 5 minutes
     300 < (now_to_seconds(now()) - now_to_seconds(T)).
 ```
@@ -214,7 +214,7 @@ old_secret_p(T) ->
 That seems reasonably self-explanatory too<a name="note-Sat-Jun-23-013559EDT-2012"></a>[|4|](#foot-Sat-Jun-23-013559EDT-2012). We check whether a given secret is too old, revoking it without granting access if it is, then calling out to python for the actual verification step (coming soon, I promise). If it succeeds, we revoke it and grant access. Note that by the time we've gotten to this point, the keys have already been verified for a matching IP. Right, back to the last clause in `handle_call/3`
 
 ```erlang
-handle_call({new_key, UserId, Pubkey}, _From, State) -> 
+handle_call({new_key, UserId, Pubkey}, _From, State) ->
     Res = case exists_p(UserId) of
               false -> Fname = make_tempname("/tmp"),
                        file:write_file(Fname, Pubkey),
@@ -251,9 +251,9 @@ handle_call({'EXIT', _Port, Reason}, _From, _State) ->
 handle_call(Message, _From, Port) ->
     port_command(Port, term_to_binary(Message)),
     receive
-        {State, {data, Data}} -> 
+        {State, {data, Data}} ->
             {reply, binary_to_term(Data), State}
-    after 3000 -> 
+    after 3000 ->
             exit(timeout)
     end.
 
@@ -272,7 +272,7 @@ code_change(_OldVsn, State, _Extra) -> {ok, State}.
 ```erlang
 from erlport import Port, Protocol, String
 import M2Crypto
-        
+
 class M2cryptoProtocol(Protocol):
     def handle_split_key(self, filename):
         pubkey = M2Crypto.RSA.load_pub_key(String(filename))
@@ -305,7 +305,7 @@ main() -> #template { file="./site/templates/bare.html" }.
 
 title() -> "Manual RSA Auth".
 
-body() -> 
+body() ->
     [
      #label {text="Username: "},
      #textbox { id=username, next=sendButton },
@@ -323,7 +323,7 @@ event(send_user) ->
               #button { id=send_signed, text="Send Signed", postback=send_signed }
              ]);
 event(send_signed) ->
-    Args = [wf:q(username), wf:peer_ip(), 
+    Args = [wf:q(username), wf:peer_ip(),
             re:replace(wf:q(auth_response), "\\\\n", "\n", [global, {return, list}])],
     Res = rpc:call('trivial_user@127.0.1.1', rsa_auth, verify, Args),
     erlang:display(Res),
@@ -374,7 +374,7 @@ That's the code down. The interaction, once you've registered and if you're goin
 
 Assuming it was done correctly, you should then be logged in. The automatic version is going to have to wait for some sleep.
 
-### <a name="how-is-this-better-than-passwords" href="#how-is-this-better-than-passwords"></a>How Is This Better Than Passwords?
+### How Is This Better Than Passwords?
 
 I don't fucking know, something. Oh, wait, yeah it is. In three specific ways.
 

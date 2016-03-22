@@ -7,8 +7,8 @@ Setting up an environment turns out to be fairly simple. About the same complexi
 - **install leiningen**. This was technically done, but I had a ridiculously out-of-date version of `lein`, so I ended up uninstalling that and doing `nix-env -i leiningen`
 - **add `cider-nrepl` to your `profiles.clj` file**. Once you've got `leiningen`, you should also have a file at `~/.lein/profiles.clj`. If you don't, just create it (I had to). Then add
 ```clojure
-{ :user 
-  { :plugins 
+{ :user
+  { :plugins
    [[cider/cider-nrepl "0.9.0-SNAPSHOT"]
     [org.clojure/tools.nrepl "0.2.10"]] }}
 ```
@@ -18,7 +18,7 @@ I'm not sure the `tools.nrepl` line is strictly necessary, but figured I might a
 
 And that's basically it. At that point, you can run `cider-jack-in` to get a `SLIME`-like interactive REPL running<a name="note-Sun-Apr-19-220141EDT-2015"></a>[|1|](#foot-Sun-Apr-19-220141EDT-2015). They're not exactly the same, notably the debugger and stack-trace in `cider`isn't *nearly* as interactive or useful as the one in `SLIME`, but you still get minibuffer argument hints and a macroexpander. If it weren't for the fact that `lein repl` takes something on the order of 5 seconds to start up, switching over from CL would be completely painless<a name="note-Sun-Apr-19-220152EDT-2015"></a>[|2|](#foot-Sun-Apr-19-220152EDT-2015).
 
-## <a name="history" href="#history"></a>History
+## History
 
 I mentioned a little while ago that I'm thinking about full-history data-stores. I've already kind of implemented [one](https://github.com/Inaimathi/fact-base), though it is tightly bound to a particular data-structure, and I've done [a bit of experimenting with a generalization](https://github.com/Inaimathi/cl-history). Having set up Clojure, I was inspired to do a bit more playing around.
 
@@ -27,12 +27,12 @@ I mentioned a little while ago that I'm thinking about full-history data-stores.
   (:require [clojure.java.io :as io]
             [clojure.edn :as edn]))
 
-(defn make-archive 
+(defn make-archive
   ([apply-fn zero]
    {:into apply-fn :state zero :history () :zero zero})
   ([apply-fn zero fname]
    (let [f (io/as-file fname)]
-     (when (not (.exists f)) 
+     (when (not (.exists f))
        (with-open [w (io/writer fname)]
          (.write w (with-out-str (prn zero)))))
      {:into apply-fn :state zero :history () :zero zero :file f})))
@@ -44,7 +44,7 @@ I mentioned a little while ago that I'm thinking about full-history data-stores.
   (let [ev-str (with-out-str (prn event))
         file (arc :file)
         streams (arc :streams)]
-    (and file 
+    (and file
          (with-open [w (io/writer file :append :true)]
            (.write w ev-str)))
     (and streams (doseq [s streams] (.write s ev-str)))))
@@ -65,7 +65,7 @@ I mentioned a little while ago that I'm thinking about full-history data-stores.
           eof (gensym)]
       (reduce
        apply-event arc
-       (take-while 
+       (take-while
         (partial not= eof)
         (repeatedly (partial edn/read {:eof eof} in)))))))
 ```
@@ -100,33 +100,33 @@ That's how you would go about declaring a history-aware table. You'd use it by m
 
 ```clojure
 history.core> (make-history-table)
-{:into #<core$eval7113$app__7114 history.core$eval7113$app__7114@58e793e4>, 
+{:into #<core$eval7113$app__7114 history.core$eval7113$app__7114@58e793e4>,
  :state {}, :history (), :zero {}}
 
 history.core> (new-event (make-history-table) [:insert :test "test"])
-{:into #<core$eval7113$app__7114 history.core$eval7113$app__7114@58e793e4>, 
- :state {:test "test"}, 
- :history ([:insert :test "test"]), 
+{:into #<core$eval7113$app__7114 history.core$eval7113$app__7114@58e793e4>,
+ :state {:test "test"},
+ :history ([:insert :test "test"]),
  :zero {}}
 
 history.core> (new-event (new-event (make-history-table) [:insert :test "test"]) [:insert :another-test "bleargh"])
-{:into #<core$eval7113$app__7114 history.core$eval7113$app__7114@58e793e4>, 
- :state {:another-test "bleargh", :test "test"}, 
- :history ([:insert :another-test "bleargh"] [:insert :test "test"]), 
+{:into #<core$eval7113$app__7114 history.core$eval7113$app__7114@58e793e4>,
+ :state {:another-test "bleargh", :test "test"},
+ :history ([:insert :another-test "bleargh"] [:insert :test "test"]),
  :zero {}}
 
 history.core> (new-event (new-event (new-event (make-history-table) [:insert :test "test"]) [:insert :another-test "bleargh"]) [:delete :test])
-{:into #<core$eval7113$app__7114 history.core$eval7113$app__7114@58e793e4>, 
- :state {:another-test "bleargh"}, 
- :history ([:delete :test] [:insert :another-test "bleargh"] [:insert :test "test"]), 
+{:into #<core$eval7113$app__7114 history.core$eval7113$app__7114@58e793e4>,
+ :state {:another-test "bleargh"},
+ :history ([:delete :test] [:insert :another-test "bleargh"] [:insert :test "test"]),
  :zero {}}
 
-history.core> 
+history.core>
 ```
 
 This is a pretty stupid example, all things considered, but it illustrates how you'd go about putting together a minimally functional, history-aware data-structure. In reality, you'd declare your table to be an [`atom`](http://clojure.org/atoms) or [`agent`](http://clojure.org/agents), and declare a `change` function that updates its state with `new-event`. This is the main use-case I'm considering, so it might be prudent to just make that the default behavior of the library.
 
-## <a name="minor-notes" href="#minor-notes"></a>Minor Notes
+## Minor Notes
 
 First impressions are really, *really* good. As [I've said before](/article?name=recommendations.html), I like Clojure. My impression of it is that it takes takes the best parts of Scheme and Common Lisp and runs with them. [`lein`](http://leiningen.org/) comes with basically all the stuff I like out of [`asdf`](https://common-lisp.net/project/asdf/), [`quicklisp`](http://www.quicklisp.org/) and [`quickproject`](http://www.xach.com/lisp/quickproject/), with the added perks of [good documentation](http://leiningen.org/#docs) *and* built-in consideration for [unit testing](https://github.com/technomancy/leiningen/blob/stable/doc/TUTORIAL.md#tests). The *only* complaint I have is the annoying startup delay whenever I do `lein something`. In particular, the `lein test` command takes long enough that I'm not sure I'd want to pipe it through `entr` keyed on `.clj` file changes. I'll let you know how it goes once I've done some real work with it.
 

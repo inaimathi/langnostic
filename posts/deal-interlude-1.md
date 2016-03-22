@@ -1,12 +1,12 @@
 Just a heads up: you won't see any of the below code checked into [the Deal repo](https://github.com/Inaimathi/deal) quite yet. And [production](http://deal.inaimathi.ca/) still uses the [nginx PushStream module](https://github.com/wandenberg/nginx-push-stream-module) for its asynchronous needs, and will continue to do so either until I finish enough of the other tasks to pull back enough time to re-structure its server, or until the contest ends and I no longer have to worry about making fast forward progress. Once I get around to it though, yes the real, actual Deal server is going to use this approach. It'll still use nginx as a reverse proxy to make sure static files are being served as fast as possible, but it won't rely on external SSE machinery longer than it has to. Not that the machinery's bad, mind you. It just complicates deployment more than I'd like.
 
-### <a name="why-and-when" href="#why-and-when"></a>Why and When
+### Why and When
 
 Lets just get this out of the way. Yes, there [already exist](http://weitz.de/hunchentoot/) some [pretty](http://www.cliki.net/araneida) good [general-purpose](https://github.com/orthecreedence/wookie) web servers written in Common Lisp. The reason you'd build your own is if you had a very particular purpose in mind. If you're out to host a vanilla web site, or a traditional stateless, HTML-emitting web application, you'd already have your bases covered. But imagine you were building an application that had a heavy focus on JSON-interaction and session-tracking, with built-in support for SSEs. Say for the sake of argument, [something like](https://github.com/Inaimathi/strifebarge) a [web-game](https://github.com/Inaimathi/deal). You probably *could* make one of the existing things work for you. If you tried hard enough, and were willing to hack in support for one or two things<a name="note-Sun-Sep-15-225241EDT-2013"></a>[|1|](#foot-Sun-Sep-15-225241EDT-2013). But as you can see by reading the [`define-handler` mini-language](https://github.com/Inaimathi/deal/blob/master/define-handler.lisp) I put together for Deal, using a general purpose server for such a specific task incurs complexity penalties that you could completely sidestep by building something minimal and specialized.
 
 That's the point at which I'd start aiming for a goal like this. When using the existing, tested, reasonably-performing options is introducing conceptual and deployment complexity into my project. And, just in case you [missed it](https://github.com/Inaimathi/deal#installation), it is.
 
-### <a name="gotchas" href="#gotchas"></a>Gotchas
+### Gotchas
 
 HTTP is old. A child of [the mid-ninties](http://www.w3.org/Protocols/HTTP/1.0/spec.html). There are people alive and programming professionally today who were born after it was created. Lisp is [a bit](http://en.wikipedia.org/wiki/Common_Lisp) older. And I can only assume no one working on its standardization knew how big the web would actually get, so they made a couple choices that must have made sense to them, but that will annoy the fuck out of you if you need to generate valid HTTP responses from a CL application.
 
@@ -35,7 +35,7 @@ I'm not committed yet, and may just go with defining all of the above. The `crlf
 
 That out of the way, lets spend just a moment discussing...
 
-### <a name="the-approach" href="#the-approach"></a>The Approach
+### The Approach
 
 As far as I can tell, there are two legitimate approaches to building an async server in Common Lisp.
 
@@ -46,7 +46,7 @@ As far as I can tell, there are two legitimate approaches to building an async s
 
 I'm taking that second approach in this article, but you can use the same theory to construct a `cl-async`-based equivalent without too much trouble.
 
-### <a name="now-then" href="#now-then"></a>Now Then
+### Now Then
 
 We're building a toy example. The simplest async server that can possibly be constructed while remaining worthy of the name. We're going to have three applicable handlers:
 
@@ -85,9 +85,9 @@ nothing fancy like user-specified messages, or multiple channels, both of which 
          (cat "Connection: keep-alive" crlf
               "Date: " (http-date) crlf
               "Expires: Thu, 01 Jan 1970 00:00:01 GMT" crlf))
-       (when body 
-         (cat "Content-Length: " (write-to-string (length body)) crlf crlf 
-              body crlf)) 
+       (when body
+         (cat "Content-Length: " (write-to-string (length body)) crlf crlf
+              body crlf))
        crlf))
 ```
 
@@ -97,8 +97,8 @@ nothing fancy like user-specified messages, or multiple channels, both of which 
 (defparameter *channel* nil)
 
 (defparameter interface
-  (response 
-   :body 
+  (response
+   :body
    (with-html-output-to-string (str nil :prologue t)
      (:html
       (:head (:title "Test page"))
@@ -112,13 +112,13 @@ nothing fancy like user-specified messages, or multiple channels, both of which 
                      (setf (@ elem inner-h-t-m-l)
                            (+ (@ elem inner-h-t-m-l) "<p>" msg "</p>"))))
                  (setf (@ src onerror)
-                       (lambda (e) 
+                       (lambda (e)
                          (p "ERROR OCCURRED...")
                          (p (chain -j-s-o-n (stringify e))))
                        (@ src onopen)
                        (lambda (e) (p "STREAM OPENED..."))
                        (@ src onmessage)
-                       (lambda (e) 
+                       (lambda (e)
                          (p "GOT MESSAGE!")
                          (p (+ "data: " (@ e data)))))))))))))
 
@@ -153,7 +153,7 @@ Don't worry about it for now. Next up is the actual handler.
            (subscribe! socket))
           ((string= "/pub" request-uri)
            (publish! (format nil "Got a message! ~a" (gensym)))
-           (write-string (response 
+           (write-string (response
                           :content-type "text/plain"
                           :body "Published!") s)
            (socket-close socket))
@@ -187,12 +187,12 @@ We're almost done. We need exactly one more component; a piece that'll monitor a
 
 (defmethod starts-with? ((prefix list) (list list) &optional (test #'eql))
   (loop for (p . rest-p) on prefix for (l . rest-l) on list
-     when (or (and rest-p (not rest-l)) (not (funcall test p l))) 
+     when (or (and rest-p (not rest-l)) (not (funcall test p l)))
      do (return nil)
      finally (return t)))
 
 (defun start (port &optional (log-stream *standard-output*))
-  (stop)  
+  (stop)
   (setf *socket-handle* (socket-listen "127.0.0.1" port :reuse-address t))
   (let ((conns (list *socket-handle*))
         (buffers (make-hash-table)))
@@ -325,7 +325,7 @@ And that's that. Assuming I've actually got the SSE points ironed out, and we'll
           *channel* nil)))
 
 (defun start (port &optional (log-stream *standard-output*))
-  (stop)  
+  (stop)
   (setf *socket-handle* (socket-listen "127.0.0.1" port :reuse-address t))
   (let ((conns (list *socket-handle*))
         (buffers (make-hash-table)))
@@ -350,7 +350,7 @@ And that's that. Assuming I've actually got the SSE points ironed out, and we'll
            (subscribe! socket))
           ((string= "/pub" request-uri)
            (publish! (format nil "Got a message! ~a" (gensym)))
-           (write-string (response 
+           (write-string (response
                           :content-type "text/plain"
                           :body "Published!") s)
            (socket-close socket))
@@ -397,17 +397,17 @@ And that's that. Assuming I've actually got the SSE points ironed out, and we'll
          (cat "Connection: keep-alive" crlf
               "Date: " (http-date) crlf
               "Expires: Thu, 01 Jan 1970 00:00:01 GMT" crlf))
-       (when body 
-         (cat "Content-Length: " (write-to-string (length body)) crlf crlf 
-              body crlf)) 
+       (when body
+         (cat "Content-Length: " (write-to-string (length body)) crlf crlf
+              body crlf))
        crlf))
 
 (defun cat (&rest seqs)
   (apply #'concatenate 'string seqs))
 
 (defparameter interface
-  (response 
-   :body 
+  (response
+   :body
    (with-html-output-to-string (str nil :prologue t)
      (:html
       (:head (:title "Test page"))
@@ -421,19 +421,19 @@ And that's that. Assuming I've actually got the SSE points ironed out, and we'll
                      (setf (@ elem inner-h-t-m-l)
                            (+ (@ elem inner-h-t-m-l) "<p>" msg "</p>"))))
                  (setf (@ src onerror)
-                       (lambda (e) 
+                       (lambda (e)
                          (p "ERROR OCCURRED...")
                          (p (chain -j-s-o-n (stringify e))))
                        (@ src onopen)
                        (lambda (e) (p "STREAM OPENED..."))
                        (@ src onmessage)
-                       (lambda (e) 
+                       (lambda (e)
                          (p "GOT MESSAGE!")
                          (p (+ "data: " (@ e data)))))))))))))
 
 (defmethod starts-with? ((prefix list) (list list) &optional (test #'eql))
   (loop for (p . rest-p) on prefix for (l . rest-l) on list
-     when (or (and rest-p (not rest-l)) (not (funcall test p l))) 
+     when (or (and rest-p (not rest-l)) (not (funcall test p l)))
      do (return nil)
      finally (return t)))
 

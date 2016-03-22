@@ -2,7 +2,7 @@ It has become obvious to me that I'm getting old.
 
 My wife and mother-in-law went out for lunch while I was at work. They dined<a name="note-Sun-Nov-25-195637EST-2012"></a>[|1|](#foot-Sun-Nov-25-195637EST-2012) at KFC, and brought the leftovers of their feast home, ostensibly to serve as dinner for me. Three pieces later, my body is loudly and clearly telling me to fuck off. So having torn myself away from the porcelain god, I'm going to write something in an effort to expunge the taste of grease and fail.
 
-## <a name="fatherhood" href="#fatherhood"></a>Fatherhood
+## Fatherhood
 
 Children are a lot of effort. I'm still constantly being told that it gets easier, and that the second and third ones are cakewalks, but I'm not seeing it yet. All I can definitively say so far is that if you're planning on generating larva with your significant other, expect to sleep significantly less than you're used to.
 
@@ -12,13 +12,13 @@ A lot.
 
 Finally, a word advice for the programmer daddies specifically, hands down the best investment you can make is a [sling carrier of some kind](http://www.amazon.ca/b?ie=UTF8&node=4624444011). It'll let you cradle your baby while keeping both hands free. I'd have basically no hope of finishing this article without [one](http://www.amazon.ca/Moby-Wrap-MW-Slate-Seasonal-Slate/dp/B002PIZV36/ref=sr_1_10?s=baby&ie=UTF8&qid=1353895785&sr=1-10).
 
-## <a name="haskell" href="#haskell"></a>Haskell
+## Haskell
 
 I've finally gotten past Absolute N00b stage with Haskell. Like I said last time, it only took three years. There's a few patterns I'm detecting in the libraries and community that I thought I'd point out.
 
 The strong typing stereotype turns out to be right on the money. There are precious few libraries on [hackage](http://hackage.haskell.org/packages/archive/pkg-list.html) that have any kind of usage example in addition to type signatures, and fewer still that have [actual documentation](http://www.happstack.com/docs/crashcourse/index.html). I guess I'll have to get good at reading type signatures, but guys, these are for the fucking *compiler*. Some human readable media beyond basic explanations would be nice. The upshot is that, if you're hopping around `ghci`, you can use `:browse Library.Name.Here`, and the `hoogle` docs are [available for local use](http://langnostic.blogspot.ca/2012/09/setting-up-haskell.html), so I guess it might kind-of-almost-sort-of even out once you get to the point where you're comfortable with language basics. The other upshot is that the community is *very* responsive. I wasn't expecting to have as easy a time getting stupid questions answered as I've actually had, whether that's been in-person, via [IRC](http://www.haskell.org/haskellwiki/IRC_channel) or on the appropriate [SO tag](http://stackoverflow.com/questions/tagged/haskell).
 
-## <a name="clojure" href="#clojure"></a>Clojure
+## Clojure
 
 [`swank-clojure`](https://github.com/technomancy/swank-clojure/blob/master/README.md) seems to have been deprecated! I went to install my usual Clojure environment to do a bit of hacking for this article, and noticed [that giant note](https://github.com/technomancy/swank-clojure/blob/master/README.md#deprecated) in its `git` repo. The good news is that there's apparently a thing called `[nrepl](https://github.com/kingtim/nrepl.el)` that provides more or less the same functionality, except through the Clojure [Networked REPL](https://github.com/clojure/tools.nrepl) rather than through [SWANK](http://www.cliki.net/SLIME-HOWTO). `nrepl.el` is available [here](https://raw.github.com/kingtim/nrepl.el/master/nrepl.el), for those of us who still install Emacs packages manually. The model is a bit different; where `SWANK` is a thing that gets started as part of `SLIME`, and then loads projects, `nREPL` is theoretically a thing that your project needs as a dependency, then gets started once you start editing that project.
 
@@ -26,7 +26,7 @@ I say "theoretically" because, just like `swank-clojure`, `nrepl` fails pretty s
 
 On the language in general by the way, it feels surprisingly comfortable after a couple months playing around in Haskell-land. To a first approximation, it's Common Lisp with more emphasis on the stuff I like and less emphasis on the stuff I don't. Because of the ecosystem its embedded in, you frequently find yourself having to call Java code for one task or another, but doing so is [easier than you'd think](http://clojure.org/java_interop). The only part I really *don't* like about it is its weight. Every time I `lein run` a project, or start up the `repl`/`run-lisp`, there's a visible few-second delay during which all my cores start spinning into the 98% range. That doesn't happen with any other language I use regularly, even while running what seem to be more compute-intensive operations.
 
-## <a name="web-mote" href="#web-mote"></a>Web Mote
+## Web Mote
 
 On that note, a very small chunklet of my time has been going towards the tweaking of a Python project I started for my RasPi a little while ago.
 

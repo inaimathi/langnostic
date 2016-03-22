@@ -2,7 +2,7 @@ Dear The Internet,
 
 I see you're [having security problems](http://www.zdnet.com/ubuntu-forums-hacked-1-82m-logins-email-addresses-stolen-7000018336/), so I'm going to let you in on a technique for doing proper authentication. I've [discussed it before](http://langnostic.blogspot.ca/2012/06/authentication-authentication.html), but I get the feeling you thought I was trafficking in trade secrets, and scrupulously decided not to hear too much. Let me be clear that this is public knowledge, and is meant for sharing.
 
-### <a name="proper-authentication" href="#proper-authentication"></a>Proper Authentication
+### Proper Authentication
 
 To start with, your server should have a public/private keypair, and so should your users. When a user registers, ask them for their public key, and publish the server's public key in a few disparate places on the web. Then, when a user wants to log in
 

@@ -1,10 +1,10 @@
 So here's how you can pass messages to each other without your parents<a name="note-Mon-Jan-02-232529EST-2012"></a>[|1|](#foot-Mon-Jan-02-232529EST-2012) reading them.
 
-## <a name="step-get-some-friends-and-computers-together" href="#step-get-some-friends-and-computers-together"></a>Step 1: Get Some Friends and Computers together
+## Step 1: Get Some Friends and Computers together
 
 I can't help you with this. You need some computers<a name="note-Mon-Jan-02-233301EST-2012"></a>[|2|](#foot-Mon-Jan-02-233301EST-2012) and you need some friends to talk to, otherwise why would you be passing messages?
 
-## <a name="step-get-gnupg" href="#step-get-gnupg"></a>Step 2: Get GnuPG
+## Step 2: Get GnuPG
 
 This should be pretty simple. If you're on Debian/Ubuntu type
 
@@ -14,7 +14,7 @@ apt-get install gnupg
 
 If you're on Windows, you'll need to install [Cygwin](http://cygwin.com/install.html) with the gnupg package or [gpg4win](http://gpg4win.org/), if you're on OS X, you'll need to get [GPGtools](http://www.gpgtools.org/).
 
-## <a name="step-make-some-keys" href="#step-make-some-keys"></a>Step 3: Make some keys
+## Step 3: Make some keys
 
 Each of you should create a set of keys. Do that by typing
 
@@ -58,7 +58,7 @@ the OS a chance to collect more entropy! (Need 148 more bytes)
 
 Eventually, it'll give you back control of your terminal, and at that point your key has been created. The hard part is done.
 
-## <a name="step-share-your-keys" href="#step-share-your-keys"></a>Step 4: Share Your Keys
+## Step 4: Share Your Keys
 
 Ok, get those friends that I told you to have ready.
 
@@ -134,7 +134,7 @@ gpg --import your-friends-name.txt
 
 for every key you have. Once that's done, check that you have all your friends' keys imported by typing `gpg --list-keys` and hitting `enter`.
 
-## <a name="step-send-a-message" href="#step-send-a-message"></a>Step 5: Send A Message
+## Step 5: Send A Message
 
 Type up your message in a text file (we'll call it `message.txt`, but it can be any type of file) and then run
 
@@ -168,7 +168,7 @@ XAExmTYEcONMmjYG2rreIA97/6tbIrSMeWD2d3n66mLkpI8lvJMaTsBh0tS21NQ2
 
 You can now send this to everyone. Email, Facebook, reddit, your blog, a random comment section, anything goes. Only people with the keys you specified as `--recipient`s will be able to decrypt it.
 
-## <a name="step-read-a-message" href="#step-read-a-message"></a>Step 6: Read A Message
+## Step 6: Read A Message
 
 If you get a block like the above from one of your friends, save it to a text file called `encrypted.gpg`<a name="note-Tue-Jan-03-010358EST-2012"></a>[|4|](#foot-Tue-Jan-03-010358EST-2012) and run
 
@@ -178,11 +178,11 @@ gpg --output decrypted.txt --decrypt encrypted.gpg
 
 And `decrypted.txt` will now contain the note your friend passed you in plain text that you can read. Of course, anyone can read it now, so if it discusses anything you really want to keep secret, you should run `shred` on it once you've read it.
 
-## <a name="boss-fight" href="#boss-fight"></a>Boss Fight
+## Boss Fight
 
 Your homework is: use the comment section of [Joe Armstrong's Blog](http://armstrongonsoftware.blogspot.com/) to send a message to a friend that only the two of you can read. If you're feeling adventurous, send it to all of the friends you got together in **Step 1**
 
-## <a name="bonus-stage" href="#bonus-stage"></a>Bonus Stage
+## Bonus Stage
 
 Sending your friends messages that your parents can't read is nice, but if they catch you, they can still ground you until you decrypt it for them<a name="note-Tue-Jan-03-011207EST-2012"></a>[|5|](#foot-Tue-Jan-03-011207EST-2012). Ideally, you'd send your friends messages that your parents or teachers *wouldn't even know are messages*. To do that, you need a second program called `steghide`. On Debian GNU/Linux, just type `apt-get install steghide` as root. Cygwin supports this package too, but I have no idea how to get it on OS X so you Mac users are on your own here.
 
@@ -204,15 +204,15 @@ steghide extract -sf not-sure-if-secret.jpg
 
 (and enter the pass phrase if you set one) to get your encrypted message and then decrypt that to read what you sent them. You can use steghide to hide files in images or music that you can then send without raising suspicions.
 
-## <a name="secret-boss-fight" href="#secret-boss-fight"></a>Secret Boss Fight
+## Secret Boss Fight
 
 Send your mailing list one of those stupid `Fw: Fw: Fw: Fw:` joke mails, but embed a secret message to one of your friends in the first picture. Ideally, that friend should be one of the people you send the email, otherwise you're needlessly spamming.
 
-## <a name="secret-boss-fight-stage-" href="#secret-boss-fight-stage-"></a>Secret Boss Fight -- Stage 2
+## Secret Boss Fight -- Stage 2
 
 Find a forum/reddit thread somewhere and carry on a steganographic, encrypted conversation about hipster ninjas with two or three of your friends.
 
-## <a name="secret-boss-fight-final-stage" href="#secret-boss-fight-final-stage"></a>Secret Boss Fight -- Final Stage
+## Secret Boss Fight -- Final Stage
 
 Sneak onto your friends' computer while they're in the washroom and change their desktop background to a steganographic message. Chuckle about is constantly. When asked "What's so funny", burst with laughter and run out of the room with your stuff.
 

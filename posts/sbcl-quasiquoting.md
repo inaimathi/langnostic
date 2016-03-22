@@ -2,7 +2,7 @@ I needed to make a note of this, because I've just tried running [`fact-base`](h
 
 This is because of the `1.2.2` change in "internal representation" of the `backquote` reader macro. [Enough](http://christophe.rhodes.io/notes/blog/posts/2014/backquote_and_pretty_printing/) metaphorical ink [has](http://christophe.rhodes.io/notes/blog/posts/2014/naive_vs_proper_code-walking/) been spilled on this that I don't particularly care to add much more. But. I need to point out a couple of things about the situation.
 
-## <a name="trees-that-arent" href="#trees-that-arent"></a>Trees That Aren't
+## Trees That Aren't
 
 So here's something to consider
 
@@ -22,7 +22,7 @@ CL-USER> (equal (list *foo* '*bar* '*baz*) `(,*foo* *bar* *baz*))
 T
 CL-USER> (equal '(list *foo* '*bar* '*baz*) '`(,*foo* *bar* *baz*))
 NIL
-CL-USER> 
+CL-USER>
 ```
 
 I mean duh.
@@ -48,7 +48,7 @@ CL-USER> (tree-find `(,*foo* *bar* *baz*) '*bar*)
 T
 CL-USER> (tree-find `(,*foo* *bar* *baz*) 1)
 T
-CL-USER> 
+CL-USER>
 ```
 
 The question at the core of [the `SBCL 1.2.2` "kerfuffle"](http://christophe.rhodes.io/notes/blog/posts/2014/backquote_and_pretty_printing/) seems to be: what should happen when we call `tree-find` like this
@@ -58,7 +58,7 @@ CL-USER> (tree-find '(list *foo* '*bar* '*baz*) '*foo*)
 ???
 CL-USER> (tree-find '`(,*foo* *bar* *baz*) '*foo*)
 ???
-CL-USER> 
+CL-USER>
 ```
 
 Before moving on, think a bit about what you expect to happen and why.
@@ -70,7 +70,7 @@ CL-USER> (tree-find '(list *foo* '*bar* '*baz*) '*foo*)
 T
 CL-USER> (tree-find '`(,*foo* *bar* *baz*) '*foo*)
 T
-CL-USER> 
+CL-USER>
 ```
 
 The answer in `SBCL 1.2.2+` is that the symbol `*foo*` isn't *really* in that tree. Because unquoted forms are something fundamentally different from `cons`es. They're more like vectors; compound structures that you don't automatically expect to recur into with general tree operations. And so the first call should return `T`, while the second should return `NIL`.
@@ -80,7 +80,7 @@ CL-USER> (tree-find '(list *foo* '*bar* '*baz*) '*foo*)
 T
 CL-USER> (tree-find '`(,*foo* *bar* *baz*) '*foo*)
 NIL
-CL-USER> 
+CL-USER>
 ```
 
 The problem with this chain of reasoning is that you must arrive at the conclusion that *quoted forms aren't the same kind of tree as all other Lisp trees*. They are different, and you must treat them differently if you expect certain results out of them. From the posts I've read by Christophe Rhodes, the expectation is that users do "proper code walking" in situations of heavy macrology. Except, that's not quite enough. Because as I've shown above, you don't need to introduce any macros in order for this new representation to break compatibility.
@@ -94,13 +94,13 @@ If I take his reasoning at face value, there seem to be two legitimate ways to d
 
 Both of those seem ridiculous<a name="note-Sat-Feb-21-103325EST-2015"></a>[|1|](#foot-Sat-Feb-21-103325EST-2015). Both are going to introduce<a name="note-Sat-Feb-21-103350EST-2015"></a>[|2|](#foot-Sat-Feb-21-103350EST-2015) errors into existing code, and either complexity or redundancy into new code, for the purpose of getting some guarantees about edge-case behavior in certain fairly specialized situations. Which honestly doesn't sound like a very good trade.
 
-## <a name="internal-representations-that-leak" href="#internal-representations-that-leak"></a>Internal Representations That Leak
+## Internal Representations That Leak
 
 If you make a change to the "internal representation" of something, it sounds as if you're implying that a user can expect to use it as before without seeing the difference.
 
 That is not the case for this particular change, as demonstrated above. And calling it "internal" is, at the very least, playing fast and loose with the meaning of the word. This is an externally visible, compatibility-breaking change with other Common Lisp implementations. That may or may not be the right thing to do in a particular situation. But given that users can clearly see the difference between representations from the outside, I'm confused as to why the nature of the change is in question.
 
-## <a name="a-conclusion-that-doesnt" href="#a-conclusion-that-doesnt"></a>A Conclusion That Doesn't
+## A Conclusion That Doesn't
 
 There really isn't a good one for me.
 

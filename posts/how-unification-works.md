@@ -30,7 +30,7 @@ The above is an implementation of unification in Common Lisp. It won't, by itsel
 ```lisp
 FACT-BASE> (unify '(?a :test 1) '(:blah ?b 1))
 ((?B . :TEST) (?A . :BLAH))
-FACT-BASE> 
+FACT-BASE>
 ```
 
 This particular implementation represents environments as [association list](http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node153.html), but that's not a requirement. An `environment` is a key/value structure that tells you what variables are bound to which values. The three possible outputs of `unify` are:
@@ -40,7 +40,7 @@ This particular implementation represents environments as [association list](htt
 ```lisp
 FACT-BASE> (unify '(?a :test 1) '(:blah ?b 2))
 #:FAIL973
-FACT-BASE> 
+FACT-BASE>
 ```
 
 The problem there is that `1` and `2` are different constant values, so these two terms can't be `unify`ied. This is fundamentally different from
@@ -50,17 +50,17 @@ The problem there is that `1` and `2` are different constant values, so these tw
 ```lisp
 FACT-BASE> (unify '(:blah :test 2) '(:blah :test 2))
 NIL
-FACT-BASE> 
+FACT-BASE>
 ```
 
-This particular implementation of `unify` uses the empty list (`NIL`) as the empty success. And finally, `unify` might return 
+This particular implementation of `unify` uses the empty list (`NIL`) as the empty success. And finally, `unify` might return
 
 **An Environment**, which is a set of bindings under which the given unification is true. Once again,
 
 ```lisp
 FACT-BASE> (unify '(?a :test 1) '(:blah ?b 1))
 ((?B . :TEST) (?A . :BLAH))
-FACT-BASE> 
+FACT-BASE>
 ```
 
 What this is saying is
@@ -72,12 +72,12 @@ Now, by default, `unify` starts with the empty environment, but it doesn't have 
 ```lisp
 FACT-BASE> (unify '(?a :test 1) '(:blah ?b 1) '((?a . :FOO)))
 #:FAIL973
-FACT-BASE> 
+FACT-BASE>
 ```
 
 If `unify` tries to work on these same terms, but `?a` is already bound to `:foo`, it can do nothing but fail. Yes, you could unbind a particular variable, but that's skipping ahead a bit. Backtracking is dealt with at a different level than straight-up unification. In fact...
 
-## <a name="how-forall-works" href="#how-forall-works"></a>How `for-all` Works
+## How `for-all` Works
 
 Here's how `for-all` works.
 

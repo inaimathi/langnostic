@@ -106,7 +106,7 @@ Moving right along to the actual **echo.erl**.
 
 echo(Message) -> gen_server:call(?MODULE, Message).
 
-handle_call(Message, _From, State) -> 
+handle_call(Message, _From, State) ->
     {reply, {you_just_sent, Message}, State}.
 
 %%%%%%%%%%%%%%%%%%%% generic actions
@@ -140,16 +140,16 @@ erl_start = -eval 'lists:map(fun (App) -> application:load(App), application:sta
 
 erl_stop = -s init stop
 
-### <a name="rules" href="#rules"></a>Rules
-all: 
+### Rules
+all:
         erlc -Wf -o ebin/ src/*erl
         cp src/*app ebin/
 
-start: 
+start:
         $(ERL) -name example@127.0.1.1 $(erl_start)
 
 clean:
-        rm ebin/* deps/* priv/* 
+        rm ebin/* deps/* priv/*
 ```
 
 This does a couple of things. First, `make` compiles all the `*erl` files in `src` into `ebin`, second it copies over the `.app` file, and finally, `make start`it gives you an easier way of starting `erl` with all the relevant includes/startups than typing it all up each time. Now then.
@@ -184,7 +184,7 @@ Tadaaah! You've just made a full OTP application from scratch, with no automated
 
 Ok, quit out of that with a `C-c C-c`. We've got the basics down. Time for a
 
-### <a name="bonus-stage" href="#bonus-stage"></a>Bonus Stage
+### Bonus Stage
 
 We've got a single echo server running, but what if we wanted a few that all have mildly different behaviors? I've seen some beginners who think the solution is copy/pasting the existing `echo.erl` and chopping it up. In reality, Erlang is a little more object-oriented than [Joe](http://armstrongonsoftware.blogspot.ca/) would have you believe. There is a bit of chopping involved, but only because we wrote the initial `echo` module without thinking about this situation. First off, its API needs to change to accept a process, rather than assuming one named the same as the `?MODULE`.
 
@@ -203,7 +203,7 @@ Second, we can't hard-code components that we'll want to change across processes
 ```erlang
 ...
 
-handle_call(Message, _From, Reply) -> 
+handle_call(Message, _From, Reply) ->
     {reply, {Reply, Message}, Reply}.
 
 ...

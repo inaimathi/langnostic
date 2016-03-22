@@ -8,7 +8,7 @@ So lately, I've been thinking about my work setup for hacking, and it occurs tha
 1.   The current "solution" is a base image (Windows with an unconfigured outlook, and printer drivers) which the dev then has to spend about a day (two or three the first time) prepping to get up and running. This leaves something to be desired. ))
 
 
-### <a name="define-pingemacs-" href="#define-pingemacs-"></a>(define (ping-emacs) (
+### (define (ping-emacs) (
 
 What, you thought I only got one per post?
 
@@ -21,7 +21,7 @@ Bottom line is, I don't think I'll ever be done optimizing, but I'm ok with that
 A little while ago, while I was still using Gedit for my typing needs, I decided that I really wanted non-broken frames ("winows" in Emacs parlance) in my editor, and I spent a good two or three hours searching around for an add-on to it that would do what I wanted. It's been a while so the situation might have changed, but as I recall, there was one add-on that added a single, secondary frame that basically got treated as a second instance of Gedit (except it didn't auto-save, or ask you to save any changes when you quit the main Gedit window), and a second add-on that did precisely what I wanted but wouldn't be available for another year and a half. This illustrates the common state of editors: they're great if you ignore their limitations or resign yourself to living with them.
 
 Emacs is different; because hacking on it is central to the idea, there's very rarely a feature you could imagine that you can't also implement yourself with a few hours of typing. Even better than that, small changes are trivial to add. That tag-closing function I whipped up that auto-fires on my typing">"? That took about 40 seconds to add. And no, it's not done yet, I'll probably change its binding or behavior, but the fact that I *can* is awesome.
-It feels very gratifying that the cycle of 
+It feels very gratifying that the cycle of
 
 - Think up new feature
 - Code it

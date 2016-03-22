@@ -1,6 +1,6 @@
 I've seen this question pop up on various forums with disturbing frequency lately. Enough that I just wrote this so that I can link people to it instead of typing the advice out each time. The stuff I cover here has already been touched on in [a post called Self Titled](http://langnostic.blogspot.ca/2012/02/self-titled.html). Go read that if you want more perspective on my opinion, but it's fairly long so I need to put something shorter and more accessible together.
 
-### <a name="a-better-question" href="#a-better-question"></a>A Better Question
+### A Better Question
 
 is "What do I want to do with my programming skills?"
 
@@ -10,7 +10,7 @@ That's it, you can go.
 
 Pretend the rest of this article doesn't exist.
 
-### <a name="if-youre-still-reading" href="#if-youre-still-reading"></a>If You're Still Reading
+### If You're Still Reading
 
 your goal is to push the bleeding edge of Comp Sci/IT forward, and you have your work cut out for you.
 
@@ -26,7 +26,7 @@ You need a thorough understanding of compilers, which you can get by putting a f
 
 Learning to program is not a thing you [pick up in seven days](http://norvig.com/21-days.html), and you could do a lot worse than to start by reading [that article](http://norvig.com/21-days.html). Just make sure to also disabuse yourself of the idea that you do it by picking one language and sticking to that.
 
-## <A NAME="TL-DR" HREF="#TL-DR"></A>TL DR
+## TL DR
 
 So, in case you skipped directly to this line, the short answer is **"all of them, and that's just for starters"**. Good luck; I'll see you on the other side.
 

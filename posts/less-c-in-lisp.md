@@ -2,18 +2,18 @@ It seems that I only ever get around to working on this pet project when I'm sic
 
 Anyway, moving on, I've been plaing around with the codebase for Elite for Emacs (and there's [a post around here somewhere](http://langnostic.blogspot.com/2011/01/c-in-lisp.html) that details some of the blunders  it contains). Today, I'm dealing with the next level up; not pointing out where primitives are being misused, but pointing out needless patterns where they don't belong and showing one way of composing them properly. Actually, now that I look at it, I'd better take a single pattern out and deconstruct it lest I bore the ever-living shit out of everyone, including me. I'm also not eliding anything this time, this is going to deal with specifics from the [Elite for Emacs 0.1](http://members.fortunecity.com/salkosuo/elite-for-emacs/0.10.0/index.html) codebase and how I'm thinking about re-implementing them.
 
-### <a name="describing-things" href="#describing-things"></a>Describing Things
+### Describing Things
 
 Actually, before I get to that one,
 
-### <a name="random-numbers" href="#random-numbers"></a>Random Numbers
+### Random Numbers
 
 At a cursory examination, `elite-for-emacs-*.el` contains `myrand`, `randbyte`, `rand1` **and** `gen_rnd_number` (and no uses of the the built-in `rand` function). They may or may not do similar things. The author also insists on tracking his own random number seed in a global variable (and re-generating it with a function named `mysrand`). Here's a sample
 
 ```lisp
 (defun gen_rnd_number ()
   (let ((a)
-        (x))        
+        (x))
     (setq x (logand (* (fastseedtype-a rnd_seed) 2) #xFF));
     (setq a (+ x (fastseedtype-c rnd_seed)))
     (if (> (fastseedtype-a rnd_seed) 127)
@@ -24,7 +24,7 @@ At a cursory examination, `elite-for-emacs-*.el` contains `myrand`, `randbyte`, 
     (setq x (fastseedtype-b rnd_seed))
 
     (setq a (logand (+ a x (fastseedtype-d rnd_seed)) #xFF))
-    
+
     (setf (fastseedtype-b rnd_seed) a)
     (setf (fastseedtype-d rnd_seed) x)
     a))
@@ -34,7 +34,7 @@ I'm not sure why Lisp coders get stick for re-implementing infrastructure if **t
 
 Now then.
 
-### <a name="describing-things" href="#describing-things"></a>Describing Things
+### Describing Things
 
 Here's how Elite for Emacs generates planet descriptions.
 
@@ -94,8 +94,8 @@ There's at least one thing there that should have set off definite alarms though
                       (goat_soup (nth tmp (nth (- c #x81) desc_list)) planet-sys); .option[()+(rnd >= 0x66)+(rnd >= 0x99)+(rnd >= 0xCC)] planet-sys))
                   (progn ;;switch...
                     (cond ((= c #xB0);;planet name
-                           (setq elite-for-emacs-planet-description 
-                                 (concat elite-for-emacs-planet-description 
+                           (setq elite-for-emacs-planet-description
+                                 (concat elite-for-emacs-planet-description
                                          (capitalize (plansys-name planet-sys))))
                            ;;(insert (capitalize (plansys-name planet-sys)))
                       )
@@ -132,9 +132,9 @@ There's at least one thing there that should have set off definite alarms though
             (setq source-list (cdr source-list)))))
 ```
 
-![Jackie Chan contemplating the setq special form](/static/img/My-mind-is-full-of-setq.jpg)
+![](/static/img/My-mind-is-full-of-setq.jpg)
 
-The kind that designates a procedure built out of dead things, most of which you'd really rather not think about. 
+The kind that designates a procedure built out of dead things, most of which you'd really rather not think about.
 
 A casual reading shows quite a bit of side effect, and use of at least three of the anti-patterns I mentioned [last time around](http://langnostic.blogspot.com/2011/01/c-in-lisp.html). I've removed the irrelevant comments<a name="note-Wed-Apr-20-105710EDT-2011"></a>[|2|](#foot-Wed-Apr-20-105710EDT-2011), but the above is still considerably longer than what I consider good style for a single function, and complex enough that I was inclined to think "rewrite" even before I went through it. Later on, there's a snippet of code that looks like
 
@@ -152,7 +152,7 @@ A casual reading shows quite a bit of side effect, and use of at least three of 
 ;; ... continues for a further 69 lines
 ```
 
-What it does in context, basically, is take the string `"\x8F is \x97."` and expand it out recursively until all the "byte" references are gone and it ends up with a little semi-sensical, explanatory description like "The planet is reasonably famous for its inhabitants' ingrained shyness but scourged by deadly edible wolfs." or "The planet is famous for its pink parking meters.". 
+What it does in context, basically, is take the string `"\x8F is \x97."` and expand it out recursively until all the "byte" references are gone and it ends up with a little semi-sensical, explanatory description like "The planet is reasonably famous for its inhabitants' ingrained shyness but scourged by deadly edible wolfs." or "The planet is famous for its pink parking meters.".
 
 The problem I hinted at last time, and wanted to discuss this time out, is this idea of byte-orientation. This is an architecture built by someone used to assembly or C, that then tried to shoehorn the same way of looking at the world into Lisp. I wouldn't mind so much, but it's far too easy to imagine someone hacking together a system like this and thinking to themselves "Wow, this really sucks. I could have done it MUCH more efficiently in C, and I wouldn't have had to deal with all this 'list' nonsense. I guess Lisp is just a language for masochists...". Going against the grain of any language creates the impression that it's less powerful than it really is, and this is a prime example. The author uses excessive byte and integer indexing operations where simpler (and, in this case, more performant) lisp primitives like `rand`, `nth` and plist/alist/hash-tables would do.
 
@@ -162,58 +162,58 @@ It's beside the point, though. Remember, Lisp is a symbolic language. So here's 
 
 ```lisp
 (defparameter *planet-desc-grammar*
-  (list :root '((" is " :reputation " for " :subject) 
-                (" is " :reputation " for " :subject " and " :subject) 
-                (" is " :reputation " for " :subject 
+  (list :root '((" is " :reputation " for " :subject)
+                (" is " :reputation " for " :subject " and " :subject)
+                (" is " :reputation " for " :subject
                  " but " :adj-opposing-force " by " :historic-event)
-                (" is " :adj-opposing-force " by " :historic-event) 
+                (" is " :adj-opposing-force " by " :historic-event)
                 (", a " :adj-negative " " :syn-planet))
-        :subject '(("its " :adjective " " :place) 
-                   ("its " :adjective " " :passtime) 
-                   ("the " :adj-fauna " " :fauna) 
-                   ("its inhabitants' " :adj-local-custom 
-                    " " :inhabitant-property) 
-                   :passtime) 
-        :passtime '((:fauna " " :drink) (:fauna " " :food) 
-                    ("its " :adjective " " :fauna " " :food) 
-                    (:adj-activity " " :sport) 
-                    "cuisine" "night-life" "casinos" "sit-coms") 
-        :historic-event '((:adj-disaster " civil war") 
-                          (:adj-threat " " :adj-fauna " " :fauna "s") 
-                          ("a " :adj-threat " disease") 
-                          (:adj-disaster " earthquakes") 
-                          (:adj-disaster " solar activity")) 
-        :place '((:fauna :flora " plantations") (:adj-forest " forests") 
+        :subject '(("its " :adjective " " :place)
+                   ("its " :adjective " " :passtime)
+                   ("the " :adj-fauna " " :fauna)
+                   ("its inhabitants' " :adj-local-custom
+                    " " :inhabitant-property)
+                   :passtime)
+        :passtime '((:fauna " " :drink) (:fauna " " :food)
+                    ("its " :adjective " " :fauna " " :food)
+                    (:adj-activity " " :sport)
+                    "cuisine" "night-life" "casinos" "sit-coms")
+        :historic-event '((:adj-disaster " civil war")
+                          (:adj-threat " " :adj-fauna " " :fauna "s")
+                          ("a " :adj-threat " disease")
+                          (:adj-disaster " earthquakes")
+                          (:adj-disaster " solar activity"))
+        :place '((:fauna :flora " plantations") (:adj-forest " forests")
                  :scenery "forests" "mountains" "oceans")
-        :technology '(:passtime "food blenders" "tourists" "poetry" "discos") 
-        :inhabitant-property '(("loathing of " :technology) 
-                               ("love for " :technology) 
-                               "shyness" "silliness" "mating traditions") 
-        :fauna '("talking tree" "crab" "bat" "lobster" "shrew" "beast" "bison" 
-                 "snake" "wolf" "yak" "leopard" "cat" "monkey" "goat" "fish" 
-                 "snail" "slug" "asp" "moth" "grub" "ant") 
-        :flora '((:fauna "-weed") "plant" "tulip" "banana" "corn" "carrot") 
-        :scenery '("parking meters" "dust clouds" "ice bergs" 
-                   "rock formations" "volcanoes") 
-        :reputation '((:emphasis " " :reputation) 
-                      "fabled" "notable" "well known" "famous" "noted") 
-        :emphasis '("very" "mildly" "most" "reasonably") 
-        :drink '("juice" "brandy" "water" "brew" "gargle blasters") 
-        :sport '("hockey" "cricket" "karate" "polo" "tennis" "quiddich") 
-        :food '("meat" "cutlet" "steak" "burgers" "soup") 
-        :adjective '((:emphasis " " :adjective) 
-                     :adj-local-custom :adj-fauna :adj-forest :adj-disaster 
-                     "great" "pink" "fabulous" "hoopy" 
-                     "funny" "wierd" "strange" "peculiar") 
-        :adj-fauna '(:adj-threat "mountain" "edible" "tree" "spotted" "exotic") 
-        :adj-negative '((:adj-negative ", " :adj-negative) 
-                        "boring" "dull" "tedious" "revolting") 
-        :adj-local-custom '("ancient" "exceptional" "eccentric" "ingrained" "unusual") 
-        :adj-forest '("tropical" "vast" "dense" "rain" "impenetrable" "exuberant") 
-        :adj-disaster '("frequent" "occasional" "unpredictable" "dreadful" :adj-threat) 
-        :adj-threat '("killer" "deadly" "evil" "lethal" "vicious") 
-        :adj-activity '("ice" "mud" "zero-g" "virtual" "vacuum" "Australian, indoor-rules") 
-        :adj-opposing-force '("beset" "plagued" "ravaged" "cursed" "scourged") 
+        :technology '(:passtime "food blenders" "tourists" "poetry" "discos")
+        :inhabitant-property '(("loathing of " :technology)
+                               ("love for " :technology)
+                               "shyness" "silliness" "mating traditions")
+        :fauna '("talking tree" "crab" "bat" "lobster" "shrew" "beast" "bison"
+                 "snake" "wolf" "yak" "leopard" "cat" "monkey" "goat" "fish"
+                 "snail" "slug" "asp" "moth" "grub" "ant")
+        :flora '((:fauna "-weed") "plant" "tulip" "banana" "corn" "carrot")
+        :scenery '("parking meters" "dust clouds" "ice bergs"
+                   "rock formations" "volcanoes")
+        :reputation '((:emphasis " " :reputation)
+                      "fabled" "notable" "well known" "famous" "noted")
+        :emphasis '("very" "mildly" "most" "reasonably")
+        :drink '("juice" "brandy" "water" "brew" "gargle blasters")
+        :sport '("hockey" "cricket" "karate" "polo" "tennis" "quiddich")
+        :food '("meat" "cutlet" "steak" "burgers" "soup")
+        :adjective '((:emphasis " " :adjective)
+                     :adj-local-custom :adj-fauna :adj-forest :adj-disaster
+                     "great" "pink" "fabulous" "hoopy"
+                     "funny" "wierd" "strange" "peculiar")
+        :adj-fauna '(:adj-threat "mountain" "edible" "tree" "spotted" "exotic")
+        :adj-negative '((:adj-negative ", " :adj-negative)
+                        "boring" "dull" "tedious" "revolting")
+        :adj-local-custom '("ancient" "exceptional" "eccentric" "ingrained" "unusual")
+        :adj-forest '("tropical" "vast" "dense" "rain" "impenetrable" "exuberant")
+        :adj-disaster '("frequent" "occasional" "unpredictable" "dreadful" :adj-threat)
+        :adj-threat '("killer" "deadly" "evil" "lethal" "vicious")
+        :adj-activity '("ice" "mud" "zero-g" "virtual" "vacuum" "Australian, indoor-rules")
+        :adj-opposing-force '("beset" "plagued" "ravaged" "cursed" "scourged")
         :syn-planet '("planet" "world" "place" "little planet" "dump")))
 ```
 
@@ -222,23 +222,23 @@ That's the data, at any rate. The above uses all the original words and combinat
 ```lisp
 (defun expand-production (production grammar)
   (cond ((stringp production) production)
-        ((symbolp production) 
+        ((symbolp production)
          (expand-production (pick-g production grammar) grammar))
-        ((listp production) 
-         (reduce (lambda (a b) 
-                   (concatenate 'string a (expand-production b grammar))) 
+        ((listp production)
+         (reduce (lambda (a b)
+                   (concatenate 'string a (expand-production b grammar)))
                  (cons "" production)))))
 ```
 
 `pick-g` is a function that takes a key and grammar, and returns a random expansion of that key in that grammar.
 
 ```lisp
-(defun pick-g (key grammar) 
+(defun pick-g (key grammar)
   (let ((choices (getf grammar key)))
     (nth (random (length choices)) choices)))
 ```
 
-In other words, 
+In other words,
 
 
 - a string gets returned
@@ -255,9 +255,9 @@ In other words,
 ", a revolting little planet"
 ```
 
-All I have to make sure is that these get displayed along with the planet name and we're golden. This is the sort of elegance that Lisp is capable of when you go with the grain. ~140 lines of flaming death and side effects replaced by two recursive functions and a `plist` that succinctly and accurately signal the intent of the programmer. I wouldn't be particularly surprised if there's an even simpler way to accomplish the same thing, actually. 
+All I have to make sure is that these get displayed along with the planet name and we're golden. This is the sort of elegance that Lisp is capable of when you go with the grain. ~140 lines of flaming death and side effects replaced by two recursive functions and a `plist` that succinctly and accurately signal the intent of the programmer. I wouldn't be particularly surprised if there's an even simpler way to accomplish the same thing, actually.
 
-### <a name="naming-things" href="#naming-things"></a>Naming Things
+### Naming Things
 
 Planet names seem like they should be implemented the same way, given what they really are. In fact, I did just implement them as another grammar that depends on the same functions to unfold, but the original takes a different approach.
 
@@ -275,7 +275,7 @@ Planet names seem like they should be implemented the same way, given what they 
   (tweakseed s)
   ;Always four iterations of random number
   (setq planet-name
-        (concat 
+        (concat
          (code-to-char (aref pairs pair1))
          (code-to-char (aref pairs (1+ pair1)))
          (code-to-char (aref pairs pair2))
@@ -284,7 +284,7 @@ Planet names seem like they should be implemented the same way, given what they 
          (code-to-char (aref pairs (1+ pair3)))))
   (if (/= longnameflag 0)
       (progn
-        (setq planet-name 
+        (setq planet-name
               (concat
                planet-name
                (code-to-char (aref pairs pair4))
@@ -292,10 +292,10 @@ Planet names seem like they should be implemented the same way, given what they 
   (setf (plansys-name thissys) (stripout planet-name "."))
 ```
 
-`pairs` showed up in `goat_soup` too, and it's defined as 
+`pairs` showed up in `goat_soup` too, and it's defined as
 
 ```lisp
-(defconst pairs 
+(defconst pairs
   "..LEXEGEZACEBISOUSESARMAINDIREA.ERATENBERALAVETIEDORQUANTEISRION"
   "Characters for planet names.")
 ```
@@ -307,26 +307,26 @@ Well, seeing as I already put together a convention for unfolding components to 
 ```lisp
 (defparameter *planet-name-grammar*
   ;be mindful of name probabilities if you try to reduce duplication here
-  (list :root '((:starter :link :ender) (:starter :partition :ender) 
-                (:starter :partition :link :ender) 
-                (:starter :partition :root) 
+  (list :root '((:starter :link :ender) (:starter :partition :ender)
+                (:starter :partition :link :ender)
+                (:starter :partition :root)
                 (:starter :link :link :ender) (:starter :ender))
         :starter '((:starter :link)
-                   "aa" "ae" "al" "an" "ao" "ar" "at" "az" "be" 
-                   "bi" "ce" "di" "ed" "en" "er" "es" "ge" "in" 
-                   "is" "la" "le" "ma" "on" "or" "qu" "ra" "re" 
+                   "aa" "ae" "al" "an" "ao" "ar" "at" "az" "be"
+                   "bi" "ce" "di" "ed" "en" "er" "es" "ge" "in"
+                   "is" "la" "le" "ma" "on" "or" "qu" "ra" "re"
                    "ri" "so" "te" "ti" "us" "ve" "xe" "za")
-        :ender '((:link :ender) 
-                 "aa" "al" "at" "di" "ti" "so" "ce" "re" "za" 
-                 "in" "ed" "or" "an" "ma" "ab" "ge" "aq" "en" 
-                 "ri" "ve" "ag" "qu" "us" "es" "ex" "ae" "on" 
-                 "bi" "xe" "le" "is" "er" "be" "la" "ar" "az" 
+        :ender '((:link :ender)
+                 "aa" "al" "at" "di" "ti" "so" "ce" "re" "za"
+                 "in" "ed" "or" "an" "ma" "ab" "ge" "aq" "en"
+                 "ri" "ve" "ag" "qu" "us" "es" "ex" "ae" "on"
+                 "bi" "xe" "le" "is" "er" "be" "la" "ar" "az"
                  "io" "sb" "te" "ra" "ia" "nb")
         :link '((:link :link) (:link :link)
-                "at" "an" "ri" "es" "ed" "bi" "ce" "us" "on" 
-                "er" "ti" "ve" "ra" "la" "le" "ge" "i" "u" 
-                "xe" "in" "di" "so" "ar" "e" "s" "na" "is" 
-                "za" "re" "ma" "or" "be" "en" "qu" "a" "n" 
+                "at" "an" "ri" "es" "ed" "bi" "ce" "us" "on"
+                "er" "ti" "ve" "ra" "la" "le" "ge" "i" "u"
+                "xe" "in" "di" "so" "ar" "e" "s" "na" "is"
+                "za" "re" "ma" "or" "be" "en" "qu" "a" "n"
                 "r" "te" "t")
         :partition '("-" "'" " ")))
 ```
@@ -348,7 +348,7 @@ Well, seeing as I already put together a convention for unfolding components to 
 
 `string-capitalize` just makes sure it looks like a proper name (it's [a lisp primitive](http://www.lispworks.com/documentation/HyperSpec/Body/f_stg_up.htm#string-capitalize), so I won't define it here). The important part, which I'll likely cover in a future post, is that making things functional aids in composeability. The `setq` sequence from the original codebase has no hope of being reused anywhere because it intentionally grubs about in the surrounding state. If nothing else, the `expand-production` approach ensures that if I ever need a planet name in some other context, I can easily generate it. Also, as we've seen already, abstracting out the general pattern of "compose strings from a given pattern of components" easily pays for itself with even one instance of reuse.
 
-### <a name="my-sinister-purpose" href="#my-sinister-purpose"></a>My Sinister Purpose
+### My Sinister Purpose
 
 The reason I've been picking away at this codebase isn't idle fancy<a name="note-Wed-Apr-20-111010EDT-2011"></a>[|5|](#foot-Wed-Apr-20-111010EDT-2011), or an intense hatred of Sami Salkosuo<a name="note-Wed-Apr-20-111105EDT-2011"></a>[|6|](#foot-Wed-Apr-20-111105EDT-2011). It's that I've been putting together a little web game based on it. It's still not done, mind you, but I'm going to try to put something together fairly soon for you to poke at (even if it's ugly as sin from the visual perspective to start with). If nothing else, I'm tossing the ported Common Lisp codebase up onto [my GitHub](https://github.com/Inaimathi) this weekend so that some other pedantic bore can pick apart a project I was just doing in my spare time. After two articles full of bitching about poor style and inelegant expression, it seems like it's only fair.
 
