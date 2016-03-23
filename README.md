@@ -11,7 +11,8 @@
 
 ## ToDo
 
-- Revisit old blogs. NOW AT: `id:11`
+- Revisit old blogs. NOW AT: `id:15`
+- Post #13 (On Neutrinos) is haunted. Have a closer look later
 
 - Re-factor project into something sane
 	- PostMap and Post shouldn't be separate modules; just one named Posts
