@@ -11,7 +11,7 @@
 
 ## ToDo
 
-- Revisit old blogs. NOW AT: `id:3`
+- Revisit old blogs. NOW AT: `id:11`
 
 - Re-factor project into something sane
 	- PostMap and Post shouldn't be separate modules; just one named Posts

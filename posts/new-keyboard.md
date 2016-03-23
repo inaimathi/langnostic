@@ -1,12 +1,18 @@
 I got something yesterday
 
-<iframe width="420" height="315" src="http://www.youtube.com/embed/vuymT9lglJo" frameborder="0" allowfullscreen></iframe><a name="note-Thu-Jan-19-125059EST-2012"></a>[|1|](#foot-Thu-Jan-19-125059EST-2012)
+<iframe width="420" height="315" src="http://www.youtube.com/embed/vuymT9lglJo" frameborder="0" allowfullscreen></iframe>
 
-It's awesome. Not only is it about 1/3 the size of my current [Microsoft-made behemoth](http://www.newegg.ca/Product/Product.aspx?Item=N82E16823109160&cm_re=microsoft_keyboard-_-23-109-160-_-Product), but it types better too. As in the key action is much smoother, and hitting the spacebar takes exactly as much effort as hitting a regular key (my HP mini managed this too, but the space on that MS ergonomic board is noticeably harder to press down than any of the others).
+> EDIT: I no longer have a YouTube account. The above video _used_ to show the unboxing of a [Happy Hacking 2 Lite keyboard](http://pfuca-store.stores.yahoo.net/haphackeylit1.html)
+
+It's awesome. Not only is it about 1/3 the size of my current [Microsoft-made behemoth](http://www.newegg.ca/Product/Product.aspx?Item=N82E16823109160&cm_re=microsoft_keyboard-_-23-109-160-_-Product), but it types better too. As in the key action is much smoother, and hitting the spacebar takes exactly as much effort as hitting a regular key[^hp-mini].
+
+[^hp-mini]: My HP mini managed this too, but the space on that MS ergonomic board is noticeably harder to press down than any of the others.
 
 Now that I've had a chance to compare these two IRL, I have to say that the [Apple mini-keyboards](http://store.apple.com/ca/product/MB869LL/A?fnode=MTY1NDA1Mg&mco=MTA4Mzc5NDY) are really no substitute. They have the standard apple spring system, which isn't terrible, but it's nowhere near as good. That's a clear win for the Happy Hacking Lite 2.
 
-The layout choices are really personal preference. The ESC key on HH is where ` is on the Mac, the area around the \ is a little shuffled so that Delete ends up directly above return (which doesn't usually bother me since I've been trying to prefer backward-word-kill to backspace), and the Alt and Cmd keys switched places. That last one is a problem, but they give you a switch at the back of the keyboard to reverse their positions back to keyboard standard. I just used it and am thinking no more about it. The other active switch on my little keyboard is the one that makes the Delete key act as backspace. (Even though I use backward-word-kill, it's still more common to backspace than to delete).
+The layout choices are really personal preference. The `ESC` key on HH is where \` is on the Mac, the area around the `\` is a little shuffled so that Delete ends up directly above return (which doesn't usually bother me since I've been trying to prefer `backward-word-kill` to backspace), and the `Alt`/`Cmd` keys switched places. That last one is a problem, but they give you a switch at the back of the keyboard to reverse their positions back to keyboard standard. I just used it and am thinking no more about it. The other active switch on my little keyboard is the one that makes the Delete key act as backspace[^even-though].
+
+[^even-though]: Even though I use backward-word-kill, it's still more common to backspace than to delete.
 
 I am keeping the mac keyboard for the Mac though; the OS X version of HH2 has an elephant-style return key which I dislike, so I'm not about to shell out another $100 bucks for one (I may eventually burn $300 or so to get my hands on a [Happy Hacking 2 Pro](http://www.amazon.com/Happy-Hacking-Keyboard-Professional2-Black/dp/B000EXZ0VC/ref=sr_1_2?ie=UTF8&s=electronics&qid=1267677806&sr=8-2), but not any time soon).
 
@@ -19,9 +25,3 @@ If you tap the lower left area of a tablet, your cursor automagically appears on
 This is not a customization accident, or mistake. This is [the intended behaviour](http://www.facebook.com/topic.php?uid=7616161690&topic=10936), and that link will take you to a page where a Wacom rep is trying to happily explain how easy it is to get your pen to behave in "mouse mode". In other words, the only thing you can do is disable the behaviour you'd like.
 
 Until they resolve this, I'm sticking with my tablet and trackball, thank you.
-
-
-* * *
-##### Footnotes
-
-1 - <a name="foot-Thu-Jan-19-125059EST-2012"></a>[|back|](#note-Thu-Jan-19-125059EST-2012) - I closed my old account in a vain attempt to associate it with this gmail account. It was an unboxing of a [Happy Hacking 2 Lite keyboard](http://pfuca-store.stores.yahoo.net/haphackeylit1.html)

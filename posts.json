@@ -1,14 +1,14 @@
 {"id":0,"title":"Solid State Ownership","file":"solid-state-ownership","edited":1401033531,"posted":1261976400,"tags":["hardware"]}
 {"id":1,"title":"Another look at Emacs","file":"another-look-at-emacs","edited":1401322841,"posted":1263013200,"tags":["programming-environment","emacs"]}
 {"id":2,"title":"Contracting in PHP","file":"contracting-in-php","edited":1401033531,"posted":1263704400,"tags":["php","general-programming-thoughts","bitching"]}
-{"id":3,"title":"Just got the Little Schemer","file":"little-lambda","edited":1401321351,"posted":1263877200,"tags":["scheme"]}
-{"id":4,"title":"Poking at Erlang","file":"install-erl","edited":1401033531,"posted":1264222800,"tags":["erlang","emacs","elisp"]}
-{"id":5,"title":"Some Free Time","file":"define-free","edited":1401142833,"posted":1266555600,"tags":["speculation","idea-peeling","general-programming-thoughts"]}
+{"id":3,"title":"Just got the Little Schemer","file":"just-got-the-little-schemer","edited":1401321351,"posted":1263877200,"tags":["scheme"]}
+{"id":4,"title":"Poking at Erlang","file":"poking-at-erlang","edited":1401033531,"posted":1264222800,"tags":["erlang","emacs","elisp"]}
+{"id":5,"title":"Some Free Time","file":"some-free-time","edited":1401142833,"posted":1266555600,"tags":["speculation","idea-peeling","general-programming-thoughts"]}
 {"id":6,"title":"Patterns","file":"patterns","edited":1401033531,"posted":1266901200,"tags":["programming-environment","git","emacs"]}
-{"id":7,"title":"Upgrading to Ubuntu 9.10","file":"define-upgrade-9.10","edited":1401033531,"posted":1267160400,"tags":["programming-environment","emacs"]}
-{"id":8,"title":"New Keyboard","file":"define-peripherals","edited":1401033531,"posted":1267592400,"tags":["programming-interfaces","programming-environment","hardware"]}
-{"id":9,"title":"Machines at Work","file":"define-work","edited":1401143127,"posted":1268110800,"tags":["programming-interfaces","programming-environment","emacs"]}
-{"id":10,"title":"Minor Ergonomics, and Boring Office Update","file":"ergonomics","edited":1401321422,"posted":1268884800,"tags":["programming-interfaces","programming-environment","hardware","emacs","elisp"]}
+{"id":7,"title":"Upgrading to Ubuntu 9.10","file":"upgrading-to-ubuntu-9.10","edited":1401033531,"posted":1267160400,"tags":["programming-environment","emacs"]}
+{"id":8,"title":"New Keyboard","file":"new-keyboard","edited":1401033531,"posted":1267592400,"tags":["programming-interfaces","programming-environment","hardware"]}
+{"id":9,"title":"Machines at Work","file":"machines-at-work","edited":1401143127,"posted":1268110800,"tags":["programming-interfaces","programming-environment","emacs"]}
+{"id":10,"title":"Minor Ergonomics, and Boring Office Update","file":"minor-ergonomics-and-boring-office-update","edited":1401321422,"posted":1268884800,"tags":["programming-interfaces","programming-environment","hardware","emacs","elisp"]}
 {"id":11,"title":"On Quitting","file":"exit","edited":1401033531,"posted":1271304000,"tags":["speculation","idea-peeling","general-programming-thoughts"]}
 {"id":12,"title":"What happened to the Neutrino?","file":"what-happened-to-the-neutrino","edited":1401033531,"posted":1271476800,"tags":["speculation","hardware"]}
 {"id":13,"title":"On Neutrinos","file":"on-neutrinos","edited":1401033531,"posted":1271995200,"tags":["speculation","programming-environment","hardware","general-programming-thoughts"]}
