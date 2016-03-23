@@ -32,3 +32,5 @@ h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, h6 a:hover { color: #666; }
 hr { border-color: #CC0606; background-color: #CC0606; display: block; clear: both; }
 
 .tags { font-weight: bold; }
+
+.figure .caption { display: none; }
