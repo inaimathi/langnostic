@@ -34,3 +34,14 @@ hr { border-color: #CC0606; background-color: #CC0606; display: block; clear: bo
 .tags { font-weight: bold; }
 
 .figure .caption { display: none; }
+
+/* Rotation  */
+
+.top-menu-container, hr { width: 110%; margin-left: -5%; }
+.top-menu-container, .logo-bar, .post-nav, hr { transform: rotate(-2deg); }
+
+/* cl-notebook-specific classes */
+
+blockquote pre.standard-output { font-style: normal; }
+blockquote pre.return-value { border: 1px solid #CCC; background-color: #fff; font-style: normal; }
+blockquote pre.return-value code { background: none; }

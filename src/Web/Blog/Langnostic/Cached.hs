@@ -2,7 +2,7 @@
 module Web.Blog.Langnostic.Cached ( Cache, readCache, newCache
                                   , CacheMap, newCacheMap, insert, hasKey, keys, fromList
                                   , Web.Blog.Langnostic.Cached.lookup
-                                  , minutes, hours ) where
+                                  , minutes, hours, zero ) where
 
 import System.Time
 import Data.IORef
