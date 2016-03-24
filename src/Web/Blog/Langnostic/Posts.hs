@@ -43,23 +43,26 @@ type PostCache = CacheMap Html FilePath
 path :: BlogPost -> FilePath
 path p = "posts/" ++ slug p ++ ".md"
 
+cacheDelay = zero
+
 newPostMap :: PostCache -> IO PostMap
 newPostMap pc = do
-  ps <- newCache (minutes 30) $ readPostList "posts.json"
+  ps <- newCache cacheDelay $ readPostList pc "posts.json"
   c <- readCache ps
-  let addNew post = do
-               present <- hasKey pc $ path post
-               if present
-               then return ()
-               else do _ <- insert pc (minutes 30) $ path post
-                       return ()
-  _ <- mapM_ addNew c
   return $ PostMap ps pc
 
-readPostList :: FilePath -> IO [BlogPost]
-readPostList fname = do
+readPostList :: PostCache -> FilePath -> IO [BlogPost]
+readPostList pc fname = do
   f <- BS.readFile fname
-  return $ catMaybes . map decode $ C8.split '\n' f
+  let postList = catMaybes . map decode $ C8.split '\n' f
+      addNew post = do
+        present <- hasKey pc $ path post
+        if present
+        then return ()
+        else do _ <- insert pc cacheDelay $ path post
+                return ()
+  _ <- mapM_ addNew postList
+  return postList
 
 newPostCache :: IO PostCache
 newPostCache = newCacheMap readPost

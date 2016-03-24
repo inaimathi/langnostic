@@ -11,7 +11,8 @@
 
 ## ToDo
 
-- Revisit old blogs. NOW AT: `id:19`
+- Revisit old blogs. NOW AT: `id:22`
+- Post #21 is supposed to show an image we don't have in `static/` look into the blogspot blog; I think it's still up.
 - Post #13 (On Neutrinos) is haunted. Have a closer look later
 
 - Re-factor project into something sane
