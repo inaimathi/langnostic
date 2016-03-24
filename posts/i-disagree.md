@@ -1,4 +1,4 @@
-Ok, yes, I know the last time I disagreed with Yegge, I wound up [eating my own hat](/posts/yegge-strikes-back), but I hereby suggest that [partitioning the software industry into Libs vs. Cons](https://plus.google.com/110981030061712822816/posts/KaSKeg4vQtz) is a stupid idea, and gains us nothing.
+Ok, yes, I know the last time I disagreed with Yegge, I wound up [eating my own hat](/posts/yegge-strikes-back-from-the-grave), but I hereby suggest that [partitioning the software industry into Libs vs. Cons](https://plus.google.com/110981030061712822816/posts/KaSKeg4vQtz) is a stupid idea, and gains us nothing.
 
 Firstly, because those terms are already loaded with enough political emotional baggage that people are going to have a hard time letting go<a name="note-Sat-Aug-11-153625EDT-2012"></a>[|1|](#foot-Sat-Aug-11-153625EDT-2012), and that's going to lead to<a name="note-Sat-Aug-11-153633EDT-2012"></a>[|2|](#foot-Sat-Aug-11-153633EDT-2012) the same kind of partisan garbage that US politics is well known for.
 

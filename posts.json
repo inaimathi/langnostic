@@ -13,10 +13,10 @@
 {"id":12,"title":"What happened to the Neutrino?","file":"what-happened-to-the-neutrino","edited":1401033531,"posted":1271476800,"tags":["speculation","hardware"]}
 {"id":13,"title":"On Neutrinos","file":"on-neutrinos","edited":1401033531,"posted":1271995200,"tags":["speculation","programming-environment","hardware","general-programming-thoughts"]}
 {"id":14,"title":"On Managing Windows","file":"on-managing-windows","edited":1401033531,"posted":1272513600,"tags":["programming-environment"]}
-{"id":15,"title":"Apache Blues and General Update","file":"apache-blues","edited":1401033531,"posted":1273982400,"tags":["programming-environment","bitching"]}
+{"id":15,"title":"Apache Blues and General Update","file":"apache-blues-and-general-update","edited":1401033531,"posted":1273982400,"tags":["programming-environment","bitching"]}
 {"id":16,"title":"Retrospective","file":"retrospective","edited":1401312518,"posted":1276228800,"tags":["speculation","idea-peeling","general-programming-thoughts"]}
-{"id":17,"title":"The Upside of Apathy","file":"apathy","edited":1401033531,"posted":1282276800,"tags":["speculation","scheme","idea-peeling","general-programming-thoughts"]}
-{"id":18,"title":"Yegge Strikes Back from the Grave","file":"yegge-strikes-back","edited":1401033531,"posted":1285473600,"tags":["scheme","common-lisp"]}
+{"id":17,"title":"The Upside of Apathy","file":"the-upside-of-apathy","edited":1401033531,"posted":1282276800,"tags":["speculation","scheme","idea-peeling","general-programming-thoughts"]}
+{"id":18,"title":"Yegge Strikes Back from the Grave","file":"yegge-strikes-back-from-the-grave","edited":1401033531,"posted":1285473600,"tags":["scheme","common-lisp"]}
 {"id":19,"title":"Lisp and CSS","file":"lisp-and-css","edited":1401033531,"posted":1285732800,"tags":["idea-peeling","css","common-lisp"]}
 {"id":20,"title":"My Thoughts","file":"defun-my-thoughts","edited":1401033531,"posted":1286769600,"tags":["lisp","common-lisp","bitching"]}
 {"id":21,"title":"cl-inception","file":"inception","edited":1401033531,"posted":1287028800,"tags":["hunchentoot","common-lisp","bitching"]}
