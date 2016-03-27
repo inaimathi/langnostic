@@ -6,4 +6,4 @@ The same thoughts commonly arise about strong typing and purity; it's really rea
 
 I'm not afraid of looking up the hierarchy, it's just unsettling that I can't tell and may be lulling myself into a false sense of superiority. The worst possible outcome here is that my internal biases rob me of power I might otherwise wield. A bad, but certainly tolerable outcome is "wasting" the time it takes to learn new concepts and techniques that are merely as effective (or slightly less effective) than ones I already know. The best case is clambering through to find techniques I can apply unilaterally to my projects, both professional and personal.
 
-Looking at it that way, it's pretty obvious that the correct (but admittedly, seemingly insane) answer is to keep hitting this wall with my head, and hope it collapses before I do.
+Looking at it that way, it's pretty obvious that the correct (but admittedly insane-sounding) answer is to keep hitting this wall with my head, and hope it collapses before I do.

@@ -1,4 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
 module Web.Blog.Langnostic.Cached ( Cache, readCache, newCache
                                   , CacheMap, newCacheMap, insert, hasKey, keys, fromList
                                   , Web.Blog.Langnostic.Cached.lookup
@@ -62,6 +61,14 @@ insert cacheMap diff name = do
   _ <- writeIORef (ref cacheMap) $ Map.insert name c m
   return c
 
+lookup :: Ord b => CacheMap a b -> b -> IO (Maybe a)
+lookup cacheMap name = do
+  m <- readIORef $ ref cacheMap
+  case Map.lookup name m of
+    Nothing -> return $ Nothing
+    Just looked -> do c <- readCache looked
+                      return $ Just c
+
 keys :: Ord b => CacheMap a b -> IO [b]
 keys cacheMap = do
   c <- readIORef (ref cacheMap)
@@ -73,14 +80,6 @@ hasKey cacheMap k = do
   return $ case Map.lookup k c of
     Just _ -> True
     Nothing -> False
-
-lookup :: Ord b => CacheMap a b -> b -> IO (Maybe a)
-lookup cacheMap name = do
-  m <- readIORef $ ref cacheMap
-  case Map.lookup name m of
-    Nothing -> return $ Nothing
-    Just looked -> do c <- readCache looked
-                      return $ Just c
 
 fromList :: Ord b => TimeDiff -> (b -> IO a) ->  [b] -> IO (CacheMap a b)
 fromList limit handle names = do

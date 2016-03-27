@@ -23,7 +23,7 @@ serve :: Int -> IO ()
 serve port = do
   pc <- newPostCache
   pm <- newPostMap pc
-  _ <- mapM_ (\path -> C.insert pc (C.minutes 30) path) [
+  _ <- mapM_ (\path -> C.insert pc (C.minutes 90) path) [
         "static/content/intro.md"
        ,"static/content/links.md"
        ,"static/content/meta.md"

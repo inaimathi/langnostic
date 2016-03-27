@@ -43,7 +43,8 @@ type PostCache = CacheMap Html FilePath
 path :: BlogPost -> FilePath
 path p = "posts/" ++ slug p ++ ".md"
 
-cacheDelay = minutes 30
+cacheDelay :: TimeDiff
+cacheDelay = zero
 
 newPostMap :: PostCache -> IO PostMap
 newPostMap pc = do
