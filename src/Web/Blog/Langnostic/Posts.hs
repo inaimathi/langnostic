@@ -44,7 +44,7 @@ path :: BlogPost -> FilePath
 path p = "posts/" ++ slug p ++ ".md"
 
 cacheDelay :: TimeDiff
-cacheDelay = zero
+cacheDelay = minutes 30
 
 newPostMap :: PostCache -> IO PostMap
 newPostMap pc = do

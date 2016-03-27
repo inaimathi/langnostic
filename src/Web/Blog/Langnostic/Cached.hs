@@ -33,16 +33,10 @@ readCache cache = do
                     then return $ fromJust $ value c
                     else readNew cache c now
 
-bumpTime :: ClockTime -> Cached a -> Cached a
-bumpTime now c = c { lastChecked = Just now }
-
-bumpValue :: a -> Cached a -> Cached a
-bumpValue v c = c { value = Just v }
-
 readNew :: Cache a -> Cached a -> ClockTime -> IO a
 readNew cache c now = do
   newVal <- cachedHandle c
-  _ <- writeIORef cache . bumpValue newVal $ bumpTime now c
+  _ <- writeIORef cache $ c { value = Just newVal, lastChecked = Just now}
   return $ newVal
 
 ---------- Cache Map infrastructure
@@ -97,10 +91,10 @@ epochToClockTime x =
           picosecondfactor = 10 ^ 12
 
 minutes :: Int -> TimeDiff
-minutes ms = zero { tdMin = ms }
+minutes ms = zero { tdSec = ms * 60 }
 
 hours :: Int -> TimeDiff
-hours hs = zero { tdHour = hs }
+hours hs = zero { tdSec = hs * 60 * 60 }
 
 zero :: TimeDiff
 zero = TimeDiff { tdYear = 0, tdMonth = 0, tdDay = 0, tdHour = 0, tdMin = 0, tdSec = 0, tdPicosec = 0 }
