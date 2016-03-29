@@ -1,4 +1,4 @@
-I've actually been meaning to get around to trying this out ever since [the Dynamic Languages Smackdown](/article?name=language-smackdown.html)<a name="note-Wed-Feb-01-220959EST-2012"></a>[|1|](#foot-Wed-Feb-01-220959EST-2012).
+I've actually been meaning to get around to trying this out ever since [the Dynamic Languages Smackdown](/posts/language-smackdown-notes)<a name="note-Wed-Feb-01-220959EST-2012"></a>[|1|](#foot-Wed-Feb-01-220959EST-2012).
 
 So, I dusted off Pharo, which has had at least one major release since I last checked it out.
 
@@ -58,7 +58,7 @@ So there. That's first impressions after about half a week of poking at Pharo. H
 
 2 - <a name="foot-Wed-Feb-01-221359EST-2012"></a>[|back|](#note-Wed-Feb-01-221359EST-2012) - Though the official Seaside tutorial has some issues with registering new handlers, in Pharo at least. They tell you to go the web-interface route, which consistently ignored my brilliant `HelloWorld` handler. Check the sidebar for links to working tutorials ("Seaside 3.0 in Pharo" actually gives you a working tour as of this writing).
 
-3 - <a name="foot-Wed-Feb-01-221734EST-2012"></a>[|back|](#note-Wed-Feb-01-221734EST-2012) - Which differ from [Preliminary Impressions](/article?name=language-smackdown.html) in that they're founded on something more than gut feeling.
+3 - <a name="foot-Wed-Feb-01-221734EST-2012"></a>[|back|](#note-Wed-Feb-01-221734EST-2012) - Which differ from [Preliminary Impressions](/posts/language-smackdown-notes) in that they're founded on something more than gut feeling.
 
 4 - <a name="foot-Wed-Feb-01-222417EST-2012"></a>[|back|](#note-Wed-Feb-01-222417EST-2012) - Though I will admit that `squeak` is at the top of `top` by using a whopping 6%-8% of my CPU and 10%-16% of my memory.
 
