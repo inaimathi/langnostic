@@ -11,13 +11,12 @@
 
 ## ToDo
 
-- Revisit old blogs. NOW AT: `id:31`
-- Some missing links in #29 - fill them in before committing it.
-- Post #21 is supposed to show an image we don't have in `static/` look into the blogspot blog; I think it's still up.
+- Revisit old blogs. NOW AT: `id:33`
 - Post #13 (On Neutrinos) is haunted. Have a closer look later
 
 - Re-factor project into something sane
-	- PostMap and Post shouldn't be separate modules; just one named Posts
+	- Write utility functions for some of the stuff rom `Server.hs`
+	- Do some more processing before caching articles
 	- Don't worry; plenty mode. Add to this list as you go.
 
 - `BGG Data Sifting`, `cl-notebook Thoughts` and `cl-notebook introductory thoughts` all have issues with the translation-from-markdown approach. Figure out what to do about this (also, `cl-notebook` obviously needs an export-to-markdown feature)

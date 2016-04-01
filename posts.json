@@ -30,8 +30,8 @@
 {"id":29,"title":"Omega","file":"omega","edited":1401033531,"posted":1293512400,"tags":["speculation","languages","idea-peeling","general-programming-thoughts"]}
 {"id":30,"title":"Writing C in Lisp","file":"writing-c-in-lisp","edited":1401319785,"posted":1294894800,"tags":["lisp","elisp","common-lisp"]}
 {"id":31,"title":"XMonad Up Close","file":"xmonad-up-close","edited":1401033531,"posted":1295845200,"tags":["programming-environment"]}
-{"id":32,"title":"Best Buy and Monitor Suspension","file":"best-buy","edited":1401033531,"posted":1296277200,"tags":["programming-interfaces","programming-environment"]}
-{"id":33,"title":"Old Machines","file":"old-computers","edited":1401323548,"posted":1296622800,"tags":["hardware"]}
+{"id":32,"title":"Best Buy and Monitor Suspension","file":"best-buy-and-monitor-suspension","edited":1401033531,"posted":1296277200,"tags":["programming-interfaces","programming-environment"]}
+{"id":33,"title":"Old Machines","file":"old-machines","edited":1401323548,"posted":1296622800,"tags":["hardware"]}
 {"id":34,"title":"Heart Ruby","file":"heart-ruby","edited":1401033531,"posted":1296795600,"tags":["ruby"]}
 {"id":35,"title":"Quicklisp, Linode, Hacking in the pejorative and other notes...","file":"hacking","edited":1401033531,"posted":1297659600,"tags":["speculation","idea-peeling","hosting","general-programming-thoughts"]}
 {"id":36,"title":"CLSQL. And NOTHING ELSE.","file":"clsql","edited":1401033531,"posted":1299128400,"tags":["common-lisp","clsql"]}

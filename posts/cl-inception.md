@@ -1,4 +1,4 @@
-[cl-inception.jpg]
+![](/static/img/cl-inception.jpg)
 
 That's just about what I spent the last four hours feeling like. I've been working semi-feverishly on a version of the `formlet` macros for Common Lisp.  Automatic validation is surprisingly difficult when you break it down.
 
