@@ -25,30 +25,27 @@ Next up, I ripped out the 15GB drive it came with, popped in one of my 160GB one
 
 Once the system was installed, the CD drive could come out (not about to install MS Word or any such nonsense; any other software that goes on this machine will come in through the network). That turned out to be easier said than done though; it was secured by screws on both sides, so I had to completely disassemble the box to get at it.
 
-![](/static/img/old-machines-04.jpg)
-![](/static/img/old-machines-05.jpg)
-![](/static/img/old-machines-06.jpg)
+![Opening the case 1](/static/img/old-machines-04.jpg)
+![Opening the case 2](/static/img/old-machines-05.jpg)
+![Opening the case 3](/static/img/old-machines-06.jpg)
 
 The hard drive destined for the position was going to rattle in a slot that size, and while I don't plan to race this machine around the block or anything, it's probably better to be safe. A couple of [drive brackets](http://www.nextag.com/hard-drive-adapter-bracket/stores-html) made sure it would stay in place. Shop around if you plan on buying some, incidentally, I just put that link up because it was the first I found; there were actually a couple of braces lying around from my last case so I didn't need to order any. It also seems like you could improvise a set if you didn't feel like buying them.
 
-![](/static/img/old-machines-07.jpg)
-![](/static/img/old-machines-08.jpg)
+![Drive brackets seen from the top](/static/img/old-machines-07.jpg)
+![Drive brackets seen from the side](/static/img/old-machines-08.jpg)
 
 With everything hooked up, it was time to boot back into the machine.
 
-![](/static/img/old-machines-09.jpg)
+![A booted machine named "orphan"](/static/img/old-machines-09.jpg)
 
 That in-congruent looking mesh plate covering the top drive is a spare from the same case that had the extra brackets. And yes, I named the machine "orphan". It seemed appropriate. Here's ls /dev, showing the new drives (still haven't formatted them, that'll be for next weekend).
 
-![](/static/img/old-machines-10.jpg)
+![The result of `ls /dev` on orphan](/static/img/old-machines-10.jpg)
 
 And that's it. I dropped it into a little wheel assembly that's been going unused since I got that mammoth tower for my main machine. It gives it a somewhat R2-D2 feel (this may be the start of an art project).
 
-![](/static/img/old-machines-11.jpg)
+![The machine on its little wheelie stand](/static/img/old-machines-11.jpg)
 
 I'll put together some scripts to copy out key directories from my other machines and that'll be that. I guess I could also use it as a full-out [NAS](http://www.newegg.ca/Store/SubCategory.aspx?SubCategory=124&name=Network-Storage-NAS) (ok, I technically am, but you know what I mean) or streaming server, but I'm not sure how far those 566MHz and 64MB of RAM are going to stretch. In any case, even with the slightly higher price/GB I had to pay for IDE drives, converting this old machine was much cheaper than shelling out for a pre-built.
 
 The [Microsoft Arc keyboard](http://www.microsoft.com/hardware/mouseandkeyboard/ProductDetails.aspx?pid=120) came in quite handy with this project. It's fairly ergonomic, the arrow oddity isn't as annoying as it seems it should be, and the transmitter is easy enough to move around. It's definitely a step up from wrangling USB cables from my main machine about three feet to the side. My only complaint is that it friggin devours batteries, compelled like some primal beast, always growling for more. That's easy enough to solve, I guess, just remove the batteries when it's not in use, but that's a small annoyance on an otherwise perfect spare keyboard.
-
-<!--  LocalWords:  Pavillion Ok Nikad neznaš kad ćeš trebati čavlića socio Googazon SDRAM IDE SATA pacpl ok px that'll deselectBloggerImageGracefully friggin
- -->

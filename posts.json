@@ -33,8 +33,8 @@
 {"id":32,"title":"Best Buy and Monitor Suspension","file":"best-buy-and-monitor-suspension","edited":1401033531,"posted":1296277200,"tags":["programming-interfaces","programming-environment"]}
 {"id":33,"title":"Old Machines","file":"old-machines","edited":1401323548,"posted":1296622800,"tags":["hardware"]}
 {"id":34,"title":"Heart Ruby","file":"heart-ruby","edited":1401033531,"posted":1296795600,"tags":["ruby"]}
-{"id":35,"title":"Quicklisp, Linode, Hacking in the pejorative and other notes...","file":"hacking","edited":1401033531,"posted":1297659600,"tags":["speculation","idea-peeling","hosting","general-programming-thoughts"]}
-{"id":36,"title":"CLSQL. And NOTHING ELSE.","file":"clsql","edited":1401033531,"posted":1299128400,"tags":["common-lisp","clsql"]}
+{"id":35,"title":"Quicklisp, Linode, Hacking in the pejorative and other notes...","file":"quicklisp-linode-hacking-in-the-pejorative-and-other-notes","edited":1401033531,"posted":1297659600,"tags":["speculation","idea-peeling","hosting","general-programming-thoughts"]}
+{"id":36,"title":"CLSQL. And NOTHING ELSE.","file":"clsql-and-nothing-else","edited":1401033531,"posted":1299128400,"tags":["common-lisp","clsql"]}
 {"id":37,"title":"Formlets and Loop","file":"formlets-and-loop","edited":1401033531,"posted":1299387600,"tags":["hunchentoot","common-lisp"]}
 {"id":38,"title":"Parenscript","file":"parenscript","edited":1401033531,"posted":1299560400,"tags":["parenscript","common-lisp"]}
 {"id":39,"title":"Puzzling with Lisp","file":"cryptoarithmetic","edited":1401033531,"posted":1299819600,"tags":["common-lisp"]}
