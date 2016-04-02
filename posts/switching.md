@@ -6,19 +6,16 @@ I kept the Mac as a design machine, just to run Photoshop/Illustrator and (occas
 
 Well, earlier today, the Mac died.
 
-She was doing something random with her Kindle when it shut down randomly. It wouldn't come back up, or respond to any of the start-up keys, and it wouldn't boot from its installation DVD either. So we were staring down the OS X equivalent of the blue screen of death. The problem potentially wasn't as simple as the hard drive getting borked. Given that [the mere process of replacing a hard drive](http://news.cnet.com/8301-13506_3-10210484-17.html) for one of these units involved supplies we'd have to go shopping for, she decided she'd just switch<a name="note-Sun-Apr-10-001631EDT-2011"></a>[|1|](#foot-Sun-Apr-10-001631EDT-2011). She wouldn't go back to Windows, so I got her onto Ubuntu without much convincing.
+She was doing something with her Kindle when it shut down randomly. It wouldn't come back up, or respond to any of the start-up keys, and it wouldn't boot from its installation DVD either. So we were staring down the OS X equivalent of the blue screen of death. The problem potentially wasn't as simple as the hard drive getting borked. Given that [the mere process of replacing a hard drive](http://news.cnet.com/8301-13506_3-10210484-17.html) for one of these units involved supplies we'd have to go shopping for, she decided she'd just switch[^parts]. She wouldn't go back to Windows, so I got her onto Ubuntu without much convincing.
+
+[^supplies]: I've got some extra parts lying around. Nothing terribly impressive, but still enough to put together a half-way decent backup machine together in an hour or so if I need to.
 
 Ok, that was the background. Here's the story.
 
 I mentioned being a graphic designer. Actually that should probably say "Graphic Designer" because I have the degree to back up those capitals. So when I say that I underestimated the importance of UI on the decision making of end-users, understand the implications.
 
-She was intensely disappointed by pretty much everything she's seen of other Linux machines, so I more or less gave up on turning this into a house that respects the four freedoms <a name="note-Sun-Apr-10-001905EDT-2011"></a>[|2|](#foot-Sun-Apr-10-001905EDT-2011). The thing that ended up placating her is, and I shit you not, [`cairo-dock`](http://glx-dock.org/) set to auto-start at login with the spaces widget removed and the trash icon enabled. OpenOffice is close enough to MS Word for the stuff she does, Rhythmbox syncs with her iPod and her [browser of choice](http://www.google.com/chrome/?brand=CHMB&utm_campaign=en&utm_source=en-ha-na-us-sk&utm_medium=ha) is available. She still wants Photoshop, so I may need to resort to some VirtualBox shenanigans, but I'm hoping to get her using GIMP instead. Those are nitpicks though. It turns out that dock and the iPod syncing were the deal-breakers.
+She was intensely disappointed by pretty much everything she's seen of other Linux machines, so I more or less gave up on turning this into a house that respects the four freedoms[^incidentally]. The thing that ended up placating her is, and I shit you not, [`cairo-dock`](http://glx-dock.org/) set to auto-start at login with the spaces widget removed and the trash icon enabled. OpenOffice is close enough to Word for the stuff she does, `rhythmbox` syncs with her iPod and her [browser of choice](http://www.google.com/chrome/?brand=CHMB&utm_campaign=en&utm_source=en-ha-na-us-sk&utm_medium=ha) is available. She still wants Photoshop, so I may need to resort to some `VirtualBox` shenanigans, but I'm hoping to get her using GIMP instead. Those are nitpicks though. It turns out that dock and the iPod syncing were the deal-breakers.
+
+[^incidentally]: It's still not incidentally. As I said, she owns a Kindle, and an iPod from a while back, but our desktops are now all open source software and commodity hardware.
 
 This isn't meant to be funny, by the way. It's here to serve as a reminder of how small a change it takes for an end user to willingly switch.
-
-* * *
-##### Footnotes
-
-1 - <a name="foot-Sun-Apr-10-001631EDT-2011"></a>[|back|](#note-Sun-Apr-10-001631EDT-2011) - I've got some extra supplies lying around. Nothing terribly impressive, but still enough to put together a half-way decent backup machine together in an hour or so if I need to.
-
-2 - <a name="foot-Sun-Apr-10-001905EDT-2011"></a>[|back|](#note-Sun-Apr-10-001905EDT-2011) - It's still not incidentally. As I said, she owns a Kindle, and an iPod from a while back, but our desktops are now all open source software and commodity hardware.

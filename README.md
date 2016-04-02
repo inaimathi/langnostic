@@ -7,12 +7,11 @@
 
 ## ToDo
 
-- Revisit old blogs. NOW AT: `id:42`
-- Post #13 (On Neutrinos) is haunted. Have a closer look later
+- Revisit old blogs. NOW AT: `id:44 - game-jam`
 
 - Re-factor project into something sane
 	- Write utility functions for some of the stuff rom `Server.hs`
 	- Do some more processing before caching articles
 	- Don't worry; plenty mode. Add to this list as you go.
 
-- `BGG Data Sifting`, `cl-notebook Thoughts` and `cl-notebook introductory thoughts` all have issues with the translation-from-markdown approach. Figure out what to do about this (also, `cl-notebook` obviously needs an export-to-markdown feature)
+- `BGG Data Sifting` is MIA. All the cl-notebook articles have issues with the translation-from-markdown approach. `cl-notebook` obviously needs an export-to-markdown feature.

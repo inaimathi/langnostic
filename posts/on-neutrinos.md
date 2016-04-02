@@ -1,8 +1,8 @@
-I'm typing this on my badass new netbook, and ironically, hating every second of it. Not that it's a bad notebook, it's just that I haven't had the time to bend it to my will yet, so this is coming to you live from Windows 7's Notepad instead of my usual Ubuntu/Emacs combo.
+I'm typing this on my badass new netbook, and ironically, hating every second of it. Not that it's a bad netbook, it's just that I haven't had time to bend it to my will yet, so this is coming to you live from Windows 7's Notepad instead of my usual Linux/Emacs combo.
 
 So a comparison to my previous netbook of choice is in order. For those of you just tuning in, I used to tote an HP Mini 1035nr which my GF is now probably going to inherit.
 
-In descending order of importance: [^to-me]
+In descending order of importance[^to-me]:
 
 [^to-me]: To me anyway.
 
