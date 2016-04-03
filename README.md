@@ -7,7 +7,7 @@
 
 ## ToDo
 
-- Revisit old blogs. NOW AT: `id:44 - game-jam`
+- Revisit old blogs. NOW AT: `id:49 - joel-test`
 
 - Re-factor project into something sane
 	- Write utility functions for some of the stuff rom `Server.hs`
