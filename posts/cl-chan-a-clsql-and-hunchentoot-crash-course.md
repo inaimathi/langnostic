@@ -6,28 +6,24 @@ And that's it.
 
 So, I figured I could put something together. At first it was going to be the standard "Hello World" of webapps (a [blog](http://docs.racket-lang.org/continue/index.html)), but then I figured, fuck it, lets make [4chan](http://www.4chan.org/).
 
-<div class="note assumptions">### Assumptions Note
-    ### Things this tutorial assumes:
-    **You know the very basics of Lisp, SQL and HTML**
-    I won't bother teaching you what `(+ 1 2)` does or the basics of how the REPL works; there are [better](http://www.gigamonkeys.com/book/) [places](http://www.cs.sfu.ca/CC/310/pwfong/Lisp/1/tutorial1.html) to learn that. I also won't be teaching you how to [SELECT * FROM employees;](http://www.w3schools.com/sql/default.asp), that horse has been shot, bludgeoned, stomped on, kicked, salted and kicked again. Finally, I assume you know a thing or two about [HTML](http://www.google.ca/search?aq=f&sourceid=chrome&ie=UTF-8&q=html), if not web development proper.
-    **You have a Lisp and environment installed and configured to your liking ([quicklisp](http://www.quicklisp.org/beta/) optional, but recommended) **
-    It can be as simple as Notepad with SBCL+[linedit](http://xach.com/lisp/linedit-screencast.gif) in a terminal, or [LispWorks](http://www.lispworks.com/downloads/index.html) or [Emacs](http://www.gnu.org/software/emacs/)+[SLIME](http://common-lisp.net/project/slime/) (I prefer the third, but won't be using any arcane keyboard shortcuts without explaining them here).
-    If you don't, [LispBox](http://common-lisp.net/project/lispbox/) is a very good starting point.
-    **You have a database picked out and installed**
-    I use MySQL, but [clsql supports many more](http://clsql.b9.com/manual/prerequisites.html#id430640) (and the syntax is the same no matter which you pick, so you'll get your money's worth here in any case)
+<div class="note assumptions">
+## Assumptions Note
 
-    ### Things it does not assume (and that you therefore may want to skip through):
-    **You are an advanced Lisper**
-    I won't teach you about the REPL, or how to use Lisp as a calculator, but I will have some notes here about (for example) package basics.
-    **You have used clsql or CLOS before**
-    I'm aiming at CLOS/clsql newbs here, so I may cover some of the same ground as the mentioned documentation and tutorial. Skip those bits that you already know.
-    **You have built a Lisp webapp before**
-    There are a few tutorials running around, but I won't assume that you've read all or any of them. Again, skip the bits you know (though if you're familiar with CLOS, clsql and Lisp web-development, why are you reading this?)
-    **You are using SBCL (though I am, so let me know if something here fails to work on your end)**
-    I assume you're using a Common Lisp (and not a Scheme or one of the mongrels like [newLISP](http://www.reddit.com/r/lisp/comments/ghqxs/introduction_to_newlisp_wikibook/c1noc0d) or [Arc](http://www.paulgraham.com/arc.html)), and that said Common Lisp is compatible with both [Hunchentoot](http://weitz.de/hunchentoot/) and [CLSQL](http://clsql.b9.com/platforms.html). Other than that though, go nuts.
-    **You are psychic**
-    I'll try specifically to explain the things that were less than obvious to me while I was learning this material. Some stuff tends to get accidentally glossed over as trivial (it's also possible that I'm just thick, in which case, skip the obvious bits).
+### Things this tutorial assumes:
 
+- **You know the very basics of Lisp, SQL and HTML** I won't bother teaching you what `(+ 1 2)` does or the basics of how the REPL works; there are [better](http://www.gigamonkeys.com/book/) [places](http://www.cs.sfu.ca/CC/310/pwfong/Lisp/1/tutorial1.html) to learn that. I also won't be teaching you how to [SELECT * FROM employees;](http://www.w3schools.com/sql/default.asp), that horse has been shot, bludgeoned, stomped on, kicked, salted and kicked again. Finally, I assume you know a thing or two about [HTML](http://www.google.ca/search?aq=f&sourceid=chrome&ie=UTF-8&q=html), if not web development proper.
+- **You have a Lisp and environment installed and configured to your liking ([quicklisp](http://www.quicklisp.org/beta/) optional, but recommended) **
+It can be as simple as Notepad with SBCL+[linedit](http://xach.com/lisp/linedit-screencast.gif) in a terminal, or [LispWorks](http://www.lispworks.com/downloads/index.html) or [Emacs](http://www.gnu.org/software/emacs/)+[SLIME](http://common-lisp.net/project/slime/) (I prefer the third, but won't be using any arcane keyboard shortcuts without explaining them here).
+If you don't, [LispBox](http://common-lisp.net/project/lispbox/) is a very good starting point.
+- **You have a database picked out and installed** I use MySQL, but [clsql supports many more](http://clsql.b9.com/manual/prerequisites.html#id430640) (and the syntax is the same no matter which you pick, so you'll get your money's worth here in any case)
+
+### Things it does not assume (and that you therefore may want to skip through):
+
+- **You are an advanced Lisper** I won't teach you about the REPL, or how to use Lisp as a calculator, but I will have some notes here about (for example) package basics.
+- **You have used `clsql` or `CLOS` before** I'm aiming at `clsql`/`CLOS` newbs here, so I may cover some of the same ground as the mentioned documentation and tutorial. Skip those bits that you already know.
+- **You have built a Lisp webapp before** There are a few tutorials running around, but I won't assume that you've read all or any of them. Again, skip the bits you know (though if you're familiar with CLOS, clsql and Lisp web-development, why are you reading this?)
+- **You are using SBCL (though I am, so let me know if something here fails to work on your end)** I assume you're using a Common Lisp (and not a Scheme or one of the mongrels like [newLISP](http://www.reddit.com/r/lisp/comments/ghqxs/introduction_to_newlisp_wikibook/c1noc0d) or [Arc](http://www.paulgraham.com/arc.html)), and that said Common Lisp is compatible with both [Hunchentoot](http://weitz.de/hunchentoot/) and [CLSQL](http://clsql.b9.com/platforms.html). Other than that though, go nuts.
+- **You are psychic** I'll try specifically to explain the things that were less than obvious to me while I was learning this material. Some stuff tends to get accidentally glossed over as trivial (it's also possible that I'm just thick, in which case, skip the obvious bits).
 </div>
 
 So lets get right to it.
@@ -43,36 +39,37 @@ Start a new file and get this into it, then save it as `cl-chan.lisp`
 
 Then hop into your REPL and load :cl-who + :hunchentoot, followed by cl-chan
 
-<div class="note beginner">### Beginner Note
-
-    You can do that by typing
-
-```emacs-lisp
-    (require 'cl-who)
-    (require 'hunchentoot)
-    (require 'clsql)
-```
-
-    if you already have them installed. If you don't, then you might be able to install them (on a good day, in certain implementations, if you're lucky and if your last name begins and ends with "T") by typing
+<div class="note beginner">
+## Beginner Note
+You can do that by typing
 
 ```emacs-lisp
-    (require 'asdf)
-    (require 'asdf-install)
-    (asdf-install:install 'cl-who)
-    (asdf-install:install 'hunchentoot)
-    (asdf-install:install 'clsql)
+(require 'cl-who)
+(require 'hunchentoot)
+(require 'clsql)
 ```
 
-    I've been told that doesn't work on all implementations (though it does work on the SBCL you can get out of the Debian repos). If you're smart, you will instead [go here](http://www.quicklisp.org/beta/) and follow the installation instructions, then type
+if you already have them installed. If you don't, then you might be able to install them (on a good day, in certain implementations, if you're lucky and if your last name begins and ends with "T") by typing
+
+```emacs-lisp
+(require 'asdf)
+(require 'asdf-install)
+(asdf-install:install 'cl-who)
+(asdf-install:install 'hunchentoot)
+(asdf-install:install 'clsql)
+```
+
+I've been told that doesn't work on all implementations (though it does work on the SBCL you can get out of the Debian repos). If you're smart, you will instead [go here](http://www.quicklisp.org/beta/) and follow the installation instructions, then type
 
 ```lisp
-    (ql:quickload (list :cl-who :hunchentoot :clsql))
+(ql:quickload (list :cl-who :hunchentoot :clsql))
 ```
 
-    That same statement will load local copies if you already have them installed, by the way. After all that, load your original file by typing
+That same statement will load local copies if you already have them installed, by the way. After all that, load your original file by typing
 
-    (load "path-to/cl-chan.lisp")
-
+```lisp
+(load "path-to/cl-chan.lisp")
+```
 </div>
 
 then crack a browser open and head on over to `http://localhost:4242` to see the default Hunchentoot page.
@@ -97,20 +94,21 @@ Add the following just below that `defvar`:
 
 and refresh your browser.
 
-<div class="note beginner">### Beginner Note
-The first bit we did was define a namespace ("package") called `:cl-chan`. You can find specifics and some more advanced uses [here](http://www.gigamonkeys.com/book/programming-in-the-large-packages-and-symbols.html), but the basic reason for this is to manage how the symbols we'll be defining interact on the global level. The basic `:use` directive we used specified that our package would import all exported symbols from three other packages;
+<div class="note beginner">
+## Beginner Note
 
+The first bit we did was define a namespace ("package") called `:cl-chan`. You can find specifics and some more advanced uses [here](http://www.gigamonkeys.com/book/programming-in-the-large-packages-and-symbols.html), but the basic reason for this is to manage how the symbols we'll be defining interact on the global level. The basic `:use` directive we used specified that our package would import all exported symbols from three other packages;
 
 - `:cl` (all the basic Common Lisp functions; if you get into the situation where you've defined a package and odd things are happening in expressions that really shouldn't error, what's probably going on is that you forgot to include `:cl`),
 - `:cl-who` (an HTML generation library) and
 - `:hunchentoot` (a lisp-based web-server). We'll talk about namespace conflicts a later.
 
 
-    `(in-package :cl-chan)` means that any symbol following it will be evaluated in the package `:cl-chan` instead of in the global namespace.
+`(in-package :cl-chan)` means that any symbol following it will be evaluated in the package `:cl-chan` instead of in the global namespace.
 
-    The `defvar` line defines a new variable, stores an acceptor there and starts a server listening on port 4242 using the `start` method. You can later stop the server by evaluating `(stop *web-server*)` (you don't need to at the moment).
+The `defvar` line defines a new variable, stores an acceptor there and starts a server listening on port 4242 using the `start` method. You can later stop the server by evaluating `(stop *web-server*)` (you don't need to at the moment).
 
-    Finally, the `define-easy-handler` line sets up a handler at "localhost:4242/" that will return a simple page. The `:cl-who` markup you see should be self-explanatory if you know HTML.
+Finally, the `define-easy-handler` line sets up a handler at "localhost:4242/" that will return a simple page. The `:cl-who` markup you see should be self-explanatory if you know HTML.
 
 </div>
 
@@ -155,9 +153,10 @@ So, lets try it out.
                  :date (get-universal-time)))
 ```
 
-<div class="note beginner">### Beginner Note
-    A parameter is like a [variable](http://www.lispworks.com/documentation/HyperSpec/Body/m_defpar.htm#defvar), except that they act differently if you try to define one with an existing name. If you `defvar` a variable that already exists, it keeps the old value (you actually have to use `setf` explicitly), whereas if you `defparameter` a parameter that exists, it gets the new value. `(get-universal-time)` is a function that returns the current number of seconds since the epoch (in Common Lisp, that's 00:00 Jan 1, 1900 GMT, as it happens). We won't need to do anything with it 'till later.
+<div class="note beginner">
+## Beginner Note
 
+A parameter is like a [variable](http://www.lispworks.com/documentation/HyperSpec/Body/m_defpar.htm#defvar), except that they act differently if you try to define one with an existing name. If you `defvar` a variable that already exists, it keeps the old value (you actually have to use `setf` explicitly), whereas if you `defparameter` a parameter that exists, it gets the new value. `(get-universal-time)` is a function that returns the current number of seconds since the epoch (in Common Lisp, that's 00:00 Jan 1, 1900 GMT, as it happens). We won't need to do anything with it 'till later.
 </div>
 
 Hop on over to the REPL and kick the tires a bit;
@@ -184,9 +183,10 @@ Backtrace:
 
 So that didn't work out so well. Remember, we defined all of these slots as having a `:reader`, not an `:accessor`. We could have given them both, or just an accessor, but we won't really be needing to mess with a comment once it's been posted, so this should be ok. Use the `ABORT` restart to get back into the REPL.
 
-<div class="note beginner">### Beginner Note
-    I'm not sure how it works elsewhere, but if you're using Emacs, you can invoke a restart by typing the number next to it and hitting Return. So in this case, it'll be `1 RET`
+<div class="note beginner">
+## Beginner Note
 
+I'm not sure how it works elsewhere, but if you're using Emacs, you can invoke a restart by typing the number next to it and hitting Return. So in this case, it'll be `1 RET`
 </div>
 
 Ok, now lets show that. Head over to that `define-easy-handler` from earlier and change the contents of the body tag to
@@ -203,9 +203,10 @@ Ok, now lets show that. Head over to that `define-easy-handler` from earlier and
 
 and evaluate the function again.
 
-<div class="note beginner">### Beginner Note
-    You can certainly do that by using the same `(load "path-to/cl-chan.lisp")` statement as earlier, or by copy-pasting the function into your REPL. If you're using Emacs, you can also just get your cursor somewhere in the body of the function and hit `C-M-x`. Other environments probably have similar functionality.
+<div class="note beginner">
+## Beginner Note
 
+You can certainly do that by using the same `(load "path-to/cl-chan.lisp")` statement as earlier, or by copy-pasting the function into your REPL. If you're using Emacs, you can also just get your cursor somewhere in the body of the function and hit `C-M-x`. Other environments probably have similar functionality.
 </div>
 
 Refreshing your browser should show you a fairly poorly formatted comment across two lines. Hey, it's a start. The first two things to notice are the `htm` and `str` tokens. These are part of the `:cl-who` library; they're actually tokens for the HTML generator, and not real functions so they'll error if you try to use them outside a `with-html-...` macro. They're just escapes to let you write dynamic HTML as part of `:cl-who` markup (without the `htm` after `with-slots`, you'd get `undefined function` errors for `:div`, `:span` and `:p`.
@@ -334,14 +335,14 @@ There. Now that we have a thread with four comments, lets show that.
                      (str (echo r))))))))
 ```
 
-<div class="note pedantic">### Pedantic Note
-    Note that we're using `with-html-output` instead of `with-html-output-to-string`. Only the top level one actually has to be the `to-string` variant, and using the plain version of the macro lets us omit `str` calls on the output of this function. If you want, you can re-define `echo` for `comment`s the same way, which would let you write the `dolist` in the `thread` `echo` as
+<div class="note pedantic">
+## Pedantic Note
+
+Note that we're using `with-html-output` instead of `with-html-output-to-string`. Only the top level one actually has to be the `to-string` variant, and using the plain version of the macro lets us omit `str` calls on the output of this function. If you want, you can re-define `echo` for `comment`s the same way, which would let you write the `dolist` in the `thread` `echo` as
 
 ```lisp
 (dolist (r (cdr (comments thread))) (echo r))
 ```
-
-
 </div>
 
 A method for the `thread` object! This is the other difference between a `method` and an `un`; you can have multiple `method`s with the same name which specialize on different objects. If you call `echo` on a `comment`, it'll evaluate the first one we defined. If you call it on a `thread`, it'll evaluate this new one (also note that part of our definition of `echo` for threads involves calling `echo` on each reply to the thread, which means that every element of `(cdr (comments thread))` must be an `echo`able object). Amend your `front-page` `:body` again;
@@ -383,11 +384,12 @@ finally, add this at the bottom of the file:
  *dispatch-table*)
 ```
 
-<div class="note style">### Style Note
-    If you really want to do it right, you should probably create a sub-directory for the CSS files and make that `create-folder-dispatcher-and-handler` instead.
+<div class="note style">
+## Style Note
 
-    You might also want to look into the existing [CSS generators](http://www.cliki.net/CSS) in Lisp instead of doing the work by hand, although it probably won't save you much typing on something this minimal.
+If you really want to do it right, you should probably create a sub-directory for the CSS files and make that `create-folder-dispatcher-and-handler` instead.
 
+You might also want to look into the existing [CSS generators](http://www.cliki.net/CSS) in Lisp instead of doing the work by hand, although it probably won't save you much typing on something this minimal.
 </div>
 
 `create-static-file-dispatcher-and-handler` takes a uri relative to your site and a file path, and serves up that path when that uri is requested.
@@ -630,28 +632,28 @@ Refreshing should get you the same front page, but with a form to let you start 
 
 and re-evaluate it. That should cause an error. Ok, ok, I promise to stop teasing after this, but this is just a point you should probably know if you're going to be developing in Lisp. Those of you who know what just happened, resolve the conflict by picking the `clsql:select` option, and skip the following note.
 
-<div class="note beginner">### Beginner Note
+<div class="note beginner">
+## Beginner Note
 
-    Namespace conflicts happen sometimes. Packages you want to include both export the same, perfectly reasonable name and when you `:use` them both without specifying what to do about the conflict, your Lisp throws you an error.
+Namespace conflicts happen sometimes. Packages you want to include both export the same, perfectly reasonable name and when you `:use` them both without specifying what to do about the conflict, your Lisp throws you an error.
 
-    In this case, the conflict is with the symbol `select`. `:formlets` exports a `select` class (named after the HTML [Select](http://www.w3schools.com/tags/tag_select.asp) tag that it models) and `:clsql` exports a `select` function (named after the SQL [SELECT](http://www.w3schools.com/sql/sql_select.asp) statement that *it* models). Both packages made the right choice of name for the thing they're trying to represent, but they wouldn't play nice in the same namespace. So it's a good thing Lisp has built-in namespace management.
+In this case, the conflict is with the symbol `select`. `:formlets` exports a `select` class (named after the HTML [Select](http://www.w3schools.com/tags/tag_select.asp) tag that it models) and `:clsql` exports a `select` function (named after the SQL [SELECT](http://www.w3schools.com/sql/sql_select.asp) statement that *it* models). Both packages made the right choice of name for the thing they're trying to represent, but they wouldn't play nice in the same namespace. So it's a good thing Lisp has built-in namespace management.
 
-    Now, if we weren't planning on using `select` at all, we could just add a shadow statement like so:
+Now, if we weren't planning on using `select` at all, we could just add a shadow statement like so:
 
 ```lisp
 (defpackage :cl-chan (:use :cl :cl-who :hunchentoot :formlets :clsql)
   (:shadow :select))
 ```
 
-    and be done with it. However, while our project won't call for the `select` **tag** yet (possibly at all), we will be using the `select` **statement** quite a bit. In that situation, you actually want to specify a `:shadowing-import-from` like this:
+and be done with it. However, while our project won't call for the `select` **tag** yet (possibly at all), we will be using the `select` **statement** quite a bit. In that situation, you actually want to specify a `:shadowing-import-from` like this:
 
 ```lisp
 (defpackage :cl-chan (:use :cl :cl-who :hunchentoot :formlets :clsql)
   (:shadowing-import-from :clsql :select))
 ```
 
-    That tells Lisp to import the `select` symbol from the `:clsql` package, and shadow the rest of them.
-
+That tells Lisp to import the `select` symbol from the `:clsql` package, and shadow the rest of them.
 </div>
 
 Ok, first thing to do is make sure you have a database and user set up in whatever db engine you use. You'll need to create a user too, and give the user permissions to the database (for this tutorial, you can just use your root user instead of creating a new one, but you shouldn't do that on a production server). The process varies depending on DB, so check the docs for yours.
@@ -680,7 +682,9 @@ Note that `date-time` is of type `wall-time` rather than `integer` which means w
 
 and call it instead of `(get-universal-time)` to set the `date-time` slot on a comment (you can just do a search-and-replace here; we haven't used `univeral-time`s for anything else).
 
-<div class="note package">### Package Note
+<div class="note package">
+## Package Note
+
 A point of interest, `clsql-sys` has plenty of similar utility functions, but they're not documented anywhere other than in the code itself (check out the test suite buried in the clsql-sys source) and in [three half-line blurbs about wall-time, date and duration](http://clsql.b9.com/manual/def-view-class.html) in the official documentation. This kind of poor visibility is what led me to re-invent the wheel [last time](/posts/clsql) in defining my own `mysql-time` function the hard way.
 
 Other stuff you might find interesting (some of which we will touch on later):
@@ -700,7 +704,6 @@ clsql-sys:date->time
 clsql-sys:time->date
 clsql-sys::days-in-month ;;yup, not even external
 ```
-
 </div>
 
 The transformation of a thread is a little more interesting.
@@ -856,25 +859,26 @@ so that the hidden field we've got going will actually have the correct default 
 
 Note that we've got a new field to let us know which thread is being replied to (we could have done this through hunchentoots' `[session](http://weitz.de/hunchentoot/#sessions)`, but that would have some odd corner cases if someone wanted to keep in multiple threads at once). Adding an argument to an easy-handler just makes sure it's bound appropriately (so the `thread-id` in those `:where` and `:default-values` clauses will be set to the correct values).
 
-<div class="note pedantic">### Pedantic Note
-    Just as an addendum, keep in mind two things here.
+<div class="note pedantic">
+## Pedantic Note
 
-    One, if you feel like calling `get-parameter` manually, you call it with the lower-cased string. Above, it would be `(get-parameter "thread-id")`, not `(get-parameter :thread-id)` or `(get-parameter "THREAD-ID")`. Those are all different things (the second one will throw an error, I think, the third one will just return NIL).
+Just as an addendum, keep in mind two things here.
 
-    Two, any values you get back this way are **strings**, no matter what they actually represent. It doesn't matter in this case because the `CLSQL` reader macro handles it intelligently, and `formlets` converts anything it gets into a string anyway. However, if we wanted to create a new DB object (as in the formlet above), or do a standard numeric comparison, however, we'd need to convert from string. So,
+One, if you feel like calling `get-parameter` manually, you call it with the lower-cased string. Above, it would be `(get-parameter "thread-id")`, not `(get-parameter :thread-id)` or `(get-parameter "THREAD-ID")`. Those are all different things (the second one will throw an error, I think, the third one will just return NIL).
 
-```lisp
-    (= 1 (parse-integer thread-id))
-```
-
-    and not
+Two, any values you get back this way are **strings**, no matter what they actually represent. It doesn't matter in this case because the `CLSQL` reader macro handles it intelligently, and `formlets` converts anything it gets into a string anyway. However, if we wanted to create a new DB object (as in the formlet above), or do a standard numeric comparison, however, we'd need to convert from string. So,
 
 ```lisp
-    (= 1 thread-id)
+(= 1 (parse-integer thread-id))
 ```
 
-    the-more-you-know.jpg
+and not
 
+```lisp
+(= 1 thread-id)
+```
+
+`the-more-you-know.jpg`
 </div>
 
 Finally, change the reply link in the `summarize` method to point to `(format nil "/thread?thread-id=~a" (id thread))` instead of `"/thread"` (so that you can just click on the "Reply" link to get around). Go ahead and add some threads, then respond to them. You should be able to at this point.

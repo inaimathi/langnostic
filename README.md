@@ -7,7 +7,7 @@
 
 ## ToDo
 
-- Revisit old blogs. NOW AT: `id:49 - joel-test`
+- Revisit old blogs. NOW AT: `id:55 - using-clsql`
 
 - Re-factor project into something sane
 	- Write utility functions for some of the stuff rom `Server.hs`

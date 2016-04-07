@@ -47,11 +47,11 @@
 {"id":46,"title":"Freedom","file":"freedom","edited":1401033531,"posted":1305691200,"tags":["general-programming-thoughts","free-software"]}
 {"id":47,"title":"Ugh.","file":"ugh","edited":1401311778,"posted":1307764800,"tags":["php","general-programming-thoughts"]}
 {"id":48,"title":"Kindle and Thoughts about Work","file":"kindle-and-thoughts-about-work","edited":1401284371,"posted":1310961600,"tags":["general-programming-thoughts"]}
-{"id":49,"title":"Joel Test Patch","file":"joel-test","edited":1401033531,"posted":1311134400,"tags":["speculation","programming-interfaces","programming-environment","idea-peeling"]}
+{"id":49,"title":"Joel Test Patch","file":"joel-test-patch","edited":1401033531,"posted":1311134400,"tags":["speculation","programming-interfaces","programming-environment","idea-peeling"]}
 {"id":50,"title":"Formlets and defclass","file":"formlets-and-defclass","edited":1401312283,"posted":1312257600,"tags":["php","common-lisp","clos"]}
-{"id":51,"title":"CL-Chan (a CLSQL and Hunchentoot crash course) - Part 1","file":"using-clsql","edited":1401311862,"posted":1314331200,"tags":["hunchentoot","common-lisp","clos","clsql"]}
-{"id":52,"title":"Intermission","file":"using-clsql-intermission","edited":1401033531,"posted":1314676800,"tags":["speculation","javascript","idea-peeling","common-lisp","client-side"]}
-{"id":53,"title":"\"Mapping CLOS\", or \"Yak Shaving for Fun and No Profit\"","file":"yak-shaving-for-fun-and-no-profit","edited":1401312466,"posted":1316836800,"tags":["common-lisp","clos"]}
+{"id":51,"title":"CL-Chan (a CLSQL and Hunchentoot crash course) - Part 1","file":"cl-chan-a-clsql-and-hunchentoot-crash-course","edited":1401311862,"posted":1314331200,"tags":["hunchentoot","common-lisp","clos","clsql"]}
+{"id":52,"title":"Intermission","file":"intermission","edited":1401033531,"posted":1314676800,"tags":["speculation","javascript","idea-peeling","common-lisp","client-side"]}
+{"id":53,"title":"\"Mapping CLOS\", or \"Yak Shaving for Fun and No Profit\"","file":"mapping-clos-or-yak-shaving-for-fun-and-no-profit","edited":1401312466,"posted":1316836800,"tags":["common-lisp","clos"]}
 {"id":54,"title":"Old Machines Redux","file":"old-machines-redux","edited":1401324208,"posted":1317528000,"tags":["hardware"]}
 {"id":55,"title":"Screen for StumpWM/Xmonad Users - GNU Screen as a window manager","file":"screen-for-stump-users","edited":1401033531,"posted":1317873600,"tags":["shell","programming-environment","idea-peeling"]}
 {"id":56,"title":"ScreenWM Follow-up","file":"screen-wm-followup","edited":1401033531,"posted":1318219200,"tags":["shell","programming-environment","common-lisp"]}

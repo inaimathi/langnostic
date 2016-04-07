@@ -38,10 +38,18 @@ hr { border-color: #CC0606; background-color: #CC0606; display: block; clear: bo
 /* Rotation  */
 
 .top-menu-container, hr { width: 110%; margin-left: -5%; }
-.top-menu-container, .logo-bar, .post-nav, hr { transform: rotate(-2deg); }
+.top-menu-container, .logo-bar, .post-nav, hr, .note { transform: rotate(-2deg); }
 
 /* cl-notebook-specific classes */
 
 blockquote pre.standard-output { font-style: normal; }
 blockquote pre.return-value { border: 1px solid #CCC; background-color: #fff; font-style: normal; }
 blockquote pre.return-value code { background: none; }
+
+/* other */
+pre.diff { white-space: pre-wrap; }
+
+.note { padding: 5px; border: 1px solid #CCC; background-color: #efefef; }
+.note h2 { margin: 0px; padding: 0px; }
+.note p, .note h3, .note h4, .note pre, .note ul { display: none; }
+.note:hover p, .note:hover h3, .note:hover h4, .note:hover pre, .note:hover ul { display: block; }

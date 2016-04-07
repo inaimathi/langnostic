@@ -1,14 +1,17 @@
 Dear Mr. Spolsky,
 
-I've been a big fan of your blog while you were updating it regularly. It was a very good collection of essays on managing a software enterprise from the Windows/shrinkwrap perspective (the second one is actually a distinction I learned from reading your excellent [Five Worlds](http://www.joelonsoftware.com/articles/FiveWorlds.html) piece which still rings true for me).
+I've been a fan of your blog while you were updating it regularly. It was a good collection of essays on managing a software enterprise from the Windows/shrinkwrap[^distinction] perspective.
 
-During a recent spare moment, I re-read [The Joel Test](http://www.joelonsoftware.com/articles/fog0000000043.html), and seriously considered how closely an organization that scores between 8 and 12 would resemble a place where I'd like to work. A few bugs emerged; 
+[^distinction]: The second one is actually a distinction I learned from reading your excellent [Five Worlds](http://www.joelonsoftware.com/articles/FiveWorlds.html) piece which still rings true for me.
 
+During a recent spare moment, I re-read [The Joel Test](http://www.joelonsoftware.com/articles/fog0000000043.html), and seriously considered how closely an organization that scores between 8 and 12 would resemble a place where I'd like to work. A few bugs emerged;
 
-- I would *not* enjoy working at a place that still insists on CVS (SVN would be acceptable if for no other reason than [git-svn](http://www.kernel.org/pub/software/scm/git/docs/git-svn.html) exists and is bi-directional)
-- "The Best Tools Money Can Buy", in the sense of hardware, isn't really necessary (in other circumstances, I'd argue that it's unnecessary in the software sense too, because I'm unsure money can buy the best software tools, but I'll put that down to my bias as a Linux user and say no more about it)
+- I would *not* enjoy working at a place that still insists on CVS[^SVN]
+- "The Best Tools Money Can Buy", in the sense of hardware, isn't really necessary[^circumstances]
 - Specs and schedules aren't necessarily the best way to do things. Both words also have a lot of baggage and history, and as a result, some organizations may claim a point or two here even if they're doing it wrong, while others might be penalized even though they adhere to the principles explained in the associated other articles you've written.
 
+[^SVN]: SVN would be acceptable if for no other reason than [git-svn](http://www.kernel.org/pub/software/scm/git/docs/git-svn.html) exists and is bi-directional.
+[^circumstances]: In other circumstances, I'd argue that it's unnecessary in the software sense too, because I'm unsure money can buy the best software tools, but I'll put that down to my bias as a Linux user and say no more about it.
 
 That said, I humbly submit the following patch for your consideration. Hopefully, I'm not wrong about all of it (if nothing else, I welcome a counter-argument and explanation of why I'm wrong).
 
@@ -16,8 +19,7 @@ Yours
 
 -Inaimathi
 
-========================================
-
+* * *
 
 ```diff
 diff -u joel-test.html joel-test-edits.html
@@ -61,7 +63,7 @@ Keeping schedules does not have to be hard. Read my article Painless Software Sc
 +A work queue is the exact same thing, but without the mental baggage that people bring to the table when discussing scheduling (I prefer to ask this one, because it's inherently up-to-date, and people who make a schedule at the beginning of the project then never look at it again tend to mentally skip over "up-to-date" and just answer "yes"). Please read the [Painless Software Schedules](http://www.joelonsoftware.com/articles/fog0000000245.html) linked above. In fact, here, have another [link](http://www.joelonsoftware.com/articles/fog0000000245.html). The point of the exercise, whether it's a schedule or work queue is that it's something you update each day to reflect the current state as honestly and recently as possible.
 -7. Do you have a spec?
 +7. Do you have a minimal spec?
-Writing specs is like flossing: everybody agrees that it's a good thing, but nobody does it. 
+Writing specs is like flossing: everybody agrees that it's a good thing, but nobody does it.
 I'm not sure why this is, but it's probably because most programmers hate writing documents. As a result, when teams consisting solely of programmers attack a problem, they prefer to express their solution in code, rather than in documents. They would much rather dive in and write code than produce a spec first.
 @@ -100,6 +102,10 @@
 My pet theory is that this problem can be fixed by teaching programmers to be less reluctant writers by sending them off to take an intensive course in writing. Another solution is to hire smart program managers who produce the written spec. In either case, you should enforce the simple rule "no code without spec".
