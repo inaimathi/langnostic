@@ -58,12 +58,12 @@
 {"id":57,"title":"Ruby vs. Python Briefly","file":"ruby-vs-python-briefly","edited":1401033531,"posted":1318737600,"tags":["syntax","ruby","python"]}
 {"id":58,"title":"Objective Lisp","file":"objective-lisp","edited":1401033531,"posted":1320379200,"tags":["idea-peeling","common-lisp"]}
 {"id":59,"title":"PostScript and Temporary Goodbye","file":"postscript-and-temporary-goodbye","edited":1401033531,"posted":1320901200,"tags":["postscript"]}
-{"id":60,"title":"False Alarm. Also, Teensy","file":"teensy","edited":1401033531,"posted":1320987600,"tags":["hardware"]}
-{"id":61,"title":"Clomment Moderation","file":"clomments-moderation","edited":1401033531,"posted":1322802000,"tags":["hunchentoot","common-lisp"]}
-{"id":62,"title":"Teensy Fucking Passwords","file":"teensy-passwords","edited":1401312119,"posted":1323752400,"tags":["security","programming-interfaces","idea-peeling","hardware","c"]}
+{"id":60,"title":"False Alarm. Also, Teensy","file":"false-alarm-also-teensy","edited":1401033531,"posted":1320987600,"tags":["hardware"]}
+{"id":61,"title":"Clomments Moderation","file":"clomments-moderation","edited":1401033531,"posted":1322802000,"tags":["hunchentoot","common-lisp"]}
+{"id":62,"title":"Teensy Fucking Passwords","file":"teensy-fucking-passwords","edited":1401312119,"posted":1323752400,"tags":["security","programming-interfaces","idea-peeling","hardware","c"]}
 {"id":63,"title":"Teensy Mode","file":"teensy-mode","edited":1401033531,"posted":1323838800,"tags":["make","elisp","c"]}
-{"id":64,"title":"x220 and (unrelatedly) Portable Keyboards","file":"x220","edited":1401322008,"posted":1324875600,"tags":["programming-interfaces","hardware"]}
-{"id":65,"title":"XMonad Keybindings and an aside on Piracy","file":"piracy","edited":1401310565,"posted":1325221200,"tags":["programming-environment","haskell","copyright-bullshit"]}
+{"id":64,"title":"x220 and (unrelatedly) Portable Keyboards","file":"x220-and-unrelatedly-portable-keyboards","edited":1401322008,"posted":1324875600,"tags":["programming-interfaces","hardware"]}
+{"id":65,"title":"XMonad Keybindings and an aside on Piracy","file":"xmonad-keybindings-and-an-aside-on-piracy","edited":1401310565,"posted":1325221200,"tags":["programming-environment","haskell","copyright-bullshit"]}
 {"id":66,"title":"Passing Notes","file":"passing-notes","edited":1401033531,"posted":1325480400,"tags":["security","programming-environment","idea-peeling"]}
 {"id":67,"title":"How Close can you get to a Lisp Machine?","file":"how-close-can-you-get-to-a-lisp-machine","edited":1401033531,"posted":1327035600,"tags":["programming-environment","common-lisp"]}
 {"id":68,"title":"WebMote and \"Open\" software","file":"webmote-quote-open-endquote-and-depression","edited":1401309999,"posted":1327467600,"tags":["common-lisp","bitching"]}

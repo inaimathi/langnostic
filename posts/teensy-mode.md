@@ -25,6 +25,6 @@ The relevant bits are really just
          (teensy-load-hex-file)))
 ```
 
-the rest of it is various Emacs boilerplate like key and customization declarations. The one interesting thing I've learned from *this* experience is that the `:options` keyword does pretty much jack shit. In a `hook` customization, you can presumably at least *see* the list, but it still doesn't constrain your choices to what's there. It might be nice to have the option, since the customization I had in mind was the chip-type of your Teensy board (a required option that needs to be correct or it'll hang your chip, so it's sort of critical to get it correct).
+the rest of it is various Emacs boilerplate like key and customization declarations. The one interesting thing I've learned from *this* experience is that the `:options` keyword does pretty much jack shit. In a `hook` customization, you can presumably at least *see* the list, but it still doesn't constrain your choices to what's there. It might be nice to have the option, since the customization I had in mind was the chip-type of your Teensy board _(a required option that needs to be correct or it'll hang your chip, so it's sort of critical to get it correct)_.
 
 I'm also flaking out on actual project compilation, opting to keep the `make` command involved, which has som seriiaaah fuck this, I'm going to sleep.

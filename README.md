@@ -7,7 +7,14 @@
 
 ## ToDo
 
-- Revisit old blogs. NOW AT: `id:60`
+- Add a `TipJar` section to the site.
+	- Definitely links to services I use that provide network deals
+		- www.digitalocean.com/?refcode=445ca16e1a76
+		- http://invite.ritual.co/LEO4857
+	- Link to [`quicklisp`](https://www.quicklisp.org/donations.html), [EFF](https://supporters.eff.org/donate) and [FSF](https://my.fsf.org/donate/) donation pages
+	- Potentially a PayPal link, I guess, if nothing else works?
+
+- Revisit old blogs. NOW AT: `id:65`
 
 - Re-factor project into something sane
 	- Write utility functions for some of the stuff rom `Server.hs`
