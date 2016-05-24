@@ -1,10 +1,11 @@
 It feels like my blogging schedule is getting more and more erratic. I honestly can't remember the last time I had enough time and energy to devote a full hour or so to the task of recording my thoughts in prose. It's tempting to blame it on work[^honest], but something tells me that the combination of growing kids, dietary changes and exercise alterations, combined with some amount of mental burnout are also relevant factors. I'm not here to dwell on that though, I'm here to report highlights, and be on my way.
 
-[^honest]: And, lets be honest here, [500px](http://www.500px.com) is easily the highest pressure environment I've worked in so far, so it probably wouldn't even be entirely inaccurate.
+[^honest]: And, lets be honest here, [500px](http://www.500px.com) is easily the highest-pressure environment I've worked in so far. Not in the "the standards are too high" sense, but in the "how much shit can I get done in the absolute minimum amount of time" sense. Anyhow, it probably wouldn't even be inaccurate to say that work is affecting my mental states negatively.
 
 ## The Toronto Computer Science Reading Group meets Bob Harper
 
-[pic or it didn't happen]
+![](/static/img/rob-harper-0.jpg)
+![](/static/img/rob-harper-1.jpg)
 
 So the Toronto Comp-Sci Reading Group, aka The Toronto Society for Recreational Computer Science, aka [The Comp-Sci Cabal](http://compscicabal.github.io/) has been collectively reading a book called [the Practical Foundations of Computer Science](http://www.cs.cmu.edu/~rwh/pfpl.html). Which is fantastic incidentally, I thoroughly recommend it, but be prepared for the fight of your life if you don't already have an extensive math and/or CompSci background. The author of that book is [Bob Harper](https://existentialtype.wordpress.com/), who happened to be in town for the [Homotopy Type Theory Workshop](http://www.fields.utoronto.ca/activities/15-16/homotopy-type) this week. So we seized the chance to have a chat with him afterwards, both about some of the things he says in his book, some of the projects he's currently working on. The members who got their [physical copies](https://www.amazon.ca/Practical-Foundations-Programming-Languages-Robert/dp/1107150302/ref=sr_1_1?ie=UTF8&qid=1463792541&sr=8-1&keywords=practical+foundations+of+programming+languages) managed to get them autographed too.
 
@@ -31,9 +32,7 @@ I'm still plugging away at the article history of this blog, fixing typos, broke
 
 ## Docs Beta
 
-As if I didn't have enough excitement plaguing me lately, I've also signed up for [docs-beta](TODO) a little while ago, proposed [`common-lisp`](TODO), [`SML`](TODO) and [`nix`](TODO) tags, and then did nothing much about it. The only one that's been approved so far is [`common-lisp`](TODO)[^approval-process]. And all that's been done on that one is a bunch of topic proposals that I keep telling myself I'll get to when I get a free weekend. Which, at this rate, should happen somewhere around late 2018.
-
-[tired selfie]
+As if I didn't have enough excitement plaguing me lately, I've also signed up for [docs-beta](http://docs-beta.stackexchange.com/) a little while ago, proposed [`common-lisp`](http://docs-beta.stackexchange.com/documentation/common-lisp/topics), [`SML`](http://docs-beta.stackexchange.com/documentation/sml) and [`nix`](http://docs-beta.stackexchange.com/documentation/nix) tags, and then did nothing much about it. The only one that's been approved so far is `common-lisp`[^approval-process]. And all that's been done on that one is a bunch of topic proposals that I keep telling myself I'll get to when I get a free weekend. Which, at this rate, should happen somewhere around late 2018.
 
 I'll keep you posted, as always.
 
