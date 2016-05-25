@@ -14,7 +14,7 @@
 	- Link to [`quicklisp`](https://www.quicklisp.org/donations.html), [EFF](https://supporters.eff.org/donate) and [FSF](https://my.fsf.org/donate/) donation pages
 	- Potentially a PayPal link, I guess, if nothing else works?
 
-- Revisit old blogs. NOW AT: `id:65`
+- Revisit old blogs. NOW AT: `id:66`
 
 - Re-factor project into something sane
 	- Write utility functions for some of the stuff rom `Server.hs`
