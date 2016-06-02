@@ -1,8 +1,12 @@
-So here's how you can pass messages to each other without your parents<a name="note-Mon-Jan-02-232529EST-2012"></a>[|1|](#foot-Mon-Jan-02-232529EST-2012) reading them.
+So here's how you can pass messages to each other without your parents[^or-whoever] reading them.
+
+[^or-whoever]: Or teachers, or political enemies, or competitors, what-have-you.
 
 ## Step 1: Get Some Friends and Computers together
 
-I can't help you with this. You need some computers<a name="note-Mon-Jan-02-233301EST-2012"></a>[|2|](#foot-Mon-Jan-02-233301EST-2012) and you need some friends to talk to, otherwise why would you be passing messages?
+I can't help you with this. You need some computers[^if-you-dont] and you need some friends to talk to, otherwise why would you be passing messages?
+
+[^if-you-dont]: If you don't have access to your own computer, you can use a usb to run [Ubuntu live](https://wiki.ubuntu.com/LiveUsbPendrivePersistent), and merely plug it into whatever computer you do actually have access to.
 
 ## Step 2: Get GnuPG
 
@@ -12,7 +16,7 @@ This should be pretty simple. If you're on Debian/Ubuntu type
 apt-get install gnupg
 ```
 
-If you're on Windows, you'll need to install [Cygwin](http://cygwin.com/install.html) with the gnupg package or [gpg4win](http://gpg4win.org/), if you're on OS X, you'll need to get [GPGtools](http://www.gpgtools.org/).
+If you're on Windows, you'll need to install [Cygwin](http://cygwin.com/install.html) with the `gnupg` package or [`gpg4win`](http://gpg4win.org/), if you're on OS X, you'll need to get [GPGtools](http://www.gpgtools.org/).
 
 ## Step 3: Make some keys
 
@@ -34,21 +38,22 @@ Please select what kind of key you want:
    (2) DSA and Elgamal
    (3) DSA (sign only)
    (4) RSA (sign only)
-
 ```
 
-Accept the default by hitting `enter`<a name="note-Tue-Jan-03-002304EST-2012"></a>[|3|](#foot-Tue-Jan-03-002304EST-2012). It will then ask you
+Accept the default by hitting `enter`[^if-trustworthy]. It will then ask you
+
+[^if-trustworthy]: If all of your friends can be trusted to keep secrets, you might opt to go with a [symmetric cypher](http://www.gnupg.org/gph/en/manual.html#AEN185) instead. The process of sending and receiving messages is more or less the same, but there's only one key that the entire group shares rather than there being two keys per person (a public and a private). The advantage is that there's less to keep track of. The downside is that if anyone finds out your key, *all* your notes can be cracked rather than just those sent to the person who let their key get compromised.
 
 ```shell
 RSA keys may be between 1024 and 4096 bits long.
 What keysize do you want? (2048)
 ```
 
-Don't accept the default here, take the longest possible by typing `4096` and hitting `enter`. Next, gpg will ask when your key should expire. You can either specify days, weeks, months, years or accept the default (never expire). It's a balancing act; the more often you get new keys the more secure they will be against brute-forcing. On the other hand, each time you change your key, you need to send the new one to each of your friends and they have to remember to use the new one for passing you notes. For now, just take the default (gpg will ask for confirmation, so type `y` and hit `enter`). Next, fill in your name, email and comment and confirm them by typing `o` and then `enter`.
+Don't accept the default here, take the longest possible by typing `4096` and hitting `enter`. Next, `gpg` will ask when your key should expire. You can either specify days, weeks, months, years or accept the default (never expire). It's a balancing act; the more often you get new keys the more secure they will be against brute-forcing. On the other hand, each time you change your key, you need to send the new one to each of your friends and they have to remember to use the new one for passing you notes. For now, just take the default (`gpg` will ask for confirmation, so type `y` and hit `enter`). Next, fill in your name, email and comment and confirm them by typing `o` and then `enter`.
 
 Next, enter a pass phrase. It can have spaces and it can be fairly long. Pick something easy to remember; a favorite quote or maybe a few lines from a song you like.
 
-This next part may seem a bit weird, but gpg actually needs you to do some other stuff on the computer. Anything you like, but actually do things. Compose an email, check your favorite news aggregator, do some drawing, hit your head on the keyboard, kick the mouse around for a while, whatever you need to do. It may occasionally ask you to keep at it because you're not a fast enough typist with messages like
+This next part may seem a bit weird, but `gpg` actually needs you to do some other stuff on the computer. Anything you like, but actually do things. Compose an email, check your favorite news aggregator, do some drawing, hit your head on the keyboard, kick the mouse around for a while, whatever you need to do. It may occasionally ask you to keep at it because you're not a fast enough typist with messages like
 
 ```shell
 Not enough random bytes available.  Please do some other work to give
@@ -170,7 +175,9 @@ You can now send this to everyone. Email, Facebook, reddit, your blog, a random 
 
 ## Step 6: Read A Message
 
-If you get a block like the above from one of your friends, save it to a text file called `encrypted.gpg`<a name="note-Tue-Jan-03-010358EST-2012"></a>[|4|](#foot-Tue-Jan-03-010358EST-2012) and run
+If you get a block like the above from one of your friends, save it to a text file called `encrypted.gpg`[^just-example] and run
+
+[^just-example]: It doesn't actually need to be called that, just an example.
 
 ```shell
 gpg --output decrypted.txt --decrypt encrypted.gpg
@@ -184,7 +191,9 @@ Your homework is: use the comment section of [Joe Armstrong's Blog](http://armst
 
 ## Bonus Stage
 
-Sending your friends messages that your parents can't read is nice, but if they catch you, they can still ground you until you decrypt it for them<a name="note-Tue-Jan-03-011207EST-2012"></a>[|5|](#foot-Tue-Jan-03-011207EST-2012). Ideally, you'd send your friends messages that your parents or teachers *wouldn't even know are messages*. To do that, you need a second program called `steghide`. On Debian GNU/Linux, just type `apt-get install steghide` as root. Cygwin supports this package too, but I have no idea how to get it on OS X so you Mac users are on your own here.
+Sending your friends messages that your parents can't read is nice, but if they catch you, they can still ground you until you decrypt it for them[^they-probably]. Ideally, you'd send your friends messages that your parents or teachers *wouldn't even know are messages*. To do that, you need a second program called `steghide`. On Debian GNU/Linux, just type `apt-get install steghide` as root. Cygwin supports this package too, but I have no idea how to get it on OS X so you Mac users are on your own here.
+
+[^they-probably]: They probably won't just ask for your key because they'd have no idea what to do with it.
 
 Get an image, like this one
 
@@ -215,17 +224,3 @@ Find a forum/reddit thread somewhere and carry on a steganographic, encrypted co
 ## Secret Boss Fight -- Final Stage
 
 Sneak onto your friends' computer while they're in the washroom and change their desktop background to a steganographic message. Chuckle about is constantly. When asked "What's so funny", burst with laughter and run out of the room with your stuff.
-
-
-* * *
-##### Footnotes
-
-1 - <a name="foot-Mon-Jan-02-232529EST-2012"></a>[|back|](#note-Mon-Jan-02-232529EST-2012) - Or teachers, or political enemies, or competitors, what-have-you
-
-2 - <a name="foot-Mon-Jan-02-233301EST-2012"></a>[|back|](#note-Mon-Jan-02-233301EST-2012) - If you don't have access to your own computer, you can use a usb to run [Ubuntu live](https://wiki.ubuntu.com/LiveUsbPendrivePersistent), and merely plug it into whatever computer you do actually have access to.
-
-3 - <a name="foot-Tue-Jan-03-002304EST-2012"></a>[|back|](#note-Tue-Jan-03-002304EST-2012) - If all of your friends can be trusted to keep secrets, you might opt to go with a [symmetric cypher](http://www.gnupg.org/gph/en/manual.html#AEN185) instead. The process of sending and receiving messages is more or less the same, but there's only one key that the entire group shares rather than there being two keys per person (a public and a private). The advantage is that there's less to keep track of. The downside is that if anyone finds out your key, *all* your notes can be cracked rather than just those sent to the person who let their key get compromised.
-
-4 - <a name="foot-Tue-Jan-03-010358EST-2012"></a>[|back|](#note-Tue-Jan-03-010358EST-2012) - It doesn't actually need to be called that, just an example.
-
-5 - <a name="foot-Tue-Jan-03-011207EST-2012"></a>[|back|](#note-Tue-Jan-03-011207EST-2012) - They probably won't just ask for your key because they'd have no idea what to do with it.

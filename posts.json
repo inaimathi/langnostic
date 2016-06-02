@@ -66,8 +66,8 @@
 {"id":65,"title":"XMonad Keybindings and an aside on Piracy","file":"xmonad-keybindings-and-an-aside-on-piracy","edited":1401310565,"posted":1325221200,"tags":["programming-environment","haskell","copyright-bullshit"]}
 {"id":66,"title":"Passing Notes","file":"passing-notes","edited":1401033531,"posted":1325480400,"tags":["security","programming-environment","idea-peeling"]}
 {"id":67,"title":"How Close can you get to a Lisp Machine?","file":"how-close-can-you-get-to-a-lisp-machine","edited":1401033531,"posted":1327035600,"tags":["programming-environment","common-lisp"]}
-{"id":68,"title":"WebMote and \"Open\" software","file":"webmote-quote-open-endquote-and-depression","edited":1401309999,"posted":1327467600,"tags":["common-lisp","bitching"]}
-{"id":69,"title":"The Lisp Shell Followup","file":"lisp-shell-followup","edited":1401146154,"posted":1327726800,"tags":["shell","programming-environment","common-lisp"]}
+{"id":68,"title":"WebMote and \"Open\" software","file":"webmote-and-open-software","edited":1401309999,"posted":1327467600,"tags":["common-lisp","bitching"]}
+{"id":69,"title":"The Lisp Shell Followup","file":"the-lisp-shell-followup","edited":1401146154,"posted":1327726800,"tags":["shell","programming-environment","common-lisp"]}
 {"id":70,"title":"Smalltalk First Impressions","file":"smalltalk-first-impressions","edited":1401311184,"posted":1328072400,"tags":["smalltalk"]}
 {"id":71,"title":"Self Titled","file":"self-titled","edited":1401033531,"posted":1329368400,"tags":["languages"]}
 {"id":72,"title":"StrifeBarge - Turn Based Web-games in Common Lisp","file":"strifebarge--turn-based-web-games-in-common-lisp","edited":1401033531,"posted":1329714000,"tags":["hunchentoot","common-lisp","almost-literate-programming"]}
