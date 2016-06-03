@@ -1,22 +1,29 @@
 Before I get to the StrifeBarge update, I've been thinking about a problem. It's one I vaguely assumed had been definitively solved, but it turns out that's only a matter of perspective. Now that I really sit down to think about how I'd implement a "solution", it's quite obvious that there is no good way of countering a sufficiently long-running and elaborate [man-in-the-middle attack](http://en.wikipedia.org/wiki/Man-in-the-middle_attack).
 
-
 1.   You can thwart mere eavesdroppers by using [DH](http://mathworld.wolfram.com/Diffie-HellmanProtocol.html) or similar
-1.   You can counter short-term MitM attacks by relying on keys that you exchange with Alice before the attack started
-1.   You can counter long-term MitM attacks by relying on some additional authentication channel like a phonecall, video conference or SMS chain
-1.   You can counter elaborate, long-term MitM attacks by relying on a web of trust to confirm Alice's key
-1.   You can counter elaborate, network-saturating, long-term MitM attacks by flying out and actually meeting Alice, exchanging keys in [both](http://en.wikipedia.org/wiki/Public-key_cryptography) [senses](http://www.tigerdirect.ca/applications/category/category_tlc.asp?CatId=379&name=USB%20Flash%20Drive)
+2.   You can counter short-term MitM attacks by relying on keys that you exchange with Alice before the attack started
+3.   You can counter long-term MitM attacks by relying on some additional authentication channel like a phonecall, video conference or SMS chain
+4.   You can counter elaborate, long-term MitM attacks by relying on a web of trust to confirm Alice's key
+5.   You can counter elaborate, network-saturating, long-term MitM attacks by flying out and actually meeting Alice, exchanging keys in [both](http://en.wikipedia.org/wiki/Public-key_cryptography) [senses](http://www.tigerdirect.ca/applications/category/category_tlc.asp?CatId=379&name=USB%20Flash%20Drive)
 
+I'm not entirely sure how you can counter supremely elaborate, long-term MitM attacks, but it probably involves several independent notaries that hate each other as well as Alice[^belligerent-network-of-trust], or possibly a DNA sample in addition to the key exchange. That list was cumulative, by the way, not independent.
 
-I'm not entirely sure how you can counter supremely elaborate, long-term MitM attacks, but it probably involves several independent notaries that hate each other as well as Alice<a name="note-Sat-Mar-03-111456EST-2012"></a>[|1|](#foot-Sat-Mar-03-111456EST-2012), or possibly a DNA sample in addition to the key exchange. That list was cumulative, by the way, not independent.
+[^belligerent-network-of-trust]: That'd be a meatspace, belligerent network of trust. The idea being that if you can get n people who certainly aren't cooperating to vouch for Alice face-to-face, your odds are better than if you merely had n of Alice's random online social contacts do the same.
 
-Handshakes or public-key crypto get you past regular old surveillance. Both together can get you past an active attacker on the current line, but that's basically it. After that, any technique you try only buys you a bit of extra confidence that your messages aren't being tampered with, and that confidence approaches 100% without ever getting there. Certificate authorities can be compromised, networks of trust can be saturated by an attacker's agents<a name="note-Sat-Mar-03-111752EST-2012"></a>[|2|](#foot-Sat-Mar-03-111752EST-2012), and any other authentication mechanism I can think of can be faked by a sufficiently motivated attacker.
+Handshakes or public-key crypto get you past regular old surveillance. Both together can get you past an active attacker on the current line, but that's basically it. After that, any technique you try only buys you a bit of extra confidence that your messages aren't being tampered with, and that confidence approaches 100% without ever getting there. Certificate authorities can be compromised, networks of trust can be saturated by an attacker's agents[^no-help-in-general], and any other authentication mechanism I can think of can be faked by a sufficiently motivated attacker.
 
-Now, the good news is that StrifeBarge isn't anything like a juicy enough target to tempt the Chinese government into trying something. The bad news is that it's never really possible to fully trust a given user. The best you can hope to do is maximize the chance that they're really who they say they are. From another perspective, the best you can do is make the resource expenditure required to fool your authentication greater than the potential payoff in succeeding. It's relevant, because you don't want an opponent to be able to peek over at your map during a game for some hopefully obvious reasons<a name="note-Sat-Mar-03-111908EST-2012"></a>[|3|](#foot-Sat-Mar-03-111908EST-2012). This really, truly looked like it should have been solved already, until I plucked it from the periphery of my thoughts and focused on it for a couple of days. Upon closer inspection, I'm not sure why I ever thought that.
+[^no-help-in-general]: And don't really help you much in the general case, unless you're assuming that you'll always be able to trace a line from your direct contacts to the other party, or you're assuming belligerence.
+
+Now, the good news is that StrifeBarge isn't anything like a juicy enough target to tempt the Chinese government into trying something. The bad news is that it's never really possible to fully trust a given user. The best you can hope to do is maximize the chance that they're really who they say they are. From another perspective, the best you can do is make the resource expenditure required to fool your authentication greater than the potential payoff in succeeding. It's relevant, because you don't want an opponent to be able to peek over at your map during a game for some hopefully obvious reasons[^have-to-be-honest]. This really, truly looked like it should have been solved already, until I plucked it from the periphery of my thoughts and focused on it for a couple of days. Upon closer inspection, I'm not sure why I ever thought that.
+
+[^have-to-be-honest]: I have to be honest though; preventing people from cheating in a hobby-horse project of mine isn't why I was researching this. I'm doing some development at work that will need me to build at least reasonably secure components, so I'm beefing up on the basics of [crypto](http://crypto.stackexchange.com/) and computer security.
 
 With that, let's move on to the highlights.
 
-The big change is that I've settled on a license. The intention is that this game should be out in public for educational purposes in case anyone actually cares, so the AGPL seems most appropriate<a name="note-Sat-Mar-03-201833EST-2012"></a>[|4|](#foot-Sat-Mar-03-201833EST-2012). I may also pull out the basic stuff into a separate turn-based-HTTP-game framework that I will release under MIT/BSD for people to more easily mess with. That's a long way off<a name="note-Sat-Mar-03-201845EST-2012"></a>[|5|](#foot-Sat-Mar-03-201845EST-2012), but I thought I'd mention it.
+The big change is that I've settled on a license. The intention is that this game should be out in public for educational purposes in case anyone actually cares, so the AGPL seems most appropriate[^gpl-sprites]. I may also pull out the basic stuff into a separate turn-based-HTTP-game framework that I will release under MIT/BSD for people to more easily mess with. That's a long way off[^implement-multiple], but I thought I'd mention it.
+
+[^gpl-sprites]: It also lets me use various GPL licensed sprites.
+[^implement-multiple]: I still need to implement multiple `game`s per server, some sort of lobby/leaderboard system, and some way of actually winning before I think about implying that I've solved most game-related problems. Even for something as simple as this.
 
 The big, *noticeable* change is that styles, images and js have been incorporated semi-well into the program. It's gone into space rather than the traditional naval setting. Collecting the sprites was easier than it should have been, by the way, and that's entirely thanks to [OpenGameArt](http://opengameart.org/). The star background is going to have to be replaced by something snazzier at some point, but the rest of the graphics are actually quite nice.
 
@@ -40,7 +47,7 @@ Finally, the default `mapcan` bit me, so I needed a replacement.
 
 ```lisp
 ;;; a/util.lisp
-... 
+...
 
 (defun mapcan-f (fn a-list)
   "Functional unary mapcan"
@@ -49,9 +56,11 @@ Finally, the default `mapcan` bit me, so I needed a replacement.
 ...
 ```
 
-I estimate having spent a good twenty minutes or so puzzling over why `(ships a-player)` was suddenly returning a very odd list of elements once a game had started. The reason is that `mapcan` uses `nconc` to put its results together, which means that the arguments are going to be modified destructively. So I guess this is another place where [State Is Hard](http://langnostic.blogspot.com/2011/04/game-jam.html). I ended up defining the functional, unary `mapcan` seen above, which suffices for my purposes.
+I estimate having spent a good twenty minutes or so puzzling over why `(ships a-player)` was suddenly returning a very odd list of elements once a game had started. The reason is that `mapcan` uses `nconc` to put its results together, which means that the arguments are going to be modified destructively. So I guess this is another place where [State Is Hard](/posts/game-jam#april-25). I ended up defining the functional, unary `mapcan` seen above, which suffices for my purposes.
 
-And on we go to the `diff`s. I don't actually expect anyone to read past this, by the way, but thinking about code I wrote well enough to explain it prosaically has proven to be a very effective technique<a name="note-Sat-Mar-03-202120EST-2012"></a>[|6|](#foot-Sat-Mar-03-202120EST-2012). Oh, also, before I forget, we've gone from 220 lines to about 550 (and that new count *doesn't* include the license info, generated css/js, or any of the images being tracked as binary files).
+And on we go to the `diff`s. I don't actually expect anyone to read past this, by the way, but thinking about code I wrote well enough to explain it prosaically has proven to be a very effective technique[^literate-programming]. Oh, also, before I forget, we've gone from 220 lines to about 550 (and that new count *doesn't* include the license info, generated css/js, or any of the images being tracked as binary files).
+
+[^literate-programming]: I'm actually giving more and more thought to the [literate programming](http://en.wikipedia.org/wiki/Literate_programming) idea for specifically this reason.
 
 ```diff
 diff --git a/board.lisp b/board.lisp
@@ -61,7 +70,7 @@ index b18c662..b25c106 100644
 @@ -16,22 +16,39 @@
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  (defmethod space-at ((b board) x y) (nth x (nth y (spaces b))))
- 
+
 +(defun create-point (direction x y i j)
 +  (if (eq :vertical direction)
 +      (list (+ i x) (+ j y))
@@ -73,14 +82,14 @@ index b18c662..b25c106 100644
 -         collect (cons x (+ i y))
 -       else
 -         collect (cons (+ i x) y)))
-+  "Given a ship, a direction and an initial x/y, 
++  "Given a ship, a direction and an initial x/y,
 +returns a list of spaces that the ship will occupy."
-+  (mapcan (lambda (i) 
++  (mapcan (lambda (i)
 +           (mapcar (lambda (j)
-+                     (create-point direction x y i j)) 
++                     (create-point direction x y i j))
 +                   (range 0 (- (len s) 1))))
 +         (range 0 (- (wid s) 1))))
- 
+
  (defmethod position-ship ((s ship) (b board))
 -  (let* ((x (random (- (width b) (space-count s))))
 -        (y (random (- (height b) (space-count s))))
@@ -89,8 +98,8 @@ index b18c662..b25c106 100644
 +ensuring there are no collisions."
 +  (let* ((direction (pick '(:vertical :horizontal)))
 +        (ship-v-padding (+ 1 (if (eq :vertical direction) (len s) (wid s))))
-+        (ship-h-padding (+ 1 (if (eq :vertical direction) (wid s) (len s)))) 
-+        (x (random (- (width b) ship-h-padding))) 
++        (ship-h-padding (+ 1 (if (eq :vertical direction) (wid s) (len s))))
++        (x (random (- (width b) ship-h-padding)))
 +        (y (random (- (height b) ship-v-padding)))
          (ship-spaces (assign-ship-spaces s direction x y)))
 -    (if (every (lambda (p) (empty-space-at? b (car p) (cdr p))) ship-spaces)
@@ -98,18 +107,20 @@ index b18c662..b25c106 100644
 -              (loop for (space-x . space-y) in ship-spaces
 -                    do (setf (contents (space-at b space-x space-y)) s)))
 +    (if (every (lambda (p) (empty-space-at? b (car p) (cadr p))) ship-spaces)
-+       (progn (setf (direction s) direction 
-+                    (x s) x 
++       (progn (setf (direction s) direction
++                    (x s) x
 +                    (y s) y)
 +              (loop for (space-x space-y) in ship-spaces
-+                    do (let ((current-space (space-at b space-x space-y))) 
++                    do (let ((current-space (space-at b space-x space-y)))
 +                         (setf (contents current-space) s))))
         (position-ship s b))))
- 
+
  (defun make-board (list-of-ships)
 ```
 
-I didn't do a *complete* overhaul of the ship placement routines, but I got pretty close. I abstracted point creation a bit and replaced `loop` with a nested `mapcan`/`mapcar` on the results of the `range` utility function I mentioned last time. That's back by the way. `mapcan` doesn't cause any trouble here because `range` creates an entirely new list, which means that there are no outside references that might get tripped up by `nconc`. Also, the reason for nesting iterations in the `assign-ship-spaces` function is that I'm now generating ships wider than one square<a name="note-Sat-Mar-03-202239EST-2012"></a>[|7|](#foot-Sat-Mar-03-202239EST-2012).
+I didn't do a *complete* overhaul of the ship placement routines, but I got pretty close. I abstracted point creation a bit and replaced `loop` with a nested `mapcan`/`mapcar` on the results of the `range` utility function I mentioned last time. That's back by the way. `mapcan` doesn't cause any trouble here because `range` creates an entirely new list, which means that there are no outside references that might get tripped up by `nconc`. Also, the reason for nesting iterations in the `assign-ship-spaces` function is that I'm now generating ships wider than one square[^no-technical-reason].
+
+[^no-technical-reason]: There really isn't a technical reason for that; I took a look at the [spaceship sprite set](http://opengameart.org/content/spaceships-top-down)s at OpenGameArt and thought it would be a shame not to be able to use some of the oddly-shaped ones.
 
 ```diff
 @@ -44,8 +61,21 @@
@@ -118,8 +129,8 @@ I didn't do a *complete* overhaul of the ship placement routines, but I got pret
  (defmethod echo ((b board) (p player))
 -  (with-html-output (*standard-output* nil :indent t)
 -    (:table :id "game-board"
--           (mapc (lambda (row) 
--                   (htm (:tr (mapc (lambda (s) (echo s p)) row)))) 
+-           (mapc (lambda (row)
+-                   (htm (:tr (mapc (lambda (s) (echo s p)) row))))
 -                 (spaces b)))))
 
 +  (html-to-stout
@@ -127,15 +138,15 @@ I didn't do a *complete* overhaul of the ship placement routines, but I got pret
 +         (loop for s in (ships p)
 +               do (str (echo s p)))
 +         (:table :id "game-board"
-+                 (mapc (lambda (row) 
-+                         (htm (:tr (mapc (lambda (s) (echo s p)) row)))) 
++                 (mapc (lambda (row)
++                         (htm (:tr (mapc (lambda (s) (echo s p)) row))))
 +                       (spaces b))))))
 +
 +(defmethod image-file ((s ship)) (format nil "/img/ships/~(~a~).png" (type-of s)))
 +
 +(defmethod echo ((s ship) (p player))
 +  (let ((direction (direction s)))
-+    (html-to-str (:img :class "ship" 
++    (html-to-str (:img :class "ship"
 +                      :style (inline-css `(:left ,(css-left s) :top ,(px (board-scale (y s)))
 +                                           :width ,(board-scale (len s)) :height ,(board-scale (wid s))
 +                                           ,@(when (eq :vertical direction) (css-rotate 90))))
@@ -206,7 +217,9 @@ The rest of the additions here just deal with outputting the appropriate html an
                (.ship ,@(css-transform-origin 0 0) :position absolute :z-index -10000)))
 ```
 
-We'll dispense with the `diff` here because `css.lisp` is an entirely new file. This is basically just how I like to write CSS in Lisp projects. The library I'm using is cl-css; a lightweight, non-validating CSS generator of my own devising. Use it if you like, but remember that it does downcase everything<a name="note-Sat-Mar-03-202411EST-2012"></a>[|8|](#foot-Sat-Mar-03-202411EST-2012) you pass it at the moment, so you may have a rough time using it with certain JS libraries that insist on using `CamelCase` or `snakeCase` rather than `lisp-case` for their DOM classes. As mentioned, the main reason I resorted to this can be seen in the `css-scale`, `css-rotate` and `css-transform-origin` macros, which just paper over the fact that browser developers don't quite seem to be cooperating yet.
+We'll dispense with the `diff` here because `css.lisp` is an entirely new file. This is basically just how I like to write CSS in Lisp projects. The library I'm using is cl-css; a lightweight, non-validating CSS generator of my own devising. Use it if you like, but remember that it does downcase everything[^no-longer-true] you pass it at the moment, so you may have a rough time using it with certain JS libraries that insist on using `CamelCase` or `snakeCase` rather than `lisp-case` for their DOM classes. As mentioned, the main reason I resorted to this can be seen in the `css-scale`, `css-rotate` and `css-transform-origin` macros, which just paper over the fact that browser developers don't quite seem to be cooperating yet.
+
+[^no-longer-true]: No longer actually true; [the version up at github](https://github.com/Inaimathi/cl-css) currently lets you preserver case on selectors by passing them in as strings, and it incorporates the CSS3 transformation abstractions from this project. I'll probably be adding animation and transition to the pile shortly.
 
 ```diff
 diff --git a/game.lisp b/game.lisp
@@ -215,7 +228,7 @@ index 476baa5..c4c82e6 100644
 +++ b/game.lisp
 @@ -9,15 +9,48 @@
      p))
- 
+
  (defun make-game (&rest players)
 -  (let ((board (make-board (mapcan #'ships players))))
 +  (let ((board (make-board (mapcan-f #'ships players))))
@@ -223,13 +236,13 @@ index 476baa5..c4c82e6 100644
 ```
 
 This is where that `mapcan` bug bit. As you can see, it's been replaced by `mapcan-f` which we've already gone over.
- 
+
 ```diff
 +;;;;;;;;;;;;;;;;;;;; predicates
 +;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-+(defmethod turn-p ((g game) &optional (player (session-value :player))) 
++(defmethod turn-p ((g game) &optional (player (session-value :player)))
 +  (eq (car (turn-stack g)) player))
- 
+
  ;;;;;;;;;;;;;;;;;;;; display
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 -(defmethod echo ((g game) (p player))
@@ -238,13 +251,13 @@ This is where that `mapcan` bug bit. As you can see, it's been replaced by `mapc
 +(defmethod echo ((g game) (p player)) (echo (board g) p))
 +
 +(defmethod echo-console ((g game) (p player))
-+  (html-to-stout (:div :id "player-console" 
++  (html-to-stout (:div :id "player-console"
 +                      (:div :id "turn-marker" (str (if (turn-p *game*) "Your turn" "Their turn")))
 +                      (echo-stats p)
 +                      (:a :class "menu-item" :href "/quit-game" "Quit Game"))))
 +
 +(defmethod echo-stats ((p player))
-+  (html-to-stout 
++  (html-to-stout
 +    (:div :class "player-ships"
 +         (loop for s in (ships p)
 +               do (str (echo-stats s))))))
@@ -252,8 +265,8 @@ This is where that `mapcan` bug bit. As you can see, it's been replaced by `mapc
 +(defmethod echo-stats ((s ship))
 +  (html-to-str
 +    (:div :id (instance-to-id s) :class "ship-stats" (:img :src (image-file s))
-+         (htm (:div :class "total-hp" 
-+                    (:div :class "hp-remaining" 
++         (htm (:div :class "total-hp"
++                    (:div :class "hp-remaining"
 +                          :style (inline-css `(:width ,(format nil "~a%" (hp-% s))))
 +                          (:span :class "num-hp" (str (remaining-hp s))) "/" (:span :class "num-total-hp" (str (hp s)))))))))
 +
@@ -268,22 +281,24 @@ This is where that `mapcan` bug bit. As you can see, it's been replaced by `mapc
 +(defmethod to-json ((s ship))
 +  (encode-json-to-string `((ship-id . ,(instance-to-id s)) (hp . ,(remaining-hp s)) (percent . ,(hp-% s)))))
 
-``` 
+```
 
-Again, most of the additions here have to do with generating html/json representations of classes we've already gone over. The semi-interesting bits are the `ship` `hp` calculations (which would be good candidates for moving out into that `ship`-specific file I mentioned thinking about). `instance-to-id` is something we'll go over later because I'm unsure of its implementation. The point is to take an instance and return a string suitable for use as a CSS id while being ambiguous enough that a player can't get too much information from it<a name="note-Sat-Mar-03-202709EST-2012"></a>[|9|](#foot-Sat-Mar-03-202709EST-2012).
+Again, most of the additions here have to do with generating html/json representations of classes we've already gone over. The semi-interesting bits are the `ship` `hp` calculations (which would be good candidates for moving out into that `ship`-specific file I mentioned thinking about). `instance-to-id` is something we'll go over later because I'm unsure of its implementation. The point is to take an instance and return a string suitable for use as a CSS id while being ambiguous enough that a player can't get too much information from it[^respect-the-classic-game].
+
+[^respect-the-classic-game]: Specifically, to stick to the classic game as closely as possible, it shouldn't be possible for a player to identify what kind of ship they hit until they either sink it, or deduce it from the number of squares it occupies.
 
 ```diff
 @@ -27,9 +60,15 @@
        (setf (turn-stack g) (players g))))
- 
+
  (defmethod fire ((g game) (p player) x y)
--  (let ((result (make-instance 
+-  (let ((result (make-instance
 -                (if (empty-space-at? (board g) x y) 'miss 'hit)
 -                :player p :x x :y y)))
 -    (push result (history g))
 -    (setf (move (space-at (board g) x y)) result)
 +  (let* ((space (space-at (board g) x y))
-+        (result (make-instance 
++        (result (make-instance
 +                 (if (empty-space? space) 'miss 'hit)
 +                 :player p :x x :y y)))
 +    (push-record g "shot" (to-json result))
@@ -305,7 +320,7 @@ Again, most of the additions here have to do with generating html/json represent
 ;;;;;;;;;;;;;;;;;;;; creation
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defmethod to-json ((m move))
-  (encode-json-to-string `((x . ,(x m)) (y . ,(y m)) 
+  (encode-json-to-string `((x . ,(x m)) (y . ,(y m))
                            (text . ,(echo m (session-value :player))))))
 
 (defmethod push-record ((g game) event-type message)
@@ -318,9 +333,9 @@ Again, most of the additions here have to do with generating html/json represent
 ;;;;;;;;;;;;;;;;;;;; display
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defmethod emit-record ((g game) (p player))
-  (apply #'concatenate 
-         (cons 'string 
-               (mapcar (lambda (r) (emit-record r p)) 
+  (apply #'concatenate
+         (cons 'string
+               (mapcar (lambda (r) (emit-record r p))
                        (reverse (take 10 (history g)))))))
 
 (defmethod emit-record ((e history-event) (p player))
@@ -335,7 +350,7 @@ This is another new file. The interactions involving `game` history were getting
 (in-package :strifebarge)
 
 (compile-js "js/strifebarge.js" "strifebarge-js.lisp"
-            (ps 
+            (ps
               (define-event-source source "update-map")
 
               (define-event-listener source "turn"
@@ -343,26 +358,25 @@ This is another new file. The interactions involving `game` history were getting
 
               (define-event-listener source "ship-damage"
                 (lambda (e)
-                  (let* ((d (parse-json (chain e data))) 
+                  (let* ((d (parse-json (chain e data)))
                          (ship-id (+ "#" (@ d "shipId"))))
                     ($ ship-id (find ".num-hp") (text (@ d "hp")))
                     ($ ship-id (find ".hp-remaining") (width (+ (@ d "percent") "%"))))))
 
               (define-event-listener source "shot"
-                (lambda (e) 
+                (lambda (e)
                   (let ((d (parse-json (chain e data))))
                     ($-space-at ((@ d "x") (@ d "y")) (html (@ d "text"))))))
 
               (defun send-shot (x y)
-                (post-to "/turn" 
-                         (create :x x :y y) 
+                (post-to "/turn"
+                         (create :x x :y y)
                          (lambda (data)
                            ($-space-at (x y) (html data))
                            ($ "#turn-marker" (text "Their Turn")))))))
 ```
 
 Another entirely new file. This is what [`parenscript`](http://common-lisp.net/project/parenscript/) tends to look like if you use it with [jQuery](http://jquery.com/). Most of this deals with the server-sent-event stuff we need to send incremental, on-the-fly updates to the client. Particularly note the `define-event-listener`s and `define-event-source`. Neither are primitives, and we'll discuss implications in a moment. The only other thing we've got here is `send-shot`, which is actually an ajax call to `/turn`. It doesn't bother doing anything if it's not your turn (defined implicitly by the `assert`s we saw last time), but places the shot flag and updates the turn marker when needed.
-
 
 ```lisp
 ;;; js-macros.lisp
@@ -379,7 +393,7 @@ Another entirely new file. This is what [`parenscript`](http://common-lisp.net/p
 
 (defpsmacro fn (&body body) `(lambda () ,@body))
 
-(defpsmacro doc-ready (&body body) 
+(defpsmacro doc-ready (&body body)
   `($ document (ready (fn ,@body))))
 
 (defpsmacro parse-json (target)
@@ -388,7 +402,7 @@ Another entirely new file. This is what [`parenscript`](http://common-lisp.net/p
 (defpsmacro post-to (target-page data-hash on-success)
   "target-page is a page url.
 data-hash is the data sent along as the post request; declared as (create :k v ...)
-on-success is a function to run on a successful response; 
+on-success is a function to run on a successful response;
 it should expect a single argument (the data returned by the target handler)"
   `(chain $ (post ,target-page
                   ,data-hash
@@ -399,7 +413,7 @@ it should expect a single argument (the data returned by the target handler)"
   `(defvar ,name (new (-event-source ,source-url))))
 
 (defpsmacro define-event-listener (event-source-name message-type on-receive)
-  "event-source-name must be a defined event source. 
+  "event-source-name must be a defined event source.
 message-type is the event label sent by the server for this action (the default label is 'message').
 on-receive is a function called when a satisfying message is received. It should take one argument (the event)."
   `(chain ,event-source-name (add-event-listener ,message-type ,on-receive false)))
@@ -409,7 +423,9 @@ on-receive is a function called when a satisfying message is received. It should
   `($ "#game-board tr" (eq ,y) (children "td") (eq ,x) ,@chains))
 ```
 
-This one's... a bit complicated. I went a bit heavy on the comments for exactly that reason. `compile-js` is just responsible for generating `js` files from `parenscript` code. The next few macros are jQuery-oriented shortcuts that I've [already discussed](http://langnostic.blogspot.com/2011/03/javascript-with-lisp.html) here<a name="note-Sat-Mar-03-203059EST-2012"></a>[|10|](#foot-Sat-Mar-03-203059EST-2012). The `define` pair let me specify SSE feed sources and event handlers much more simply than I could in vanilla JS. `$-space-at` just lets me shortcut the selection of a map square.
+This one's... a bit complicated. I went a bit heavy on the comments for exactly that reason. `compile-js` is just responsible for generating `js` files from `parenscript` code. The next few macros are jQuery-oriented shortcuts that I've [already discussed](/posts/javascript-with-a-lisp) here[^anonymous-function]. The `define` pair let me specify SSE feed sources and event handlers much more simply than I could in vanilla JS. `$-space-at` just lets me shortcut the selection of a map square.
+
+[^anonymous-function]: Though I did start calling the anonymous function shortcut `fn` rather than `\` for ease of exporting.
 
 ```diff
 diff --git a/model.lisp b/model.lisp
@@ -418,7 +434,7 @@ index 0ee1685..f6bb48c 100644
 +++ b/model.lisp
 @@ -1,23 +1,32 @@
  (in-package :strifebarge)
- 
+
  (defclass ship ()
 -  ((space-count :reader space-count :initarg :space-count)
 +  ((wid :reader wid :initarg :wid :initform 1)
@@ -429,23 +445,23 @@ index 0ee1685..f6bb48c 100644
     (player :reader player :initarg :player)
     (damage :accessor damage :initform 0)
     (direction :accessor direction :initarg :direction)))
- 
+
 -(defclass carrier (ship) ((space-count :initform 5)))
 -(defclass cruiser (ship) ((space-count :initform 3)))
 -(defclass destroyer (ship) ((space-count :initform 2)))
 +(define-ship carrier 5 2)
 +(define-ship cruiser 3)
 +(define-ship destroyer 2)
- 
+
  (defclass move ()
    ((player :reader player :initarg :player)
     (x :reader x :initarg :x)
     (y :reader y :initarg :y)))
- 
+
 -(defclass hit (move) ())
 +(defclass hit (move) ((ship :accessor ship :initarg :ship)))
  (defclass miss (move) ())
- 
+
 +(defclass history-event ()
 +  ((id :reader id :initarg :id)
 +   (event-type :reader event-type :initarg :event-type)
@@ -456,7 +472,7 @@ index 0ee1685..f6bb48c 100644
     (sunken :accessor sunken :initarg :sunken)
 ```
 
-Back into merely modified files. As you can see, ship definitions got shorter (we'll see the macro behind that in the `util` file), `history-event`s became their own explicitly defined objects, and `ship` got a few new slots to make wider pieces possible. Incidentally, if you look at those new `ship` slots, you'll see one of the CLOS speedbumps that [Yegge whinged about quite a while ago](http://steve-yegge.blogspot.com/2006/04/lisp-is-not-acceptable-lisp.html). `length` is a polymorphic function and not a method. Meaning that if you have a non-sequence `foo` that would benefit from having a `length` method, you either need to name it `foo-length` or `len` or some other annoyingly minute variation of the word. I went with `len` and have no particular regrets there (other than not actually being able to [use `length` as a method](http://langnostic.blogspot.com/2011/11/objective-lisp.html)).
+Back into merely modified files. As you can see, ship definitions got shorter (we'll see the macro behind that in the `util` file), `history-event`s became their own explicitly defined objects, and `ship` got a few new slots to make wider pieces possible. Incidentally, if you look at those new `ship` slots, you'll see one of the CLOS speedbumps that [Yegge whinged about quite a while ago](http://steve-yegge.blogspot.com/2006/04/lisp-is-not-acceptable-lisp.html). `length` is a polymorphic function and not a method. Meaning that if you have a non-sequence `foo` that would benefit from having a `length` method, you either need to name it `foo-length` or `len` or some other annoyingly minute variation of the word. I went with `len` and have no particular regrets there (other than not actually being able to [use `length` as a method](/posts/objective-lisp)).
 
 ```diff
 diff --git a/package.lisp b/package.lisp
@@ -465,20 +481,20 @@ index 94e808f..57ab4e9 100644
 +++ b/package.lisp
 @@ -1,8 +1,9 @@
  ;;;; package.lisp
- 
+
  (defpackage #:strifebarge
 -  (:use #:cl #:cl-who #:clsql #:hunchentoot #:parenscript)
 -  (:import-from #:swank #:find-definition-for-thing)
 +  (:use #:cl #:cl-who #:cl-css #:clsql #:hunchentoot #:parenscript)
 +  (:import-from #:json #:encode-json-to-string #:decode-json-from-string)
 +  (:import-from #:cl-ppcre #:scan-to-strings)
-   (:import-from #:ironclad 
-                #:encrypt-in-place #:decrypt-in-place #:make-cipher #:digest-sequence 
+   (:import-from #:ironclad
+                #:encrypt-in-place #:decrypt-in-place #:make-cipher #:digest-sequence
                 #:octets-to-integer #:integer-to-octets
 @@ -11,4 +12,8 @@
- 
+
  (in-package #:strifebarge)
- 
+
 -(defparameter *web-server* (start (make-instance 'hunchentoot:easy-acceptor :port 5050)))
 \ No newline at end of file
 +;;;;;;;;;;;;;;;;;;;; config variable
@@ -499,16 +515,16 @@ Not much new to see here. I've imported `cl-css`, as well as choice functions fr
 ```
 
 And here it is. The `defparameter` line starts a new `hunchentoot` instance listening on `*server-port*`, and `web-folders` does exactly what you'd expect (we'll discuss it in very slightly more detail in the `util` file).
- 
+
 ```diff
 diff --git a/strifebarge.lisp b/strifebarge.lisp
 index d651ba9..2630341 100644
 --- a/strifebarge.lisp
 +++ b/strifebarge.lisp
 @@ -4,37 +4,57 @@
- 
+
  (defparameter *game* nil)
- 
+
 +;;;;;;;;;;;;;;;;;;;; full handlers
 +;;; (all of these either directly return, or redirect to complete pages)
 +
@@ -521,15 +537,15 @@ index d651ba9..2630341 100644
 +                 (:link :rel "stylesheet" :type "text/css" :href "/css/strifebarge.css"))
 +          (:body (:a :class "menu-item" :href "/new-game" "New Game")
 +                 (:a :class "menu-item" :href "/join-game" "Join Game")))))
- 
+
  (define-easy-handler (new-game :uri "/new-game") (player-count)
-   (let* ((p-count (if player-count (parse-integer player-count) 2)) 
+   (let* ((p-count (if player-count (parse-integer player-count) 2))
 -        (players (loop for i from 1 to p-count
 -                       collect (make-player 'carrier 'cruiser 'destroyer))))
 +        (players (loop repeat p-count collect (make-player 'carrier 'cruiser 'destroyer))))
      (setf *game* (apply #'make-game players))
      (redirect "/join-game")))
- 
+
  (define-easy-handler (join-game :uri "/join-game") ()
 -  (assert (and (not (null (waiting-for *game*)))
 -              (null (session-value :player))))
@@ -537,7 +553,7 @@ index d651ba9..2630341 100644
 +                   (null (session-value :player))))
    (setf (session-value :player) (pop (waiting-for *game*)))
    (redirect "/show-game"))
- 
+
  (define-easy-handler (show-game :uri "/show-game") ()
 -  (assert (not (null (session-value :player))))
 -  (echo *game* (session-value :player)))
@@ -548,18 +564,18 @@ index d651ba9..2630341 100644
 +           (:script :type "text/javascript" :src "/js/jquery-1.7.1.min.js")
 +           (:script :type "text/javascript" :src "/js/strifebarge.js")
 +           (:link :rel "stylesheet" :type "text/css" :href "/css/strifebarge.css"))
-+          (:body (echo-console *game* (session-value :player)) 
++          (:body (echo-console *game* (session-value :player))
 +                 (echo *game* (session-value :player))))))
- 
+
  (define-easy-handler (quit-game :uri "/quit-game") ()
 -  (assert (not (null (session-value :player))))
 +  (redirect-unless (not (null (session-value :player))))
    (push (waiting-for *game*) (session-value :player))
    (setf (session-value :player) nil)
    "You have quit the game")
- 
+
 +;;;;;;;;;;;;;;;;;;;; ajax handlers
-+;;; these return either errors or partial json/html. 
++;;; these return either errors or partial json/html.
 +;;; The caller is expected to transform their output before final display
 +
 +(define-easy-handler (update-map :uri "/update-map") ()
@@ -576,11 +592,13 @@ index d651ba9..2630341 100644
 -  (fire *game* (session-value :player) (parse-integer x) (parse-integer y))
 -  (redirect "/show-game"))
 
-+  (echo (fire *game* (session-value :player) (parse-integer x) (parse-integer y)) 
++  (echo (fire *game* (session-value :player) (parse-integer x) (parse-integer y))
 +       (session-value :player)))
 ```
 
-This is possibly the most changed file at the moment. Firstly, we've added an ajax handler for player actions. Second, `update-map` shows you exactly what you need to do on the server to set up a Server-Sent-Event source that the client will actually support. `emit-record` was shown earlier, but I didn't really explain it. It still takes a `player` as an argument, because the record digest used to be subjective<a name="note-Sat-Mar-03-203328EST-2012"></a>[|11|](#foot-Sat-Mar-03-203328EST-2012). In the non-ajax handlers, note that the various `assert`s have all been replaced with equivalent `redirect-unless` calls. That's a new utility function that does exactly what you'd think. It may seem to be more complex than necessary at this point, but I will eventually shunt the player off into different pages depending on where they came from (you know, improving signage and all that).
+This is possibly the most changed file at the moment. Firstly, we've added an ajax handler for player actions. Second, `update-map` shows you exactly what you need to do on the server to set up a Server-Sent-Event source that the client will actually support. `emit-record` was shown earlier, but I didn't really explain it. It still takes a `player` as an argument, because the record digest used to be subjective[^not-at-the-moment]. In the non-ajax handlers, note that the various `assert`s have all been replaced with equivalent `redirect-unless` calls. That's a new utility function that does exactly what you'd think. It may seem to be more complex than necessary at this point, but I will eventually shunt the player off into different pages depending on where they came from (you know, improving signage and all that).
+
+[^not-at-the-moment]: It's not at the moment, but this is something I won't be changing in the short term, since it will become true again once I implement a chat client.
 
 ```diff
 diff --git a/util.lisp b/util.lisp
@@ -588,7 +606,7 @@ index 76f62b4..1de23d8 100644
 --- a/util.lisp
 +++ b/util.lisp
 @@ -2,4 +2,44 @@
- 
+
  (defun pick (a-list)
    "Randomly selects an element from the given list with equal probability."
 -  (nth (random (length a-list)) a-list))
@@ -606,7 +624,7 @@ index 76f62b4..1de23d8 100644
 +
 +(defmacro web-folders (&body body)
 +  "Sets up folder dispatchers for the given folders"
-+  `(progn ,@(mapcar #'(lambda (f) 
++  `(progn ,@(mapcar #'(lambda (f)
 +                       `(push (create-folder-dispatcher-and-handler ,(format nil "/~a/" f) ,(format nil "~a/" f)) *dispatch-table*))
 +                   body)))
 +
@@ -630,7 +648,7 @@ index 76f62b4..1de23d8 100644
 +      a-list))
 +
 +(defmacro define-ship (name length &optional (width 1))
-+  `(defclass ,name (ship) 
++  `(defclass ,name (ship)
 +     ((len :initform ,length)
 +      (wid :initform ,width)
 +      (space-count :initform ,(* length width)))))
@@ -656,28 +674,3 @@ So that's *almost* that for the game itself. I still need to make `ship`s send o
 
 
 Sounds like this'll actually keep me busier than I expected.
-
-* * *
-##### Footnotes
-
-1 - <a name="foot-Sat-Mar-03-111456EST-2012"></a>[|back|](#note-Sat-Mar-03-111456EST-2012) - That'd be a meatspace, belligerent network of trust. The idea being that if you can get n people who certainly aren't cooperating to vouch for Alice face-to-face, your odds are better than if you merely had n of Alice's random online social contacts do the same.
-
-2 - <a name="foot-Sat-Mar-03-111752EST-2012"></a>[|back|](#note-Sat-Mar-03-111752EST-2012) - And don't really help you much in the general case, unless you're assuming that you'll always be able to trace a line from your direct contacts to the other party, or you're assuming belligerence.
-
-3 - <a name="foot-Sat-Mar-03-111908EST-2012"></a>[|back|](#note-Sat-Mar-03-111908EST-2012) - I have to be honest though; preventing people from cheating in a hobby-horse project of mine isn't why I was researching this. I'm doing some development at work that will need me to build at least reasonably secure components, so I'm beefing up on the basics of [crypto](http://crypto.stackexchange.com/) and computer security.
-
-4 - <a name="foot-Sat-Mar-03-201833EST-2012"></a>[|back|](#note-Sat-Mar-03-201833EST-2012) - It also lets me use various GPL licensed sprites.
-
-5 - <a name="foot-Sat-Mar-03-201845EST-2012"></a>[|back|](#note-Sat-Mar-03-201845EST-2012) - I still need to implement multiple `game`s per server, some sort of lobby/leaderboard system, and some way of actually winning before I think about implying that I've solved most game-related problems. Even for something as simple as this.
-
-6 - <a name="foot-Sat-Mar-03-202120EST-2012"></a>[|back|](#note-Sat-Mar-03-202120EST-2012) - I'm actually giving more and more thought to the [literate programming](http://en.wikipedia.org/wiki/Literate_programming) idea for specifically this reason.
-
-7 - <a name="foot-Sat-Mar-03-202239EST-2012"></a>[|back|](#note-Sat-Mar-03-202239EST-2012) - There really isn't a technical reason for that; I took a look at the [spaceship sprite set](http://opengameart.org/content/spaceships-top-down)s at OpenGameArt and thought it would be a shame not to be able to use some of the oddly-shaped ones.
-
-8 - <a name="foot-Sat-Mar-03-202411EST-2012"></a>[|back|](#note-Sat-Mar-03-202411EST-2012) - No longer actually true; [the version up at github](https://github.com/Inaimathi/cl-css) currently lets you preserver case on selectors by passing them in as strings, and it incorporates the CSS3 transformation abstractions from this project. I'll probably be adding animation and transition to the pile shortly.
-
-9 - <a name="foot-Sat-Mar-03-202709EST-2012"></a>[|back|](#note-Sat-Mar-03-202709EST-2012) - Specifically, to stick to the classic game as closely as possible, it shouldn't be possible for a player to identify what kind of ship they hit until they either sink it, or deduce it from the number of squares it occupies.
-
-10 - <a name="foot-Sat-Mar-03-203059EST-2012"></a>[|back|](#note-Sat-Mar-03-203059EST-2012) - Though I did start calling the anonymous function shortcut `fn` rather than `\` for ease of exporting.
-
-11 - <a name="foot-Sat-Mar-03-203328EST-2012"></a>[|back|](#note-Sat-Mar-03-203328EST-2012) - It's not at the moment, but this is something I won't be changing in the short term, since it will become true again once I implement a chat client.

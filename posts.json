@@ -70,9 +70,9 @@
 {"id":69,"title":"The Lisp Shell Followup","file":"the-lisp-shell-followup","edited":1401146154,"posted":1327726800,"tags":["shell","programming-environment","common-lisp"]}
 {"id":70,"title":"Smalltalk First Impressions","file":"smalltalk-first-impressions","edited":1401311184,"posted":1328072400,"tags":["smalltalk"]}
 {"id":71,"title":"Self Titled","file":"self-titled","edited":1401033531,"posted":1329368400,"tags":["languages"]}
-{"id":72,"title":"StrifeBarge - Turn Based Web-games in Common Lisp","file":"strifebarge--turn-based-web-games-in-common-lisp","edited":1401033531,"posted":1329714000,"tags":["hunchentoot","common-lisp","almost-literate-programming"]}
+{"id":72,"title":"StrifeBarge - Turn Based Web-games in Common Lisp","file":"strifebarge-turn-based-web-games-in-common-lisp","edited":1401033531,"posted":1329714000,"tags":["hunchentoot","common-lisp","almost-literate-programming"]}
 {"id":73,"title":"Client Communication","file":"client-communication","edited":1401033531,"posted":1330232400,"tags":["html5","comet","client-side"]}
-{"id":74,"title":"StrifeBarge Update and My Secure Misconceptions","file":"strifebarge-update","edited":1401312657,"posted":1330750800,"tags":["security","hunchentoot","common-lisp","almost-literate-programming"]}
+{"id":74,"title":"StrifeBarge Update and My Secure Misconceptions","file":"strifebarge-update-and-my-secure-misconceptions","edited":1401312657,"posted":1330750800,"tags":["security","hunchentoot","common-lisp","almost-literate-programming"]}
 {"id":75,"title":"Quick Coffee","file":"coffee","edited":1401312430,"posted":1331182800,"tags":["javascript","coffee-script"]}
 {"id":76,"title":"cl-smtp vs Exchange server","file":"cl-smtp-vs-exchange-server","edited":1401319504,"posted":1334635200,"tags":["common-lisp","cl-smtp"]}
 {"id":77,"title":"Notes From the Borders of Erlang","file":"erlang-notes","edited":1401033531,"posted":1335672000,"tags":["notes","ffi","erlang","c"]}

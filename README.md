@@ -14,7 +14,7 @@
 	- Link to [`quicklisp`](https://www.quicklisp.org/donations.html), [EFF](https://supporters.eff.org/donate) and [FSF](https://my.fsf.org/donate/) donation pages
 	- Potentially a PayPal link, I guess, if nothing else works?
 
-- Revisit old blogs. NOW AT: `id:72`
+- Revisit old blogs. NOW AT: `id:75`
 - Post 66 (passing-notes.md) has a missing image. I think that used to be a pic of skeptical Fry. See if you can grab it from the blogspot blog.
 
 - Re-factor project into something sane
