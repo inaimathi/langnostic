@@ -1,8 +1,8 @@
 For those of you just here for the easy, googlable answer. To send an HTML email with `cl-smtp`, do this:
 
 ```lisp
-(cl-smtp:send-email [server] [from] [to] [subject] 
-                    [plaintext message, or possibly NIL] 
+(cl-smtp:send-email [server] [from] [to] [subject]
+                    [plaintext message, or possibly NIL]
                     :html-message [HTML message])
 ```
 
@@ -10,7 +10,9 @@ Making sure to replace the things with square brackets, obviously. Passing `nil`
 
 Now then.
 
-The documentation in the [module itself](http://common-lisp.net/project/cl-smtp/) follows the usual Common Lisp standards of being [minimal, verging on nonexistent](http://common-lisp.net/viewvc/cl-smtp/cl-smtp/README?view=markup)<a name="note-Tue-Apr-17-162650EDT-2012"></a>[|1|](#foot-Tue-Apr-17-162650EDT-2012). The best [example I managed to find](http://ryepup.unwashedmeme.com/blog/2008/10/31/some-simple-cl-smtp-examples/) of sending an HTML-formatted email from `cl-smtp` can be seen [here](http://ryepup.unwashedmeme.com/blog/2008/10/31/some-simple-cl-smtp-examples/). The suggestion is to do
+The documentation in the [module itself](http://common-lisp.net/project/cl-smtp/) follows the usual Common Lisp standards of being [minimal, verging on nonexistent](http://common-lisp.net/viewvc/cl-smtp/cl-smtp/README?view=markup)[^useful-example]. The best [example I managed to find](http://ryepup.unwashedmeme.com/blog/2008/10/31/some-simple-cl-smtp-examples/) of sending an HTML-formatted email from `cl-smtp` can be seen [here](http://ryepup.unwashedmeme.com/blog/2008/10/31/some-simple-cl-smtp-examples/). The suggestion is to do
+
+[^useful-example]: Though it does show you a useful example of how to put an attachment in a sent email.
 
 ```lisp
 (cl-smtp:send-email
@@ -24,7 +26,9 @@ The documentation in the [module itself](http://common-lisp.net/project/cl-smtp/
  :extra-headers '(("Content-type" "text/html; charset=\"iso-8859-1\"")))
 ```
 
-And if you do that, it will *seem* to work unless you run into someone with a particularly configured Exchange server. You might be thinking<a name="note-Tue-Apr-17-162701EDT-2012"></a>[|2|](#foot-Tue-Apr-17-162701EDT-2012) "Oh, \fantastic, MS once again cocks up what should be a simple and straightforward task", but I'm not so sure. Lets take a look at the headers produced by using the `:extra-headers` approach above.
+And if you do that, it will *seem* to work unless you run into someone with a particularly configured Exchange server. You might be thinking[^as-i-did-initially] "Oh, \fantastic, MS once again cocks up what should be a simple and straightforward task", but I'm not so sure. Lets take a look at the headers produced by using the `:extra-headers` approach above.
+
+[^as-i-did-initially]: As I did initially.
 
 ```
 ...
@@ -32,9 +36,9 @@ From: from@email.com
 To:  someone@else.com
 Subject: Serious Business
 X-Mailer: cl-smtp(SBCL 1.0.54.0.debian)
-Content-type: text/html; charset="iso-8859-1" ## the result of our option 
+Content-type: text/html; charset="iso-8859-1" ## the result of our option
 Mime-Version: 1.0
-Content-type: text/plain; charset="UTF-8" ## the default cl-smtp header 
+Content-type: text/plain; charset="UTF-8" ## the default cl-smtp header
 ...
 ```
 
@@ -55,7 +59,9 @@ The actually working way of accomplishing this task is to use the built-in `:htm
   </body></html>")
 ```
 
-if you don't want to send a plaintext message at all, it's possible<a name="note-Tue-Apr-17-162819EDT-2012"></a>[|3|](#foot-Tue-Apr-17-162819EDT-2012) to pass `nil` as the message `body`
+if you don't want to send a plaintext message at all, it's possible[^not-advisable-in-all-cases] to pass `nil` as the message `body`
+
+[^not-advisable-in-all-cases]: Though probably not advisable in all cases.
 
 ```lisp
 (cl-smtp:send-email
@@ -69,7 +75,9 @@ if you don't want to send a plaintext message at all, it's possible<a name="note
   </body></html>")
 ```
 
-Doing it this way causes `cl-smtp` to break your message up into a plaintext and HTML version. You then rely on a client showing its user the appropriate one depending on their context<a name="note-Tue-Apr-17-163515EDT-2012"></a>[|4|](#foot-Tue-Apr-17-163515EDT-2012).
+Doing it this way causes `cl-smtp` to break your message up into a plaintext and HTML version. You then rely on a client showing its user the appropriate one depending on their context[^which-most-seem-to].
+
+[^which-most-seem-to]: Which most seem to, but there are still [one](http://www.exchange-answers.com/microsoft/Exchange-Clients/30509248/preventing-exchange-from-messing-up-multipartalternative-messages.aspx) or [two](http://social.technet.microsoft.com/Forums/en-US/exchangesvrcompliance/thread/97b5a94f-c948-4d06-ad66-8521fd49ec7e/) Exchange-server related hiccups for some users with particular versions of the software.
 
 ```
 From: from@email.com
@@ -99,14 +107,3 @@ Content-Disposition: inline
 ```
 
 ![The 'The More You Know' rainbow image](/static/img/themoreyouknow.jpg)
-
-* * *
-##### Footnotes
-
-1 - <a name="foot-Tue-Apr-17-162650EDT-2012"></a>[|back|](#note-Tue-Apr-17-162650EDT-2012) - Though it does show you a useful example of how to put an attachment in a sent email.
-
-2 - <a name="foot-Tue-Apr-17-162701EDT-2012"></a>[|back|](#note-Tue-Apr-17-162701EDT-2012) - As I did initially.
-
-3 - <a name="foot-Tue-Apr-17-162819EDT-2012"></a>[|back|](#note-Tue-Apr-17-162819EDT-2012) - Though probably not advisable in all cases.
-
-4 - <a name="foot-Tue-Apr-17-163515EDT-2012"></a>[|back|](#note-Tue-Apr-17-163515EDT-2012) - Which most seem to, but there are still [one](http://www.exchange-answers.com/microsoft/Exchange-Clients/30509248/preventing-exchange-from-messing-up-multipartalternative-messages.aspx) or [two](http://social.technet.microsoft.com/Forums/en-US/exchangesvrcompliance/thread/97b5a94f-c948-4d06-ad66-8521fd49ec7e/) Exchange-server related hiccups for some users with particular versions of the software.

@@ -667,10 +667,8 @@ instead, but found that a player can get too much information from that (though 
 
 So that's *almost* that for the game itself. I still need to make `ship`s send out a "You sunk my..." message when they get taken down, and there's a few usability-related things I'd like to add to the client side (ok, yes, and there needs to be support for multiple games at once, as well as actually winning), but most of the remaining development actually needs to happen outside the game itself. I hinted at it earlier, but just to make it explicit, I still need to implement
 
-
 - A chat-room/lobby for people to start games up from (in-game chat might be nice too)
 - A leaderboard system to show off high scores (possibly with replays too)
 - A formalized way of automating games
-
 
 Sounds like this'll actually keep me busier than I expected.
