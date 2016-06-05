@@ -2,29 +2,36 @@ This is going to be a pretty disjointed, Erlang-heavy article, since that's basi
 
 Thus began the research...
 
-There are the usual set of resources over there in the sidebar<a name="note-Mon-Apr-30-004835EDT-2012"></a>[|1|](#foot-Mon-Apr-30-004835EDT-2012), but do also take the time to check out [this vimeo piece featuring Joe Armstrong](http://vimeo.com/12307912). It won't really give you much insight into how to use the language, but it will show you a bit of the history and intent. Like I said, entirely worth it to hear the man talk, but here are the big points, as extracted by yours truly; he highlighted three things that were missing from Erlang<a name="note-Mon-Apr-30-004855EDT-2012"></a>[|2|](#foot-Mon-Apr-30-004855EDT-2012), one big mistake, two not-too-bad ideas and three fairly nice ideas that the team had when developing the language. He noted that these are controversial, but I tend to agree with a pretty large number of his assessments. Then again, I'm the crazy motherfucker who regularly blogs about his experiences with Lisp, Smalltalk, Erlang and Ruby, so maybe I'm not the best person to gauge what a mainstream opinion is supposed to look like.
+There are the usual set of resources over there in the sidebar[^ill-admit], but do also take the time to check out [this vimeo piece featuring Joe Armstrong](http://vimeo.com/12307912). It won't really give you much insight into how to use the language, but it will show you a bit of the history and intent. Like I said, entirely worth it to hear the man talk, but here are the big points, as extracted by yours truly; he highlighted three things that were missing from Erlang, one big mistake, two not-too-bad ideas and three fairly nice ideas that the team had when developing the language. He noted that these are controversial, but I tend to agree with a pretty large number of his assessments. Then again, I'm the crazy motherfucker who regularly blogs about his experiences with Lisp, Smalltalk, Erlang and Ruby, so maybe I'm not the best person to gauge what a mainstream opinion is supposed to look like.
+
+[^ill-admit]: Though I'll admit, the Erlang section is pretty sparse compared to the rest of them
 
 ## Three Missing Things
-**Hash Maps** - JSON-style key/value data structures. Not just adding them to the system, but making them the fundamental data-type rather than tuples or arrays. I can see why, too; if you look at any tutorial or piece of Erlang code, you'll see things that fake key/value pairs using tuples. Things like `{shopping_list, [{oranges, 3}, {apples, 4}, {bread, 1}]}`, which would be better expressed as a JSON structure<a name="note-Mon-Apr-30-005108EDT-2012"></a>[|3|](#foot-Mon-Apr-30-005108EDT-2012).
+**Hash Maps** - JSON-style key/value data structures. Not just adding them to the system, but making them the fundamental data-type rather than tuples or arrays. I can see why, too; if you look at any tutorial or piece of Erlang code, you'll see things that fake key/value pairs using tuples. Things like `{shopping_list, [{oranges, 3}, {apples, 4}, {bread, 1}]}`, which would be better expressed as a JSON structure[^for-the-record].
+
+[^for-the-record]: For the record, I'm trying really hard not to put on my Lisp hat and say something like *"Mmmm, mmmm, this syntactic abstraction is fucking **delicious**! How's it working for **you** guys? Oh, you **haven't** had any?! That's a **shame**..."* in an obnoxiously smug voice. It's difficult, and this footnote may count as a failure. Sorry.
 
 **Higher Order Modules** - code in Erlang is organized into modules, which is par for the course these days, but you can't programmatically introspect on them at runtime. Joe mentioned the example of being able to send a particular standardized message and getting back a list of messages supported by the target. I guess this probably might get built into the existing language piecemeal by convention rather than specification. I'm imagining a situation where a given team agrees that they'll write all their modules to accept a `help` message which would return a list of the functions it provides and a specification of inputs they'd each accept. Thing is, 1. that wouldn't be a language-wide standard, and 2. it would take additional explicit work by the developers. If it was handled at the language level, everyone would have access to the same introspection facilities, and they'd be handled with no additional thought or deed on the developers' part.
 
 **The Ability to `receive` a `fun`** - Erlang is a higher-order language, and you can send around function names whenever and wherever you damn well please, but apparently the built-in `receive` directive won't let you pass it an anonymous function. Ok, this isn't one you could solve with macros, but I'm not entirely sure it would be a good idea in the first place. The thing on the other end of the line isn't necessarily code you can trust, but it would certainly add more flexibility.
 
 ## One Big Mistake
-**Lost Too Much Prolog** - Joe's a big [Prolog](http://www.gprolog.org/manual/gprolog.html) fan, which should come as no surprise to anyone who's read any Erlang tutorials, watched any [Erlang talks](http://www.youtube.com/watch?v=9uIhawQ1G0I&feature=BFa&list=PL6810EA9B7933465F), or indeed, [written any Erlang code](http://www.tryerlang.org/). I'm not qualified to comment, never having done anything approaching serious development in Prolog<a name="note-Mon-Apr-30-005141EDT-2012"></a>[|4|](#foot-Mon-Apr-30-005141EDT-2012).
+**Lost Too Much Prolog** - Joe's a big [Prolog](http://www.gprolog.org/manual/gprolog.html) fan, which should come as no surprise to anyone who's read any Erlang tutorials, watched any [Erlang talks](http://www.youtube.com/watch?v=9uIhawQ1G0I&feature=BFa&list=PL6810EA9B7933465F), or indeed, [written any Erlang code](http://www.tryerlang.org/). I'm not qualified to comment, never having done anything approaching serious development in Prolog[^experience-from-7-languages].
+
+[^experience-from-7-languages]: In fact the entirety of my related experience is the appropriate chapter from [7 Languages...](http://pragprog.com/book/btlang/seven-languages-in-seven-weeks), flipping through [the Reasoned Schemer](http://mitpress.mit.edu/catalog/item/default.asp?ttype=2&tid=10663) and the [SICP lectures](http://www.youtube.com/watch?v=2Op3QLzMgSY&feature=BFa&list=PL8FE88AA54363BC46) wherein prolog is briefly implemented on top of Lisp. Thant link is to the playlist rather than the correct episode; it's been a while, and I no longer remember which it was specifically.
 
 ## Two Not Too Bad Ideas
 He gave this talk to an American audience, so he had to have a section with Good™ and Great™ ideas, though he would have preferred to be more modest about it. In deference to his preference, I'm keeping his intended titles.
 
 **Lightweight Processes Are Ok** -
 
-
 > "... we've shown that you can do processes in the language, and we've shown there's no need for threads. Threads are intrinsically evil, and [shouldn't] be used. Threads were sort of this 'Oh my goodness, processes aren't efficient enough, so lets use this abomination to...' horrible things."
 >
 > -- Joe Armstrong
 
-For my part, I've got a half-written piece about `[cl-actors](https://github.com/naveensundarg/Common-Lisp-Actors)` sitting in my drafts folder. It's a pretty good, lightweight implementation of the [actor model](http://en.wikipedia.org/wiki/Actor_model) built on top of `[bordeaux-threads](http://common-lisp.net/project/bordeaux-threads/)`. And if you like the Erlang-style message passing, do give it a shot, but it doesn't quite do the same thing as Erlang manages. The threading model means you can't expect to reliably spawn thousands of `cl-actors` on a typical machine. For comparison, [the Pragmatic book](http://pragprog.com/book/jaerlang/programming-erlang) has an example on pg 149/150 wherein Joe removes the built-in safety limit of 32 767 processes and has Erlang spawn 200 000 without breaking a sweat<a name="note-Mon-Apr-30-005314EDT-2012"></a>[|5|](#foot-Mon-Apr-30-005314EDT-2012). That seems like at least part of the story behind those [mind-boggling benchmarks](http://www.sics.se/~joe/apachevsyaws.html) that you've all probably seen by now.
+For my part, I've got a half-written piece about `[cl-actors](https://github.com/naveensundarg/Common-Lisp-Actors)` sitting in my drafts folder. It's a pretty good, lightweight implementation of the [actor model](http://en.wikipedia.org/wiki/Actor_model) built on top of `[bordeaux-threads](http://common-lisp.net/project/bordeaux-threads/)`. And if you like the Erlang-style message passing, do give it a shot, but it doesn't quite do the same thing as Erlang manages. The threading model means you can't expect to reliably spawn thousands of `cl-actors` on a typical machine. For comparison, [the Pragmatic book](http://pragprog.com/book/jaerlang/programming-erlang) has an example on pg 149/150 wherein Joe removes the built-in safety limit of 32 767 processes and has Erlang spawn 200 000 without breaking a sweat[^this-was-reportedly]. That seems like at least part of the story behind those [mind-boggling benchmarks](http://www.sics.se/~joe/apachevsyaws.html) that you've all probably seen by now.
+
+[^this-was-reportedly]: This was reportedly on a 2.4gHz Celeron machine with a half-gig of ram, so that was *not* a consequence of awesome hardware
 
 **OTP Behaviours** - The correct way to think of Behaviours, Joe says, is to consider them the process equivalent of higher-order functions. They formalize basic request patterns between processes letting individuals focus on the differences. I don't actually have enough experience with them yet, but if Joe's description is accurate, I can see them being very useful when constructing complex systems with a reliability requirement.
 
@@ -37,11 +44,15 @@ For my part, I've got a half-written piece about `[cl-actors](https://github.com
 
 ### The FFI
 
-Aside from historical notes and tutorials, I've been looking at how I'd go about interfacing Erlang to other languages. The standard seems to be doing it the same way you'd interface different Erlang processes. Except that where Erlang nodes already know how to talk to each other, the protocol needs to be implemented manually for other languages. It works consistently whether you're talking to [Python](http://erlport.org/), [Ruby](https://github.com/mojombo/erlectricity), [Common Lisp](http://common-lisp.net/project/cleric/), [Java](http://www.erlang.org/documentation/doc-5.1/lib/jinterface-1.2.1/doc/html/java/index.html) or [C](http://www.erlang.org/doc/tutorial/cnode.html)<a name="note-Mon-Apr-30-005524EDT-2012"></a>[|6|](#foot-Mon-Apr-30-005524EDT-2012). All the languages I've taken a look at so far come with an established protocol to talk to Erlang in some way.
+Aside from historical notes and tutorials, I've been looking at how I'd go about interfacing Erlang to other languages. The standard seems to be doing it the same way you'd interface different Erlang processes. Except that where Erlang nodes already know how to talk to each other, the protocol needs to be implemented manually for other languages. It works consistently whether you're talking to [Python](http://erlport.org/), [Ruby](https://github.com/mojombo/erlectricity), [Common Lisp](http://common-lisp.net/project/cleric/), [Java](http://www.erlang.org/documentation/doc-5.1/lib/jinterface-1.2.1/doc/html/java/index.html) or [C](http://www.erlang.org/doc/tutorial/cnode.html)[^actually-half-true]. All the languages I've taken a look at so far come with an established protocol to talk to Erlang in some way.
+
+[^actually-half-true]: Actually, that's half true. There are three different ways to interface with a C program; you can do [port-based communication with a custom protocol](http://www.erlang.org/doc/tutorial/c_portdriver.html), you can [call C natively](http://www.erlang.org/doc/tutorial/nif.html) at the risk of system collapse with errors, or you can [implement the Erlang protocol](http://www.erlang.org/doc/tutorial/cnode.html) and pretend to be an Erlang process for the purposes of interoperability. The other languages I've taken a look at do that last one, but you've got options if you're rolling your own
 
 Here's a practical example that I'll actually end up refining for deployment later; a [C-based interface](http://www.imagemagick.org/script/magick-wand.php?ImageMagick=p2vadv8o3dqp83j47nqgam0au5) to some very specific [ImageMagick](http://www.imagemagick.org/script/index.php) routines.
 
-First, the Erlang communication functions<a name="note-Mon-Apr-30-005635EDT-2012"></a>[|7|](#foot-Mon-Apr-30-005635EDT-2012)
+First, the Erlang communication functions[^ripped-bleeding-from]
+
+[^ripped-bleeding-from]: Ripped bleeding from [Programming Erlang](http://pragprog.com/book/jaerlang/programming-erlang). It which won't change at all, regardless of what specific protocol I end up picking
 
 ```c
 /* erl_comm.c */
@@ -142,7 +153,9 @@ int main(){
 }
 ```
 
-Then the actual function I'll be wanting to call<a name="note-Mon-Apr-30-005755EDT-2012"></a>[|8|](#foot-Mon-Apr-30-005755EDT-2012)
+Then the actual function I'll be wanting to call[^with-thanks-to-the-reference-implementation]
+
+[^with-thanks-to-the-reference-implementation]: With thanks to the [reference implementation](http://www.imagemagick.org/source/wand.c) from the ImageMagick team
 
 ```c
 /* wand.c */
@@ -274,22 +287,3 @@ All of that looks pretty complicated, but it really isn't when you sit down and 
 
 
 As a parting note, having gone through the rat's nest that is pathname manipulation in C, I hereby promise to never again bitch about Lisp's [pathname handling](http://www.gigamonkeys.com/book/practical-a-portable-pathname-library.html). Nothing like wading waist-deep in horse shit to remind you how good you've got it merely living within earshot of the stables.
-
-* * *
-##### Footnotes
-
-1 - <a name="foot-Mon-Apr-30-004835EDT-2012"></a>[|back|](#note-Mon-Apr-30-004835EDT-2012) - Though I'll admit, the Erlang section is pretty sparse compared to the rest of them
-
-2 - <a name="foot-Mon-Apr-30-004855EDT-2012"></a>[|back|](#note-Mon-Apr-30-004855EDT-2012) - That he'd put in if he had to do it again
-
-3 - <a name="foot-Mon-Apr-30-005108EDT-2012"></a>[|back|](#note-Mon-Apr-30-005108EDT-2012) - For the record, I'm trying really hard not to put on my Lisp hat and say something like *"Mmmm, mmmm, this syntactic abstraction is fucking **delicious**! How's it working for **you** guys? Oh, you **haven't** had any?! That's a **shame**..."* in an obnoxiously smug voice. It's difficult, and this footnote may count as a failure. Sorry.
-
-4 - <a name="foot-Mon-Apr-30-005141EDT-2012"></a>[|back|](#note-Mon-Apr-30-005141EDT-2012) - In fact the entirety of my related experience is the appropriate chapter from [7 Languages...](http://pragprog.com/book/btlang/seven-languages-in-seven-weeks), flipping through [the Reasoned Schemer](http://mitpress.mit.edu/catalog/item/default.asp?ttype=2&tid=10663) and the [SICP lectures](http://www.youtube.com/watch?v=2Op3QLzMgSY&feature=BFa&list=PL8FE88AA54363BC46) wherein prolog is briefly implemented on top of Lisp. Thant link is to the playlist rather than the correct episode; it's been a while, and I no longer remember which it was specifically.
-
-5 - <a name="foot-Mon-Apr-30-005314EDT-2012"></a>[|back|](#note-Mon-Apr-30-005314EDT-2012) - This was reportedly on a 2.4gHz Celeron machine with a half-gig of ram, so that was *not* a consequence of awesome hardware
-
-6 - <a name="foot-Mon-Apr-30-005524EDT-2012"></a>[|back|](#note-Mon-Apr-30-005524EDT-2012) - Actually, that's half true. There are three different ways to interface with a C program; you can do [port-based communication with a custom protocol](http://www.erlang.org/doc/tutorial/c_portdriver.html), you can [call C natively](http://www.erlang.org/doc/tutorial/nif.html) at the risk of system collapse with errors, or you can [implement the Erlang protocol](http://www.erlang.org/doc/tutorial/cnode.html) and pretend to be an Erlang process for the purposes of interoperability. The other languages I've taken a look at do that last one, but you've got options if you're rolling your own
-
-7 - <a name="foot-Mon-Apr-30-005635EDT-2012"></a>[|back|](#note-Mon-Apr-30-005635EDT-2012) - Ripped bleeding from [Programming Erlang](http://pragprog.com/book/jaerlang/programming-erlang). It which won't change at all, regardless of what specific protocol I end up picking
-
-8 - <a name="foot-Mon-Apr-30-005755EDT-2012"></a>[|back|](#note-Mon-Apr-30-005755EDT-2012) - With thanks to the [reference implementation](http://www.imagemagick.org/source/wand.c) from the ImageMagick team

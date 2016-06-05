@@ -1,12 +1,14 @@
-Ok, this isn't actually all Erlang. In fact, by line-count, it's a Postscript project, but [all of those lines were already written](https://code.google.com/p/postscriptbarcode/) by someone else. Also, I'm not sure whether I'll get the same benefit here that I got out of [my Strifebarge write-up](http://langnostic.blogspot.ca/2012/02/strifebarge-turn-based-web-games-in.html), but it's the third such piece, so I've gone back and added labels to group them.
+Ok, this isn't actually all Erlang. In fact, by line-count, it's a Postscript project, but [all of those lines were already written](https://code.google.com/p/postscriptbarcode/) by someone else. Also, I'm not sure whether I'll get the same benefit here that I got out of [my Strifebarge write-up](/posts/strifebarge-turn-based-web-games-in-common-lisp), but it's the third such piece, so I've gone back and added labels to group them.
 
 "Almost Literate Programming".
 
 What I'm doing isn't quite the [LP that Knuth advocates](http://www.literateprogramming.com/) because it doesn't self-extract, share space with the executable source, or make use of variable labels to automatically update certain portions. However, it still gains me considerable reflective clarity about what the goal of the program is, and it hopefully conveys the essence to whoever happens to be reading. With that out of the way...
 
-### Generating Barcodes
+## Generating Barcodes
 
-As you may have noticed from the above links, there already exists a [Postscript-based barcode generator](https://code.google.com/p/postscriptbarcode/) which I'm going to use pretty shamelessly in order to generate bitmap barcodes of various descriptions. Taking a look at the [actual code](https://code.google.com/p/postscriptbarcode/downloads/detail?name=barcode-2012-04-26.ps) for that generator should make it obvious that you probably *don't* want to just echo the entire system every time you need to generate something<a name="note-Tue-May-15-220424EDT-2012"></a>[|1|](#foot-Tue-May-15-220424EDT-2012). We'll get to that though, lets start from the system side first. This is what a `.app` declaration looks like in Erlang
+As you may have noticed from the above links, there already exists a [Postscript-based barcode generator](https://code.google.com/p/postscriptbarcode/) which I'm going to use pretty shamelessly in order to generate bitmap barcodes of various descriptions. Taking a look at the [actual code](https://code.google.com/p/postscriptbarcode/downloads/detail?name=barcode-2012-04-26.ps) for that generator should make it obvious that you probably *don't* want to just echo the entire system every time you need to generate something[^the-complete-file]. We'll get to that though, lets start from the system side first. This is what a `.app` declaration looks like in Erlang
+
+[^the-complete-file]: The complete file is 17111 lines, and we really only need about 800-1200 at the outside to generate a single specific barcode.
 
 ```make
 # Makefile
@@ -78,12 +80,13 @@ init([]) ->
             [ps_bc]}]}}.
 ```
 
-The `Makefile` is not, strictly speaking, necessary, but a bunch of stuff needs to be done manually in its absence. The above code is approximately equivalent to [a Lisp `.asd` file](https://github.com/xach/quickproject/), in that it tells Erlang what needs to be compiled/called in order to run the system I'm about to define<a name="note-Tue-May-15-220604EDT-2012"></a>[|2|](#foot-Tue-May-15-220604EDT-2012).
+The `Makefile` is not, strictly speaking, necessary, but a bunch of stuff needs to be done manually in its absence. The above code is approximately equivalent to [a Lisp `.asd` file](https://github.com/xach/quickproject/), in that it tells Erlang what needs to be compiled/called in order to run the system I'm about to define[^incidentally-didnt-do-this-first].
+
+[^incidentally-didnt-do-this-first]: Incidentally, I didn't do this first. I sort of wish I had in retrospect, because it would have saved me some dicking around with `erl`, but I actually wrote the code first, then wrote the above based on it. Also incidentally, a lot of it doesn't seem like much of it will change on a project-by-project basis. That tells me that we're either working with the wrong abstractions, or there are tricky things you can do at this stage that I haven't yet grasped. It also tells me that I should probably write some generation scripts for it.
 
 ```erlang
   {modules, [ps_barcode_app, ps_barcode_supervisor, barcode_data, wand, ps_bc]},
 ```
-
 
 That line specifies which other modules we'll be loading as part of the application, as well as their start order (which is relevant for a certain supervision strategy).
 
@@ -116,7 +119,13 @@ init([]) ->
             [ps_bc]}]}}.
 ```
 
-*That* does something interesting; it defines how the [supervisor](http://www.erlang.org/doc/man/supervisor.html) should act, and how it should treat its child processes. `{one_for_one, 3, 10}` means that if a supervised process errors, it should be restarted on its own up to 3 times in 10 seconds<a name="note-Tue-May-15-220658EDT-2012"></a>[|3|](#foot-Tue-May-15-220658EDT-2012). Both sub-processes are `permanent`<a name="note-Tue-May-15-220712EDT-2012"></a>[|4|](#foot-Tue-May-15-220712EDT-2012) `worker`s<a name="note-Tue-May-15-220719EDT-2012"></a>[|5|](#foot-Tue-May-15-220719EDT-2012). The last interesting bit is the `brutal_kill`/`10000` part; that's the `Shutdown` variable. It determines how the process should be terminated; `brutal_kill` means "kill the process right away", an integer means "send the process a stop command and wait up to this many milliseconds, then kill it".
+*That* does something interesting; it defines how the [supervisor](http://www.erlang.org/doc/man/supervisor.html) should act, and how it should treat its child processes. `{one_for_one, 3, 10}` means that if a supervised process errors, it should be restarted on its own up to 3 times in 10 seconds[^one-for-all-and-rest-for-one]. Both sub-processes are `permanent`[^which-means-they-get-restarted] `worker`s[^which-means-we-have-a-shallow-tree]. The last interesting bit is the `brutal_kill`/`10000` part; that's the `Shutdown` variable. It determines how the process should be terminated; `brutal_kill` means "kill the process right away", an integer means "send the process a stop command and wait up to this many milliseconds, then kill it".
+
+[^one-for-all-and-rest-for-one]: `one_for_all` and `rest_for_one` are other [possible strategies](http://www.erlang.org/doc/design_principles/sup_princ.html#strategy), `_all` restarts all child processes rather than just the one that errored, and `rest_` just restarts processes later in the start order.
+
+[^which-means-they-get-restarted]: Which means they get restarted when they error, *and* hang around after they've finished their work.
+
+[^which-means-we-have-a-shallow-tree]: Which means that we have a pretty shallow supervision tree in this case, but we really don't need more.
 
 Lets follow the applications' start order and move on to
 
@@ -203,9 +212,13 @@ split_directive_line(Line) ->
           X /= " ", X /= [], X /= "--", X /="\n"].
 ```
 
-This is a reasonably simple reader program. The goal of it is to break [that 17111 line .ps file](https://code.google.com/p/postscriptbarcode/downloads/detail?name=barcode-2012-04-26.ps) into individual components. First, a `preamble` (basic definitions that need to go into each file), then a set of `renderer`s<a name="note-Tue-May-15-220847EDT-2012"></a>[|6|](#foot-Tue-May-15-220847EDT-2012), and a rather large number of `encoder`s<a name="note-Tue-May-15-220854EDT-2012"></a>[|7|](#foot-Tue-May-15-220854EDT-2012). These components are stored in an [ETS](http://www.erlang.org/doc/man/ets.html) table held in memory. The initial Postscript file only needs to be parsed once; the resulting ETS table is then exported to a file on disk so that it can just be loaded in the future.
+This is a reasonably simple reader program. The goal of it is to break [that 17111 line .ps file](https://code.google.com/p/postscriptbarcode/downloads/detail?name=barcode-2012-04-26.ps) into individual components. First, a `preamble` (basic definitions that need to go into each file), then a set of `renderer`s[^routines-that-do-general-stuff], and a rather large number of `encoder`s[^routines-that-specialize-on-barcodes]. These components are stored in an [ETS](http://www.erlang.org/doc/man/ets.html) table held in memory. The initial Postscript file only needs to be parsed once; the resulting ETS table is then exported to a file on disk so that it can just be loaded in the future.
 
-Do note the nested `case` statements there. [Last time, I complained about the guards](http://langnostic.blogspot.ca/2012/05/hot-erlang-code.html#foot-Tue-May-08-175733EDT-2012), and this is why. Really, I should have been able to write that as
+[^routines-that-do-general-stuff]: Routines that do general operations for a particular class of barcode, such as linear or matrix.
+
+[^routines-that-specialize-on-barcodes]: Routines that do the job of converting a specific piece of data into a particular type of barcode, such as qrcode, code93 or datamatrix.
+
+Do note the nested `case` statements there. Really, I should have been able to write that as
 
 ```erlang
         ...
@@ -256,12 +269,14 @@ This is not the most elegant function. In fact, now that I look at it, it seems 
 
 What we're doing here is breaking apart an `encoder` block, and pulling out
 
-
-- the list of other blocks we need to output before this one<a name="note-Tue-May-15-221005EDT-2012"></a>[|8|](#foot-Tue-May-15-221005EDT-2012)
-- a piece of example data that this particular encoder can handle<a name="note-Tue-May-15-221009EDT-2012"></a>[|9|](#foot-Tue-May-15-221009EDT-2012)
+- the list of other blocks we need to output before this one[^renderer-required-encoder]
+- a piece of example data that this particular encoder can handle[^some-like-datamatrix-and-qrcode]
 - the default arguments to passed to this `encoder`
 - the body code of this `encoder`
 
+[^renderer-required-encoder]: `renderer`s, required `encoder`s and suggested `encoders`.
+
+[^some-like-datamatrix-and-qrcode]: Some, like `datamatrix` and `qrcode`, can handle almost arbitrary string information, while others are restricted to a subset of ascii, and others require a specific number of numeric characters.
 
 The list of required blocks is exhaustive for each `encoder`, so we don't need to recursively check requirements later, it's enough to store and act on all requirements of a given barcode.
 
@@ -310,7 +325,9 @@ terminate(_Reason, State) -> State ! {self(), close}, ok.
 code_change(_OldVsn, State, _Extra) -> {ok, State}.
 ```
 
-This is actually pretty much the same C Port file I [used last time](http://langnostic.blogspot.ca/2012/04/notes-from-borders-of-erlang.html), except that this one has been re-written to use [`gen_server`](http://www.erlang.org/doc/man/gen_server.html), rather than being plain Erlang code. I still refuse to use that godawful file template they ship with their Emacs mode though<a name="note-Tue-May-15-221156EDT-2012"></a>[|10|](#foot-Tue-May-15-221156EDT-2012). All it does is call out to a C program named `wand` to do the actual image processing involved in generating these barcodes. All you need to know is that we send it a barcodes' file name, and it quickly generates a high-res PNG version in the same folder.
+This is actually pretty much the same C Port file I [used last time](http://langnostic.blogspot.ca/2012/04/notes-from-borders-of-erlang.html), except that this one has been re-written to use [`gen_server`](http://www.erlang.org/doc/man/gen_server.html), rather than being plain Erlang code. I still refuse to use that godawful file template they ship with their Emacs mode though[^as-a-massive-aside]. All it does is call out to a C program named `wand` to do the actual image processing involved in generating these barcodes. All you need to know is that we send it a barcodes' file name, and it quickly generates a high-res PNG version in the same folder.
+
+[^as-a-massive-aside]: As an aside here, that's one of the things that really rustles my jimmies about Erlang. I've gotten extremely used to including a pretty extensive documentation string with each Common Lisp function and method, knowing that a potential user will be able to make full use of any `describe` calls they make. It's actually even better for methods, since you get the documentation for the `generic` you define, as well as a compilation of all doc-strings for the related `defmethod` calls. Erlang isn't having any of this shit. If you want to include doc-strings, you can damn well write Java-style precisely formatted comments and use a separate doc extractor to read them. I guess this is how most languages do it? It still seems stupid to have a system this dynamic that *doesn't* allow runtime documentation pokes. Sigh. Ok, let's get back to it.
 
 Right, that's it for the periphery, lets finally dive into
 
@@ -416,7 +433,9 @@ lookup_component(Name, Table) ->
     end.
 ```
 
-This is (again) not the most elegant code. Really, what I'd want to do is look up `Ren` first, check if it returned something, *then* check whether an `Enc` exists. That would save me a look-up every once in a while<a name="note-Tue-May-15-221255EDT-2012"></a>[|11|](#foot-Tue-May-15-221255EDT-2012). Do take note that there's no clause to handle the event that a faulty index was passed; in that case, the process will fail with an unmatched pattern and promptly be restarted. This function is in turn used by `write_component` to actually output the given block to a file
+This is (again) not the most elegant code. Really, what I'd want to do is look up `Ren` first, check if it returned something, *then* check whether an `Enc` exists. That would save me a look-up every once in a while[^inst-really-worth-saving]. Do take note that there's no clause to handle the event that a faulty index was passed; in that case, the process will fail with an unmatched pattern and promptly be restarted. This function is in turn used by `write_component` to actually output the given block to a file
+
+[^inst-really-worth-saving]: Which, granted, isn't really worth saving given how blazingly fast ETS is, but still.
 
 ```erlang
 write_component(preamble, Table, File) ->
@@ -464,14 +483,19 @@ handle_call({change_table, Tab}, _From, _State) ->
     {reply, {watching_table, Tab}, Tab}.
 ```
 
-The last directive there should probably be implemented as a `handle_cast` rather than `handle_call`<a name="note-Tue-May-15-221415EDT-2012"></a>[|12|](#foot-Tue-May-15-221415EDT-2012). The first two should probably return processed data rather than raw ETS results. Rest assured that mental notes have been made. The message `help` returns a list of available `encoder`s<a name="note-Tue-May-15-221432EDT-2012"></a>[|13|](#foot-Tue-May-15-221432EDT-2012), while asking for help with a specific `encoder` will return its example data. All the meat is in that extra large message handler in the middle.
+The last directive there should probably be implemented as a `handle_cast` rather than `handle_call`[^difference-handle-cast]. The first two should probably return processed data rather than raw ETS results. Rest assured that mental notes have been made. The message `help` returns a list of available `encoder`s[^which-well-use-later], while asking for help with a specific `encoder` will return its example data. All the meat is in that extra large message handler in the middle.
+
+[^difference-handle-cast]: The only difference being that `handle_cast` doesn't send a response message to its caller.
+
+[^which-well-use-later]: Which we'll use later to give the user something to do about them.
 
 Deep breath.
 
-A message of `{write, DestFolder, BarcodeType, Data, Width, Height}` will output `Data` in a `BarcodeType` barcode in the `DestFolder` folder and format it to `Width`x`Height` dimensions. That's actually going to get trickier. Right now, the dimensions are just assumed to be 200x200 in the initial PS, and that C module is expected to output a properly formatted PS file. There are a few problems with that though<a name="note-Tue-May-15-221657EDT-2012"></a>[|14|](#foot-Tue-May-15-221657EDT-2012), so what I will ultimately want to do is have the C module return the appropriate dimensions and have `ps_bc` change this initial file later. That's another TODO.
+A message of `{write, DestFolder, BarcodeType, Data, Width, Height}` will output `Data` in a `BarcodeType` barcode in the `DestFolder` folder and format it to `Width`x`Height` dimensions. That's actually going to get trickier. Right now, the dimensions are just assumed to be 200x200 in the initial PS, and that C module is expected to output a properly formatted PS file. There are a few problems with that though[^note-the-imagemagick-api], so what I will ultimately want to do is have the C module return the appropriate dimensions and have `ps_bc` change this initial file later. That's another TODO.
+
+[^note-the-imagemagick-api]: Specifically, since I'm using the Imagemagick API, the PS that it outputs is actually rasterised. That means it'll be much larger than the initial file and take that much longer to output. Literally the only advantage to it is that it properly sets the width and height of the document.
 
 What the `write` message actually does, in order is
-
 
 - generates a tempfile name for the directory it was passed
 - opens that `File` for output
@@ -482,7 +506,6 @@ What the `write` message actually does, in order is
 - writes a Postscript directive invoking that component with `Data` to `File`
 - closes `File`
 - replies with the absolute tempfile name that it generated
-
 
 And there you have it, we now have a barcode PS file in the specified location.
 
@@ -503,11 +526,13 @@ generate(DestFolder, BarcodeType, Data) ->
 change(TableId) -> gen_server:call(?MODULE, {change, TableId}).
 ```
 
-This is a set of exported functions to let outside modules easily interact with the internal `ps_bc` process. `change`, `help` and `write` map to the corresponding `handle_call` messages we looked at earlier<a name="note-Tue-May-15-222057EDT-2012"></a>[|15|](#foot-Tue-May-15-222057EDT-2012). `generate` is something else. This is the principal function I expect to be called from outside the module, though AFAIK, there's no way to highlight that from within the code. To that end, it collects everything you need to create a barcode from start to finish; it accepts a `BarcodeType` and `Data` (and optionally a `DestFolder`) and calls `write/3` to create the directory, then `wand:process` to create the corresponding PNG and rasterized PS file, and finally returns the tempfile name that it generated. That should probably actually return a list of absolute file-names it created rather than just the base name. Mental note number 6.
+This is a set of exported functions to let outside modules easily interact with the internal `ps_bc` process. `change`, `help` and `write` map to the corresponding `handle_call` messages we looked at earlier[^i-do-export-help-and-write]. `generate` is something else. This is the principal function I expect to be called from outside the module, though AFAIK, there's no way to highlight that from within the code. To that end, it collects everything you need to create a barcode from start to finish; it accepts a `BarcodeType` and `Data` (and optionally a `DestFolder`) and calls `write/3` to create the directory, then `wand:process` to create the corresponding PNG and rasterized PS file, and finally returns the tempfile name that it generated. That should probably actually return a list of absolute file-names it created rather than just the base name. Mental note number 6.
+
+[^i-do-export-help-and-write]: Note that I do export `help/0`, `help/1`, `write/3` and `write/5` separately.
 
 Whew! At the risk of pulling a Yegge, this piece is turning out *a lot* longer than I though it was going to be. Lets get it wrapped up quickly.
 
-### Nitrogen
+## Nitrogen
 
 [Nitrogen](http://nitrogenproject.com/) is an Erlang web framework I've been playing with. I won't explain it in depth, just use it to show you how you'd go about invoking the above program for realsies. In fact, here's a `nitrogen/rel/nitrogen/site/src/index.erl` that will call out to `ps_barcode` to generate a barcode based on user input and let them download the bitmap and Postscript file:
 
@@ -579,7 +604,9 @@ get_example(BarcodeType) ->
     Example.
 ```
 
-here<a name="note-Tue-May-15-222251EDT-2012"></a>[|16|](#foot-Tue-May-15-222251EDT-2012) and
+here[^should-be-expecting-naked-string] and
+
+[^should-be-expecting-naked-string]: Which, again, really should be expecting a naked string response rather than a raw ETS lookup record.
 
 ```erlang
         ...
@@ -591,47 +618,12 @@ here<a name="note-Tue-May-15-222251EDT-2012"></a>[|16|](#foot-Tue-May-15-222251E
 
 here. Recall that `make run` on the `Makefile` I defined earlier started a node named `'ps_barcode@127.0.1.1'` and started our application in it. So, if we want to use it from another Erlang node, all we have to do is start them both up using the same [`cookie`](http://erlang.org/pipermail/erlang-questions/2001-December/004153.html), and then use the built in `rpc:call` function, specifying the appropriate node, module, function and arguments. The return message is going to be a response from our application.
 
-The code shown here won't actually run on its own<a name="note-Tue-May-15-222809EDT-2012"></a>[|17|](#foot-Tue-May-15-222809EDT-2012), I left out the C file<a name="note-Tue-May-15-222815EDT-2012"></a>[|18|](#foot-Tue-May-15-222815EDT-2012), as well as the actual [barcode.ps](https://code.google.com/p/postscriptbarcode/downloads/detail?name=barcode-2012-04-26.ps) that the whole thing is based on. I'll act on the mental notes I've collected first, and then toss the whole thing up on [my github](https://github.com/Inaimathi) for you to play with. The nitrogen module is minimal enough that I won't feel bad for leaving it out, but the one above should work with your copy of nitrogen.
+The code shown here won't actually run on its own[^complete-code-doesnt-work-yet], I left out the C file[^was-going-to-discuss-but-too-long], as well as the actual [barcode.ps](https://code.google.com/p/postscriptbarcode/downloads/detail?name=barcode-2012-04-26.ps) that the whole thing is based on. I'll act on the mental notes I've collected first, and then toss the whole thing up on [my github](https://github.com/Inaimathi) for you to play with. The nitrogen module is minimal enough that I won't feel bad for leaving it out, but the one above should work with your copy of nitrogen.
 
-It's actually just a minimally modified version of the default `index.erl` file that comes with the framework, the only interesting pieces in it are the `rpc:call` lines which demonstrate the **hands-down most interesting thing** about Erlang. The thing that justifies putting up with all the warts and annoyances<a name="note-Tue-May-15-222916EDT-2012"></a>[|19|](#foot-Tue-May-15-222916EDT-2012). I'll expand on that next time though, this was already more than enough stuff coming out of my mind.
+[^complete-code-doesnt-work-yet]: The complete code doesn't quite work yet either. Most of it does what it's supposed to, but I've already found [one odd case where things don't quite work](http://stackoverflow.com/questions/10604400/handling-timeouts-in-otp) the way they're supposed to. Tips and patches welcome.
 
-* * *
-##### Footnotes
+[^was-going-to-discuss-but-too-long]: Which I was actually going to discuss, but this has gone on quite long enough already.
 
-1 - <a name="foot-Tue-May-15-220424EDT-2012"></a>[|back|](#note-Tue-May-15-220424EDT-2012) - The complete file is 17111 lines, and we really only need about 800-1200 at the outside to generate a single specific barcode.
+It's actually just a minimally modified version of the default `index.erl` file that comes with the framework, the only interesting pieces in it are the `rpc:call` lines which demonstrate the **hands-down most interesting thing** about Erlang. The thing that justifies putting up with all the warts and annoyances[^at-least-until]. I'll expand on that next time though, this was already more than enough stuff coming out of my mind.
 
-2 - <a name="foot-Tue-May-15-220604EDT-2012"></a>[|back|](#note-Tue-May-15-220604EDT-2012) - Incidentally, I didn't do this first. I sort of wish I had in retrospect, because it would have saved me some dicking around with `erl`, but I actually wrote the code first, then wrote the above based on it. Also incidentally, a lot of it doesn't seem like much of it will change on a project-by-project basis. That tells me that we're either working with the wrong abstractions, or there are tricky things you can do at this stage that I haven't yet grasped. It also tells me that I should probably write some generation scripts for it.
-
-3 - <a name="foot-Tue-May-15-220658EDT-2012"></a>[|back|](#note-Tue-May-15-220658EDT-2012) - `one_for_all` and `rest_for_one` are other [possible strategies](http://www.erlang.org/doc/design_principles/sup_princ.html#strategy), `_all` restarts all child processes rather than just the one that errored, and `rest_` just restarts processes later in the start order.
-
-4 - <a name="foot-Tue-May-15-220712EDT-2012"></a>[|back|](#note-Tue-May-15-220712EDT-2012) - Which means they get restarted when they error, *and* hang around after they've finished their work.
-
-5 - <a name="foot-Tue-May-15-220719EDT-2012"></a>[|back|](#note-Tue-May-15-220719EDT-2012) - Which means that we have a pretty shallow supervision tree in this case, but we really don't need more.
-
-6 - <a name="foot-Tue-May-15-220847EDT-2012"></a>[|back|](#note-Tue-May-15-220847EDT-2012) - Routines that do general operations for a particular class of barcode, such as linear or matrix.
-
-7 - <a name="foot-Tue-May-15-220854EDT-2012"></a>[|back|](#note-Tue-May-15-220854EDT-2012) - Routines that do the job of converting a specific piece of data into a particular type of barcode, such as qrcode, code93 or datamatrix.
-
-8 - <a name="foot-Tue-May-15-221005EDT-2012"></a>[|back|](#note-Tue-May-15-221005EDT-2012) - `renderer`s, required `encoder`s and suggested `encoders`.
-
-9 - <a name="foot-Tue-May-15-221009EDT-2012"></a>[|back|](#note-Tue-May-15-221009EDT-2012) - Some, like datamatrix and qrcode, can handle almost arbitrary string information, while others are restricted to a subset of ascii, and others require a specific number of numeric characters.
-
-10 - <a name="foot-Tue-May-15-221156EDT-2012"></a>[|back|](#note-Tue-May-15-221156EDT-2012) - As an aside here, that's one of the things that really rustles my jimmies about Erlang. I've gotten extremely used to including a pretty extensive documentation string with each Common Lisp function and method, knowing that a potential user will be able to make full use of any `describe` calls they make. It's actually even better for methods, since you get the documentation for the `generic` you define, as well as a compilation of all doc-strings for the related `defmethod` calls. Erlang isn't having any of this shit. If you want to include doc-strings, you can damn well write Java-style precisely formatted comments and use a separate doc extractor to read them. I guess this is how most languages do it? It still seems stupid to have a system this dynamic that *doesn't* allow runtime documentation pokes. Sigh. Ok, let's get back to it.
-
-11 - <a name="foot-Tue-May-15-221255EDT-2012"></a>[|back|](#note-Tue-May-15-221255EDT-2012) - Which, granted, isn't really worth saving given how blazingly fast ETS is, but still.
-
-12 - <a name="foot-Tue-May-15-221415EDT-2012"></a>[|back|](#note-Tue-May-15-221415EDT-2012) - The only difference being that `handle_cast` doesn't send a response message to its caller.
-
-13 - <a name="foot-Tue-May-15-221432EDT-2012"></a>[|back|](#note-Tue-May-15-221432EDT-2012) - Which we'll use later to give the user something to do about them.
-
-14 - <a name="foot-Tue-May-15-221657EDT-2012"></a>[|back|](#note-Tue-May-15-221657EDT-2012) - Specifically, since I'm using the Imagemagick API, the PS that it outputs is actually rasterised. That means it'll be much larger than the initial file and take that much longer to output. Literally the only advantage to it is that it properly sets the width and height of the document.
-
-15 - <a name="foot-Tue-May-15-222057EDT-2012"></a>[|back|](#note-Tue-May-15-222057EDT-2012) - Note that I do export `help/0`, `help/1`, `write/3` and `write/5` separately.
-
-16 - <a name="foot-Tue-May-15-222251EDT-2012"></a>[|back|](#note-Tue-May-15-222251EDT-2012) - Which, again, really should be expecting a naked string response rather than a raw ETS lookup record.
-
-17 - <a name="foot-Tue-May-15-222809EDT-2012"></a>[|back|](#note-Tue-May-15-222809EDT-2012) - The complete code doesn't quite work yet either. Most of it does what it's supposed to, but I've already found [one odd case where things don't quite work](http://stackoverflow.com/questions/10604400/handling-timeouts-in-otp) the way they're supposed to. Tips and patches welcome.
-
-18 - <a name="foot-Tue-May-15-222815EDT-2012"></a>[|back|](#note-Tue-May-15-222815EDT-2012) - Which I was actually going to discuss, but this has gone on quite long enough already.
-
-19 - <a name="foot-Tue-May-15-222916EDT-2012"></a>[|back|](#note-Tue-May-15-222916EDT-2012) - At least, until I learn enough about it to put together an analogous system in Common Lisp :P
+[^at-least-until]: At least, until I learn enough about it to put together an analogous system in Common Lisp :P

@@ -81,7 +81,6 @@
 ### Smalltalk
 
 - [Pharo](http://www.pharo-project.org/home)
-- [Coral - Scripting with Pharo](http://rmod.lille.inria.fr/coral/index.html)
 - [Pharo By Example](http://pharobyexample.org/)
 - [Pharo CollaborActive Book](http://book.pharo-project.org/book/table-of-contents/?_s=GaoutvL8fOIi-wBt&_k=dffRK647Ld0GiAwR&_n&6)
 - [Seaside Web Framework](http://www.seaside.st/)

@@ -1,12 +1,12 @@
 I need to vent, so just ignore this article.
 
-[Your](http://stackoverflow.com/questions/10381438/lisp-removing-an-element-from-a-list-with-nested-lists) formatting [makes](http://stackoverflow.com/questions/10220939/clisp-reversing-a-simple-list) me [want](http://stackoverflow.com/questions/10368407/emacs-syntax-highlighting-of-nested-regular-expressions) to [puke](http://stackoverflow.com/questions/10304726/how-would-one-merge-two-strings-that-are-ordered-alphabetically-in-lisp-using-re).
+**[Your](http://stackoverflow.com/questions/10381438/lisp-removing-an-element-from-a-list-with-nested-lists) formatting [makes](http://stackoverflow.com/questions/10220939/clisp-reversing-a-simple-list) me [want](http://stackoverflow.com/questions/10368407/emacs-syntax-highlighting-of-nested-regular-expressions) to [puke](http://stackoverflow.com/questions/10304726/how-would-one-merge-two-strings-that-are-ordered-alphabetically-in-lisp-using-re).**
 
 For fuck's sake, when I ask questions about JavaScript or C, I don't bust out
 
 ```javascript
-lorem ipsum(dolor, sit) { 
-    amet = consectetur(); 
+lorem ipsum(dolor, sit) {
+    amet = consectetur();
     adipiscing (elit) {
         Nulla_quis_purus = ac;
         arcu = consequat(consectetur(vitae(convallis,lacus)));}

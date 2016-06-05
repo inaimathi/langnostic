@@ -75,9 +75,9 @@
 {"id":74,"title":"StrifeBarge Update and My Secure Misconceptions","file":"strifebarge-update-and-my-secure-misconceptions","edited":1401312657,"posted":1330750800,"tags":["security","hunchentoot","common-lisp","almost-literate-programming"]}
 {"id":75,"title":"Quick Coffee","file":"quick-coffee","edited":1401312430,"posted":1331182800,"tags":["javascript","coffee-script"]}
 {"id":76,"title":"cl-smtp vs Exchange server","file":"cl-smtp-vs-exchange-server","edited":1401319504,"posted":1334635200,"tags":["common-lisp","cl-smtp"]}
-{"id":77,"title":"Notes From the Borders of Erlang","file":"erlang-notes","edited":1401033531,"posted":1335672000,"tags":["notes","ffi","erlang","c"]}
+{"id":77,"title":"Notes From the Borders of Erlang","file":"notes-from-the-borders-of-erlang","edited":1401033531,"posted":1335672000,"tags":["notes","ffi","erlang","c"]}
 {"id":78,"title":"Indentation Ventilation","file":"indentation-ventilation","edited":1401033531,"posted":1335758400,"tags":["lisp","indentation","common-lisp"]}
-{"id":79,"title":"Hot Erlang Code","file":"erlang-barcode-generation","edited":1401311284,"posted":1336449600,"tags":["nitrogen","almost-literate-programming","erlang"]}
+{"id":79,"title":"Hot Erlang Code","file":"hot-erlang-code","edited":1401311284,"posted":1336449600,"tags":["nitrogen","almost-literate-programming","erlang"]}
 {"id":80,"title":"Please Don't Listen to Jeff Atwood","file":"please-dont-listen-to-jeff-atwood","edited":1401311513,"posted":1337227200,"tags":["response","idea-peeling"]}
 {"id":81,"title":"Assumptions","file":"assumptions","edited":1401311742,"posted":1337832000,"tags":["speculation","languages","idea-peeling","erlang"]}
 {"id":82,"title":"Boring Update","file":"another-update","edited":1401312388,"posted":1338004800,"tags":["ruby","make","languages","idea-peeling","erlang"]}
