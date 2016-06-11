@@ -33,7 +33,9 @@ deploy-client-b:
 ssh:
         ssh [user]@[server]```
 
-That saved me about 40 lines when compared to the Ruby script that used to do the same job<a name="note-Sat-May-26-230305EDT-2012"></a>[|1|](#foot-Sat-May-26-230305EDT-2012). Granted, the `Makefile` makes me type out the `[user]@[server]` string twice, because `:` is otherwise interpreted as a control character and there's oddly no way to escape it, but that's an acceptable blemish given the overall line savings. Now that's not to say that `make` is more elegant than `Ruby`, just that it's a lot more specialized for the task. Most of the chaff from those 56 lines was doing command-line parsing and some declarations, which again hints that command line argument parsing is a hack.
+That saved me about 40 lines when compared to the Ruby script that used to do the same job[^wc-l-says]. Granted, the `Makefile` makes me type out the `[user]@[server]` string twice, because `:` is otherwise interpreted as a control character and there's oddly no way to escape it, but that's an acceptable blemish given the overall line savings. Now that's not to say that `make` is more elegant than `Ruby`, just that it's a lot more specialized for the task. Most of the chaff from those 56 lines was doing command-line parsing and some declarations, which again hints that [command line argument parsing is a hack](/posts/the-lisp-shell-followup).
+
+[^wc-l-says]: `wc -l` says `deploy.rb` was 56, while the actual `Makefile` clocks in at 20.
 
 The other advantage of the `Makefile` is that using it gives me meaningful completions at the command line. In the above, if I tabbed on `make`, it would give me the different tasks as potential entries
 
@@ -49,7 +51,8 @@ That's going to get more convenient the more clients we start supporting. I'm no
 I had a fit of OCD the other day, and decided to finally organize my music library to prevent my phone from reporting
 
 ```
-Unknown Artist -- 178 songs```
+Unknown Artist -- 178 songs
+```
 
 instead of correctly sorted collections. I did reach for Ruby here, and two scripts turned out to be particularly useful
 
@@ -76,7 +79,9 @@ ARGV.each do |target|
       `vorbiscomment -t 'ARTIST=#{artist}' -t 'TITLE=#{file.strip_song.naive_title_case}' -w #{file}`
     end
   end
-end```
+end
+```
+
 
 ```ruby
 #!/usr/bin/ruby
@@ -102,24 +107,18 @@ end
 
 ARGV.each do |target|
   File.rename(target, rename(target))
-end```
+end
+```
 
-The first one is a very thin wrapper around <a name="note-Sat-May-26-230331EDT-2012"></a>[|2|](http://linuxcommand.org/man_pages/vorbiscomment1.html">`vorbiscomment`</a> that lets me pass it more than one file at a time and uses my idiosyncratic file storage/naming conventions to infer the title and "artist"[](#foot-Sat-May-26-230331EDT-2012) of the piece. The second one is just a simple regex application script which lets me format many files at once without going through the mind numbing tedium of one `mv` call per file<a name="note-Sat-May-26-230349EDT-2012)[|3|](#foot-Sat-May-26-230349EDT-2012).
+The first one is a very thin wrapper around [`vorbiscomment`](http://linuxcommand.org/man_pages/vorbiscomment1.html) that lets me pass it more than one file at a time and uses my idiosyncratic file storage/naming conventions to infer the title and "artist"[^define-artist-in-this-context] of the piece. The second one is just a simple regex application script which lets me format many files at once without going through the mind numbing tedium of one `mv` call per file[^incidentally-you-see-what-i-mean].
+
+[^define-artist-in-this-context]: "Artist" is in quotes because I actually use it to group playlists, rather than Artists in the usual sense.
+[^incidentally-you-see-what-i-mean]: Incidentally, you can see what I mean when I call script arguments a hack, right? More than half of each of those scripts is taken up by a huge, verbose, un-abstractable block whose entire reason for existence is making up for the fact that I'm writing a function that I want to be command-line accessible.
 
 What I listen to these days is actually slightly embarrassing. A little while ago, I was working with some friends, obviously enjoying [some](http://www.youtube.com/watch?v=W_utdISM3uk) [tunes](http://www.youtube.com/watch?v=hnCw1zXtaLs) on my headphones, and pretty much froze when one of them passed a speaker wire. I'm not even sure why; we've been friends for a pretty fucking long time at this point, and I knew that *musical preferences* would not be the thing to finally drive us apart, but I still hesitated at listening to [some of this shit](http://www.youtube.com/watch?v=cP0f5rvVkAU) *with another human being*.
 
 Not at all sure where that comes from. I guess it's that I used to be a [rocker](http://en.wikipedia.org/wiki/Nirvana_(band)) [back](http://www.pearljam.com/) in the [day](http://en.wikipedia.org/wiki/Green_Day). The last time I actually bought a related album was [back in 2007](http://toolshed.down.net/lyrics/10kdayslyrics.php). Looking at my current, newly-organized library, it's split about half and half between [pony](http://www.youtube.com/watch?v=YsFQ5gUoS0Y)/[videogame](http://www.youtube.com/watch?v=orpimUSiK8I&ob=av3e) related electronica and [classical](http://www.amazon.com/Essential-Yo-Yo-Ma/dp/B00136Q5XQ) of [some](http://www.youtube.com/watch?v=v7cAd9MXRMg) sort, but I honestly didn't notice the change taking place. I'm not even sure if rock is a thing in general anymore, but it's definitely not a thing I listen to. And I guess I wasn't sure whether my friends knew that yet, since we don't tend to talk about it.
 
-It's really odd how the peripheral pieces of my identity are the ones that cause me the most concern. I remember admitting to myself that I was really a programmer/illustrator and not a Graphic Designer, and that didn't have much of an impact on how I behaved. The little things<a name="note-Sat-May-26-233125EDT-2012"></a>[|4|](#foot-Sat-May-26-233125EDT-2012) seem to perturb me a lot more when I notice them. Maybe it has to do with the fact that they tend to change while I'm not paying attention, rather than being an effort of conscious will...
+It's really odd how the peripheral pieces of my identity are the ones that cause me the most concern. I remember admitting to myself that I was really a programmer/illustrator and not a Graphic Designer, and that didn't have much of an impact on how I behaved. The little things[^examples-of-little-things] seem to perturb me a lot more when I notice them. Maybe it has to do with the fact that they tend to change while I'm not paying attention, rather than being an effort of conscious will...
 
-
-* * *
-##### Footnotes
-
-1 - <a name="foot-Sat-May-26-230305EDT-2012"></a>[|back|](#note-Sat-May-26-230305EDT-2012) - `wc -l` says `deploy.rb` was 56, while the actual `Makefile` clocks in at 20.
-
-2 - <a name="foot-Sat-May-26-230331EDT-2012"></a>[|back|](#note-Sat-May-26-230331EDT-2012) - "Artist" is in quotes because I actually use it to group playlists, rather than Artists in the usual sense.
-
-3 - <a name="foot-Sat-May-26-230349EDT-2012"></a>[|back|](#note-Sat-May-26-230349EDT-2012) - Incidentally, you can see what I mean when I call script arguments a hack, right? More than half of each of those scripts is taken up by a huge, verbose, un-abstractable block whose entire reason for existence is making up for the fact that I'm writing a function that I want to be command-line accessible.
-
-4 - <a name="foot-Sat-May-26-233125EDT-2012"></a>[|back|](#note-Sat-May-26-233125EDT-2012) - How I dress, what I listen to and watch, how I wear my hair.
+[^examples-of-little-things]: How I dress, what I listen to and watch, how I wear my hair.
