@@ -189,7 +189,7 @@
 {"id":188,"title":"Briefly, Async Completions with CodeMirror","file":"briefly-async-completions-with-code-mirror","edited":1407673374,"posted":1407673376,"tags":["cl-notebook","common-lisp","javascript"]}
 {"id":189,"title":"S-expression Navigation","file":"s-expression-navigation","edited":1408052253,"posted":1408052665,"tags":["cl-notebook","common-lisp","javascript"]}
 {"id":190,"title":"Brian's Brain","file":"brians-brain","edited":1408246665,"posted":1408246668,"tags":["almost-literate-programming","code-retreat-notes","haskell"]}
-{"id":191,"title":"BGG Data Sifting","file":"BGG Data Sifting","edited":1409496798,"posted":1409605194,"tags":["cl-notebook","almost-literate-programming","databases","logic-programming","common-lisp"]}
+{"id":191,"title":"BGG Data Sifting","file":"bgg-data-sifting","edited":1409496798,"posted":1409605194,"tags":["cl-notebook","almost-literate-programming","databases","logic-programming","common-lisp"]}
 {"id":192,"title":"Usual Sick Schtick","file":"usual-sick-schtick","edited":1411186419,"posted":1411186792,"tags":["common-lisp","journal","bitching","cl-notebook"]}
 {"id":193,"title":"Killing Ideas","file":"killing-ideas","edited":1411231138,"posted":1411236934,"tags":["general-programming-thoughts","idea-peeling"]}
 {"id":194,"title":"Langton's Ant","file":"langtons-ant-writeup","edited":1411237255,"posted":1411237310,"tags":["haste","html","haskell","code-retreat-notes"]}

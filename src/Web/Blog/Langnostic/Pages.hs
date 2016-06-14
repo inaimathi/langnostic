@@ -20,7 +20,7 @@ import qualified Data.Text as Txt
 import Web.Blog.Langnostic.Posts (BlogPost)
 import qualified Web.Blog.Langnostic.Posts as P
 
-data Section = Blog | Archive | Links | Meta | Feed | Error deriving (Eq, Ord, Show)
+data Section = Blog | Archive | Links | Meta | TipJar | Feed | Error deriving (Eq, Ord, Show)
 
 archive :: [BlogPost] -> Html
 archive posts =
@@ -79,7 +79,7 @@ stylesheet url = link ! rel "stylesheet" ! href url ! type_ "text/css" ! media "
 navBar :: Section -> Html
 navBar s = div ! class_ "top-menu-container" $ do
              ul ! class_ "top-menu" $
-                forM_ [Blog, Archive, Links, Meta, Feed] (li . navItem s)
+                forM_ [Blog, Archive, Links, Meta, TipJar, Feed] (li . navItem s)
 
 navItem :: Section -> Section -> Html
 navItem s item

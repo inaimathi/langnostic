@@ -5,6 +5,8 @@ import Web.Spock.Safe
 import Network.Wai.Middleware.Static
 import Network.HTTP.Types
 
+import Data.List (sortBy)
+import Data.Function (on)
 import Data.Maybe
 import Data.Monoid (mconcat)
 import Control.Monad.Trans
@@ -27,6 +29,7 @@ serve port = do
         "static/content/intro.md"
        ,"static/content/links.md"
        ,"static/content/meta.md"
+       ,"static/content/tipjar.md"
        ,"static/content/404.md"
        ]
   runSpock port $ spockT id $ (appMiddleware >> handlers pm)
@@ -55,22 +58,34 @@ handlers pm = do
   get "links" $ do
                 pg <- liftIO $ bodyByPath pm "static/content/links.md"
                 html . toStrict . renderHtml $ Pages.template Links "Links" pg
+  get "tipjar" $ do
+                pg <- liftIO $ bodyByPath pm "static/content/tipjar.md"
+                html . toStrict . renderHtml $ Pages.template TipJar "TipJar" pg
   get "meta" $ do
                 pg <- liftIO $ bodyByPath pm "static/content/meta.md"
                 html . toStrict . renderHtml $ Pages.template Meta "Meta" pg
   get "feed" $ do
                 ps <- liftIO $ posts pm
-                html . toStrict . renderHtml $ atom ps
+                withBodies <- liftIO $ feedWithBody pm ps
+                html . toStrict . renderHtml $ atom withBodies
   get ("feed" <//> "atom") $ do
                 ps <- liftIO $ posts pm
-                html . toStrict . renderHtml $ atom ps
+                withBodies <- liftIO $ feedWithBody pm ps
+                html . toStrict . renderHtml $ atom withBodies
   get ("feed" <//> "atom" <//> var) $ \tag -> do
                 ps <- liftIO $ byTags pm [tag]
-                html . toStrict . renderHtml $ atom ps
+                withBodies <- liftIO $ feedWithBody pm ps
+                html . toStrict . renderHtml $ atom withBodies
   get ("feed" <//> "atom" <//> "by-tag" <//> var) $ \tag -> do
                 ps <- liftIO $ byTags pm [tag]
-                html . toStrict . renderHtml $ atom ps
+                withBodies <- liftIO $ feedWithBody pm ps
+                html . toStrict . renderHtml $ atom withBodies
   hookAny GET $ \url -> error404 pm
+
+feedWithBody :: PostMap -> [BlogPost] -> IO [(BlogPost, Html)]
+feedWithBody pm ps = do
+  bodies <- mapM (postBody pm) ps
+  return $ zip ps bodies
 
 error404 pm = do
   setStatus status404
