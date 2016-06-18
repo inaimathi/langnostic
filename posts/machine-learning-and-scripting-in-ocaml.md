@@ -9,6 +9,8 @@ During my downtime, I've _literally_ been eating, sleeping, working out, and spe
 
 ## Kicktracker and Machine Learning
 
+![First World Kickstarter Problems](https://raw.githubusercontent.com/Inaimathi/kicktracker/master/doc/firstworldproblems.jpg)
+
 [`kicktracker`](http://kicktracker.inaimathi.com/) feeds now include project thumbnail images, as well as blurbs. This makes it mildly easier for humans to scan through feeds, and sift out the occasional nugget of gold from among the refuse.
 
 And that not-so-subtle point is exactly where machine learning comes in for my purposes. The probelm is, even with category and search terms being as restricted as they are on [my preferred feed](http://kicktracker.inaimathi.com/board-games), the signal-to-noise ratio is unacceptably low. What I'd really like, I think, is a recommendation engine. Which means taking one or more machine learning techniques, and applying them to the problems of
