@@ -52,7 +52,7 @@ let arg_list = Array.to_list Sys.argv
 ;;
 ```
 
-Recently, I got a new Android device, you see. And they no longer just `mount` up like regular external volumes. Now you've got to deal with the [`MTP` protocol](https://en.wikipedia.org/wiki/Media_Transfer_Protocol) in order to get files on or off of the device. there's a [suite of command-line tools](https://wiki.debian.org/mtp#Commandline) in Debian that make this possible, though not exactly easy. `mtp-sendfile` is the one that you'd use to put a file onto such a device. The main beef I've got with it is that I need to enter the name of the target file twice[^once-to], and I don't want to have to say it manually.
+Recently, I got a new Android device, you see. And they no longer just `mount` up like regular external volumes. Now you've got to deal with the [`MTP` protocol](https://en.wikipedia.org/wiki/Media_Transfer_Protocol) in order to get files on or off of the device. There's a [suite of command-line tools](https://wiki.debian.org/mtp#Commandline) in Debian that make this possible, though not exactly easy. `mtp-sendfile` is the one that you'd use to put a file onto such a device. The main beef I've got with it is that I need to enter the name of the target file twice[^once-to], and I don't want to have to say it manually.
 
 [^once-to]: Once to specify the local file, and again to specify what its name on the Android device will be. Every time I've done this so far, I've wanted the two to match. So there's an obvious way to simplify the situation.
 
