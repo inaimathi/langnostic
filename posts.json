@@ -84,8 +84,8 @@
 {"id":83,"title":"Authentication","file":"authentication","edited":1401311134,"posted":1339214400,"tags":["python","ffi","erlang","almost-literate-programming"]}
 {"id":84,"title":"Authentication Part Two","file":"authentication-part-two","edited":1401284280,"posted":1339387200,"tags":["idea-peeling"]}
 {"id":85,"title":"Fresh Install","file":"fresh-install","edited":1401310411,"posted":1339473600,"tags":["programming-environment"]}
-{"id":86,"title":"Authentication Part Three - RSA Basics","file":"rsa-crypto","edited":1401311981,"posted":1339646400,"tags":["speculation","security","python","idea-peeling"]}
-{"id":87,"title":"On Commanding Lines","file":"command-lining","edited":1401310380,"posted":1340078400,"tags":["shell","python","programming-environment"]}
+{"id":86,"title":"Authentication Part Three - RSA Basics","file":"authentication-part-three---rsa-basics","edited":1401311981,"posted":1339646400,"tags":["speculation","security","python","idea-peeling"]}
+{"id":87,"title":"On Commanding Lines","file":"on-commanding-lines","edited":1401310380,"posted":1340078400,"tags":["shell","python","programming-environment"]}
 {"id":88,"title":"Authentication Part Four - Logging into Websites with RSA Keys","file":"authentication-part4","edited":1401312443,"posted":1340337600,"tags":["python","idea-peeling","erlang","almost-literate-programming"]}
 {"id":89,"title":"Rebar Frustrations and LFE","file":"rebar","edited":1401033531,"posted":1340510400,"tags":["lisp","erlang","bitching"]}
 {"id":90,"title":"Not Building Erlang Apps","file":"not-building-erlang","edited":1401033531,"posted":1340856000,"tags":["erlang","bitching"]}
