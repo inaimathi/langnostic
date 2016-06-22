@@ -82,8 +82,8 @@
 {"id":81,"title":"Assumptions","file":"assumptions","edited":1401311742,"posted":1337832000,"tags":["speculation","languages","idea-peeling","erlang"]}
 {"id":82,"title":"Boring Update","file":"boring-update","edited":1401312388,"posted":1338004800,"tags":["ruby","make","languages","idea-peeling","erlang"]}
 {"id":83,"title":"Authentication","file":"authentication","edited":1401311134,"posted":1339214400,"tags":["python","ffi","erlang","almost-literate-programming"]}
-{"id":84,"title":"Authentication Part Two","file":"authentication-song","edited":1401284280,"posted":1339387200,"tags":["idea-peeling"]}
-{"id":85,"title":"Fresh Install","file":"fresh-system","edited":1401310411,"posted":1339473600,"tags":["programming-environment"]}
+{"id":84,"title":"Authentication Part Two","file":"authentication-part-two","edited":1401284280,"posted":1339387200,"tags":["idea-peeling"]}
+{"id":85,"title":"Fresh Install","file":"fresh-install","edited":1401310411,"posted":1339473600,"tags":["programming-environment"]}
 {"id":86,"title":"Authentication Part Three - RSA Basics","file":"rsa-crypto","edited":1401311981,"posted":1339646400,"tags":["speculation","security","python","idea-peeling"]}
 {"id":87,"title":"On Commanding Lines","file":"command-lining","edited":1401310380,"posted":1340078400,"tags":["shell","python","programming-environment"]}
 {"id":88,"title":"Authentication Part Four - Logging into Websites with RSA Keys","file":"authentication-part4","edited":1401312443,"posted":1340337600,"tags":["python","idea-peeling","erlang","almost-literate-programming"]}

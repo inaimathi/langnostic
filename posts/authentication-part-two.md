@@ -12,7 +12,6 @@
 > If you wish real security
 > Use RSA to guarantee it...
 
-
 ![Willie Wonka looking at you](/static/img/wonka.jpg)
 
 Ok, that's quite enough of that. There are reasons I don't consider myself a writer, and bullshit like this is right up there.
@@ -21,7 +20,7 @@ I've spent the last couple of days doing some quick research on RSA-based, auth 
 
 Reading material on the subject includes one [pretty good statement of the problem](http://www.phoenix-web.us/compinfo/pubkey/index.html), one [Enterprise implementation of a similar system](http://germany.rsa.com/node.aspx?id=3663), an article [musing idly on the possibility](http://neverfear.org/blog/view/3/Secure_website_authentication_using_GPG_keys), and [one or two](http://webmasters.stackexchange.com/questions/28691/using-public-key-authentication-for-websites) people wondering the same thing as me: why aren't we already doing this?
 
-At the high-level, there's two ways of doing this (which could, and probably should, be combined):
+At the high-level, there's two ways of implementing it (which could, and probably should, be combined):
 
 ## Prove that you can read this
 
@@ -33,13 +32,13 @@ At the high-level, there's two ways of doing this (which could, and probably sho
 
 ## Prove that you can sign this
 
-1. The server sends the user a random ~64 code
+1. The server sends the user a random ~64 byte code
 2. The user signs that plain-text and sends the result back
 3. The server verifies that what it got matches the plain-text from step one, and was signed by the user trying to log in
       - If it does and it was, that code is revoked and the user is given access.
       - If it doesn't or it wasn't, boot the fucker *(and probably make a note of the break-in attempt)*
 
-Like I said, you could combine them at low effort, though I'm not actually sure it would add any kind of security boost over one-or-the-other. The trouble, I assume, is the UI; the simplest possible way to implement this system involves some pretty odd (odd for the average computer user on the interwebs today) steps for the user.
+Like I said, you could combine them at low effort, though I'm not actually sure it would add any kind of security boost over one-or-the-other. The trouble, I assume, is the UI; the simplest possible way to implement this system involves some pretty odd steps for the user.
 
 First, logging in becomes a minimum two-step process. Three, really, if you count decrypting/signing as a step. Because the server needs to know who you're trying to log in as *before* generating and sending your code, you can't identify yourself and send the answer at the same time the way you can with password systems. You need one, *then* the other.
 
@@ -50,9 +49,9 @@ Third, the user is now effectively tied down to a single computer for their brow
 
 The [forever hack](http://www.codinghorror.com/blog/2007/05/phishing-the-forever-hack.html) still works, and will continue doing so ... well, forever, but we do gain some real advantages by using public key auth rather than passwords.
 
-1.   No one can sniff your key
-2.   Brute-forcing a key is much harder than brute-forcing a password
-3.   You don't need to remember passwords (other than the one that encrypts your key)
+1. No one can sniff your key
+2. Brute-forcing a key is much harder than brute-forcing a password
+3. You don't need to remember passwords, other than the one that encrypts your key
 
 In other words, if we could solve that UI problem in a semi-automated way, this would be an altogether better way of doing web authentication.
 
@@ -60,14 +59,12 @@ In other words, if we could solve that UI problem in a semi-automated way, this 
 
 I actually intend to build this, because having such a system would be a good thing from my perspective personally, as well as for web security in general. If no one's done it before, I guess I may as well take a crack at it. The steps are already outlined above
 
-
-1.   [client] requests page requiring auth
-2.   [server] asks for a user name/identifier
-3.   [client] enters user name/identifier
-4.   [server] sends encrypted string, records it, expects signed plain-text
-5.   [client] decrypts, signs string, sends it back
-6.   [server] compares with what was recorded in 3, authenticates or boots based on comparison
-
+1. `[client]` requests page requiring auth
+2. `[server]` asks for a user name/identifier
+3. `[client]` enters user name/identifier
+4. `[server]` sends encrypted string, records it, expects signed plain-text
+5. `[client]` decrypts, signs string, sends it back
+6. `[server]` compares with what was recorded in 3, authenticates or boots based on comparison
 
 Step 5 can potentially be handled by a browser plugin. Something that would look for an RSA-auth form, and do the right thing. Either by tracking your auth keys itself, or by calling out to OpenSSH or similar on the client side. The server-side actually looks pretty simple, and needs minimal changes from the auth system we put together last time. Really, we'd just need to store a users' public key instead of (or in addition to) their password, and use the Erlang `crypto:rsa_*/\d` functions to process the specified messages.
 
