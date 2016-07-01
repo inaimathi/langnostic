@@ -7,8 +7,7 @@
 
 ## ToDo
 
-- Revisit old blogs. NOW AT: `id:86`
-- Post 66 (passing-notes.md) has a missing image. I think that used to be a pic of skeptical Fry. See if you can grab it from the blogspot blog.
+- Revisit old blogs. NOW AT: `id:93`
 
 - Re-factor project into something sane
 	- Write utility functions for some of the stuff rom `Server.hs`

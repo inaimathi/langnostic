@@ -14,7 +14,7 @@ I've already written a bit about [**wicd-curses**](http://manpages.ubuntu.com/ma
 
 [**acpi**](http://wiki.debian.org/ACPI) does quite a few things relating to cooling, power, and battery. Really, I just use it as the replacement for the gnome/xfce battery widget.
 
-[**screen**](http://www.gnu.org/software/screen/) is something I've been using forever. My first time firing it up was to [deploy a Hunchentoot application](http://stackoverflow.com/a/514625/190887). Since then, I've used it as a way of managing multiple terminals, and kicked its tires as a [full-on window manager](http://langnostic.blogspot.ca/2011/10/screen-for-stumpwm-users-gnu-screen-as.html).
+[**screen**](http://www.gnu.org/software/screen/) is something I've been using forever. My first time firing it up was to [deploy a Hunchentoot application](http://stackoverflow.com/a/514625/190887). Since then, I've used it as a way of managing multiple terminals, and kicked its tires as a [full-on window manager](http://localhost:4444/posts/screen-for-stumpwm-xmonad-users-gnu-screen-as-a-window-manager).
 
 [**mplayer**](http://www.mplayerhq.hu/design7/news.html) is another piece that I've been using for a long time. Even while bumping around GNOME, I preferred this to [VLC](http://www.videolan.org/vlc/index.html) (YMMV). It's worth a read through the documentation if you're having a slow day; the program does various crazy things in addition to music/video playback, including bitmap frame outputs, format conversion and some timeline-based edits.
 

@@ -197,7 +197,7 @@ Sending your friends messages that your parents can't read is nice, but if they 
 
 Get an image, like this one
 
-[image]
+![A picture of Fry looking skeptical](/static/img/not-sure-if-secret.jpg)
 
 encrypt your message, and then run
 

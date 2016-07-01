@@ -40,15 +40,6 @@ atomPost (b, body) = concat [ "<entry>"
                     , "</entry>"
                     ]
 
--- (defn escape-html
---   "Change special characters into HTML character entities."
---   [text]
---   (.. #^String (as-str text)
---     (replace "&" "&amp;")
---     (replace "<" "&lt;")
---     (replace ">" "&gt;")
---     (replace "\"" "&quot;")))
-
 escapeHtml [] = []
 escapeHtml ('&':rest) = "&amp;" ++ escapeHtml rest
 escapeHtml ('<':rest) = "&lt;" ++ escapeHtml rest

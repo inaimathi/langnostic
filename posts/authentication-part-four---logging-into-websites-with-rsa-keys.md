@@ -18,6 +18,7 @@
 > Authentication
 > Authentication
 > Authentication
+>
 > Authenticatiooooooooooon!
 
 ![](/static/img/imaginationland-guy.jpg)
@@ -184,9 +185,25 @@ handle_call({new_key, UserId, Pubkey}, _From, State) ->
     {reply, Res, State}.
 ```
 
-That's essentially the entire external API for this style of authentication<a name="note-Sat-Jun-23-012959EDT-2012"></a>[|1|](#foot-Sat-Jun-23-012959EDT-2012).
+That's essentially the entire external API for this style of authentication[^not-entirely-true].
 
-The exported functions are self-explanatory, so lets focus in on the `handle_call/3` clauses. I mentioned <a name="note-Sat-Jun-23-013539EDT-2012"></a>[|2|](http://langnostic.blogspot.ca/2012/06/authentication-part-three-rsa-basics.html">last week</a> that Erlang's own `crypto` functions don't provide a way to generate keys, and were having trouble importing any RSA 4096 keypairs I tried to work with, pretty much regardless of source. So I decided to call out to python for the actual encryption (more on that later). `gen_secret` needs to be accompanied by a `UserId`[](#foot-Sat-Jun-23-013539EDT-2012) and an `IP`<a name="note-Sat-Jun-23-013544EDT-2012)[|3|](#foot-Sat-Jun-23-013544EDT-2012). The output is a random string, encrypted with the key of the given user, and associated with the given IP (if we wanted bi-directional authentication, we'd also have the server sign it and send the signature along).
+[^not-entirely-true]: Ok, that's not true; we're missing two pieces, both critical in practice but borderline irrelevant for the theory.
+
+    The first one is **bi-directional authentication**. That would be pretty simple to implement from our perspective; all we'd need to do is sign the secret as it's being sent out. Doing so would let our user verify that they're talking to the server they expect rather than an eavesdropper or phisher. This overlaps slightly with SSL, but doesn't prevent a site from using both, and is so straightforward if you're already using this model that you may as well.
+
+    The second one is a way to **revoke keys**. That's more or less an open problem. For the purposes of this project, anyway. We could do something like hand our users a revocation phrase, or we could ask them to generate a second keypair which would be used to send a revocation message, or we could handle this through a second channel (which we should probably implement in any case, if we're serious about security). That second method sounds more secure, but really just recurses on the problem; what happens if your revocation key gets compromised? And how do you expect a user to store them?
+
+    Assigning a pass-phrase might seem like it's defeating the purpose, but remember that this one only comes out when you need to change keys (rather than at every login), and that lets us get a bit fancier with the sort of infrastructure we want to provide for it. For instance, I could imagine a provider mailing out actual plastic cards that people could stash in their wallets.
+
+    The third option is a lot more interesting, but I intend to write a piece on that by itself, so I won't much more time on it today. Sufficed to say that redundancy and isolation are key to build reliable systems, as Erlang has clearly demonstrated. And if you want a reliable channel for authentication, you really need to make it multiple independent channels. Slightly more annoying for your users, but exponentially more annoying for anyone trying to impersonate them.
+
+    Anyway, that's all beyond the scope of this piece, so I'm going to tactfully ignore it for the rest of the night.
+
+The exported functions are self-explanatory, so lets focus in on the `handle_call/3` clauses. I mentioned [last week](/posts/authentication-part-three---rsa-basics) that Erlang's own `crypto` functions don't provide a way to generate keys, and were having trouble importing any RSA 4096 keypairs I tried to work with, pretty much regardless of source. So I decided to call out to python for the actual encryption (more on that later). `gen_secret` needs to be accompanied by a `UserId`[^so-that-we-know] and an `IP`[^just-in-case]. The output is a random string, encrypted with the key of the given user, and associated with the given IP[^if-we-wanted-bidirectional].
+
+[^so-that-we-know]: So that we know whose key to encrypt the secret with.
+[^just-in-case]: Just as a security precaution against some types of sneakiness.
+[^if-we-wanted-bidirectional]: If we wanted bi-directional authentication, we'd also have the server sign it and send the signature along.
 
 `verify`ing a signature requires the same two pieces of information, as well as the `Sig`nature. We select the set of secrets on file for the given user coming from the given IP, select the appropriate key, and then try to verify against each available secret. Verification happens in python too. In fact, lets take a quick look at that Erlang-side verification steps before we move on to handling the `new_key` message.
 
@@ -211,7 +228,9 @@ old_secret_p(T) ->
     300 < (now_to_seconds(now()) - now_to_seconds(T)).
 ```
 
-That seems reasonably self-explanatory too<a name="note-Sat-Jun-23-013559EDT-2012"></a>[|4|](#foot-Sat-Jun-23-013559EDT-2012). We check whether a given secret is too old, revoking it without granting access if it is, then calling out to python for the actual verification step (coming soon, I promise). If it succeeds, we revoke it and grant access. Note that by the time we've gotten to this point, the keys have already been verified for a matching IP. Right, back to the last clause in `handle_call/3`
+That seems reasonably self-explanatory too[^except-that-erlang-doesnt]. We check whether a given secret is too old, revoking it without granting access if it is, then calling out to python for the actual verification step (coming soon). If it succeeds, we revoke it and grant access. Note that by the time we've gotten to this point, the keys have already been verified for a matching IP. Right, back to the last clause in `handle_call/3`
+
+[^except-that-erlang-doesnt]: Except that Erlang doesn't like the idea of durations for some reason, so I had to bring myself to write a comment.
 
 ```erlang
 handle_call({new_key, UserId, Pubkey}, _From, State) ->
@@ -228,7 +247,9 @@ handle_call({new_key, UserId, Pubkey}, _From, State) ->
     {reply, Res, State}.
 ```
 
-The process for storing a new key might take some explaining. We're expecting the *contents* of a PEM key file, rather than a file name because doing otherwise would force us to put this module on the same machine as the caller<a name="note-Sat-Jun-23-013621EDT-2012"></a>[|5|](#foot-Sat-Jun-23-013621EDT-2012). However, that raises a bit of a problem; M2Crypto can't import a pubkey from a string. It *can* do so for a keypair, but not if you don't have the private key on hand, which we won't. Ever. So what we need to do is create a temporary file somewhere, write the key out to it, then point M2Crypto at that to get the components back in a more digestible format. After that, it's just a matter of storing the key and cleaning up.
+The process for storing a new key might take some explaining. We're expecting the *contents* of a PEM key file, rather than a file name because doing otherwise would force us to put this module on the same machine as the caller[^dont-always-want]. However, that raises a bit of a problem; `M2Crypto` can't import a `pubkey` from a string. It *can* do so for a keypair, but not if you don't have the private key on hand, which we won't. Ever. So what we need to do is create a temporary file somewhere, write the key out to it, then point M2Crypto at that to get the components back in a more digestible format. After that, it's just a matter of storing the key and cleaning up.
+
+[^dont-always-want]: Which we wouldn't *necessarily* want to do, even if it didn't go against Erlang's grain.
 
 Ok, it's Python time
 
@@ -269,7 +290,7 @@ terminate(_Reason, State) -> State ! {self(), close}, ok.
 code_change(_OldVsn, State, _Extra) -> {ok, State}.
 ```
 
-```erlang
+```python
 from erlport import Port, Protocol, String
 import M2Crypto
 
@@ -366,11 +387,9 @@ Whew!
 
 That's the code down. The interaction, once you've registered and if you're going to be doing this manually, is
 
-
-1.   Input your name and request a secret
-1.   Copy the block of text the server sends you, and run the above signing script on it
-1.   Copy the result into the newly formed `textarea` and click `"Send Signed"`
-
+1. Input your name and request a secret
+2. Copy the block of text the server sends you, and run the above signing script on it
+3. Copy the result into the newly formed `textarea` and click `"Send Signed"`
 
 Assuming it was done correctly, you should then be logged in. The automatic version is going to have to wait for some sleep.
 
@@ -378,36 +397,12 @@ Assuming it was done correctly, you should then be logged in. The automatic vers
 
 I don't fucking know, something. Oh, wait, yeah it is. In three specific ways.
 
-
-- **Bi directional authentication**; If we implement that note I mentioned earlier, it lets you authenticate to your server and authenticate the server to you, without an intermediary<a name="note-Sat-Jun-23-013835EDT-2012"></a>[|6|](#foot-Sat-Jun-23-013835EDT-2012)
+- **Bi directional authentication**; If we implement that note I mentioned earlier, it lets you authenticate to your server and authenticate the server to you, without an intermediary[^ill-save-the-rant].
 - **No critical information is exchanged**; even if someone is watching your entire transaction, they never get enough information to impersonate you, whether you're dealing with SSL or not.
 - **No critical information is present on the server**; even if your service provider is an utter dumbass that keeps their user database in plaintext with a little note taped to it reading "Plz dont steals", you don't care. Unlike a password system, where your password is effectively as secure as the weakest service you use it on, your RSA key is as secure as your personal machine. Granted, that may still not be *very* secure, but it's a step up.
 
+[^ill-save-the-rant]: I'll save the rant about why having centralized signing authorities is stupid for when my eyelids aren't trying to sabotage me.
 
 I'm also convinced that once this is properly automated, it will be *easier* to deal with than password authentication from the user perspective, but I haven't built it yet, so I won't count that. I'm basing this conviction on the fact that I've stopped [using SSH with](http://paulkeck.com/ssh/)out [RSA keys](http://lani78.wordpress.com/2008/08/08/generate-a-ssh-key-and-disable-password-authentication-on-ubuntu-server/). I encourage you to try it if you haven't already.
 
 Ok, that's it. Automated version coming soon, and good night.
-
-* * *
-##### Footnotes
-
-1 - <a name="foot-Sat-Jun-23-012959EDT-2012"></a>[|back|](#note-Sat-Jun-23-012959EDT-2012) -  Ok, that's not true; we're missing two pieces, both critical in practice but borderline irrelevant for the theory.
-
-The first one is **bi-directional authentication**. That would be pretty simple to implement from our perspective; all we'd need to do is sign the secret as it's being sent out. Doing so would let our user verify that they're talking to the server they expect rather than an eavesdropper or phisher. This overlaps slightly with SSL, but doesn't prevent a site from using both, and is so straightforward if you're already using this model that you may as well.
-
-The second one is a way to **revoke keys**. That's more or less an open problem. For the purposes of this project, anyway. We could do something like hand our users a revocation phrase, or we could ask them to generate a second keypair which would be used to send a revocation message, or we could handle this through a second channel (which we should probably implement in any case, if we're serious about security). That second method sounds more secure, but really just recurses on the problem; what happens if your revocation key gets compromised? And how do you expect a user to store them?
-
-Assigning a pass-phrase might seem like it's defeating the purpose, but remember that this one only comes out when you need to change keys (rather than at every login), and that lets us get a bit fancier with the sort of infrastructure we want to provide for it. For instance, I could imagine a provider mailing out actual plastic cards that people could stash in their wallets.
-
-The third option is a lot more interesting, but I intend to write a piece on that by itself, so I won't much more time on it today. Sufficed to say that redundancy and isolation are key to build reliable systems, as Erlang has clearly demonstrated. And if you want a reliable channel for authentication, you really need to make it multiple independent channels. Slightly more annoying for your users, but exponentially more annoying for anyone trying to impersonate them.
-
-Anyway, that's all beyond the scope of this piece, so I'm going to tactfully ignore it for the rest of the night.
-
-2 - <a name="foot-Sat-Jun-23-013539EDT-2012"></a>[|back|](#note-Sat-Jun-23-013539EDT-2012) - So that we know whose key to encrypt the secret with.
-3 - <a name="foot-Sat-Jun-23-013544EDT-2012"></a>[|back|](#note-Sat-Jun-23-013544EDT-2012) - Just as a security precaution against some types of sneakiness.
-
-4 - <a name="foot-Sat-Jun-23-013559EDT-2012"></a>[|back|](#note-Sat-Jun-23-013559EDT-2012) - Except that Erlang doesn't like the idea of durations for some reason, so I had to bring myself to write a comment.
-
-5 - <a name="foot-Sat-Jun-23-013621EDT-2012"></a>[|back|](#note-Sat-Jun-23-013621EDT-2012) - Which we wouldn't *necessarily* want to do, even if it didn't go against Erlang's grain.
-
-6 - <a name="foot-Sat-Jun-23-013835EDT-2012"></a>[|back|](#note-Sat-Jun-23-013835EDT-2012) - I'll save the rant about why having centralized signing authorities is stupid for when my eyelids aren't trying to sabotage me.

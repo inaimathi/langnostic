@@ -1,27 +1,28 @@
 So I've spent the past few days playing around with various ways of building Erlang projects, and it's taken me from mild frustration to fuck-everything-about-this mode. Here is the synopsis of ways that you should not build an app, despite what you may have heard to the contrary.
 
-## rebar
+## `rebar`
 
-Like I said last time, every single tutorial that I've found so far has run me up against an error when the time comes to *actually generate a working system*. I've had [no help](http://stackoverflow.com/questions/11192466/rebar-generate-error) so far, and without that generation step, `rebar` is essentially a poor-man's `make` script fused with a poor-man's `[quickproject](https://github.com/xach/quickproject/)`-for-Erlang. This is true both of the build in [their repos](https://github.com/basho/rebar/), and of the one in [their downloads](https://github.com/basho/rebar/downloads).
+Like I said last time, every single tutorial that I've found so far has run me up against an error when the time comes to *actually generate a working system*. I've had [no help](http://stackoverflow.com/questions/11192466/rebar-generate-error) so far, and without that generation step, `rebar` is essentially a poor-man's `make` script fused with a poor-man's [`quickproject`](https://github.com/xach/quickproject/)-for-Erlang. This is true both of the build in [their repos](https://github.com/basho/rebar/), and of the one in [their downloads](https://github.com/basho/rebar/downloads).
 
 I'm not saying "it doesn't work", because I've successfully used the `rebar` application called [nitrogen](http://nitrogenproject.com/), I'm saying it has yet to work for me, despite the fact that I've tried following five separate pieces of allegedly correct documentation for it. It may work for you, but I'm not inclined to bet on it.
 
-## release_handler
+## `release_handler`
 
-If you take a look at what `rebar` is actually supposed to do, you'll find that a lot of it can be done from within a running Erlang process. [systools](http://www.erlang.org/doc/man/systools.html) and [release_handler](http://www.erlang.org/doc/man/release_handler.html) ostensibly help you put together a production build of your environment and deploy it. And the word "ostensibly" in that sentence should tell you how that went.
+If you take a look at what `rebar` is actually supposed to do, you'll find that a lot of it can be done from within a running Erlang process. [`systools`](http://www.erlang.org/doc/man/systools.html) and [`release_handler`](http://www.erlang.org/doc/man/release_handler.html) ostensibly help you put together a production build of your environment and deploy it. And the word "ostensibly" in that sentence should tell you how that went.
 
 Here's the process you're supposed to follow:
 
-1. arrange your project in the OTP style (with `src`, `ebin`, `priv` and `rel` directories at minimum, an `app` file in `src` to describe your application, and your compiled `beam`s all going into `ebin`)
+1. arrange your project in the OTP style _(with `src`, `ebin`, `priv` and `rel` directories at minimum, an `app` file in `src` to describe your application, and your compiled `beam`s all going into `ebin`)_
 2. compile your project
 3. create a `rel` file
-4. use `systools:make_script/2` to generate the `script` and `boot` files for local running (test <th></th>ose, if you like)
-5. create an `appup` file to tell Erlang what needs to change between some previous and this one
-6. use `systools:make_relup/3` to generate a `relup` file (this oddly requires an unpacked copy of both your previous version and this version; they both need to be named `<yourproject>.app`, so be prepared to do some directory trickery)
+4. use `systools:make_script/2` to generate the `script` and `boot` files for local running _(test those, if you like)_
+5. create an `appup` file to tell Erlang what needs to change between some previous deployment and this one
+6. use `systools:make_relup/3` to generate a `relup` file[^this-oddly-requires]
 7. use `systools:make_tar/1` to generate a `tar.gz` file of your entire project
-8. copy that tar file up to your server
+8. copy that `tar` file up to your server
 9. if this is your first release, just untar it and run `erl -boot releases/<release-name>/start`, otherwise use `release_handler:unpack_release/1`, `release_handler:install_release/1` and `release_handler:make_permanent/1` to perform a running upgrade
 
+[^this-oddly-requires]: This oddly requires an unpacked copy of both your previous version and this version; they both need to be named `<yourproject>.app`, so be prepared to do some directory trickery.
 
 This process gave me some trouble around steps 3, 5 and 6, and finally errored outright at step 9. The problem I was having with the earlier pieces all involved what I've come to think of as **The Erlang Bureaucracy**. That's when a piece of the process requires you, the human, to formally, manually and accurately type out a whole bunch of list-based information that the machine has access to. The `rel` file was a particularly annoying example. Here's what one looks like
 
@@ -40,7 +41,7 @@ It should also be named `example-1.1.rel`, in case you thought you had any choic
 {release,
    {"<application name>_rel", "<application version>"},
    {erts, "<erts version>"},
-   [<list of {appname, "version"} for each required application>]}
+   [{<appname>, "<version>"} for each required application]}
 ```
 
 and *every single* piece of information there can be automatically generated by an Erlang node that's already running your system. If you wanted to define a shortcut for yourself, you'd do it like so:
@@ -73,4 +74,4 @@ What ended up working was just copying my application folder up (minus the `src`
 
 `erl -pa ebin -pa include -eval 'lists:map(fun (App) -> application:load(App), application:start(App) end, [required_app1, required_app2, example]).'`
 
-It's simple, it's stupid, and it won't make it easy for me to upgrade later, but it worked, and that's more than I could say for the documented approaches. So that's that. I fucking give up. I'm sure someone out there would be shaking their head if they saw this, but "automatic" release management is not worth the kinds of headaches that this has been causing me. It seems like doing anything other than the simplest possible thing with the Erlang system forces you to keep track of all kind of semi-transparent, undocumented internal state which is improperly set by default. State Is Hard, at the best of times, so I'm going to go ahead and avoid it until I another masochistic urge to lose another six hours or so.
+It's simple, it's stupid, and it won't make it easy for me to upgrade later, but it worked, and that's more than I could say for the documented approaches. So that's that. I fucking give up. I'm sure someone out there would be shaking their head if they saw this, but "automatic" release management is not worth the kinds of headaches that this has been causing. It seems like doing anything other than the simplest possible thing with the Erlang ecosystem forces you to keep track of all kind of semi-transparent, undocumented internal state which is improperly set by default. State Is Hard, at the best of times, so I'm going to go ahead and avoid it until I another masochistic urge to lose another six hours or so.

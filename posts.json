@@ -49,7 +49,7 @@
 {"id":48,"title":"Kindle and Thoughts about Work","file":"kindle-and-thoughts-about-work","edited":1401284371,"posted":1310961600,"tags":["general-programming-thoughts"]}
 {"id":49,"title":"Joel Test Patch","file":"joel-test-patch","edited":1401033531,"posted":1311134400,"tags":["speculation","programming-interfaces","programming-environment","idea-peeling"]}
 {"id":50,"title":"Formlets and defclass","file":"formlets-and-defclass","edited":1401312283,"posted":1312257600,"tags":["php","common-lisp","clos"]}
-{"id":51,"title":"CL-Chan (a CLSQL and Hunchentoot crash course) - Part 1","file":"cl-chan-a-clsql-and-hunchentoot-crash-course","edited":1401311862,"posted":1314331200,"tags":["hunchentoot","common-lisp","clos","clsql"]}
+{"id":51,"title":"CL-Chan (a CLSQL and Hunchentoot crash course)","file":"cl-chan-a-clsql-and-hunchentoot-crash-course","edited":1401311862,"posted":1314331200,"tags":["hunchentoot","common-lisp","clos","clsql"]}
 {"id":52,"title":"Intermission","file":"intermission","edited":1401033531,"posted":1314676800,"tags":["speculation","javascript","idea-peeling","common-lisp","client-side"]}
 {"id":53,"title":"\"Mapping CLOS\", or \"Yak Shaving for Fun and No Profit\"","file":"mapping-clos-or-yak-shaving-for-fun-and-no-profit","edited":1401312466,"posted":1316836800,"tags":["common-lisp","clos"]}
 {"id":54,"title":"Old Machines Redux","file":"old-machines-redux","edited":1401324208,"posted":1317528000,"tags":["hardware"]}
@@ -86,12 +86,12 @@
 {"id":85,"title":"Fresh Install","file":"fresh-install","edited":1401310411,"posted":1339473600,"tags":["programming-environment"]}
 {"id":86,"title":"Authentication Part Three - RSA Basics","file":"authentication-part-three---rsa-basics","edited":1401311981,"posted":1339646400,"tags":["speculation","security","python","idea-peeling"]}
 {"id":87,"title":"On Commanding Lines","file":"on-commanding-lines","edited":1401310380,"posted":1340078400,"tags":["shell","python","programming-environment"]}
-{"id":88,"title":"Authentication Part Four - Logging into Websites with RSA Keys","file":"authentication-part4","edited":1401312443,"posted":1340337600,"tags":["python","idea-peeling","erlang","almost-literate-programming"]}
-{"id":89,"title":"Rebar Frustrations and LFE","file":"rebar","edited":1401033531,"posted":1340510400,"tags":["lisp","erlang","bitching"]}
-{"id":90,"title":"Not Building Erlang Apps","file":"not-building-erlang","edited":1401033531,"posted":1340856000,"tags":["erlang","bitching"]}
+{"id":88,"title":"Authentication Part Four - Logging into Websites with RSA Keys","file":"authentication-part-four---logging-into-websites-with-rsa-keys","edited":1401312443,"posted":1340337600,"tags":["python","idea-peeling","erlang","almost-literate-programming"]}
+{"id":89,"title":"Rebar Frustrations and LFE","file":"rebar-frustrations-and-lfe","edited":1401033531,"posted":1340510400,"tags":["lisp","erlang","bitching"]}
+{"id":90,"title":"Not Building Erlang","file":"not-building-erlang","edited":1401033531,"posted":1340856000,"tags":["erlang","bitching"]}
 {"id":91,"title":"Erlang From Scratch","file":"erlang-from-scratch","edited":1401033531,"posted":1341460800,"tags":["erlang"]}
-{"id":92,"title":"Authentication Part 4.5 - Not","file":"authentication-part4.5-authentication-not","edited":1401312401,"posted":1342238400,"tags":["speculation","security","idea-peeling"]}
-{"id":93,"title":"CL-Chan (a CLSQL and Hunchentoot crash course) - Part 2","file":"using-clsql-part2","edited":1401322220,"posted":1342411200,"tags":["common-lisp"]}
+{"id":92,"title":"Authentication Part 4.5 - Not","file":"authentication-part-4.5---not","edited":1401312401,"posted":1342238400,"tags":["speculation","security","idea-peeling"]}
+{"id":93,"title":"CL-Chan (a CLSQL and Hunchentoot crash course) - Part 2","file":"cl-chan-a-clsql-and-hunchentoot-crash-course---part-2","edited":1401322220,"posted":1342411200,"tags":["common-lisp"]}
 {"id":94,"title":"Indirect Reflections","file":"indirect-reflections","edited":1401033531,"posted":1343966400,"tags":["speculation","idea-peeling"]}
 {"id":95,"title":"Irritation","file":"irritations","edited":1401311575,"posted":1344139200,"tags":["syntax","languages","erlang","common-lisp","clos","bitching"]}
 {"id":96,"title":"Steven? I Disagree.","file":"i-disagree","edited":1401312596,"posted":1344657600,"tags":["response","idea-peeling","general-programming-thoughts"]}
@@ -232,3 +232,4 @@
 {"edited": 1464059306, "tags": ["journal"], "title": "Arbitrary Update 5892", "file": "arbitrary-update-5892", "id": 231, "posted": 1464059306}
 {"edited": 1466281770, "tags": ["journal", "ocaml", "machine-learning"], "title": "Machine Learning And Scripting In Ocaml", "file": "machine-learning-and-scripting-in-ocaml", "id": 232, "posted": 1466281667}
 {"edited": 1466479628, "tags": ["idea-peeling", "machine-learning", "notes", "speculation"], "title": "Brief Thoughts On Machine Learning", "file": "brief-thoughts-on-machine-learning", "id": 233, "posted": 1466479582}
+{"edited": 1467295451, "tags": ["hardware", "speculation", "programming-environment"], "title": "Purism", "file": "purism", "id": 234, "posted": 1467295451}
