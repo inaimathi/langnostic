@@ -42,7 +42,11 @@ I've got exactly four complaints;
 1. As noted earlier, this thing doesn't have an Ethernet port, which means I'm required to either use wifi, or get a [USB adapter](http://www.canadacomputers.com/index.php?cPath=1051)
 2. The trackpad is entierly too sensitive. I've accidentally teleported my cursor four times over the course of writing this article, which is way more than usual[^in-fact-emacs-addition].
 3. The trackpad doesn't allow two-finger scrolling out of the box.
-4. One side of the unit wasn't closed properly, causing the outer shell to portrude slightly on the underside. I had to open it up to re-seat it. That resolved my problem, but in the process, I noticed that four of the fastening screws cam stripped from the factory.
+4. One side of the unit wasn't closed properly, causing the outer shell to portrude slightly on the underside. I had to open it up to re-seat it. That resolved my problem, but in the process, I noticed that four of the fastening screws came stripped from the factory.
+
+> **EDIT:** But wait, there's more!
+>
+> 5. It turns out that the sound doesn't work out of the box. It's something to do with the priority of output devices. In order to fix it, I had to install `alsautils` through `apt-get`, then do the stuff mentioned over [here](https://bbs.archlinux.org/viewtopic.php?pid=1563375#p1563375). It worked like a charm thereafter, but it's kind of annoying having to do this.
 
 [^in-fact-emacs-addition]: In fact, its happened frequently enough that I've had to make a change to my `.emacs` file to compensate.
 
