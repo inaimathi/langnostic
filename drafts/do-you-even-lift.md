@@ -2,7 +2,7 @@ I've scrupulously been keeping this off the main blog, because I'm convinced tha
 
 ## Diet
 
-Lately[^as-in], I've been working out a fuck-ton more than usual. And watching my diet. Mostly with an aim for better nutritional input, with a minor focus on eliminating some of my digestive issues. Its incidentally been pushing me further and further towards a vegan diet. I still occasionally have sushi, and no one is taking the honey out of my tea[^although-to-be-fair] any time soon, but I've otherwise had no other animal or animal byproducts. And the past week in particular has been free even of those transgressions.
+Lately[^as-in], I've been working out a fuck-ton more than usual. And watching my diet. Mostly with an aim for better nutritional input, with a minor focus on eliminating some of my digestive issues. Its incidentally been pushing me further and further towards a vegan diet. I still occasionally have sushi, and no one is taking the honey out of my tea[^although-to-be-fair] any time soon, but I've otherwise had no animal or animal byproducts. And the past week in particular has been free even of those transgressions.
 
 [^as-in]: As in "for the past half-year or so", rather than just the usual week-long burst of activity.
 [^although-to-be-fair]: Although, to be fair, I've also been having steadily less tea as time goes on. So there's also that.
@@ -11,7 +11,7 @@ I still don't think I consider myself vegan, and wouldn't even if it weren't for
 
 [^moderately-because]: "Moderately" because it absolutely won't kill me to eat any quantity of cheese, but it just as absolutely _will_ make me feel bloated and give me various other short-term gastro-intestinal problems. This is something I'd prefer to avoid if I at all can. By the way, before you suggest it, [Lactease](TODO) and similar products do little if anything for me. I have lactose-intolerant friends and family that swear by them, so they may still work for _you_, but I haven't had enough payoff to actually recommend them to you myself.
 
-It was a predictably small step from that to just plain cutting out meat, and starting to get my protein from [various](TODO - red kidney), [readily](TODO - white kidney) and [cheaply](TODO - black bean) available [legumes](TODO - lentils). It absolutely helps that my primary is also vegan, so we don't have to pull any kind of culinary contortion to hit both diets.
+It was a predictably small step from that to just plain cutting out meat, and starting to get my protein from [various](TODO - red kidney), [readily](TODO - white kidney) and [cheaply](TODO - black bean) available [legumes](TODO - lentils). It absolutely helps that my primary is also vegan, so we don't have to pull any kind of culinary contortionism to hit both diets.
 
 I'm not sure which had a larger effect on my weight; the diet or the workout, but in combination, they absolutely help. I went from an obviously flabby 110 kg to a somewhat-muscular-but-still-kinda-flabby 86 kg. This also resulted in taking about two inches off my waist-line, and shrinking me to the point that previously tight shirts are now noticeably baggy around my mid-section. I'm very probably going to have to buy more clothes soon, but holding off because I'm convinced I can lose another five kilos or so, and put on enough muscle-mass that fit will become an issue again before I'm done.
 
