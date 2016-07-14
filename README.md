@@ -12,6 +12,6 @@
 - Re-factor project into something sane
 	- Write utility functions for some of the stuff rom `Server.hs`
 	- Do some more processing before caching articles
-	- Don't worry; plenty mode. Add to this list as you go.
+	- Don't worry; plenty more. Add to this list as you go.
 
 - `BGG Data Sifting` is MIA. All the cl-notebook articles have issues with the translation-from-markdown approach. `cl-notebook` obviously needs an export-to-markdown feature.
