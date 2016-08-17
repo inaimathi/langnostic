@@ -18,4 +18,4 @@ The [EFF](https://supporters.eff.org/donate), the [FSF](https://my.fsf.org/donat
 
 I use a couple of services that provide subscription bonuses.
 
-Specifically, [Digital Ocean](www.digitalocean.com/?refcode=445ca16e1a76) and [Ritual](http://invite.ritual.co/LEO4857). So if you're considering signing up for one or both, click [here](www.digitalocean.com/?refcode=445ca16e1a76) or [here](http://invite.ritual.co/LEO4857) to give both of us a free kick.
+Specifically, [Digital Ocean](http://www.digitalocean.com/?refcode=445ca16e1a76) and [Ritual](http://invite.ritual.co/LEO4857). So if you're considering signing up for one or both, click [here](http://www.digitalocean.com/?refcode=445ca16e1a76) or [here](http://invite.ritual.co/LEO4857) to give both of us a free kick.
