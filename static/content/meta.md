@@ -4,7 +4,7 @@
 
 I'm a "Graphic Designer" (graduated from [OCAD](http://www.ocadu.ca/) with a bachelor's) specializing in illustration and web development. Also, I like programming, and learning languages. Which is why I'm here.
 
-Currently, I'm working as a Ruby/Go developer as part of [500px](https://500px.com).
+Currently, I'm working as a freelance developer, mostly doing Clojure and Ruby work (in order of preference, rather than quantity, sadly).
 
 ## About This Site
 
