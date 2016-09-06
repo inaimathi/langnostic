@@ -7,8 +7,6 @@
 
 ## ToDo
 
-- Proper timestamps for the blog posts
-- Cache post contents (just do it in memory, for fucks' sake, it's only like 5 megs)
 - Start on the friggin' improvements
 
 - Revisit old blogs. NOW AT: `id:93`

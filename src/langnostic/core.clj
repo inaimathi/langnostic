@@ -5,7 +5,7 @@
             [clojure.java.io :as io]
 
             [langnostic.feed :as feed]
-            [langnostic.page :as pg]
+            [langnostic.pages :as pg]
             [langnostic.files :as fs])
   (:use [compojure.core :only [defroutes GET POST DELETE ANY context]])
   (:gen-class))
@@ -65,17 +65,17 @@
   (GET "/blog" [] home)
   (GET "/posts/:name" [name] (post name))
 
-  (GET "/archive" [] (archive pg/posts))
+  (GET "/archive" [] (archive (pg/all-posts)))
   (GET "/archive/by-tag/:tag" [tag] (archive (pg/find-by-tag tag)))
 
   (GET "/links" [] (static-page "links"))
   (GET "/tipjar" [] (static-page "tipjar"))
   (GET "/meta" [] (static-page "meta"))
 
-  (GET "/feed" [] (atom-feed pg/posts))
-  (GET "/feed/atom" [] (atom-feed pg/posts))
-  (GET "/feed/atom/:tag" [tag] (atom-feed (pg/find-by-tag pg/posts)))
-  (GET "/feed/atom/by-tag/:tag" [tag] (atom-feed (pg/find-by-tag pg/posts)))
+  (GET "/feed" [] (atom-feed (pg/all-posts)))
+  (GET "/feed/atom" [] (atom-feed (pg/all-posts)))
+  (GET "/feed/atom/:tag" [tag] (atom-feed (pg/find-by-tag (pg/all-posts))))
+  (GET "/feed/atom/by-tag/:tag" [tag] (atom-feed (pg/find-by-tag (pg/all-posts))))
 
   (route/resources "/static/")
   (route/not-found error-404))

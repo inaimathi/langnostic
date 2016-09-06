@@ -9,6 +9,7 @@
                  [compojure "1.5.1"]
                  [clj-time "0.12.0"]
                  [im.chit/hara.io.scheduler "2.3.6"]
+                 [clojure-watch "0.1.11"]
 
                  [cheshire "5.6.3"]
                  [markdown-clj "0.9.89"]

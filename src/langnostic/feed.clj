@@ -2,7 +2,7 @@
   (:require [hiccup.core :as hic]
             [hiccup.page :as pg]
 
-            [langnostic.page :as page]))
+            [langnostic.pages :as pages]))
 
 (defn atom-feed [posts]
   (str "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
@@ -18,5 +18,5 @@
                  [:updated (post :posted)]
                  [:link {:href (str "http://langnostic.inaimathi.ca/posts/" (post :file))}]
                  [:author [:name "inaimathi"]]
-                 [:content {:type "html"} (hic/h (post :content))]])
-              (take 10 (reverse (sort-by :posted posts))))])))
+                 [:content {:type "html"} (hic/h (pages/post-content post))]])
+              (take 20 (reverse (sort-by :posted posts))))])))
