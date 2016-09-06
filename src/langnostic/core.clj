@@ -4,6 +4,7 @@
 
             [clojure.java.io :as io]
 
+            [langnostic.feed :as feed]
             [langnostic.page :as pg]
             [langnostic.files :as fs])
   (:use [compojure.core :only [defroutes GET POST DELETE ANY context]])
@@ -53,23 +54,31 @@
             "archive" "Archive"
             (pg/archive posts))}))
 
+(defn posts-by-tag [tag]
+  (filter #(some #{tag} (% :tags)) pg/posts))
+
+(defn atom-feed [posts]
+  (fn [req]
+    {:status 200
+     :headers {"Content-Type" "application/atom+xml"}
+     :body (feed/atom-feed posts)}))
+
 (defroutes langnostic-routes
   (GET "/" [] home)
   (GET "/blog" [] home)
   (GET "/posts/:name" [name] (post name))
 
   (GET "/archive" [] (archive pg/posts))
-  (GET "/archive/by-tag/:tag" [tag]
-       (archive (filter #(some #{tag} (% :tags)) pg/posts)))
+  (GET "/archive/by-tag/:tag" [tag] (archive (posts-by-tag tag)))
 
   (GET "/links" [] (static-page "links"))
   (GET "/tipjar" [] (static-page "tipjar"))
   (GET "/meta" [] (static-page "meta"))
 
-  ;; (GET "/feed")
-  ;; (GET "/feed/atom")
-  ;; (GET "/feed/atom/:tag")
-  ;; (GET "/feed/atom/by-tag/:tag")
+  (GET "/feed" [] (atom-feed pg/posts))
+  (GET "/feed/atom" [] (atom-feed pg/posts))
+  (GET "/feed/atom/:tag" [tag] (atom-feed (posts-by-tag pg/posts)))
+  (GET "/feed/atom/by-tag/:tag" [tag] (atom-feed (posts-by-tag pg/posts)))
 
   (route/resources "/static/")
   (route/not-found error-404))

@@ -27,11 +27,14 @@
      [:a {:class "next-post" :href (post-href next)}
       (next :title) "->"])])
 
+(defn post-content [post]
+  (files/file-content (str "resources/posts/" (post :file) ".md")))
+
 (defn post [post]
   [:div
    [:h1 (post :title)]
    [:span {:class "posted"} (post :posted)]
-   (files/file-content (str "resources/posts/" (post :file) ".md"))
+   (post-content post)
    (post-links post)])
 
 (defn latest-post []
