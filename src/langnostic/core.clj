@@ -19,22 +19,22 @@
           (fs/file-content
            "resources/public/content/404.md"))})
 
-(defn resource-page [file]
+(defn resource-page [title file]
   (if (fs/file-in-resources? file)
     {:status 200
      :headers {"Content-Type" "text/html"}
-     :body (pages/template "test" "test" (fs/file-content file))}
+     :body (pages/template file (clojure.string/capitalize title) (fs/file-content file))}
     error-404))
 
 (defn static-page [name]
-  (fn [req] (resource-page (io/file "resources/public/content" (str name ".md")))))
+  (fn [req] (resource-page name (io/file "resources/public/content" (str name ".md")))))
 
 (defn post [name]
   (fn [req]
     (if-let [post (posts/find-by-slug name)]
       {:status 200
        :headers {"Content-Type" "text/html"}
-       :body (pages/template "test" "test" (pages/post post))}
+       :body (pages/template "blog" (post :title) (pages/post post))}
       error-404)))
 
 (defn home [req]

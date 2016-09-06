@@ -11,16 +11,19 @@
 (def posts (atom []))
 
 (defn load-posts! []
-  (reset!
-   posts
-   (vec
-    (map #(let [raw (json/parse-string % (fn [k] (keyword (.toLowerCase k))))]
-            (assoc
-             (dissoc raw :edited)
-             :posted (time/from-long (long (* 1000 (raw :posted))))
-             :tags (set (raw :tags))
-             :content (atom nil)))
-         (line-seq (io/reader "resources/posts.json"))))))
+  (let [old @posts]
+    (reset!
+     posts
+     (vec
+      (map #(let [raw (json/parse-string % (fn [k] (keyword (.toLowerCase k))))]
+              (assoc
+               (dissoc raw :edited)
+               :posted (time/from-long (long (* 1000 (raw :posted))))
+               :tags (set (raw :tags))
+               :content (if-let [p (get old (raw :id))]
+                          (p :content)
+                          (atom nil))))
+           (line-seq (io/reader "resources/posts.json")))))))
 
 (defn all-posts []
   @posts)
@@ -44,7 +47,7 @@
    :event-types [:modify]
    :callback (fn [event filename]
                (when (and (= :modify event)
-                          (= "resources/posts.json"))
+                          (= "resources/posts.json" filename))
                  (println "Reloading posts.json ...")
                  (load-posts!)))}
   {:path "resources/posts/"
