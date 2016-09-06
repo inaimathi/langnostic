@@ -2,6 +2,8 @@
   (:require [markdown.core :as md]
             [cheshire.core :as json]
             [hiccup.page :as pg]
+            [clj-time.coerce :as time]
+            [clj-time.format :as fmt]
 
             [clojure.java.io :as io]
 
@@ -9,11 +11,20 @@
 
 ;;;;;;;;;; Posts
 (def posts
-  (vec (map #(json/parse-string % (fn [k] (keyword (.toLowerCase k))))
-            (line-seq (io/reader "resources/posts.json")))))
+  (vec
+   (map #(let [raw (json/parse-string % (fn [k] (keyword (.toLowerCase k))))]
+           (assoc
+            (dissoc raw :edited)
+            :posted (time/from-long (long (* 1000 (raw :posted))))
+            :tags (set (raw :tags))
+            :content (files/file-content (str "resources/posts/" (raw :file) ".md"))))
+        (line-seq (io/reader "resources/posts.json")))))
 
 (defn find-by-slug [slug]
   (first (filter #(= slug (% :file)) posts)))
+
+(defn find-by-tag [tag]
+  (filter #(some #{tag} (% :tags)) posts))
 
 (defn post-href [post]
   (str "/posts/" (post :file)))
@@ -33,8 +44,9 @@
 (defn post [post]
   [:div
    [:h1 (post :title)]
-   [:span {:class "posted"} (post :posted)]
-   (post-content post)
+   [:span {:class "posted"}
+    (fmt/unparse (fmt/formatter "E MMM d, Y") (post :posted))]
+   (post :content)
    (post-links post)])
 
 (defn latest-post []

@@ -54,9 +54,6 @@
             "archive" "Archive"
             (pg/archive posts))}))
 
-(defn posts-by-tag [tag]
-  (filter #(some #{tag} (% :tags)) pg/posts))
-
 (defn atom-feed [posts]
   (fn [req]
     {:status 200
@@ -69,7 +66,7 @@
   (GET "/posts/:name" [name] (post name))
 
   (GET "/archive" [] (archive pg/posts))
-  (GET "/archive/by-tag/:tag" [tag] (archive (posts-by-tag tag)))
+  (GET "/archive/by-tag/:tag" [tag] (archive (pg/find-by-tag tag)))
 
   (GET "/links" [] (static-page "links"))
   (GET "/tipjar" [] (static-page "tipjar"))
@@ -77,8 +74,8 @@
 
   (GET "/feed" [] (atom-feed pg/posts))
   (GET "/feed/atom" [] (atom-feed pg/posts))
-  (GET "/feed/atom/:tag" [tag] (atom-feed (posts-by-tag pg/posts)))
-  (GET "/feed/atom/by-tag/:tag" [tag] (atom-feed (posts-by-tag pg/posts)))
+  (GET "/feed/atom/:tag" [tag] (atom-feed (pg/find-by-tag pg/posts)))
+  (GET "/feed/atom/by-tag/:tag" [tag] (atom-feed (pg/find-by-tag pg/posts)))
 
   (route/resources "/static/")
   (route/not-found error-404))

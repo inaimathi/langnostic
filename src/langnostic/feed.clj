@@ -18,5 +18,5 @@
                  [:updated (post :posted)]
                  [:link {:href (str "http://langnostic.inaimathi.ca/posts/" (post :file))}]
                  [:author [:name "inaimathi"]]
-                 [:content {:type "html"} (hic/h (page/post-content post))]])
+                 [:content {:type "html"} (hic/h (post :content))]])
               (take 10 (reverse (sort-by :posted posts))))])))
