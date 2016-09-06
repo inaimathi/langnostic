@@ -7,7 +7,7 @@
 
 ## ToDo
 
-- Start on the friggin' improvements
+- Cache static pages, instead of reading them each time
 
 - Revisit old blogs. NOW AT: `id:93`
 
