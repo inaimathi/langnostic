@@ -4,7 +4,7 @@ import os.path, json
 from subprocess import check_output, call
 from optparse import OptionParser
 
-def wc(fname):
+def wc_l(fname):
     return int(check_output(["wc", "-l", fname]).split(" ")[0])
 
 def slugFromFname(fname):
@@ -15,12 +15,11 @@ def titleFromFname(fname):
 
 def main(fname, title, tags):
     slug = slugFromFname(fname)
-    ed = int(os.path.getctime(fname))
     mod = int(os.path.getmtime(fname))
-    newId = wc("posts.json")
-    rec = {'id': newId, 'title': title, 'file': slug, 'edited': ed, 'posted': mod, 'tags': tags}
-    os.rename(fname, os.path.join("posts", os.path.basename(fname)))
-    with open("posts.json", 'a') as f:
+    newId = wc_l("resources/posts.json")
+    rec = {'id': newId, 'title': title, 'file': slug, 'posted': mod, 'tags': tags}
+    os.rename(fname, os.path.join("resources/posts", os.path.basename(fname)))
+    with open("resources/posts.json", 'a') as f:
         f.write(json.dumps(rec))
         f.write("\n")
 
