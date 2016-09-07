@@ -38,9 +38,9 @@ Really, I should have been trusting my gut the entire way along, and done five o
 
 - I will henceforth work _significantly_ fewer than 10 hours a day each weekday.
 - If I'm to spend any time working on a project, then that project will do at least one of
-	1. Teach me something significant
-	2. Be extremely fun to work on
-	3. Pay me staggering amounts of money[^or-small]
+    1. Teach me something significant
+    2. Be extremely fun to work on
+    3. Pay me staggering amounts of money[^or-small]
 - Logging intermediate output to this blog should be a mandatory activity, not a "when I get around to it" thing[^because-otherwise].
 
 [^or-small]: Or small amounts of money in a quasi-reliably recurring fashion.

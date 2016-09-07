@@ -7,6 +7,8 @@
 
 ## ToDo
 
+- Rsync doesn't seem to do the right thing regarding filesystem updates. Look into it.
+    - Looks like copying via `rsync` doesn't trip the watcher. Copying via `scp` _does_, but does so even if the given file is unchanged from the previous version at the other end. This might just involve starting to use the `--deploy` option on `new.py`. and having it do the appropriate thing with the latest blog post.
 - Cache static pages, instead of reading them each time
 
 - Revisit old blogs. NOW AT: `id:93`
