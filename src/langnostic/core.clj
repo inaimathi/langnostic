@@ -1,6 +1,7 @@
 (ns langnostic.core
   (:require [org.httpkit.server :as server]
             [compojure.route :as route]
+            [clojure-watch.core :as watch]
 
             [clojure.java.io :as io]
 
@@ -84,5 +85,27 @@
 (defn -main
   ([] (-main "8000"))
   ([port]
+   (println "Loading posts...")
+   (posts/load-posts!)
+
+   (println "Watching FS resources...")
+   (watch/start-watch
+    [{:path "resources/"
+      :event-types [:modify]
+      :callback (fn [event filename]
+                  (when (and (= :modify event)
+                             (= "resources/posts.json" filename))
+                    (println "Reloading posts.json ...")
+                    (posts/load-posts!)))}
+     {:path "resources/posts/"
+      :event-types [:modify]
+      :callback (fn [event filename]
+                  (let [name (.getName (io/file filename))
+                        slug (.substring name 0 (- (count name) 3))
+                        post (posts/find-by-slug slug)]
+                    (when post
+                      (println "Poking cache for" slug "...")
+                      (reset! (post :content) nil))))}])
+
    (println "Listening on port" port "...")
    (server/run-server langnostic-routes {:port (read-string port)})))
