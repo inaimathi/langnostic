@@ -24,9 +24,13 @@
      text)
    state])
 
+(def new-transformers
+  (concat
+   (remove #(= % markdown.common/dashes) markdown.transformers/transformer-vector)
+   [linkify-headers]))
+
 (defn file-content [fname]
   (md/md-to-html-string
    (slurp fname)
-   :custom-transformers [linkify-headers]
-   :replacement-transformers (remove #(= % markdown.common/dashes) markdown.transformers/transformer-vector)
+   :replacement-transformers new-transformers
    :footnotes? true))
