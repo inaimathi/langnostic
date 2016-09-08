@@ -9,20 +9,23 @@
 
 (def posts (atom []))
 
+(defn parse-post [old line]
+  (let [raw (json/parse-string line (fn [k] (keyword (.toLowerCase k))))]
+    (assoc
+     (dissoc raw :edited)
+     :posted (time/from-long (long (* 1000 (raw :posted))))
+     :tags (set (raw :tags))
+     :content (if-let [p (get old (raw :id))]
+                (p :content)
+                (atom nil)))))
+
 (defn load-posts! []
   (swap!
    posts
    (fn [old]
-     (vec
-      (map #(let [raw (json/parse-string % (fn [k] (keyword (.toLowerCase k))))]
-              (assoc
-               (dissoc raw :edited)
-               :posted (time/from-long (long (* 1000 (raw :posted))))
-               :tags (set (raw :tags))
-               :content (if-let [p (get old (raw :id))]
-                          (p :content)
-                          (atom nil))))
-           (line-seq (io/reader "resources/posts.json")))))))
+     (try
+       (vec (map (partial parse-post old) (line-seq (io/reader "resources/posts.json"))))
+       (catch Exception e old)))))
 
 (defn all-posts []
   @posts)

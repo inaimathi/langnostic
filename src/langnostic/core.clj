@@ -96,7 +96,8 @@
                   (when (and (= :modify event)
                              (= "resources/posts.json" filename))
                     (println "Reloading posts.json ...")
-                    (posts/load-posts!)))}
+                    (posts/load-posts!)
+                    (println "  posts.json reloaded...")))}
      {:path "resources/posts/"
       :event-types [:modify]
       :callback (fn [event filename]

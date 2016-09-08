@@ -34,7 +34,7 @@ So, first things first. I can't publish the corpus I'm working from without perm
                 (spit dat-file \newline :append :true)))))))))
 ```
 
-Having evaluated that to a Clojure REPL in which you've loaded [`http-kit`](http://www.http-kit.org/) and [`cheshire`](https://github.com/dakrone/cheshire#cheshire), you can evaluate `(collect! 0)` and wait a very long while. After waiting long enough[^and-probably-restarting], you'll have a file containing around 165 thousand [edn](https://github.com/edn-format/edn#edn)-encoded kickstarter projects. We don't really need all of the stuff present to learn from it; so once we got the raw data pulled down, we can sift it for interesting bits.
+Having evaluated that to a Clojure REPL in which you've loaded [`http-kit`](http://www.http-kit.org/) and [`cheshire`](https://github.com/dakrone/cheshire#cheshire), you can evaluate `(collect! 0)` and wait a very long while. After waiting long enough[^and-probably-restarting], you'll have a file containing around 165 thousand [edn](https://github.com/edn-format/edn#edn) encoded kickstarter projects. We don't really need all of the stuff present to learn from it; so once we got the raw data pulled down, we can sift it for interesting bits.
 
 [^and-probably-restarting]: And probably restarting the process at some intermediate point to avoid a partial failure forcing you to pull down a GB-worth of duplicate data. I learned that the hard way, which is why the above takes a category as an argument and starts at the appropriate point, rather than always going from zero.
 
