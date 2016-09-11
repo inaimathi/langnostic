@@ -91,15 +91,14 @@
    (println "Watching FS resources...")
    (watch/start-watch
     [{:path "resources/"
-      :event-types [:modify]
+      :event-types [:create]
       :callback (fn [event filename]
-                  (when (and (= :modify event)
-                             (= "resources/posts.json" filename))
+                  (when (= "resources/posts.json" filename)
                     (println "Reloading posts.json ...")
                     (posts/load-posts!)
                     (println "  posts.json reloaded...")))}
      {:path "resources/posts/"
-      :event-types [:modify]
+      :event-types [:create]
       :callback (fn [event filename]
                   (let [name (.getName (io/file filename))
                         slug (.substring name 0 (- (count name) 3))
