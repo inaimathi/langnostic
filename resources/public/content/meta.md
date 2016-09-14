@@ -8,4 +8,4 @@ Currently, I'm working as a freelance developer, mostly doing Clojure and Ruby w
 
 ## About This Site
 
-This site was built out of parentheses and higher-order functions. The site itself is just under 300 lines of relatively readable Clojure, which I still plan to refine over the next couple of weeks. There's still no database; just some [`markdown`](https://daringfireball.net/projects/markdown/) and [`JSON`](http://www.json.org/), processed and then served up by [`http-kit`](http://www.http-kit.org/server.html).
+This site was built out of parentheses and higher-order functions. The site itself is just over 300 lines of relatively readable Clojure, which I still plan to refine over the next couple of weeks. There's still no database; just some [`markdown`](https://daringfireball.net/projects/markdown/) and [`JSON`](http://www.json.org/), processed and then served up by [`http-kit`](http://www.http-kit.org/server.html).
