@@ -163,6 +163,10 @@ For vectors, that means this is basically a check to see whether the length of t
 
 I understand that [`contains?` is still the most `F`-ed AQ](http://stackoverflow.com/a/3249401/190887), so I'm not _entirely_ sure why it hasn't been fixed yet. And by "fixed", I mean a function in `clojure.core` named `member?` that does what you'd expect for sets and vectors. I'm sure there _is_ a library out there that provides this definition, but dammit, you could do better.
 
+#### No Pandoc
+
+I used to use the fantastic [`pandoc`](https://github.com/jgm/pandoc) library to slice my blogs pretty thoroughly in Haskell. Now that I'm back in Clojure-land, there is no such thing lying around. There's a [Markdown-specific library](https://github.com/yogthos/markdown-clj) that outputs HTML, and doesn't seem to expose any intermediate parse trees for my convenience, so adding links to my blogs' headers is now [slightly uglier](https://github.com/Inaimathi/langnostic/blob/master/src/langnostic/files.clj#L15-L25) than it used to be. The library also has the bizarre behavior of escaping `--` into a long-dash by default, even in image/link URLs, which means links broke all over the place before I figured out what was going on. It's a solvable problem (just provide [replacement `transformers`](https://github.com/Inaimathi/langnostic/blob/master/src/langnostic/files.clj#L27-L36)), but it would be much nicer if it were a _non_-problem.
+
 #### GNU Incompatible
 
 I left this one 'till last, because I'm aware that I'm in the minority on it, but still need to say it. Clojure as a whole is licensed under the [EPL](https://www.eclipse.org/legal/epl-v10.html), which is not [compatible with licensing your own programs under the GPL or AGPL](http://www.eclipse.org/legal/eplfaq.php#USEINANOTHER). Which sucks mightily for me in particular, because I've got a couple projects on the go at the moment I was hoping to license that way. In concrete terms, this means I'm ditching Clojure for those projects as soon as I get out of the prototyping phase. That's a shame, because, like I said, _language_ wise, it's one of my favorites[^and-would-probably]. Oh well, I guess.
@@ -181,9 +185,15 @@ I'm honestly surprised how succinct the language is. It might be the case that m
 
 [^admittedly-hacked]: Admittedly hacked-together.
 
+The only thing I'm willing to conclude is that [`hiccup`](https://github.com/weavejester/hiccup#hiccup) is a damn sight better than [Blaze](https://hackage.haskell.org/package/blaze-html) at expressing HTML markup. Which honestly seems to beg the question of why everyone in Haskell-land is happier bizarrely composing functions together, rather than defining a syntax-tree datatype and being done with it.
+
 #### Libraries for Everything
 
 This is the good side of being on the JVM. And it's come in handy a few times. There are libraries for everything. Not just the fun/sexy-to-write things like web servers or application frameworks, but also things that are large and hard to write properly, but that you might need anyway. Things like [cross-platform GUI libraries](https://github.com/daveray/seesaw), [filesystem watchers](https://github.com/derekchiang/Clojure-Watch), and [task scheduling](http://docs.caudate.me/hara/hara-io-scheduler.html). I'm not _entirely_ sure it's worth the JVM implementation baggage, but it has saved me personally a bit of time.
+
+#### No FFI Headaches
+
+The main problem I have getting back into Common Lisp these days is that a lot of the best libraries depend on FFI bindings. Specifically, [`woo`](https://github.com/fukamachi/woo) calls out to a native event loop and [`hunchentoot`](http://weitz.de/hunchentoot/) depends on `openssl` bindings to implement its `HTTPS` system. The problem I've run into is that [`CFFI`](https://common-lisp.net/project/cffi/) does not play well with [`nix`](https://nixos.org/nix/). At all. To the point that _getting_ `woo` or `hunchentoot` with TLS up and running is an exercise in mind-numbing frustration. I've yet to run into this problem with a Clojure library. Say what you will about the "Everything Must Be Native" cultural bias in the Java community, it certainly does mean that deployments get a bit less headache-inducing.
 
 ## Blog
 
