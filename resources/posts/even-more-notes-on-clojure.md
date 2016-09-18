@@ -1,19 +1,8 @@
+I'm feeling a lot better intellectually than I have in a very long while. Recently, I've been doing some interesting development work.
 
+In between intermittent bouts of interviewing with random companies, I mean. I've been trying to scare up a bit more contract work, but so far each of them hold the position of "No, we only want full-time staff. We only want people committed to our company". Which strikes me as a pretty stupid thing to say, honestly[^sore-spot].
 
-
-
-
-<Takes breath>
-
-
-
-
-
-## Back in the Wild
-
-I'm feeling a lot better intellectually than I have in a very long while. Recently, I've been doing some interesting development work. In between intermittent bouts of interviewing with random companies, I mean. I've been trying to scare up a bit more contract work, but so far eah of them hold the position of "No, we only want full-time staff. We only want people committed to our company". Which strikes me as a pretty stupid thing to say, honestly. Both for the implication that contractors can't be committed, and for the hint that they'll be running into overtime work, but don't particularly want to pay for it[^sore-spot].
-
-[^sore-spot]: This may be a recent sore-spot of mine, so don't take it _too_ seriously, but I've been thinking about it recently. It seems to me that accepting a flat weekly rate for work puts tech managers in the position that they _may as well_ gamble with employees' evenings and weekends. Which means they need to pay less attention to internal infrastructure than is good for them, and they get to do flat out moronic things like opt to delay automating a task in faor of having devs handle it manually. This. Does. Not. Work. Seriously; at best, you're kneecaping your productivity, at worst, you'll get employees that want very badly to leave. So a) fuck you if you're a manager that does this, and b) if you're a developer that accepts $`n`/year, be aware that you're enabling the situation.
+[^sore-spot]: Both for the implication that contractors can't be committed, and for the hint that they'll be running into overtime work, but don't particularly want to pay for it. This may be a recent sore-spot of mine, so don't take it _too_ seriously, but I've been thinking about it. It seems to me that accepting a flat weekly rate for work puts tech managers in the position that they _may as well_ gamble with employees' evenings and weekends. Which means they need to pay less attention to internal infrastructure than is good for them, and they get to do flat out moronic things like opt to delay automating a task in faor of having devs handle it manually. This. Does. Not. Work. Seriously; at best, you're kneecaping your productivity, at worst, you'll get employees that want very badly to leave. So a) fuck you if you're a manager that does this, and b) if you're a developer that accepts $`n`/year, be aware that you're enabling the situation.
 
 Anyway, before I get too carried away, what I've been doing is some contract work on an interesting compiler project, along with prototyping a project or two of my own. All in Clojure. Which is in danger of becoming my language of choice for general development purposes. Honestly, it would very probably be there already if there were any native implementations. As it stands though, there's only Clojure and Clojurescript, the second of which I haven't poked into quite yet. Anyhow, given that I've been doing serious work with it for a couple of weeks, it's about time for some more notes.
 

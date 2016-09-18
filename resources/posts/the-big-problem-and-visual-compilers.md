@@ -739,7 +739,7 @@ It takes a `base` and runs a sequence of functions on it, returning the result o
   base)
 ```
 
-If you haven't seen a `for-all` call before, take a quick look at [this](http://blog.inaimathi.ca/article?name=how-unification-works.html) before we move on. The section near the bottom specifically pertains, but you should probably give the whole thing a skim. `label-constraints` annotates every `:rectangle` fact with an additional `:sicp-constraint` fact. It might look pointless at the moment, but I still want to separate the representation of `constraint`s from the underlying `rectangle` primitive, just in case I run into a situation that demands they be separated somehow.
+If you haven't seen a `for-all` call before, take a quick look at [this](/posts/how-unification-works) before we move on. The section near the bottom specifically pertains, but you should probably give the whole thing a skim. `label-constraints` annotates every `:rectangle` fact with an additional `:sicp-constraint` fact. It might look pointless at the moment, but I still want to separate the representation of `constraint`s from the underlying `rectangle` primitive, just in case I run into a situation that demands they be separated somehow.
 
 ```lisp
 (defmethod label-constants ((base list))

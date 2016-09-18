@@ -236,3 +236,4 @@
 {"tags": ["stream-of-consciousness", "data", "clojure", "kickstarter"], "title": "Learning From Kickstarter", "file": "learning-from-kickstarter", "id": 235, "posted": 1468623909}
 {"tags": ["journal", "cobol", "reading-group", "curio"], "title": "The Comp Sci Cobol", "file": "the-comp-sci-cobol", "id": 236, "posted": 1470665249}
 {"tags": ["bitching", "journal"], "title": "Inaimathi Thinks", "file": "inaimathi-thinks", "id": 237, "posted": 1473022962}
+{"tags": ["clojure", "journal", "bitching"], "posted": 1473970394, "id": 238, "file": "even-more-notes-on-clojure", "title": "Even More Notes On Clojure"}
