@@ -150,7 +150,7 @@ langnostic.core>
 
 For vectors, that means this is basically a check to see whether the length of the vector is greater than the index you give it. There is no general `member?` function, unless you count `(contains? (set my-vec) elem)`. Which isn't horrific, but not what I was expecting to have to do.
 
-I understand that [`contains?` is still the most `F`-ed AQ](http://stackoverflow.com/a/3249401/190887), so I'm not _entirely_ sure why it hasn't been fixed yet. And by "fixed", I mean a function in `clojure.core` named `member?` that does what you'd expect for sets and vectors. I'm sure there _is_ a library out there that provides this definition, but dammit, you could do better.
+I understand that [`contains?` is still the most `F`-ed `AQ`](http://stackoverflow.com/a/3249401/190887), so I'm not _entirely_ sure why it hasn't been fixed yet. And by "fixed", I mean a function in `clojure.core` named `member?` that does what you'd expect for sets and vectors. I'm sure there _is_ a library out there that provides this definition, but dammit, you could do better.
 
 #### No Pandoc
 
@@ -170,11 +170,11 @@ I left this one 'till last, because I'm aware that I'm in the minority on it, bu
 
 #### Very Succinct
 
-I'm honestly surprised how succinct the language is. It might be the case that my idiosyncratic thought processes are just suited to a Lispy syntax, but I was still surprised when I finished the re-write of [my blog](https://github.com/Inaimathi/langnostic#langnostic). `wc -l` says the complete codebase weighs in at 305 lines. That's a reduction of about 80 from the Haskell[^admittedly-hacked] implementation. I'm not going to draw deep conclusions about this, both because it's a really small-scale test, _and_ because line-count isn't exactly the best measure of code quality, but it is something to note.
+I'm honestly surprised how succinct the language is. It might be the case that my idiosyncratic thought processes are just suited to a Lispy syntax, but I was still surprised when I finished the re-write of [my blog](https://github.com/Inaimathi/langnostic#langnostic). `wc -l` says the complete codebase weighs in at 305 lines. That's a reduction of about 80 from the[^admittedly-hacked] Haskell implementation. I'm not going to draw deep conclusions about this, both because it's a really small-scale test, _and_ because line-count isn't exactly the best measure of code quality, but it is something to note.
 
 [^admittedly-hacked]: Admittedly hacked-together.
 
-The only thing I'm willing to conclude is that [`hiccup`](https://github.com/weavejester/hiccup#hiccup) is a damn sight better than [Blaze](https://hackage.haskell.org/package/blaze-html) at expressing HTML markup. Which honestly seems to beg the question of why everyone in Haskell-land is happier bizarrely composing functions together, rather than defining a syntax-tree datatype and being done with it.
+The only thing I'm willing to conclude is that [`hiccup`](https://github.com/weavejester/hiccup#hiccup) is a damn sight better than [Blaze](https://hackage.haskell.org/package/blaze-html) at expressing HTML markup. Which honestly seems to beg the question of why everyone in Haskell-land is happier bizarrely composing functions together, rather than defining a syntax-tree datatype for XML and being done with it.
 
 #### Libraries for Everything
 
