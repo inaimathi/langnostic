@@ -4,13 +4,13 @@ So I'm trying to reanimate the [monthly Code Retreat](https://bentomiso.com/even
 
 The thing is, i really fucking miss it.
 
-That was the one bastion of higher-level, practical development practice in Toronto[^that-i-know-of-etc]. There's the [JS Hack Night](https://bentomiso.com/events/js-hack-night-2016-jan), which has been steadily moving into theory, The [CS Cabal](http://compscicabal.github.io/) for those of you deply curious about the finer points of language construction and type systems, the [Clojure](http://www.meetup.com/Clojure-Toronto/) and [CL](http://lispwiki.inaimathi.ca/) user groups which are more social than practical _or_ theory, and a few groups devoted to machine intelligence in general, but not to building any specific artifact.
+That was the one bastion of higher-level, practical development practice in Toronto[^that-i-know-of-etc]. There's the [JS Hack Night](https://bentomiso.com/events/js-hack-night-2016-jan), which has been steadily moving into theory, The [CS Cabal](http://compscicabal.github.io/) for those of you deeply curious about the finer points of language construction and type systems, the [Clojure](http://www.meetup.com/Clojure-Toronto/) and [CL](http://lispwiki.inaimathi.ca/) user groups which are more social than practical _or_ theory, and a few groups devoted to machine intelligence in general, but not to building any concrete artifact.
 
 [^that-i-know-of-etc]: That I know of, that isn't married to a particular development methodology or programming language.
 
 And that's about it.
 
-The giant, gaping hole in the lineup is a meetup where we practice and refine our techniques for taking projects from zero to a running system. And that's what the Monthly Code Retreat was kind of evolving into before it got put on hiatus. I firmly believe that we need this. Or leastwise that _I_ need this in my life somewhere. Because without a practical application to keep things grounded, computer scientists have a tendency to disappear either into their own pet projects written in bizarre languages or into some proprietary system, in any case never to be heard from again. It's a shame to tread new ground in a sub-optimal way, and then not even share the fallout. So the new Code Retreat mandate should, I think, be to help developers of all levels push their skills forward, and encourage the sharing of technique and experience.
+The giant, gaping hole in the lineup is a gathering where we practice and refine our techniques for taking projects from zero to a running system. And that's what the Monthly Code Retreat was kind of evolving into before it got put on hiatus. I firmly believe that we need this. Or leastwise that _I_ need this in my life somewhere. Because without a practical application to keep things grounded, computer scientists have a tendency to disappear either into their own pet projects written in bizarre languages or into some proprietary system, in any case never to be heard from again. It's a shame to tread new ground in a sub-optimal way, and then not even share the fallout. So the new Code Retreat mandate should, I think, be to help developers of all levels push their skills forward and encourage the sharing of technique and experience.
 
 Of course, it would be massively asinine to expect someone else to put together a community based on my mandate for my convenience. So I guess I'm organizing a group now.
 
@@ -22,13 +22,11 @@ Which segues us very neatly into [Congregate](https://github.com/inaimathi/cl-co
 
 ## Congregate
 
-[Congregate](https://github.com/inaimathi/cl-congregate) is a first step on the road towards a worthy group management system. We're starting off with manual group addition, recurring events and a bare-bones RSVP system that lets you say whether you'll be there or not. The ultimate goal is a protocol for publishing get-togethers of humans, mainly because we're looking to get away from the situation where one publisher owns data related to any particular get-together.
+[Congregate](https://github.com/inaimathi/cl-congregate) is a first step on the road towards a worthy group management system. We're starting off with manual group addition, recurring events and a bare-bones RSVP system that lets you say whether you'll be there or not. That's it for now. No group creation, no comment system, nothing else. The ultimate goal is a protocol for publishing gatherings of humans, mainly because we're looking to get away from the situation where one publisher owns data related to any particular get-together.
 
 Once I get a few more weeks into this project, I'm going to do my usual [`almost-literate-programming`](/archive/by-tag/almost-literate-programming), but not quite yet. There's a pretty big pile of things I still want to fine tune in [`house`](https://github.com/inaimathi/house), and possibly [`cl-handlers`](https://github.com/inaimathi/cl-handlers), not to mention constructing a bunch more obviously desirable features. I _am_ going to be running an instance over at [congregate.ca](http://congregate.ca) before too long so that you can kick the tires, but discussing internals is going to have to wait until I can give it some more serious thought.
 
-The only thing I've really thrown enough thought at to mention is the authentication system.
-
-There's a thing you can do now that OAuth/OAuth2 has become so wide-spread. And that thing is to build a hybrid auth sytem[^or-fully-foreign]. Basically set up a user system so that it depends entirely on outside services to verify users.
+The only thing I've really thrown enough thought at to mention is the authentication system. There's a thing you can do now that OAuth/OAuth2 has become so wide-spread. And that thing is to build a hybrid auth sytem[^or-fully-foreign]. Basically set up a user system so that it depends entirely on outside services to verify users.
 
 [^or-fully-foreign]: Or fully foreign, if you can live without differentiating user levels in some way. It seems like you wouldn't have too much trouble making such a server fully anonymous though, so I'm not sure it would be worth the effort.
 
