@@ -1,0 +1,13 @@
+We are here to **practice** our **craft**.
+
+Not our **art**. Which involves the study and application of algorithms and data structures. It's an important subject in its own right, and there are both [books](https://www.amazon.ca/Computer-Programming-Volumes-1-4A-Boxed/dp/0321751043) and [groups](https://www.meetup.com/Knuth-Reading-Group-Art-of-Computer-Programming/) around to help with it. You may incidentally learn about better data structures and theories here, but it is not the focus.
+
+Not our **theory**. Which involves thinking deeply, either about some specific part of our discipline or about the discipline in general, in order to abstract it or resolve some incidental complexity. It's another important subject in its own right, and there are books both [classic](https://mitpress.mit.edu/sicp/full-text/book/book.html) and [modern](http://www.cs.cmu.edu/~rwh/pfpl.html) along with [groups](http://cscabal.com) around to help you grapple with it. You may incicdentally learn things about [functional programming](http://ttic.uchicago.edu/~dreyer/course/papers/wadler.pdf), or [correctness proofs](https://courses.engr.illinois.edu/cs421/sp2013/project/milner-polymorphism.pdf), or [some theorem](https://www.youtube.com/watch?v=QdkS6ZjeR7Q) that lays bare the secrets of distributed programming.
+
+We are **practicing**, not **starting**. So we won't be figuring out how to use our editors, environments or languages. You may incidentally be exposed to editors, test suites, languages and toolchains that you aren't familiar with, but this is not our focus.
+
+We are **practicing**, not **thinking**. So you will need a machine, a runtime/interpreter/compiler and working test machinery for the language you plan to use.
+
+We are here to **practice** our **craft**. Which means we'll be considering specific programming problems, and aiming to get to a verifiably working implementation. En-route, we'll want to consider how we place units of code in releation to each other in a way that allows us to handle additional requirements down the line. We'll want to make hypotheses and draw conclusions about what approaches get us to working implementations fastest, which ones minimize incidental errors, and which ones allow us to demonstrate the correctness of our programs under certain circumstances. We'll do all of this in the hope that our intuitions for such things will be tempered and improved as we go.
+
+If this sounds interesting to you, head over [here](http://congregate.ca/code-retreat) and specifically [here](http://congregate.ca/event?event=12) for time and location details.
