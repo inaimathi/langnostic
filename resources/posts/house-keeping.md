@@ -2,11 +2,11 @@ So much for updates becoming a regular event I guess. I'm not sure it's for lack
 
 So, lets keep things deliberately concrete.
 
-You may or may not have noticed a few commits to the [`house`](https://github.com/inaimathi/house) server. Mostly as a result of developments in [`cl-congregate`](https://github.com/inaimathi/cl-congregate). That is, I'm doing my usual and adding features to the underlying substrate exactly as quickly as I need them, and no quicker. They started as concrete requirements for the congregate project, and ended with me addressing some noticeably absent pieces from the `house` system.
+You may or may not have noticed a few commits to the [`house`](https://github.com/inaimathi/house) server. Mostly as a result of developments in [`cl-congregate`](https://github.com/inaimathi/cl-congregate). That is, I'm doing my usual and adding features to the underlying substrate exactly as quickly as I need them, and no quicker. They started as concrete requirements for the congregate project, and ended with me addressing some noticeably absent pieces from `house`.
 
 ### In-handler redirects
 
-It used to be possible to set up `redirect-handler`s in `house`, but I hadn't considered the use case wherein a particular page might need to conditionally redirect the client elsewhere. One part of this is that there needs to be a way to `redirect!` internally to a handler.
+It used to be possible to set up `redirect-handler`s, but I hadn't considered the use case wherein a particular page might need to conditionally redirect the client elsewhere. One part of this is that there needs to be a way to `redirect!` internally to a handler.
 
 ```lisp
 ;;; define-handler.lisp
@@ -38,7 +38,7 @@ That's the easy and obvious bit; take a `target` URI and a `permanent?` flag, an
 ...
 ```
 
-This is going to be one of those internal implementation details that I'm probably going to want to optimize away later, because between creating an intermediate string where one probably isn't necessary and that runtime type dispatch, I get the feeling we're losing some performance here. I'm waiting on one or two more revisions to submit this thing to `quicklisp`, then start running it through a profile on a regular basis. That seems like a decent next step.
+This is going to be one of those internal implementation details that I'm probably going to want to optimize away later, because between creating an intermediate string where one probably isn't necessary and that runtime type dispatch, I get the feeling we're losing some performance here. Note to self, I suppose.
 
 ### Path variables
 
@@ -65,7 +65,7 @@ Except, we can solve this with the appropriate data-structure. The [`cl-handlers
 
 Again, [`cl-handlers`](https://github.com/inaimathi/cl-handlers) did all of this appropriately. So I've just lifted the code involved.
 
-```
+```lisp
 ;;; handler-table.lisp
 (in-package :house)
 
@@ -362,7 +362,7 @@ So, if there's a `cookie` set in the result, we check if there are any `*cookie-
 
 The last part of this change involves declaring that `*cookie-domains*` variable, which I've decided to do in `package.lisp`.
 
-```
+```lisp
 ;;; package.lisp
 ...
 (defparameter *cookie-domains* nil)
