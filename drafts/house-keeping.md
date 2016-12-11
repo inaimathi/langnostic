@@ -168,7 +168,7 @@ I'm not sure if this code is complicated enough to benefit from my usual almost-
 ...
 ```
 
-First things first, a `trie` is a thing that has a `value`, a `map` (the usual second trie component) and some `vars`. This is not a usual Trie because of that last chunk. Essentially, we're separating out handlers that have variable path components at each stage. As you'll see later, this will let us say something like
+First things first, a `trie` is a thing that has a `value`, a `map` (the usual second trie component) and some `vars`. This is not a usual `trie` because of that last chunk. Essentially, we're separating out handlers that have variable path components at each stage. As you'll see later, this will let us say something like
 
 1. Match the current path component literally
 2. If no literal matches are found, prospectively try matching against each variable component we know about.
@@ -246,7 +246,7 @@ Ok, this is where it gets a bit interesting and complicated.
     (rec key trie nil)))
 ```
 
-If we can find a literal path component at a given `trie` level that matches the next key component, we recur into it. Otherwise, we try to match against the variables interned at this level of the `trie` by prospectively recurring into each sub-`trie` that leads out from it. We need to do that, because we want to handle the situation wherein there is a variable comonent potentially followed by many possible path components. For instance, `-group/view` and `-group/list`. If we fail to match either case, we return `nil`. The check for the second branch is actually `any-vars?`. Because, if a literal match fails, and the current trie level has no variables, there's no point in trying further. The variable binding itself, if it comes to that, goes depth-first down each variable path and returns the first full match it finds.
+If we can find a literal path component at a given `trie` level that matches the next key component, we recur into it. Otherwise, we try to match against the variables interned at this level of the `trie` by prospectively recurring into each sub-`trie` that leads out from it. We need to do that, because we want to handle the situation wherein there is a variable component potentially followed by many possible path components. For instance, `-group/view` and `-group/list`. If we fail to match either case, we return `nil`. The check for the second branch is actually `any-vars?`. Because, if a literal match fails, and the current `trie` level has no variables, there's no point in trying further. The variable binding itself, if it comes to that, goes depth-first down each variable path and returns the first full match it finds.
 
 Tadaah! That's it. That's the hard part. The rest of this is just the obvious plumbing for incorporating this lookup method into a larger server.
 
@@ -284,7 +284,7 @@ One of the things I want to do with `congregate` is put together an arbitrary su
 
 [^which-weve-had]: Which we've had for a little while at this point.
 
-That second one was non-obvious to me, actually. The problem turns out to be with running implementations of OAuth, and in particular the one that [github](https://developer.github.com/v3/oauth/) provides. The trouble is that they allow exactly one callback URL, and that URL is forced to share a domain with the origin of the incoming authentication request[TODO - fact check]() or its set to your default.
+That second one was non-obvious to me, actually. The problem turns out to be with running implementations of OAuth, and in particular the one that [github](https://developer.github.com/v3/oauth/) provides. The trouble is that they [only allow redirect URLs which are domain-equivalent to the `callback` URL, which they only allow one of](https://developer.github.com/v3/oauth/#redirect-urls). If that isn't the case, the default specified `callback` URL is used.
 
 In other words, if I set my authentication URL to `congregate.ca/auth/github/callback`, and someone tries to run through the auth process from `code-retreat.congregate.ca`, they'll get booted back to the root domain URL. Which by extension means that their browser won't send their session token along for the ride, because of the domain change. In other words, what we'd really want here is to be able to share a particular `house` session token across multiple domains[^determined-by-config].
 
