@@ -386,3 +386,20 @@ The CORS thing just outright sucks balls, as far as I'm concerned. There's a dec
 ## Future Updates
 
 There's one main reason I'm not submitting this server to the `quicklisp` repo quite yet. Ok, two really, but one of them shouldn't really stop me.
+
+That minor secondary point is performance. There's a point in the pipeline where we need to buffer an incoming request byte-wise you see. And we want to do that in a non-blocking fashion to prevent things from exploding on our users. However, its come to my attention that using `read-char-no-hang` both complicates the stream processing logic slightly, _and_ reduces performance somewhat. The solution here would be to take a few days in which I'm not otherwise occupied spend it with `house` and a profiler to see where I can make things run more smoothly.
+
+Seriously though, minor point.
+
+There's one fairly big change I still want to make, and it's to the API exposed for declaring new HTTP types. Specifically, I want to put together a system that lets you declare higher-kinded types as part of handler specification. I'd like the user to be able to do something like
+
+```lisp
+(define-handler (foo) ((bar (:list :integer)) (baz (:list :keyword)) (mumble (:hash :keyword :string)))
+  ...)
+```
+
+And have it do the obvious thing. The "obvious thing" here being attempting to parse `bar` as a `list` of `integer`s, `baz` as a `list` of `keyword`s and `mumble` as a `hash-table` with `keyword` keys and `string` values. Aside from reducing the number of types you'd have to declare manually, this would also finally give you obvious support for things like `(:optional :integer)`, which would attempt to parse the appropriate parameter as either an `integer` or a `nil`. Any validation failures would drop you through the existing error infrastructure, and a series of successes would finally trip the defined business logic elsewhere.
+
+This sounds like it would require at least a minor, backwards-incompatible change to the `define-http-type` syntax, so I'd want to make that change before seriously suggesting people other than me start adopting `:house` for serious web-development purposes. Once that's done, and possibly once I've spent a few hours alone with `:house` and a profiler, I'll feel comfortable submitting this to the [`quicklisp-projects` repo](https://github.com/quicklisp/quicklisp-projects).
+
+The only thing I'm missing is three or so spare weeks in which to do this work...
