@@ -1,6 +1,6 @@
 So I've started thinking about that extension to the [`house` type system](https://github.com/inaimathi/house/blob/c4344c075b3fda0780a164338b365e8316abb9e1/define-handler.lisp#L3-L50) I mentioned last time, and I need to think about it out loud for a bit.
 
-Firstly, regardless of whatever else I do, this `type-priority` bullshit has to go. It seems saner and more sensical to just process parameters left-to-right, and allow each parameter to see all previously processed parameters. It seems like I'd have to very deliberately try to prevent it, and it adds some weird levels of complexity to boot.
+Firstly, regardless of whatever else I do, this `type-priority` bullshit has to go. It seems saner and more sensical to just process parameters left-to-right, and allow each parameter to see all previously processed parameters. It seems like I'd have to very deliberately try to prevent it, and that prevention would add additional complexity to boot. So, I'm going to get rid of it, hopefully in some sane, mostly-backwards-compatible way.
 
 Secondly, the goal of this exercise is to be able to do something like
 
@@ -77,7 +77,7 @@ Which is _sort of_ what we want.
 
 ## Why "Sort Of"?
 
-You'll notice that in order for these definitions to work, we actually need to try parsing an ecoded list of strings that encode numbers. This is unsatisfactory somehow, but given the infrastructure we've defined, you can't actually write
+You'll notice that in order for these definitions to work, we actually need to try parsing an encoded list of strings that encode numbers. This is unsatisfactory somehow, but given the infrastructure we've defined, you can't actually write
 
 ```lisp
 HOUSE> (funcall (http-type-list (http-type-integer)) "[1, 2, 3]")
@@ -102,6 +102,10 @@ The problem being that if our `integer` parser gets something that's _already_ a
 
 I'm not entirely sure what the mistake here is. It's possible that I've defined `list` poorly, and that it shouldn't rely on a json-parse in order to functino. It's possible that I've defined `integer` poorly, and that it should consider what to do in the event that it gets an Integer _as input_. Or, as a friend pointed out to me, it's possible that I'm taking the type metaphor too seriously here.
 
-Specifically, what we're defining as part of house type handlers aren't really type annotations; they're transformers of some kind, which start with a chain from `string`s and end up in whatever the appropriate data-structure is for some piece of business logic. An entirely valid approach is to say that we should accept functions in the "type annotation" slots of a `define-handler` form, and run the fucker on whatever our parameter happened to be, with additional error-handling logic that propagates HTTP errors back to the client somehow. This means that the situation is potentially a lot more general than type-checking systems a-la [Hindley Milner](http://www.sciencedirect.com/science/article/pii/0022000078900144) or descendants. So maybe something to consider is just writing a set of parser functions and composition utilities that make defining new ones easy, and letting the user pass those in as desired. This does raise a couple new concerns, of course. Specifically, we do need to be more careful about the error-handling surrounding these primitives, since our new set of assumptions now allows them to error in new and exciting ways that aren't necessarily the clients' fault. This kind of validates my suspicion that I should provide a debugging mode for `house` of the same style present in `hunchentoot`, which drops you into a local debugger on error for ease of error trapping.
+Specifically, what we're defining as part of house type handlers aren't really type annotations; they're transformers of some kind, which start with a chain from `string`s and end up in whatever the appropriate data-structure is for some piece of business logic. An entirely valid approach is to say that we should accept functions in the "type annotation" slots of a `define-handler` form, and run the fucker on whatever our parameter happened to be, with additional error-handling logic that propagates HTTP errors back to the client somehow. This means that the situation is potentially a lot more general than type-checking systems a-la [Hindley Milner](http://www.sciencedirect.com/science/article/pii/0022000078900144) or descendants. So maybe something to consider is just writing a set of parser functions and composition utilities that make defining new ones easy, and letting the user pass those in as desired.
 
-It doesn't feel like I'm going to get much further on this, so I'm backburnering it for now. The next step is moving over to one of the other things I've meant to do for the longest time, and leaving this particular use case for when I get enough concrete use-cases in mind to make a proper run at it. So it goes sometimes.
+This does raise a couple new concerns, of course. Specifically, we do need to be more careful about the error-handling surrounding these primitives, since our new set of assumptions now allows them to error in new and exciting ways that aren't necessarily the clients' fault. This kind of validates my suspicion that I should provide a debugging mode for `house` of the same style present in `hunchentoot`, which drops you into a local debugger on error for ease of error trapping.
+
+It doesn't feel like I'm going to get much further on this, so I'm backburnering it for now. The next step is moving over to another problem with house (specifically, performance), and leaving the type subsystm for when I get enough concrete use-cases in mind to make a proper run at it.
+
+So it goes sometimes.
