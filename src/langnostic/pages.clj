@@ -18,7 +18,7 @@
 
 (defn post [post]
   [:div
-   [:h1 (post :title)]
+   [:h1 [:a {:href (post-href post)} (post :title)]]
    [:span {:class "posted"}
     (fmt/unparse (fmt/formatter "E MMM d, Y") (post :posted))]
    (posts/post-content post)
