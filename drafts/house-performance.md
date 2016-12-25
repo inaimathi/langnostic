@@ -34,9 +34,9 @@ Transfer/sec:      1.43MB
 ~/quicklisp/local-projects/house $
 ```
 
-So that's a decent start. Out of the gate, according to [this](https://github.com/fukamachi/woo/blob/master/benchmark.md#benchmarks), `house` outperforms `tornado` (unless running in `pypy`), `wookie` and `hunchentoot` in terms of requests/second[^alternatively-of-course]. Which is not bad for a server that had no intention whatsoever of performing at all well.
+So that's a decent start. Out of the gate, according to [this](https://github.com/fukamachi/woo/blob/master/benchmark.md#benchmarks), `house` outperforms `tornado` (unless running in `pypy`), `wookie` and `hunchentoot` in terms of requests/second[^alternatively-of-course] on a single thread. Which is not bad for a server that had no intention whatsoever of outperforming anything.
 
-[^alternatively-of-course]: Alternatively, the hardware I'm testing on is so much better than that of the initial benchmark that it annihilates all losses. Although it doesn't seem like it, based on the environment readout. They've got about half the memory that I do, but more CPU, and this doesn't seem like it would be a memory-bound operation given that my memory use barely registers the benchmark according to `htop`. Anyhow, given that I've been assuming that `house` is the cheap-seat web-server for Common Lisp, usable only because it's the only one written without calling into FFI code, I'm pleasantly surprised to find that it also runs decently well.
+[^alternatively-of-course]: Alternatively, the hardware I'm testing on is so much better than that of the initial benchmark that it annihilates all losses. Although it doesn't seem like it, based on the environment readout found on that benchmark page. They've got about half the memory that I do, but more CPU, and this doesn't seem like it would be a memory-bound operation given that my memory use barely registers the benchmark according to `htop`. Anyhow, given that I've been assuming that `house` is the cheap-seat web-server for Common Lisp, usable only because it's the only one written without calling into FFI code, I'm pleasantly surprised to find that it also runs decently quickly.
 
 That's all well and good, but it's not really what I'm interested in. Enhance!
 
@@ -469,4 +469,283 @@ Ok, there's one more piece of session infrastructure that's still causing pains;
 
 Specifically, early on, I made the decision that `buffer!` needed to work in a streaming fashion. Which meant doing a very low-level non-blocking read in a tight loop. Unfortunately, there's no way to do this on byte-streams in Common Lisp so I ended up having to call `read-char-no-hang` through a bi-valent stream abstraction layer provided by [`flexi-streams`](http://weitz.de/flexi-streams/). That may also have had a ripple effect on the `write!` procedure, as well as `line-terminated?` and `crlf`. And according to my profiler, that means the decision may very well be coming back to bite me in the ass right now.
 
-The alternative decision would be to chuck streaming in a fucking bin, and read bytes directly into an in-memory array with a blocking, but very small timeout using `trivial-timeout`, and do a fairly aggressive but probably cheaper line-termination check before we even bother converting things into `ascii`. So, lets see how this pans out...
+The alternative decision would be to chuck streaming in a fucking bin, and read bytes directly into an in-memory array with a blocking, but very small timeout using `trivial-timeout`, and do a fairly aggressive but probably cheaper line-termination check before we even bother converting things into `ascii`. So, lets see how this pans out.
+
+First off, `buffer!` needs to change completely.
+
+```lisp
+...
+(defmethod buffer! ((buffer buffer))
+  ;; TODO - grow buffer up to +max-request-size+ when exhausted by doubling size
+  ;; TODO - binary search for the first empty slot (rather than iterating)
+  ;; TODO - seriously refactor this for repetition
+  (unless (contents buffer)
+    (setf (contents buffer) (coerce (make-array '(500)) '(vector (unsigned-byte 8)))))
+  (let* ((buffed (total-buffered buffer))
+	 (count
+	  (handler-case
+	      (trivial-timeout:with-timeout (0.01)
+		(read-sequence
+		 (contents buffer) (bi-stream buffer)
+		 :start (total-buffered buffer)))
+	    (com.metabang.trivial-timeout:timeout-error ()
+	      (- (loop for i from buffed
+		    when (zerop (aref (contents buffer) i)) return i)
+		 buffed)))))
+    (incf (total-buffered buffer) count)
+    (when (request buffer) (decf (expecting buffer) count))
+    (when (line-terminated? (contents buffer) (total-buffered buffer))
+      (multiple-value-bind (parsed expecting) (parse buffer)
+	(setf (request buffer) parsed
+	      (expecting buffer) expecting
+	      (contents buffer) (coerce (make-array '(100)) '(vector (unsigned-byte 8))))))
+    (aref (contents buffer) (max 0 (- count 1)))))
+...
+```
+
+Instead of doing a char-wise read through a `flexi-stream` like we were doing before, we're now instead reading raw octets into an array. This means we also need to change our line-termination check
+
+```lisp
+(defun line-terminated? (vec fill)
+  (and (> fill 4)
+       (= (aref vec (- fill 4)) 13)
+       (= (aref vec (- fill 3)) 10)
+       (= (aref vec (- fill 2)) 13)
+       (= (aref vec (- fill 1)) 10)))
+```
+
+...and `process-ready` needs to pass the raw `socket-stream` instead of a `flex`ed stream to a new `buffer`.
+
+```lisp
+...
+(defmethod process-ready ((ready stream-usocket) (conns hash-table))
+  (let ((buf (or (gethash ready conns) (setf (gethash ready conns) (make-instance 'buffer :bi-stream (socket-stream ready))))))
+...
+```
+
+And, finally, `parse` needs to expect an octet vector in the `contents` slot of its input buffer, rather than a reversed `list` of `char`s.
+
+```lisp
+...
+(defmethod parse ((buf buffer))
+  (let ((str (babel:octets-to-string (subseq (contents buf) 0 (total-buffered buf)))))
+...
+```
+
+Ok; moment of truth here. Evaluating that, killing the profiler, emptying session cache and running the benchtest gives us...
+
+drumroll...
+
+significant, further pause...
+
+```
+~/quicklisp/local-projects/house $ wrk -t12 -c400 -d30s http://127.0.0.1:4040/hello-world
+Running 30s test @ http://127.0.0.1:4040/hello-world
+  12 threads and 400 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    72.87ms    8.30ms 270.73ms   96.97%
+    Req/Sec    62.30     29.22   101.00     54.98%
+  2878 requests in 30.04s, 733.55KB read
+  Socket errors: connect 0, read 2878, write 0, timeout 3
+Requests/sec:     95.81
+Transfer/sec:     24.42KB
+~/quicklisp/local-projects/house $
+```
+
+Well... fuck. Ok; so I'm guessing `trivial-timeout` introduces a bunch of overhead into the equation, which cancels out any gains we get from using the faster data-structure. The macro-expander tells me that in `sbcl`, it basically just expands out to an `sb-ext:with-timeout` call.
+
+```lisp
+(LET ((#:|seconds-800| 0.01))
+  (FLET ((#:|doit-801| ()
+           (PROGN
+            (READ-SEQUENCE (CONTENTS BUFFER) (BI-STREAM BUFFER) :START
+                           (TOTAL-BUFFERED BUFFER)))))
+    (COND
+     (#:|seconds-800|
+      (HANDLER-CASE
+       (SB-EXT:WITH-TIMEOUT #:|seconds-800|
+         (#:|doit-801|))
+       (SB-EXT:TIMEOUT (COM.METABANG.TRIVIAL-TIMEOUT::C)
+        (DECLARE (IGNORE COM.METABANG.TRIVIAL-TIMEOUT::C))
+        (ERROR 'COM.METABANG.TRIVIAL-TIMEOUT:TIMEOUT-ERROR))))
+     (T (#:|doit-801|)))))
+```
+
+So, just to satisfy my curiosity, lets see if we get anything out of calling the implementation-specific thing directly. That means `buffer!` changes yet again
+
+```lisp
+(defmethod buffer! ((buffer buffer))
+  ;; TODO - grow buffer up to +max-request-size+ when exhausted by doubling size
+  ;; TODO - binary search for the first empty slot (rather than iterating)
+  ;; TODO - seriously refactor this for repetition
+  (unless (contents buffer)
+    (setf (contents buffer) (coerce (make-array '(500)) '(vector (unsigned-byte 8)))))
+  (let* ((buffed (total-buffered buffer))
+	 (count
+	  (handler-case
+	      (sb-ext:with-timeout 0.01
+		(read-sequence
+		 (contents buffer) (bi-stream buffer)
+		 :start (total-buffered buffer)))
+	    (sb-ext:timeout ()
+	      (- (loop for i from buffed
+		    when (zerop (aref (contents buffer) i)) return i)
+		 buffed)))))
+    (incf (total-buffered buffer) count)
+    (when (request buffer) (decf (expecting buffer) count))
+    (when (line-terminated? (contents buffer) (total-buffered buffer))
+      (multiple-value-bind (parsed expecting) (parse buffer)
+	(setf (request buffer) parsed
+	      (expecting buffer) expecting
+	      (contents buffer) (coerce (make-array '(100)) '(vector (unsigned-byte 8))))))
+    (aref (contents buffer) (max 0 (- count 1)))))
+```
+
+Ok; one more time.
+
+```
+~/quicklisp/local-projects/house $ wrk -t12 -c400 -d30s http://127.0.0.1:4040/hello-world
+Running 30s test @ http://127.0.0.1:4040/hello-world
+  12 threads and 400 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    74.18ms   45.39ms   1.81s    99.41%
+    Req/Sec    32.94     14.26    70.00     68.08%
+  2875 requests in 30.04s, 732.79KB read
+  Socket errors: connect 0, read 2875, write 0, timeout 2
+Requests/sec:     95.71
+Transfer/sec:     24.39KB
+~/quicklisp/local-projects/house $
+```
+
+Ok, so I'm sort of ready to admit defeat here. I mean, I know that I'm serching element-by-element through each incoming buffer for its termination point, and that could be done more efficiently, **but**
+
+1. That's a pretty tiny buffer. Straight up 500 bytes at the moment, which means that it won't be a _major_ source of slowdown.
+2. Hypothetically, even if that was the case, it can't possibly be making our requests/sec ~100 times lower.
+
+In other words, I guess I was wrong; the char-by-char processing approach doesn't cost us very much here. Lets put all of that away and focus on more micro-optimization. Incidentally, just to make sure I'm not going insane somehow, once I put it back, perf metrics go back up to the level expected.
+
+```lisp
+~/quicklisp/local-projects/house $ wrk -t12 -c400 -d30s http://127.0.0.1:4040/hello-world
+Running 30s test @ http://127.0.0.1:4040/hello-world
+  12 threads and 400 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     4.24ms   54.74ms   1.63s    99.51%
+    Req/Sec     1.47k     1.05k    6.88k    79.98%
+  174596 requests in 30.03s, 43.46MB read
+  Socket errors: connect 0, read 174651, write 0, timeout 17
+Requests/sec:   5813.36
+Transfer/sec:      1.45MB
+~/quicklisp/local-projects/house $
+```
+
+## Back to Micros
+
+So the current major culprit here is `clean-sessions!`.
+
+### `clean-sessions!`
+
+Which is understandable, because
+
+1. it currently runs every 100 times we start a fresh session (which means it runs ~500 or so times over the course of one of these bench tests)
+2. it iterates over the full session table when it runs
+3. it never cleans out any sessions, since they won't age enough over the course of a test to get evicted, which means that the table it's iterating over only ever gets larger
+
+The easiest solution is to make calling it probabilistic. In addition to being mildly faster, that will also remove the need for the local state variable `session-count`, which always kind of bugged me.
+
+So, step one, `new-session!` changes to
+
+```lisp
+;; session.lisp
+...
+(defun new-session! ()
+  (when (zerop (random +clean-sessions-every+))
+    (clean-sessions!))
+  (let ((session (make-instance 'session :token (new-session-token!))))
+    (setf (gethash (token session) *sessions*) session)
+    (loop for hook in *new-session-hook*
+       do (funcall hook session))
+    session))
+...
+```
+
+and while we're at it, we may as well bump `+clean-sessions-every+` up a bit.
+
+```lisp
+;; package.lisp
+...
+(defparameter +clean-sessions-every+ 10000)
+```
+
+I'm also considering re-factoring the server to make sessions optional. It's not a strong concern mainly because most applications of any size will want session state, and the ones that don't probably don't care about using an application server to begin with. In other words, it feels like this would be making things less convenient for the programmer specifically to do better on a benchmark, and that's not the sort of shit I typically like pulling.
+
+With the new settings and implementation, `clean-sessoins!` and `new-session!` both drop pretty far down our list of culprits anyhow.
+
+```
+  seconds  |     gc     |     consed    |    calls   |  sec/call  |  name
+----------------------------------------------------------------
+     1.721 |      0.000 |    56,793,248 |     70,064 |   0.000025 | HOUSE::BUFFER!
+     1.475 |      0.052 |   111,406,304 |    140,108 |   0.000011 | HOUSE::FLEX-STREAM
+     1.079 |      0.036 |   146,585,744 |    140,108 |   0.000008 | HOUSE::WRITE!
+     0.526 |      0.012 |   166,425,216 |    140,106 |   0.000004 | HOUSE::PARSE
+     0.468 |      0.012 |    14,476,848 |     70,053 |   0.000007 | HOUSE::HANDLE-REQUEST!
+     0.305 |      0.000 |             0 |    560,431 |   0.000001 | HOUSE::CRLF
+     0.298 |      0.000 |    17,791,024 |     70,053 |   0.000004 | HOUSE::NEW-SESSION-TOKEN!
+     0.172 |      0.000 |             0 |         12 |   0.014333 | HOUSE::CLEAN-SESSIONS!
+     0.159 |      0.000 |    16,344,288 |    140,106 |   0.000001 | HOUSE::->KEYWORD
+     0.127 |      0.000 |    93,279,184 |     70,053 |   0.000002 | HOUSE:NEW-SESSION!
+     0.105 |      0.012 |    34,233,792 |    420,318 |   0.000000 | HOUSE::LINE-TERMINATED?
+     0.074 |      0.000 |     2,032,096 |     70,053 |   0.000001 | HOUSE::SPLIT-AT
+     0.030 |      0.000 |             0 |    140,106 |   0.000000 | HOUSE::TRIE-LOOKUP
+     0.028 |      0.000 |             0 |     70,053 |   0.000000 | HOUSE::FIND-HANDLER
+     0.014 |      0.000 |             0 |     70,053 |   0.000000 | HOUSE::ANY-VARS?
+...
+```
+
+I'm not taking a look at `buffer!` right this very second, because I just spent a bunch of time on it. Which means that `flex-stream` is my next target.
+
+## `flex-stream` and `crlf`
+
+This is another method, and I get the feeling that's hurting us here. Specifically, it means that method dispatch happens every time we call `flex-stream`, _and_ it means we can't inline it. That second one is also the only problem I can see with `crlf`. So lets give this a shot, I guess.
+
+```lisp
+;; util.lisp
+
+...
+(declaim (inline flex-stream))
+(defun flex-stream (sock)
+  (flex:make-flexi-stream (socket-stream sock) :external-format :utf-8))
+...
+```
+
+```lisp
+;; house.lisp
+...
+(declaim (inline crlf))
+...
+```
+
+For the record, by the way, turning the profiling off at this point gives us
+
+```
+~/quicklisp/local-projects/house $ wrk -t12 -c400 -d30s http://127.0.0.1:4041/hello-world
+Running 30s test @ http://127.0.0.1:4041/hello-world
+  12 threads and 400 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     3.67ms   50.90ms   1.68s    99.48%
+    Req/Sec     1.76k     1.19k    8.94k    76.33%
+  232264 requests in 30.05s, 57.81MB read
+  Socket errors: connect 0, read 232620, write 0, timeout 20
+Requests/sec:   7730.33
+Transfer/sec:      1.92MB
+~/quicklisp/local-projects/house $
+```
+
+which means that we're very slowly building up to the performance of `tornado` in `pypy` running on one thread. Optimizing the hell out of `buffer!` and `write!` may in fact get us there. So, lets try.
+
+## `write!`
+
+
+## TODO
+
+- more miro-opts to major sources of slowdown
+- think a bit more about spike-conditional optimization, but don't bother implementing yet
