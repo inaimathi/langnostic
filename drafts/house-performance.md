@@ -170,6 +170,7 @@ These functions were not called:
 This is already a pretty opportunistic optimization session, so we're going fairly surface-level in terms of chages we can make. The _lowest_ of the low hanging fruit is `line-terminated?`, which is currently defined as
 
 ```lisp
+;; house.lisp
 ...
 (defun line-terminated? (lst)
   (starts-with-subseq
@@ -248,6 +249,7 @@ M-x slime-profile-reset
 Bam. Did you catch the difference there? This is one of those arcane finer-points that lisp newbs wouldn't notice, so don't feel bad if you missed it.
 
 ```lisp
+;; house.lisp
 ...
 (defun line-terminated? (lst)
   (starts-with-subseq
@@ -257,7 +259,18 @@ Bam. Did you catch the difference there? This is one of those arcane finer-point
 ...
 ```
 
-The difference is that we're now using `'` to create the comparison list. Which, according to either the [CLHS](http://clhs.lisp.se) or convention, _does_ signal to the compiler/runtime that the given list is going to be an absolutely constant piece of data that never changes. It therefore gets allocated once at compile-time, and gets re-used on every `line-terminated?` call thereafter.
+We're now using `'` to create the comparison list. Which, according to either the [CLHS](http://clhs.lisp.se) or convention, _does_ signal to the compiler/runtime that the given list is going to be an absolutely constant piece of data that never changes. It therefore gets allocated once at compile-time, and gets re-used on every `line-terminated?` call thereafter.
+
+While we're at it, by the way. `buffer!` currently calls `line-terminated?` after every character it processes. And really, it shouldn't bother unless that character was a `#\linefeed` (`#\newline` on Windows).
+
+```lisp
+;; house.lisp
+...
+	   when (and #-windows(char= char #\linefeed)
+		     #+windows(char= char #\newline)
+		 (line-terminated? (contents buffer)))
+...
+```
 
 ## Session-Related Cruft
 
@@ -474,6 +487,7 @@ The alternative decision would be to chuck streaming in a fucking bin, and read 
 First off, `buffer!` needs to change completely.
 
 ```lisp
+;; house.lisp
 ...
 (defmethod buffer! ((buffer buffer))
   ;; TODO - grow buffer up to +max-request-size+ when exhausted by doubling size
@@ -506,6 +520,7 @@ First off, `buffer!` needs to change completely.
 Instead of doing a char-wise read through a `flexi-stream` like we were doing before, we're now instead reading raw octets into an array. This means we also need to change our line-termination check
 
 ```lisp
+;; house.lisp
 (defun line-terminated? (vec fill)
   (and (> fill 4)
        (= (aref vec (- fill 4)) 13)
@@ -517,6 +532,7 @@ Instead of doing a char-wise read through a `flexi-stream` like we were doing be
 ...and `process-ready` needs to pass the raw `socket-stream` instead of a `flex`ed stream to a new `buffer`.
 
 ```lisp
+;; house.lisp
 ...
 (defmethod process-ready ((ready stream-usocket) (conns hash-table))
   (let ((buf (or (gethash ready conns) (setf (gethash ready conns) (make-instance 'buffer :bi-stream (socket-stream ready))))))
@@ -526,6 +542,7 @@ Instead of doing a char-wise read through a `flexi-stream` like we were doing be
 And, finally, `parse` needs to expect an octet vector in the `contents` slot of its input buffer, rather than a reversed `list` of `char`s.
 
 ```lisp
+;; house.lisp
 ...
 (defmethod parse ((buf buffer))
   (let ((str (babel:octets-to-string (subseq (contents buf) 0 (total-buffered buf)))))
@@ -574,6 +591,7 @@ Well... fuck. Ok; so I'm guessing `trivial-timeout` introduces a bunch of overhe
 So, just to satisfy my curiosity, lets see if we get anything out of calling the implementation-specific thing directly. That means `buffer!` changes yet again
 
 ```lisp
+;; house.lisp
 (defmethod buffer! ((buffer buffer))
   ;; TODO - grow buffer up to +max-request-size+ when exhausted by doubling size
   ;; TODO - binary search for the first empty slot (rather than iterating)
@@ -622,7 +640,7 @@ Ok, so I'm sort of ready to admit defeat here. I mean, I know that I'm serching 
 1. That's a pretty tiny buffer. Straight up 500 bytes at the moment, which means that it won't be a _major_ source of slowdown.
 2. Hypothetically, even if that was the case, it can't possibly be making our requests/sec ~100 times lower.
 
-In other words, I guess I was wrong; the char-by-char processing approach doesn't cost us very much here. Lets put all of that away and focus on more micro-optimization. Incidentally, just to make sure I'm not going insane somehow, once I put it back, perf metrics go back up to the level expected.
+In other words, I guess I was wrong; the char-by-char processing approach doesn't cost us very much here. So lets put all of that away and focus on more micro-optimization. Incidentally, just to make sure I'm not going insane somehow, once I put it back, perf metrics go back up to the level expected.
 
 ```lisp
 ~/quicklisp/local-projects/house $ wrk -t12 -c400 -d30s http://127.0.0.1:4040/hello-world
