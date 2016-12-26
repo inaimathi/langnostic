@@ -246,7 +246,7 @@ overhead estimation parameters:
 M-x slime-profile-reset
 ```
 
-Bam. Did you catch the difference there? This is one of those arcane finer-points that lisp newbs wouldn't notice, so don't feel bad if you missed it.
+Did you catch the difference there? This is one of those arcane finer-points that lisp newbs wouldn't notice, so don't feel bad if you missed it.
 
 ```lisp
 ;; house.lisp
@@ -307,23 +307,23 @@ So there seems to be two possible ways to address the issue:
 ...
 ```
 
-Which means that we could, but very probably _shouldn't_ do something like
+Which means that we _could_, but very probably _shouldn't_ do something like
 
 ```
 ...
 (defun get-session! (token)
   (awhen (gethash token *sessions*)
-    (if (and (= 0 (random 3)) (idling? it))
+    (if (and (= 0 (random +idling-check-chance+)) (idling? it))
 	(progn (remhash token *sessions*) nil)
 	(poke! it))))
 ...
 ```
 
-so that we only actually do the stale check 33% of the time we'd like to. This would have no noticeable effect on behavior during a high-traffic period, but seems like it would have a pretty large impact on effective `session` lifetimes during low-traffic periods. I'm not sure I'd want to implement this naively, but _will_ leave a note-to-self to seriously think about implementing some performance tweaks that only awaken during traffic spikes, when they're likely to have a large impact, and stay dormant otherwise without seriously affecting performance or behavior.
+so that we only actually do the stale check some percentage of the time we'd like to. This would have no noticeable effect on behavior during a high-traffic period, but seems like it would have a pretty large impact on effective `session` lifetimes during low-traffic periods. I'm not sure I'd want to implement this naively, but _will_ leave a note-to-self to seriously think about implementing some performance tweaks that only awaken during traffic spikes, when they're likely to have a large impact, and stay dormant otherwise without seriously affecting performance or behavior.
 
 ### Inline Them
 
-This _would_ be close to trivial, except that both `idling?` and `last-poked` are methods. `idling?` because I've declared it that way to increase flexibility, and `last-poked` because it's created by the `accessor` option on a `defclass` form. So it'll be a bit more effor for us specifically. First off, we basically can't use `last-poked`, and must instead resort to the slightly more verbose `(slot-value sess 'last-poked)` instead. Since calls to `last-poked` only appear in two places, and it's not an exported symbol, this sounds like a reasonable price to pay.
+This _would_ be close to trivial, except that both `idling?` and `last-poked` are methods. `idling?` because I've declared it that way to increase flexibility, and `last-poked` because it's created by the `accessor` option on a `defclass` form. So it'll take a bit more effort for us specifically. First off, we basically can't use `last-poked`, and must instead resort to the slightly more verbose `(slot-value sess 'last-poked)`. Since calls to `last-poked` only appear in two places, and it's not an exported symbol, this sounds like a reasonable price to pay.
 
 ```lisp
 ;; session.lisp
@@ -569,7 +569,9 @@ Transfer/sec:     24.42KB
 ~/quicklisp/local-projects/house $
 ```
 
-Well... fuck. Ok; so I'm guessing `trivial-timeout` introduces a bunch of overhead into the equation, which cancels out any gains we get from using the faster data-structure. The macro-expander tells me that in `sbcl`, it basically just expands out to an `sb-ext:with-timeout` call.
+Well... fuck.
+
+Ok; so I'm guessing `trivial-timeout` introduces a bunch of overhead into the equation, which cancels out any gains we get from using the faster data-structure. The macro-expander tells me that in `sbcl`, it basically just expands out to an `sb-ext:with-timeout` call along with some surrounding cruft.
 
 ```lisp
 (LET ((#:|seconds-800| 0.01))
@@ -635,12 +637,14 @@ Transfer/sec:     24.39KB
 ~/quicklisp/local-projects/house $
 ```
 
-Ok, so I'm sort of ready to admit defeat here. I mean, I know that I'm serching element-by-element through each incoming buffer for its termination point, and that could be done more efficiently, **but**
+So at this point, I'm sort of ready to admit defeat here. I mean, I know that I'm serching element-by-element through each incoming buffer for its termination point, and that could be done more efficiently, **but**
 
 1. That's a pretty tiny buffer. Straight up 500 bytes at the moment, which means that it won't be a _major_ source of slowdown.
 2. Hypothetically, even if that was the case, it can't possibly be making our requests/sec ~100 times lower.
 
-In other words, I guess I was wrong; the char-by-char processing approach doesn't cost us very much here. So lets put all of that away and focus on more micro-optimization. Incidentally, just to make sure I'm not going insane somehow, once I put it back, perf metrics go back up to the level expected.
+In other words, I guess my hypothesis was wrong.
+
+The char-wise processing approach doesn't cost us anything here. So lets put all of that away and focus on more micro-optimization. Incidentally, just to make sure I'm not going insane somehow, once I put it back, perf metrics go back up to the level expected.
 
 ```lisp
 ~/quicklisp/local-projects/house $ wrk -t12 -c400 -d30s http://127.0.0.1:4040/hello-world
@@ -742,27 +746,9 @@ This is another method, and I get the feeling that's hurting us here. Specifical
 ...
 ```
 
-For the record, by the way, turning the profiling off at this point gives us
-
-```
-~/quicklisp/local-projects/house $ wrk -t12 -c400 -d30s http://127.0.0.1:4041/hello-world
-Running 30s test @ http://127.0.0.1:4041/hello-world
-  12 threads and 400 connections
-  Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency     3.67ms   50.90ms   1.68s    99.48%
-    Req/Sec     1.76k     1.19k    8.94k    76.33%
-  232264 requests in 30.05s, 57.81MB read
-  Socket errors: connect 0, read 232620, write 0, timeout 20
-Requests/sec:   7730.33
-Transfer/sec:      1.92MB
-~/quicklisp/local-projects/house $
-```
-
-which means that we're very slowly building up to the performance of `tornado` in `pypy` running on one thread. Optimizing the hell out of `buffer!` and `write!` may in fact get us there. So, lets try.
-
 ## `write!`
 
-This is another place where we've got `method`s `def`ed to make things clearer, but that dispatch between argument types ends up costing performance. Given that this is now the _single hottest pain point_ in the profiler output of `house` under medium load, it's time to see what we can do about that.
+This is another place where we've got `method`s `def`ed to make things clearer, but that dispatch between argument types ends up costing performance. Given that this is now at the top of our hot code points, it's time to see what we can do about that.
 
 We really have three different scenarios that `write!` handles for us ambiguously.
 
@@ -898,7 +884,7 @@ These functions were not called:
  HOUSE::TYPE-EXPRESSION HOUSE::URI-DECODE HOUSE::VAR-KEY
 ```
 
-So that tells me two things.
+So that tells us two things.
 
 1. Yes, `write-ln` is the lions' share of the `write!` routine.
 2. Even with `write-ln` separated, `write!` is one of the major time-sinks. So, yes, `defun`ing it may in fact be worth it.
@@ -1019,4 +1005,22 @@ Bam.
 
 I thought I'd crack open `buffer!` and `handle-request!` next, as well as put serious thought into those spike-conditional optimizations I mentioned earlier, but I think that's enough for this sortie.
 
-We'll pick it up here next time.
+Oh, by the way, before I go, at this point turning off the profiler gives us
+
+```
+~/quicklisp/local-projects/house $ wrk -t12 -c400 -d30s http://127.0.0.1:4040/hello-world
+Running 30s test @ http://127.0.0.1:4040/hello-world
+  12 threads and 400 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     3.93ms   54.02ms   1.79s    99.47%
+    Req/Sec     1.36k     0.90k    8.65k    71.64%
+  233602 requests in 30.03s, 58.15MB read
+  Socket errors: connect 0, read 233785, write 0, timeout 33
+Requests/sec:   7778.87
+Transfer/sec:      1.94MB
+~/quicklisp/local-projects/house $
+```
+
+So we're getting closer to, but haven't _yet_ beaten, `tornado` on `pypy` in terms of performance.
+
+We'll pick it up here next time and see how much further we can push it.
