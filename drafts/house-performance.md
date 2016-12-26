@@ -744,8 +744,261 @@ which means that we're very slowly building up to the performance of `tornado` i
 
 ## `write!`
 
+This is another place where we've got `method`s `def`ed to make things clearer, but that dispatch between argument types ends up costing performance. Given that this is now the _single hottest pain point_ in the profiler output of `house` under medium load, it's time to see what we can do about that.
 
-## TODO
+We really have three different scenarios that `write!` handles for us ambiguously.
 
-- more miro-opts to major sources of slowdown
-- think a bit more about spike-conditional optimization, but don't bother implementing yet
+1. `write!` something to a `usocket` (which involves writing that same thing to the `socket-stream` of the `usocket`)
+2. `write!` an `sse` to a stream
+3. `write!` a `response` to a stream
+
+What we'll need to do is `def` separate f`un`ctions for each situation, and call the appropriate one in each case. This will both cut down on the `method` dispatch overhead, and potentially let us inline the results through a declaration later. Before we go that far, I have a mild suspicion that most of `write!`s' time is actually spent inside of the `write-ln` internal function. And making that function local to the scope that includes `stream` means that it can't be handled very efficiently until we have a value for `stream`, which in turn means that it's basically re-evaluated on most calls to `write!`. So, lets try extracting it so that the profiler can prove or disprove the hypothesis.
+
+```lisp
+;; house.lisp
+...
+(defun write-ln (stream &rest sequences)
+  (dolist (s sequences) (write-sequence s stream))
+  (crlf stream))
+
+(defmethod write! ((res response) (stream stream))
+  (write-ln stream "HTTP/1.1 " (response-code res))
+  (write-ln stream "Content-Type: " (content-type res) "; charset=" (charset res))
+  (write-ln stream "Cache-Control: no-cache, no-store, must-revalidate")
+  (write-ln stream "Access-Control-Allow-Origin: *")
+  (awhen (cookie res)
+    (if (null *cookie-domains*)
+	(write-ln stream "Set-Cookie: name=" it)
+	(loop for d in *cookie-domains*
+	   do (write-ln stream "Set-Cookie: name=" it "; domain=" d))))
+  (awhen (location res)
+    (write-ln stream "Location: " it))
+  (when (keep-alive? res)
+    (write-ln stream "Connection: keep-alive")
+    (write-ln stream "Expires: Thu, 01 Jan 1970 00:00:01 GMT"))
+  (awhen (body res)
+    (write-ln stream "Content-Length: " (write-to-string (length it)))
+    #-windows(crlf stream)
+    #+windows(format stream "~%")
+    (write-ln stream it))
+  (values))
+...
+```
+
+Once that's out in the open, and accepting the stream as an argument, survey says...
+
+```
+~/quicklisp/local-projects/house $ wrk -t12 -c400 -d30s http://127.0.0.1:4040/hello-world
+Running 30s test @ http://127.0.0.1:4040/hello-world
+  12 threads and 400 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     4.65ms   42.41ms   1.63s    99.73%
+    Req/Sec   446.98    270.23     2.19k    85.86%
+  72091 requests in 30.03s, 17.94MB read
+  Socket errors: connect 0, read 72718, write 0, timeout 13
+Requests/sec:   2400.39
+Transfer/sec:    611.82KB
+~/quicklisp/local-projects/house $
+```
+
+```
+measuring PROFILE overhead..done
+  seconds  |     gc     |     consed    |    calls   |  sec/call  |  name
+----------------------------------------------------------------
+     1.766 |      0.000 |    43,764,656 |     72,121 |   0.000024 | HOUSE::BUFFER!
+     1.627 |      0.012 |    97,533,056 |    504,776 |   0.000003 | HOUSE::WRITE-LN
+     0.729 |      0.000 |    54,697,424 |    144,222 |   0.000005 | HOUSE::WRITE!
+     0.629 |      0.036 |   199,897,776 |    144,220 |   0.000004 | HOUSE::PARSE
+     0.339 |      0.000 |    90,483,936 |     72,110 |   0.000005 | HOUSE::HANDLE-REQUEST!
+     0.263 |      0.000 |    22,082,848 |     72,110 |   0.000004 | HOUSE::NEW-SESSION-TOKEN!
+     0.186 |      0.000 |    11,166,240 |    144,220 |   0.000001 | HOUSE::->KEYWORD
+     0.168 |      0.000 |    55,233,808 |     72,110 |   0.000002 | HOUSE:NEW-SESSION!
+     0.108 |      0.000 |             0 |  3,749,720 |   0.000000 | (SETF HOUSE::CONTENTS)
+     0.107 |      0.000 |             0 |    432,660 |   0.000000 | HOUSE::LINE-TERMINATED?
+     0.063 |      0.000 |    31,829,072 |     72,110 |   0.000001 | HOUSE::SPLIT-AT
+     0.051 |      0.000 |             0 |  4,254,490 |   0.000000 | HOUSE::CONTENTS
+     0.049 |      0.000 |            16 |  3,677,610 |   0.000000 | (SETF HOUSE::TOTAL-BUFFERED)
+     0.032 |      0.000 |            64 |     72,110 |   0.000000 | HOUSE::FIND-HANDLER
+     0.022 |      0.000 |             0 |  7,355,231 |   0.000000 | HOUSE::TOTAL-BUFFERED
+     0.019 |      0.000 |             0 |     72,110 |   0.000000 | HOUSE:RESOURCE
+     0.019 |      0.000 |             0 |     72,111 |   0.000000 | HOUSE::CHARSET
+     0.016 |      0.000 |             0 |         13 |   0.001230 | HOUSE::CLEAN-SESSIONS!
+     0.013 |      0.000 |     1,572,112 |    144,220 |   0.000000 | HOUSE::TRIE-LOOKUP
+     0.011 |      0.000 |             0 |     72,111 |   0.000000 | HOUSE::KEEP-ALIVE?
+     0.011 |      0.000 |             0 |     72,111 |   0.000000 | HOUSE::RESPONSE-CODE
+     0.007 |      0.000 |     1,341,760 |     72,110 |   0.000000 | HOUSE::PARSE-PARAMS
+     0.007 |      0.000 |             0 |     72,111 |   0.000000 | HOUSE::CONTENT-TYPE
+     0.007 |      0.000 |             0 |     72,111 |   0.000000 | HOUSE::BODY
+     0.003 |      0.000 |             0 |     72,111 |   0.000000 | HOUSE::COOKIE
+     0.003 |      0.000 |             0 |     72,111 |   0.000000 | HOUSE::LOCATION
+     0.003 |      0.000 |             0 |     72,121 |   0.000000 | HOUSE::STARTED
+     0.000 |      0.000 |             0 |    144,220 |   0.000000 | HOUSE::TOKEN
+     0.000 |      0.000 |             0 |     72,110 |   0.000000 | HOUSE::HTTP-METHOD
+     0.000 |      0.000 |             0 |    144,242 |   0.000000 | HOUSE::TRIES
+     0.000 |      0.000 |             0 |     72,121 |   0.000000 | (SETF HOUSE::TRIES)
+     0.000 |      0.000 |             0 |     72,110 |   0.000000 | HOUSE::EXPECTING
+     0.000 |      0.000 |             0 |     72,110 |   0.000000 | (SETF HOUSE::EXPECTING)
+     0.000 |      0.220 |   543,580,336 |    144,232 |   0.000000 | HOUSE::PROCESS-READY
+     0.000 |      0.000 |        32,768 |          1 |   0.000000 | HOUSE::ERROR!
+     0.000 |      0.000 |             0 |     72,110 |   0.000000 | HOUSE::HANDLERS
+     0.000 |      0.000 |             0 |     72,121 |   0.000000 | HOUSE::BI-STREAM
+     0.000 |      0.000 |             0 |     72,110 |   0.000000 | HOUSE::ANY-VARS?
+     0.000 |      0.000 |    69,628,640 |          1 |   0.000000 | HOUSE:START
+     0.000 |      0.000 |             0 |     72,110 |   0.000000 | HOUSE:PARAMETERS
+     0.000 |      0.000 |             0 |    144,220 |   0.000000 | (SETF HOUSE:PARAMETERS)
+     0.000 |      0.000 |             0 |     72,110 |   0.000000 | HOUSE:HEADERS
+     0.000 |      0.000 |             0 |     72,110 |   0.000000 | (SETF HOUSE:HEADERS)
+     0.000 |      0.000 |             0 |     72,110 |   0.000000 | HOUSE:SESSION-TOKENS
+     0.000 |      0.000 |             0 |  3,893,950 |   0.000000 | HOUSE:REQUEST
+     0.000 |      0.000 |             0 |     72,110 |   0.000000 | (SETF HOUSE:REQUEST)
+----------------------------------------------------------------
+     6.262 |      0.268 | 1,222,844,512 | 27,041,379 |            | Total
+
+estimated total profiling overhead: 18.82 seconds
+overhead estimation parameters:
+  8.000001e-9s/call, 6.9600003e-7s total profiling, 2.88e-7s internal profiling
+
+These functions were not called:
+ HOUSE::ARG-EXP HOUSE::ARGS-BY-TYPE-PRIORITY HOUSE::ARGUMENTS
+ HOUSE::ASSERTION (SETF HOUSE::BODY) (SETF HOUSE::CACHE-CONTROL)
+ HOUSE::CACHE-CONTROL (SETF HOUSE::CHARSET) HOUSE::CHECK-FOR-DUPES
+ HOUSE:CLEAR-SESSION-HOOKS! (SETF HOUSE::CONTENT-TYPE)
+ (SETF HOUSE::COOKIE) HOUSE::COPY-TRIE HOUSE::CRLF HOUSE::DATA
+ HOUSE::DEBUG! HOUSE:DEFINE-FILE-HANDLER HOUSE::EMPTY HOUSE::EVENT
+ (SETF HOUSE::EXPIRES) HOUSE::EXPIRES HOUSE::FLEX-STREAM
+ HOUSE:GET-SESSION! (SETF HOUSE::HTTP-METHOD) HOUSE::ID HOUSE::IDLING?
+ HOUSE::INSERT-HANDLER! (SETF HOUSE::KEEP-ALIVE?) (SETF HOUSE::LOCATION)
+ (SETF HOUSE:LOOKUP) HOUSE:LOOKUP HOUSE:MAKE-SSE HOUSE::MAKE-TRIE
+ HOUSE:NEW-SESSION-HOOK! HOUSE::PARSE-COOKIES HOUSE::PARSE-VAR
+ HOUSE::PATH->MIMETYPE HOUSE:PATH->URI HOUSE::PATH-VAR? HOUSE::POKE!
+ HOUSE::PROCESS-URI HOUSE:PUBLISH! HOUSE::READ-ALL HOUSE:REDIRECT!
+ (SETF HOUSE:RESOURCE) (SETF HOUSE::RESPONSE-CODE) HOUSE::RETRY
+ (SETF HOUSE:SESSION-TOKENS) HOUSE::SESSION-VALUES HOUSE:SUBSCRIBE!
+ HOUSE::TRIE-INSERT! (SETF HOUSE::TRIE-MAP) HOUSE::TRIE-MAP
+ HOUSE::TRIE-P (SETF HOUSE::TRIE-VALUE) HOUSE::TRIE-VALUE
+ (SETF HOUSE::TRIE-VARS) HOUSE::TRIE-VARS HOUSE::TYPE-ASSERTION
+ HOUSE::TYPE-EXPRESSION HOUSE::URI-DECODE HOUSE::VAR-KEY
+```
+
+So that tells me two things.
+
+1. Yes, `write-ln` is the lions' share of the `write!` routine.
+2. Even with `write-ln` separated, `write!` is one of the major time-sinks. So, yes, `defun`ing it may in fact be worth it.
+
+The next smallest thing we can do to fix `write!` is to remove the extra level of dispatch we invoke when writing to a `socket` rather than directly to its `stream`. Specifically, you can see that this `write!` method
+
+```lisp
+;; house.lisp
+...
+(defmethod write! (res (sock usocket))
+  (write! res (flex-stream sock)))
+...
+```
+
+does nothing but call `write!` recursively with the input `socket`s' `stream`. This is nice and elegant, but it does mean that `write!` gets called double the number of times it really needs to, and _each_ call invokes the full `method`-lookup overhead. In order to remove it, we need to...
+
+```diff
+;; define-handler.lisp
+modified   define-handler.lisp
+@@ -93,7 +93,7 @@ parameters with a lower priority can refer to parameters of a higher priority.")
+ 				 :content-type ,content-type
+ 				 :cookie (unless ,cookie? (token session))
+ 				 :body result))))
+-		      (write! response sock)
++		      (write! response (flex-stream sock))
+ 		      (socket-close sock))))))
+
+ (defmacro make-stream-handler ((&rest args) &body body)
+@@ -103,11 +103,16 @@ parameters with a lower priority can refer to parameters of a higher priority.")
+        ,(arguments args
+ 		   `(let ((res (progn ,@body))
+ 			  (stream (flex-stream sock)))
+-		      (write! (make-instance 'response
+-					     :keep-alive? t :content-type "text/event-stream"
+-					     :cookie (unless ,cookie? (token session))) stream)
++		      (write!
++		       (make-instance
++			'response
++			:keep-alive? t :content-type "text/event-stream"
++			:cookie (unless ,cookie? (token session)))
++		       stream)
+ 		      (crlf stream)
+-		      (write! (make-instance 'sse :data (or res "Listening...")) stream)
++		      (write!
++		       (make-instance 'sse :data (or res "Listening..."))
++		       stream)
+ 		      (force-output stream))))))
+
+ (defun parse-var (str)
+@@ -159,7 +164,9 @@ parameters with a lower priority can refer to parameters of a higher priority.")
+ 		  (with-open-file (s path :direction :input :element-type 'octet)
+ 		    (let ((buf (make-array (file-length s) :element-type 'octet)))
+ 		      (read-sequence buf s)
+-		      (write! (make-instance 'response :content-type mime :body buf) sock))
++		      (write!
++		       (make-instance 'response :content-type mime :body buf)
++		       (flex-stream sock)))
+ 		    (socket-close sock))
+ 		  (error! +404+ sock))))))
+ 	(t
+@@ -181,5 +188,7 @@ parameters with a lower priority can refer to parameters of a higher priority.")
+       (list ,@(cons method (process-uri name)))
+       (lambda (sock ,cookie? session request)
+ 	(declare (ignorable sock ,cookie? session request))
+-	(write! (redirect! ,target :permanent? ,permanent?) sock)
++	(write!
++	 (redirect! ,target :permanent? ,permanent?)
++	 (flex-stream sock))
+ 	(socket-close sock)))))
+modified   house.lisp
+```
+
+```diff
+;; house.lisp
+@@ -170,13 +170,10 @@
+   (format stream "~@[id: ~a~%~]~@[event: ~a~%~]~@[retry: ~a~%~]data: ~a~%~%"
+ 	  (id res) (event res) (retry res) (data res)))
+
+-(defmethod write! (res (sock usocket))
+-  (write! res (flex-stream sock)))
+-
+ (defmethod error! ((err response) (sock usocket) &optional instance)
+   (declare (ignorable instance))
+   (ignore-errors
+-    (write! err sock)
++    (write! err (flex-stream sock))
+     (socket-close sock)))
+
+ ;;;;; Channel-related
+@@ -192,7 +189,7 @@
+     (setf (lookup channel *channels*)
+ 	  (loop for sock in it
+ 	     when (ignore-errors
+-		    (write! message sock)
++		    (write! message (flex-stream sock))
+ 		    (force-output (socket-stream sock))
+ 		    sock)
+ 	     collect it))))
+```
+
+At which point, if we `reset` the slime profiler again and re-run our benchmark test, we should see `write!` drop fairly significantly in terms of impact.
+
+```
+measuring PROFILE overhead..done
+  seconds  |     gc     |     consed    |    calls   |  sec/call  |  name
+----------------------------------------------------------------
+     1.577 |      0.000 |    88,051,168 |    511,202 |   0.000003 | HOUSE::WRITE-LN
+     1.499 |      0.024 |    43,536,368 |     73,039 |   0.000021 | HOUSE::BUFFER!
+     1.136 |      0.020 |   106,240,688 |     73,028 |   0.000016 | HOUSE::HANDLE-REQUEST!
+     0.643 |      0.024 |   384,474,768 |    146,056 |   0.000004 | HOUSE::PARSE
+     0.346 |      0.056 |    25,075,872 |     73,029 |   0.000005 | HOUSE::WRITE!
+     0.312 |      0.012 |    83,617,440 |     73,028 |   0.000004 | HOUSE::NEW-SESSION-TOKEN!
+     0.231 |      0.072 |    66,517,264 |     73,028 |   0.000003 | HOUSE:NEW-SESSION!
+...
+```
+
+Bam.
+
+I thought I'd crack open `buffer!` and `handle-request!` next, as well as put serious thought into those spike-conditional optimizations I mentioned earlier, but I think that's enough for this sortie.
+
+We'll pick it up here next time.
