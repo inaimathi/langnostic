@@ -8,14 +8,23 @@ On the one hand, this would possibly alienate X programmers who don't program yo
 
 [^lisp-weenie-digression]: Lisp weenie digression here, by the way. The only reason YML/XML/CONF/WTFBBQ files are needed at all is that the languages making use of them have shitty enough syntaxes that you can't express meaningful configuration _in_ them. As you may have heard by now, Lisp doesn't have this problem, which makes certain "trivially solvable" issues from other languages vanish entirely, and makes certain impossible issues from other languages tractable. I'll get into more depth on that at some point in the future, I'm sure.
 
-In summary, I see the need to formalize a deployment process in a machine-manipulable way, and very much agree that the best way to do this is to write scripts that assume the bare minimum of prior infrastructure. I doubt that the syntactic choices made in any of the existing tools are optimal, or even adequate.
+In summary, I see the need to formalize a deployment process in a machine-manipulable way, and very much agree that the best way to do this is to write scripts that assume the bare minimum of prior infrastructure. I doubt that the syntactic choices made in any of the existing tools are optimal, or even adequate. Before too long, I'll want to do something about this.
 
 ## House updates
 
-- reflect on what's already happened
-- chart a course for handler definition
-- talk a bit about spike-specific optimizations
-- talk about the worker-thread-for-parsing, request-handling and writing (and possibly discuss for buffering)
+If you've been keeping an eye on the [`house` repo](https://github.com/inaimathi/house), you'll notice that I've been making updates at an increased pace lately. Mostly, this is so that I can have a better base on which to continue development of [`cl-congregate`](https://github.com/inaimathi/cl-congregate), but it's also the culmination of about a year and a half of background-processing I've been doing on various network-programming-related problems relating to the construction of a decent HTTP server. Most recently, I [ran through the first](/posts/house-performance) of several intended rounds of performance optimizations.
+
+There are two ideas I had there that didn't get developed as far as I'd like, so you know what time it is.
+
+### Spike-Specific Optimizations
+
+- keep track of request flow rate
+- when it hits a certain threshold, activate code-paths that perform certain actions probabilistically, or at a constant but lower rate
+
+### Worker-Thread Approach
+
+- basically everything, including the initial TCP connection handshake can be split out amongst n worker threads
+- particularly simple to do everything past buffering, but we could also buffer in multiple threads too
 
 ## New place
 
