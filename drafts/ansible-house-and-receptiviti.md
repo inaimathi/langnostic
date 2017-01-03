@@ -18,13 +18,50 @@ There are two ideas I had there that didn't get developed as far as I'd like, so
 
 ### Spike-Specific Optimizations
 
-- keep track of request flow rate
-- when it hits a certain threshold, activate code-paths that perform certain actions probabilistically, or at a constant but lower rate
+One thing I consiedered is changing some of the session-related functions to become probabilistic. Ultimately, I _didn't_ do this because of the security implications, but it also got me thinking about how such modifications would behave. I have a theory that, under heavy enough load, there would be insignificant behavioral difference between cleaning out global session state more or less frequently to some threshold of frequency. Ine of the things we could do to improve performance where it really counts is to develop a series of optimizations that take advantage of this fact.
+
+There's essentially two ways to do this. Both of them involve tracking request throughput in some way, which means that no matter what, there needs to be some global[^actually-this-can-be] store for request metrics. Either a raw count of request/minute, or a running average with corrections to keep spikes from getting hidden in noise.
+
+[^actually-this-can-be]: Actually, this can easily be a per-thread store if we get to the second set of optimizations I've got in mind, just to reduce the number of synchronization points.
+
+Once we've got that, we can either
+
+1. Put together a set of dormant code-paths that start tripping when requests-per-minute (or appropriate average metric) hits some threshold
+2. Make certain operations probabilistic with an input of said requests-per-minute (or blah-di-blah-blah-blah)
+
+They sound similar, but implementation and behavior might differ non-trivially, so I'll need to consider them carefully. However; this approach realistically only helps with the session system and
+
+- There are still simpler optimizations left to run on session-cleaning mechanisms. In particular, we could first ensure that no cleanup happens for sessions until enough time has passed for a session to be old enough to evict.
+- There are other structural changes we could make that would affect more of the system and therefore very probably make a bigger difference to final performance
+
+Specifically
 
 ### Worker-Thread Approach
 
-- basically everything, including the initial TCP connection handshake can be split out amongst n worker threads
-- particularly simple to do everything past buffering, but we could also buffer in multiple threads too
+`house` is currently a single-threaded system. And while I don't have any interest in going thread-per-request, convenient as that would be from the implementation perspective, there is room to use more than one thread to take advantage of the inherent parallelizability of the problem we've got. The existing system does all of its work in the single, central thread where everything does. That includes `listen`ing, `buffer!`ing, `parse`ing, and `handle`ing. And really, most of it needn't be done that way. I think we're stuck `listen`ing in one thread[^though-there-is], but the rest of the processing pipeline can be delegated to other threads if that's what we end up needing.
+
+[^though-there-is]: Though there is also the option of [preforking](http://aosabook.org/en/posa/warp.html) on modern linux implementations. I haven't thought about this at all, except to note that it is possible and should be considered as a future improvement to `house`.
+
+The real trouble is balancing single vs multi-threaded performance here. While we _do_ want to take advantage of more horsepower when we're running on servers that have it, we also don't want to _require_ more than one thread for proper operation, because that would prevent us from realistically servicing the raspberry-pi-ish use cases.
+
+There are a few different ways I can implement this, depending on how much effort I'm willing to expend and how much payout I'd probably get. The difference between them essentially comes down to where in the chain of
+
+```
+listen -> buffer -> parse -> dispatch -> handle -> write
+            ^_________|
+```
+
+there should be a break-out to multiple threads. We'll use the notation `-@->` to mean "handing off to whichever thread is currently ready to process".
+
+##### `parse -@-> dispatch`
+
+Essentially, from the implementation point of view, it seems like `parse -@-> dispatch`, `dispatch -@-> handle` and `handle -@-> write` will be equally difficult to put together, so we may as well go with the one that'll give us the most potential bang for the buck.
+
+##### `buffer -@-> parse`
+
+##### `listen -@-> buffer`
+
+##### `listen -@-> buffer -> parse -@-> dispatch`
 
 ## New place
 
