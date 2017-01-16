@@ -79,7 +79,7 @@ So handing off `write-ln` and `write!` to a set of workers would already be a de
 
 The idea here would be to wait until a request is fully buffered before tossing into whatever worker-thread system we've got going. The upside is that this is ridiculously easy to implement. Because `dispatch` and onwards has no interaction with any previous step, all it would entail is throwing the fully parsed `request` into a work queue somewhere and letting whatever worker threads compete for it.
 
-The downside is that it doesn't buy us _anything_ unless we're prepared to have at least three threads total running around. One still needs to be in charge of `listen`/`accept`/`buffer!`/`parse` full-time, and the rest can handle `dispatch` and onwards. We'd also have to pull some fancy footwork to special-case the single-thread scenario because, again, one thread needs to be full-timing `listen` through `parse`, and that means it won't have any time at all left for anything else.
+The downside is that it doesn't buy us _anything_ unless we're prepared to have at least three threads total running around. One still needs to be in charge of `listen`/`accept`/`buffer!`/`parse` full-time, and the rest can handle `dispatch` and onwards. We'd also have to pull some fancy footwork to special-case the single-thread scenario because, again, one thread needs to be full-timing `listen` through `parse`, and that means it won't have any time at all left for anything else unless we arrange that at the expense of some performance.
 
 ##### `buffer! -@-> parse`
 
@@ -110,8 +110,8 @@ Here, things get a bit interesting.
 
 Because the situation wherein we establish a `listen`ing socket, then pass the results out to each worker thread round-robin style would allow us to take advantage of all the parallelism inherent in the problem. Since the `server` socket has the same `select`-like interface as a `client` socket we get out of `accept`, this approach scales naturally to any number of threads, including one. And this comes at the cost of a, hopefully minimal, central dispatch structure that would let us add new sockets into the thick of things.
 
-We'd need minimal changes to the dispatch structure; a sequence of `socket` tables rather than a single central one, and some of the processing steps would have to pick one of the tables on offer by some metric rather than always passing in the only option.
+We'd need minimal changes to the dispatch structure; a sequence of `socket` tables rather than a single central one, and some of the processing steps would have to pick one of the tables on offer by some metric rather than always passing in the only option. The sequence of `socket` tables would have one element per thread we're scaling to, and each element would be passed to a different thread. It seems to be up in the air whether the `server` socket should be passed along to the next thread each time it fires, or kept with the first one. The former would open us up to some subtle timing issues when dealing with slow clients, while the latter would mean that a particular thread would have significantly more load than the rest. We could probably compensate for that by giving it proportionally fewer connections to deal with.
 
-## Shrug
+Anyway, that particular decision is a complete aside. Given that the `listen -@-> accept` approach gives us the maximal payout in terms of exposed parallellism, _and_ gives us the smallest amount of work to do, all of which is restricted to `start` and `process-ready`, this one sounds like a winner.
 
-That's about all the head-space I've got to spare for the moment. As always, I'll let you know what I end up actually running with.
+Next time I've _got_ time to throw at performance optimizations for `house`, I'll try putting this together and kicking the tires. As always, I'll let you know how it goes.
