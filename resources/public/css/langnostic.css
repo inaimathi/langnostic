@@ -19,6 +19,7 @@ h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, h6 a:hover { color: #666; }
 
 .content img { margin: auto; margin-bottom: 10px; padding: 10px; display: block; max-width: 80%; border: 1px solid #CC0606; }
 .content p code, .content li code { background-color: #EEE; padding: 1px 3px; }
+code, pre, pre code { font-family: monospace; }
 .content blockquote { font-style: oblique; font-family: serif; background-color: #EEE; padding: 10px; border-left: 20px solid #CCC; }
 
 .post-nav { font-weight: bold; color: #CC0606; }

@@ -98,7 +98,7 @@
                     (posts/load-posts!)
                     (println "  posts.json reloaded...")))}
      {:path "resources/posts/"
-      :event-types [:create]
+      :event-types [:create :modify]
       :callback (fn [event filename]
                   (let [name (.getName (io/file filename))
                         slug (.substring name 0 (- (count name) 3))
