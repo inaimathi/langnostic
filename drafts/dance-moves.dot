@@ -12,6 +12,8 @@ digraph Moves {
 	Corridor -> BasicTurn
 	Corridor -> Circular
 	Circular -> Thread
+	Circular -> Corridor
+	Circular -> Circular
 	Thread -> Basic
 	BasicTurn -> Basic
 	BasicTurn -> Thread
