@@ -1,8 +1,12 @@
 Ok, so here's the thing.
 
-There's no way I'm ever catching up. Ever. I've been reading, watching and thinking about entire freaking worlds of such intricate interest that there is absolutely no way I'm ever giving you the full picture, even if I were to somehow start writing at the staggering pace of an article per week[^which-is-already-ridiculous]. At some point, I have to start being honest with myself about what a realistic expectation looks like here. Which, unfortunately means writing about a relatively smaller subset of my experience, but trying to do it a lot more regularly.
+There's no way I'm ever catching up.
 
-[^which-is-already-ridiculous]: Which is already ridiculous, but that would just mean I'd start keeping up with the stream. In order to actually _catch up_ in a year or two? What I'd really need to do is something like a full article every two days for the duration.
+Ever.
+
+I've been reading, watching, thinking about, and working on entire freaking worlds of such intricate interest that there is absolutely no way I'm ever giving you the full picture, even if I were to somehow start writing at the staggering pace of an article per week[^which-is-already-ridiculous]. At some point, I have to start being honest with myself about what a realistic expectation looks like here. Which, unfortunately means writing about a relatively smaller subset of my experience, but trying to do it a lot more regularly.
+
+[^which-is-already-ridiculous]: Which is already ridiculous, but that would just mean I'd start keeping up with the stream. In order to actually _catch up_ in a year or two? That would take a full article every two days for the duration.
 
 This is still very probably superior in some way to sitting in spin-locked silence, but do be aware that you're not getting anywhere near the complete picture. I suppose you never _really_ were, but there was a glorious, 8-year moment where we could both squint and pretend. So, with that mindset, here's an incomplete, molten core sample from my thoughts at the moment.
 
