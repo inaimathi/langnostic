@@ -1,6 +1,6 @@
-So a little while ago, the [Comp Sci Cabal](http://cscabal.com/) read [a paper](https://infoscience.epfl.ch/record/169879/files/RMTrees.pdf) entitled ["RRB Trees: Efficient Immutable Vectors"](https://infoscience.epfl.ch/record/169879/files/RMTrees.pdf). It wasn't entirely obvious to me how you'd go about implementing this scheme in practice. In particular, because their illustrations of concatenation on page 4 only shows the fortuitous case, it's kind of difficult to figure out what the procedure would look like for sub-optimal cases. As it happens, I was also talking to someone about implementing some persistent datastructures in Common Lisp so that I'd have less desire to reach for Clojure when prototyping certain things for my personal projects.
+So a little while ago, the [Comp Sci Cabal](http://cscabal.com/) read [a paper](https://infoscience.epfl.ch/record/169879/files/RMTrees.pdf) entitled ["RRB Trees: Efficient Immutable Vectors"](https://infoscience.epfl.ch/record/169879/files/RMTrees.pdf). It wasn't entirely obvious to me how you'd go about implementing this scheme in practice. In particular, because their illustrations of concatenation on page 4 only shows the fortuitous case, it's kind of difficult to figure out what the procedure would look like for sub-optimal cases. As it happens, I was also talking to someone about implementing some [persistent datastructures for Common Lisp](https://github.com/inaimathi/cl-fds) so that I'd have less desire to reach for Clojure when prototyping certain things for my personal projects.
 
-So, lets fucking [do this](TODO - ribbit repo)[^also-be-sure-to].
+So, lets fucking [do this](https://github.com/inaimathi/ribbit)[^also-be-sure-to].
 
 [^also-be-sure-to]: Also, be sure to read [the paper](https://infoscience.epfl.ch/record/169879/files/RMTrees.pdf), because the rest of this article assumes you at least got the gist of what we're trying to do here. Some reading on [purely functional data structures](https://www.cs.cmu.edu/~rwh/theses/okasaki.pdf) might also be in order.
 
@@ -55,7 +55,9 @@ The structure outlined by the paper works for size `m` leaf chunks. The actual `
 		 next))))
 ```
 
-This is the conceptual core of the operation. `take-across` is like the classic [`take`](https://clojuredocs.org/clojure.core/take), but operating on multiple input sequences instead of just one. In this case, we're working with `vector`s because that's our first cut internal representation of `ribbit`s.
+This is the conceptual core of the operation. `take-across` is like the classic [`take`](https://clojuredocs.org/clojure.core/take), but operating on multiple input sequences instead of just one[^note-for-haskellers]. In this case, we're working with `vector`s because that's our first cut internal representation of `ribbit`s.
+
+[^note-for-haskellers]: If you're a Haskeller or MLer, you can think of it as approximately `take-across n = take n . concat`, except that this version also returns its tail, and not just the head.
 
 ```
 RIBBIT> (take-across 5 (list #(1) #(2 3) #(4 5 6 7 8 9 10 11) #(12 13) #(14 15 16)))
@@ -431,11 +433,14 @@ The question that should be borderline annoying you by this point is "what does 
 ```
 ...
 (defun reusable? (ribbit)
-  (let ((l (len ribbit))
-	(max (expt +size+ (+ 1 (ribbit-depth ribbit)))))
-    (or (= l max)
-	(= l (- max 1))
-	(and (= l (- +size+ 1))
+  (let* ((d (ribbit-depth ribbit))
+	 (ct (length (ribbit-vec ribbit)))
+	 (reusable-lv (or (= *m* ct) (= *n* ct))))
+    (or (and (zerop d) reusable-lv)
+	(let ((max (expt *m* (+ 1 d)))
+	      (l (len ribbit)))
+	  (or (= l max) (= l (- max 1))))
+	(and reusable-lv
 	     (every #'reusable? (ribbit-vec ribbit))))))
 ...
 ```
@@ -485,3 +490,233 @@ The problem with `smartish-cat` is that it still doesn't reuse nodes in all case
 ![](/static/img/ribbit-005--consing-onto-reusable-first-block.jpg)
 
 Here, `smartish-cat` would throw away the vast majority of the right tree (because we default to calling `stupid-cat` in the case of non-reusable, zero-level left trees), even though it would optimally only have to copy out 4 nodes, and one zero-level chunk. What we'd really want to do here is figure out which zero-level nodes we need to fuck with, and make sure to only copy out affected parents rather than the full tree going upwards.
+
+This was a harder problem for me to think about than I was sort of expecting. It required backing off a few times, and taking another run up the hill after a break. Including re-writing most of the underlying plumbing into something mildly more elegant and less bug-ridden. Which is why (sorry) we kind of need to go through some of it again in fine grained detail.
+
+### Another implementation
+
+Ok, so first up, there's a problem that I didn't even mention last time, and that's the type conflation issue we introduce by doing the stupid depth auto-detection thing. I'm talking about
+
+```
+...
+(defun mk-ribbit (vec)
+  (let* ((depth (if (ribbit-p (aref vec 0))   ;; < THIS
+		    (+ 1 (ribbit-depth (aref vec 0))) ;; < THIS
+		    0))                               ;; < THIS
+	 ...)
+    ...))
+...
+```
+
+that specifically. The problem here is that we're tacitly assuming that we'll never want to use a `ribbit` of `ribbit`s anywhere. And with the current implementation, if we ever do that, things will go silently but definitely wrong in various subtle ways. What we need to do in order to fight that is introduce explicit depth specification in all functions that deal with creating new `ribbit`s. This way we can have something like `(ribbit (ribbit 1) (ribbit 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18) (ribbit :a :b :c :d))` without shit getting all weird on you. You'll even be able to `(cat (ribbit "a" "b") (ribbit (ribbit 1) (ribbit 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18) (ribbit :a :b :c :d)))` and get the right result back. This is a fairly pervasive change. It touches `mk-ribbit`, `vecs->ribbit` (which suddenly has an inappropriate name), `take-across`, `repartition`, `cat` and `ribbit` itself (because it needs to call into the others). In fact, the only pieces that don't get touched are `prune-to`, `raise-to` and `max-reusable-level`. So, here's the revised source
+
+```
+;;;; ribbit.lisp
+...
+(defun take-across (depth rbs)
+  (if (not (cdr rbs))
+      (values (first rbs) nil)
+      (let ((ct *m*)
+	    (head nil)
+	    (tail nil))
+	(loop for rs on rbs while (> ct 1)
+	   for r = (first rs)
+	   for v = (ribbit-vec r)
+	   do (cond ((> (length v) ct)
+		     (push (subseq v 0 ct) head)
+		     (setf tail (cons (mk-ribbit depth (subseq v ct)) (rest rs))
+			   ct 0))
+		    (t (push v head)
+		       (decf ct (length v))))
+	   finally (unless tail (setf tail rs)))
+	(values
+	 (mk-ribbit depth (apply #'concatenate 'vector (reverse head)))
+	 tail))))
+
+(defun repartition (depth rbs)
+  (let ((rest rbs))
+    (loop while rest for r = (pop rest)
+       if (reusable? r) collect r
+       else collect (multiple-value-bind (next rst) (take-across depth (cons r rest))
+		      (setf rest rst)
+		      next))))
+
+(defun full-level? (ribbit) (= *m* (length (ribbit-vec ribbit))))
+
+(defun reusable? (ribbit)
+  (let* ((d (ribbit-depth ribbit))
+	 (ct (length (ribbit-vec ribbit)))
+	 (reusable-lv (or (= *m* ct) (= *n* ct))))
+    (or (and (zerop d) reusable-lv)
+	(let ((max (expt *m* (+ 1 d)))
+	      (l (len ribbit)))
+	  (or (= l max) (= l (- max 1))))
+	(and reusable-lv
+	     (every #'reusable? (ribbit-vec ribbit))))))
+
+(defun compute-size-table (depth vec)
+  (unless (or (zerop depth) (and (= *m* (length vec)) (every #'full-level? vec)))
+    (coerce
+     (let ((s 0))
+       (loop for e across vec
+	  do (incf s (len e)) collect s))
+     'vector)))
+
+(defun mk-ribbit (depth vec)
+  (make-ribbit :size-table (compute-size-table depth vec) :depth depth :vec vec))
+
+(defun ribbit-level (depth elems)
+  (let ((es elems))
+    (loop while es
+       collect (mk-ribbit
+		depth (coerce
+		       (loop repeat *m* while es
+			  for e = (pop es) collect e)
+		       'vector)))))
+
+(defun ribbit-from (depth elems)
+  (let ((rbs (ribbit-level depth elems))
+	(d depth))
+    (loop while (cdr rbs)
+       do (setf rbs (ribbit-level (incf d) rbs)))
+    (first rbs)))
+
+(defun ribbit (&rest elems)
+  (if elems
+      (ribbit-from 0 elems)
+      (make-ribbit)))
+
+...
+
+(defun cat (a b)
+  (let* ((d (ribbit-depth a))
+	 (max-d (or (max-reusable-level a) 0)))
+    (cond ((and (reusable? a) (>= d (ribbit-depth b)))
+	   (mk-ribbit (+ d 1) (vector a (raise-to d b))))
+	  ((reusable? a)
+	   (ribbit-from (+ d 1) (cons a (prune-to d b))))
+	  (t
+	   (ribbit-from
+	    (+ max-d 1)
+	    (repartition
+	     max-d (append
+		    (prune-to max-d a)
+		    (prune-to max-d (raise-to max-d b)))))))))
+...
+```
+
+
+### `take-across` and `repartition`
+
+Most of that's subtle, but irrelevant to the problem we actually care about. The relevant stuff is in `take-across` and `repartition`. It's either really easy to subtly fuck up your implementation of these internal primitives, or I'm a fucking idiot and did it wrong twice in a row. Lets zoom in on them, so at least I'll have a better understanding of where the mistakes crept in for next time.
+
+```
+...
+(defun take-across (depth rbs)
+  (if (not (cdr rbs))
+      (values (first rbs) nil)
+      (let ((ct *m*)
+	    (head nil)
+	    (tail nil))
+	(loop for rs on rbs while (> ct 1)
+	   for r = (first rs)
+	   for v = (ribbit-vec r)
+	   do (cond ((> (length v) ct)
+		     (push (subseq v 0 ct) head)
+		     (setf tail (cons (mk-ribbit depth (subseq v ct)) (rest rs))
+			   ct 0))
+		    (t (push v head)
+		       (decf ct (length v))))
+	   finally (unless tail (setf tail rs)))
+	(values
+	 (mk-ribbit depth (apply #'concatenate 'vector (reverse head)))
+	 tail))))
+
+(defun repartition (depth rbs)
+  (let ((rest rbs))
+    (loop while rest for r = (pop rest)
+       if (reusable? r) collect r
+       else collect (multiple-value-bind (next rst) (take-across depth (cons r rest))
+		      (setf rest rst)
+		      next))))
+...
+```
+
+These versions are both mildly simplified by assuming the special variable `*m*` instead of accepting it as an argument and assuming they're dealing with `ribbit` sequences rather than polymorphic `ribbit`/`vector` sequences. That second one is due to the new implementations of `ribbit-level` and `ribbit-from` dealing with leaf vectors directly. `repartition` is also slightly more complex in that it deals with `reusable?` elements of its input directly, but `take-across` is _much_ simpler not having to deal with the distinction so I count that as a win.
+
+The specific behavior we want out of this thing, which we apparently weren't getting from the earlier implementations, is
+
+1. Directly collect any `reusable?` input `ribbit`s (thus preventing their copying in the output)
+2. At any `ribbit` seams, re-jig some number of contiguous `ribbit`s to form new, `reusable?`-sized `ribbit`s for the next level (this implies copying pointers to their children)
+3. Only re-jig as many `ribbit`s as you need to in order to get to freshly reusable sequences, and if you get to further reusables, collect them to avoid copying again
+4. Don't bother re-jigging the last `ribbit` in an input sequence, even if it isn't `reusable?`, because there's no chance of doing better with no remaining material.
+
+I'm honestly still mildly perplexed why previous versions didn't exhibit this, but it's fairly obvious that the above revisions do the right thing.
+
+### Close-Up of the revised `cat`
+
+```
+...
+(defun cat (a b)
+  (let* ((d (ribbit-depth a))
+	 (max-d (or (max-reusable-level a) 0)))
+    (cond ((and (reusable? a) (>= d (ribbit-depth b)))
+	   (mk-ribbit (+ d 1) (vector a (raise-to d b))))
+	  ((reusable? a)
+	   (ribbit-from (+ d 1) (cons a (prune-to d b))))
+	  (t
+	   (ribbit-from
+	    (+ max-d 1)
+	    (repartition
+	     max-d (append
+		    (prune-to max-d a)
+		    (prune-to max-d (raise-to max-d b)))))))))
+...
+```
+
+Which has also been pretty significantly simplified. We're down to three clauses, and none of them do anything perplexing at this point.
+
+```
+...
+    (cond ((and (reusable? a) (>= d (ribbit-depth b)))
+	   (mk-ribbit (+ d 1) (vector a (raise-to d b))))
+...
+```
+
+When the left `ribbit` is reusable and the right `ribbit` is as deep or shallower, just make a new binary `ribbit` of the inputs. Easy.
+
+```
+...
+	  ((reusable? a)
+	   (ribbit-from (+ d 1) (cons a (prune-to d b))))
+...
+```
+
+When the left `ribbit` is reusable and the right `ribbit` is deeper, prune the right `ribbit` down and make a new ribbit from the components that are merely as deep as the left `ribbit`. Again, easy.
+
+```
+...
+	  (t
+	   (ribbit-from
+	    (+ max-d 1)
+	    (repartition
+	     max-d (append
+		    (prune-to max-d a)
+		    (prune-to max-d (raise-to max-d b))))))
+...
+```
+
+Finally, the tough one. If the thing on the left is not reusable, find its maximum reusable depth (which might be zero), `repartition` the pruning of both `a` and `b` down to that depth and build up a new ribbit from that point.
+
+That's not as good as you can do. There's still a couple screw-cases that this approach falls into, and it's sometimes possible to reuse more of the right tree than the maximum reusable depth of the left tree. The problem is that doing so involves getting a lot more elaborate in the handling of concatenation inputs, which may or may not be worth it depending on how much actual performance/memory it ends up saving, but it doesn't seem like it'll change the external interface at all. Which means I'm prepared to call it for now.
+
+## Next Steps
+
+So, that's the state of play. I was considering not posting this for a little while longer to finish up what I was thinking about, but this post has been brewing for about two/three weeks, and I've got other shit I want to write about. So around this point in the lifecycle, it's either time to [get my FILDI out](https://www.youtube.com/watch?v=RYlCVwxoL_g), or accept that it'll never be posted.
+
+The code written up to this point can be found in two places:
+
+1. [The `ribbit` repo](https://github.com/inaimathi/ribbit), which contains a partial implementation of just this data structure
+2. [The `cl-fds` repo](https://github.com/inaimathi/cl-fds), which contains this along with a couple other useful functional data structures for Common Lisp
+
+I'm going to finish out the `ribbit` implementation in both places, but my mid/long-term plan is to do more work on `cl-fds` so that it provides a pretty good, consistent interface to some new functional datastructures as well as functional interfaces to the built-in mutation-capable set pieces. I'll also very probably be putting together a follow-up article when one or both of those projects get to a place I can call "complete".
