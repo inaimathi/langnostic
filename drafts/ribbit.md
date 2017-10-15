@@ -2,7 +2,7 @@ So a little while ago, the [Comp Sci Cabal](http://cscabal.com/) read [a paper](
 
 So, lets fucking [do this](https://github.com/inaimathi/ribbit)[^also-be-sure-to].
 
-[^also-be-sure-to]: Also, be sure to read [the paper](https://infoscience.epfl.ch/record/169879/files/RMTrees.pdf), because the rest of this article assumes you at least got the gist of what we're trying to do here. Some reading on [purely functional data structures](https://www.cs.cmu.edu/~rwh/theses/okasaki.pdf) might also be in order.
+[^also-be-sure-to]: Also, be sure to read or at least skim [the paper](https://infoscience.epfl.ch/record/169879/files/RMTrees.pdf), because the rest of this article assumes you at least got the gist of what we're trying to do here. Some reading on [purely functional data structures](https://www.cs.cmu.edu/~rwh/theses/okasaki.pdf) might also be in order depending on how much experience you have with this sort of thing.
 
 ## Naive `cat`
 
@@ -380,7 +380,7 @@ So yeah, we're not magically reusing pointers just by adding an explicit `struct
 
 ![](/static/img/ribbit-001--fully-reusable-left-tree-right-tree-of-same-depth.jpg)
 
-If we've got a reusable tree on the left, and a tree of the same depth on the left, we've got the easy case. It's basically just a matter of consing the two together.
+If we've got a reusable tree on the left, and a tree of the same depth on the right, we've got the easy case. It's basically just a matter of consing the two together.
 
 ![](/static/img/ribbit-002--fully-reusable-left-tree-right-tree-of-greater-depth.jpg)
 
