@@ -37,3 +37,6 @@ In terms of interface, it's transparent. So if you're used to using `quickprojec
 I've already used [a branch](https://github.com/inaimathi/quickproject/tree/test-integration) of [my version](https://github.com/inaimathi/quickproject) to generate the `cl-fds` project (which includes a generated test harness using [`test-utils`](https://github.com/inaimathi/test-utils), [`quickcheck`](https://github.com/mcandre/cl-quickcheck) and [`prove`](https://github.com/fukamachi/prove/)).
 
 There's an [open PR](https://github.com/xach/quickproject/pull/14), so hopefully, this gets merged into the mainline `quickproject` at some point. Given how busy Xach is, I wouldn't hold my breath, but you can still clone and use mine if you like.
+
+> EDIT:
+> As of October 27, 2017, it has been merged. So, presumably, at this point you can get all this functionality out of the main `quickproject` project.
