@@ -7,7 +7,9 @@ So, lets fucking [do this](https://github.com/inaimathi/ribbit)[^also-be-sure-to
 ## Naive `cat`
 
 So, the goal of this datastructure is to get slightly better concatenation behavior than other options. With that in mind, the interesting operation
-is `cat` (and similarly interesting operations are going to be `split` and `insert-at`, but we'll leave those for later).
+is `cat`[^similarly-interesting-ops].
+
+[^similarly-interesting-ops]: And similarly interesting operations are going to be `split` and `insert-at`, but we'll leave those for later. Partly because I suspect they won't have much to do with `cat`, and partly because I've also started [a separate project](https://github.com/inaimathi/cl-fds) to implement a more general interface for functional datastructures in Common Lisp. Patches are, of course, welcome on both.
 
 ```lisp
 ;;;; package.lisp
@@ -151,7 +153,7 @@ RIBBIT> (stupid-cat (ribbit 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18) (ribbi
 RIBBIT>
 ```
 
-So, why "`stupid-cat`"? Because it doesn't pointer share.
+So, why "`stupid-cat`"?
 
 ```
 RIBBIT> (let ((r (ribbit 1 2 3 4)))
@@ -159,6 +161,8 @@ RIBBIT> (let ((r (ribbit 1 2 3 4)))
 NIL
 RIBBIT>
 ```
+
+Because it doesn't pointer share.
 
 As you can see, even though the first element of that resulting `ribbit` is the same as part of the input, `eq` reveals that the element pointers have actually been copied. Half the point of using persistent data structures is that, because mutation is heavily restricted, you can share structures with previous "versions" of a particular data instance. In this case, it would be entirely reasonable to simply point the first element of the result at the input vector that it's going to be exactly equivalent to.
 
@@ -244,50 +248,37 @@ First off, we're currently checking for depth 0 `ribbit`s by checking if their f
 ...
 ```
 
-Now that we've got that, we need to make sure that `take-across` is `ribbit`/`vector`-agnostic (since we might be dealing with either).
+Now that we've got that, we'll specialize `take-across` and `repartition` so that they work on `ribbit`s rather than general sequences.
 
 ```
 ...
-(defun take-across (n vecs)
-  (let ((ct n)
-	(head nil)
-	(tail nil))
-    (loop for vs on vecs while (> ct 0)
-       for v = (typecase (first vs)
-		 (ribbit (ribbit-vec (first vs)))
-		 (t (first vs)))
-       do (cond ((> (length v) ct)
-		 (push (subseq v 0 ct) head)
-		 (setf tail (cons (subseq v ct) (rest vs))
-		       ct 0))
-		(t (push v head)
-		   (decf ct (length v))))
-       finally (unless tail (setf tail vs)))
-    (values
-     (let ((v (first head)))
-       (cond ((and (not (cdr head))
-		   (or (ribbit-p v) (vectorp v)))
-	      v)
-	     ((not (cdr head))
-	      (coerce v 'vector))
-	     (t
-	      (apply #'concatenate 'vector (reverse head)))))
-     tail)))
-...
-```
+(defun take-across (depth rbs)
+  (if (not (cdr rbs))
+      (values (first rbs) nil)
+      (let ((ct *m*)
+	    (head nil)
+	    (tail nil))
+	(loop for rs on rbs while (> ct 1)
+	   for r = (first rs)
+	   for v = (ribbit-vec r)
+	   do (cond ((> (length v) ct)
+		     (push (subseq v 0 ct) head)
+		     (setf tail (cons (mk-ribbit depth (subseq v ct)) (rest rs))
+			   ct 0))
+		    (t (push v head)
+		       (decf ct (length v))))
+	   finally (unless tail (setf tail rs)))
+	(values
+	 (mk-ribbit depth (apply #'concatenate 'vector (reverse head)))
+	 tail))))
 
-Also, we'll no longer be `repartition`ing things, instead we'll be `ribbpartition` them, because we want the output to be `ribbit`s.
-
-```
-...
-(defun ribbpartition (ct rbs)
+(defun repartition (depth rbs)
   (let ((rest rbs))
-    (loop while rest
-       collect (multiple-value-bind (next rst) (take-across ct rest)
-		 (setf rest rst)
-		 (if (ribbit-p next)
-		     next
-		     (mk-ribbit next))))))
+    (loop while rest for r = (pop rest)
+       if (reusable? r) collect r
+       else collect (multiple-value-bind (next rst) (take-across depth (cons r rest))
+		      (setf rest rst)
+		      next))))
 ...
 ```
 
@@ -295,45 +286,53 @@ This new representation has some complications that we need to abstract away fro
 
 ```
 ...
-(defun full-level? (ribbit)
-  (= +size+ (length (ribbit-vec ribbit))))
+(defun full-level? (ribbit) (= *m* (length (ribbit-vec ribbit))))
 
-(defun mk-ribbit (vec)
-  (let* ((depth (if (ribbit-p (aref vec 0))
-		    (+ 1 (ribbit-depth (aref vec 0)))
-		    0))
-	 (size-table (unless (or (zerop depth) (and (= +size+ (length vec)) (every #'full-level? vec)))
-		       (coerce
-			(let ((s 0))
-			  (loop for e across vec
-			     do (incf s (len e)) collect s))
-			'vector))))
-    (make-ribbit :depth depth :vec vec :size-table size-table)))
+...
 
-(defun vecs->ribbit (vs)
-  (let ((rb vs))
-    (loop for next = (ribbpartition +size+ rb)
-       if (not (cdr next)) return (first next)
-       else if (>= +size+ (length next)) return (mk-ribbit (coerce next 'vector))
-       else do (setf rb (list (coerce next 'vector))))))
+(defun compute-size-table (depth vec)
+  (unless (or (zerop depth) (and (= *m* (length vec)) (every #'full-level? vec)))
+    (coerce
+     (let ((s 0))
+       (loop for e across vec
+	  do (incf s (len e)) collect s))
+     'vector)))
+
+(defun mk-ribbit (depth vec)
+  (make-ribbit :size-table (compute-size-table depth vec) :depth depth :vec vec))
+
+(defun ribbit-level (depth elems)
+  (let ((es elems))
+    (loop while es
+       collect (mk-ribbit
+		depth (coerce
+		       (loop repeat *m* while es
+			  for e = (pop es) collect e)
+		       'vector)))))
+
+(defun ribbit-from (depth elems)
+  (let ((rbs (ribbit-level depth elems))
+	(d depth))
+    (loop while (cdr rbs)
+       do (setf rbs (ribbit-level (incf d) rbs)))
+    (first rbs)))
 
 (defun ribbit (&rest elems)
   (if elems
-      (vecs->ribbit (list elems))
+      (ribbit-from 0 elems)
       (make-ribbit)))
 ...
 ```
 
-Also, the astute of you will notice that we call `len` in the definition of `mk-ribbit`, which means we'll need to define that ahead of completing our `cat` implementation.
+Also, you might notice the `len` call in the definition of `compute-size-table`, which means we'll need to define that ahead of completing our `cat` implementation.
 
 ```
 ...
 (defun len (rb)
-  (cond ((vectorp rb) (length rb))
-	((zerop (ribbit-depth rb))
+  (cond ((zerop (ribbit-depth rb))
 	 (length (ribbit-vec rb)))
 	((null (ribbit-size-table rb))
-	 (expt +size+ (+ 1 (ribbit-depth rb))))
+	 (expt *m* (+ 1 (ribbit-depth rb))))
 	(t (let ((szs (ribbit-size-table rb)))
 	     (aref szs (- (length szs) 1))))))
 ...
@@ -344,39 +343,13 @@ The good news is that, as a result of the above, `stupid-cat` gets a bit simpler
 ```
 ...
 (defun stupid-cat (a b)
-  (let ((zeros nil))
-    (labels ((find-zeros (rb)
-	       (if (zerop (ribbit-depth rb))
-		   (push rb zeros)
-		   (loop for v across (ribbit-vec rb) do (find-zeros v)))))
-      (mapc #'find-zeros (list a b))
-      (vecs->ribbit (ribbpartition +size+ (reverse zeros))))))
+  (ribbit-from 1 (repartition 0 (append (prune-to 0 a) (prune-to 0 b)))))
 ...
 ```
 
-The bad news is that building up to `smart-cat` is...difficult. Before we get to it, lets just ensure that the problem remains.
+The bad news is that building up to `smart-cat` is a bit tricky.
 
-```
-RIBBIT> (let ((r (ribbit 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16)))
-	  (ribbit-vec (stupid-cat r (ribbit 1 2 3 4))))
-#(#S(RIBBIT
-     :SIZE-TABLE NIL
-     :DEPTH 1
-     :VEC #(#S(RIBBIT :SIZE-TABLE NIL :DEPTH 0 :VEC #(1 2 3 4))
-            #S(RIBBIT :SIZE-TABLE NIL :DEPTH 0 :VEC #(5 6 7 8))
-            #S(RIBBIT :SIZE-TABLE NIL :DEPTH 0 :VEC #(9 10 11 12))
-            #S(RIBBIT :SIZE-TABLE NIL :DEPTH 0 :VEC #(13 14 15 16))))
-  #S(RIBBIT
-     :SIZE-TABLE #(4)
-     :DEPTH 1
-     :VEC #(#S(RIBBIT :SIZE-TABLE NIL :DEPTH 0 :VEC #(1 2 3 4)))))
-RIBBIT> (let ((r (ribbit 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16)))
-	  (eq r (aref (ribbit-vec (stupid-cat r (ribbit 1 2 3 4))) 0)))
-NIL
-RIBBIT>
-```
-
-So yeah, we're not magically reusing pointers just by adding an explicit `struct` into the mix. Because this routine is so involved, and still so raw in my mind, lets jump into the hard part first and I'll paint in the surroundings for you as I go. In fact, lets go through what we actually want before writing the code. Here's a notation I've been toying with.
+Because this routine is still so raw in my mind, lets jump into the hard part first and I'll paint in the surroundings for you as I go. In fact, lets go through what we actually want before writing the code. Here's a notation I've been toying with.
 
 ![](/static/img/ribbit-001--fully-reusable-left-tree-right-tree-of-same-depth.jpg)
 
@@ -386,7 +359,7 @@ If we've got a reusable tree on the left, and a tree of the same depth on the ri
 
 If we've got a reusable tree on the left and a deeper tree on the right, we want to build a ribbit from the thing on the left and the equivalently deep levels on the right[^there-may-in-fact]
 
-[^there-may-in-fact]: There may in fact be more edge cases opening up here when we consider splitting trees, since that can yield "invalid" `ribbits`. We'll discuss more later.
+[^there-may-in-fact]: There may in fact be more edge cases opening up here when we consider splitting trees, since that can yield "invalid" `ribbits`. I'll discuss this more in a future article.
 
 ![](/static/img/ribbit-003a--non-zero-left-tree.jpg)
 ![](/static/img/ribbit-003b--non-zero-left-tree.jpg)
@@ -408,23 +381,19 @@ In code, that looks like
 ```
 ...
 (defun smartish-cat (a b)
-  (let ((d (ribbit-depth a)))
+  (let* ((d (ribbit-depth a))
+	 (max-d (or (max-reusable-level a) 0)))
     (cond ((and (reusable? a) (>= d (ribbit-depth b)))
-	   (mk-ribbit (vector a (raise-to d b))))
+	   (mk-ribbit (+ d 1) (vector a (raise-to d b))))
 	  ((reusable? a)
-	   (apply #'ribbit a (prune-to d b)))
-	  ((not (zerop d))
-	   (let ((lv (max-reusable-level a)))
-	     (if lv
-		 (loop for r on (prune-to lv a)
-		    if (reusable? (first r)) collect (first r) into reusables
-		    else do (return (apply
-				     #'ribbit
-				     (append
-				      reusables
-				      (ribbpartition +size+ (append r (prune-to lv (raise-to lv b))))))))
-		 (stupid-cat a b))))
-	  (t (stupid-cat a b)))))
+	   (ribbit-from (+ d 1) (cons a (prune-to d b))))
+	  (t
+	   (ribbit-from
+	    (+ max-d 1)
+	    (repartition
+	     max-d (append
+		    (prune-to max-d a)
+		    (prune-to max-d (raise-to max-d b)))))))))
 ...
 ```
 
@@ -450,6 +419,7 @@ As per the paper, we're dealing with `m/n` trees here, which means that an indiv
 1. Fully saturated
 2. One off from being fully saturated
 3. One smaller than `+size+`, and has only `reusable?` children
+4. A 0-depth node that is one smaller than `+size+` or as large as `+size+`
 
 The last bits of this procedure that you haven't seen yet are `raise-to`, `prune-to` and `max-reusable-level`, none of which should be surprising in their definitions.
 
@@ -458,18 +428,18 @@ The last bits of this procedure that you haven't seen yet are `raise-to`, `prune
 (defun raise-to (depth ribbit)
   (if (>= (ribbit-depth ribbit) depth)
       ribbit
-      (let ((r ribbit))
-	(loop until (= (ribbit-depth r) depth)
-	   do (setf r (mk-ribbit (vector r))))
+      (let ((r ribbit)
+	    (d (ribbit-depth ribbit)))
+	(loop until (= d depth)
+	   do (setf r (mk-ribbit (incf d) (vector r))))
 	r)))
 
-(defun prune-to (level ribbit)
-  (if (= level (ribbit-depth ribbit))
+(defun prune-to (depth ribbit)
+  (if (= depth (ribbit-depth ribbit))
       (list ribbit)
       (let ((rbs (list ribbit)))
-	(loop until (= level (ribbit-depth (first rbs)))
-	   do (setf rbs (loop for r in rbs
-			   append (coerce (ribbit-vec ribbit) 'list))))
+	(loop until (= depth (ribbit-depth (first rbs)))
+	   do (setf rbs (loop for r in rbs append (coerce (ribbit-vec ribbit) 'list))))
 	rbs)))
 
 (defun max-reusable-level (ribbit)
