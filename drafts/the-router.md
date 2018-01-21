@@ -1,4 +1,4 @@
-Ok, so a little while ago, I gave [a PW<3 talk](https://www.meetup.com/Papers-We-Love-Toronto/events/244292363/) on one of [Ackley's pieces](http://www.cs.unm.edu/~ackley/papers/hotos-11.pdf)[PDF]. In order to properly give that talk, and point out interesting ideas and approaches in this kind of distributed computation, I had to write a [Router](https://github.com/inaimathi/trurl/blob/62f9c429710331f0d27b7ea00ede3ad489307245/machines.lisp#L23-L116).
+Ok, so a while ago, I gave [a PW<3 talk](https://www.youtube.com/watch?v=ddlG2YZuXCw) on one of [Ackley's pieces](http://www.cs.unm.edu/~ackley/papers/hotos-11.pdf)[PDF]. In order to properly give that talk, and point out interesting ideas and approaches in this kind of distributed computation, I had to write a [Router](https://github.com/inaimathi/trurl/blob/62f9c429710331f0d27b7ea00ede3ad489307245/machines.lisp#L23-L116).
 
 ![/static/img/the-router/the-router.gif](An animation of the router being spawned, unfolding and beginning to shunt messages)
 
@@ -128,13 +128,15 @@ One interesting thing that happened initially is that I defined `router-fluid` a
 	 do (lem:spawn-in! (lem:neighbor x y) lem:self))))
 ```
 
-Which is much simpler than the version you saw earlier, but also a bit more interesting at the macro scale. It's basically gray goo with a whitelist. The idea is that when fully formed, a `router`s protective shell is as wide as the event-window radius, so whitelisting those cells will be enough to keep the fluid contained through inter-cell rather than intra-cell interactions. This causes two problems. Firstly, you need to make sure that the `router` wall is sealed before you spawn the first drop of `router-fluid` because it would otherwise escape and eat the world. Second, you'd damn well better hope that nothing breaches that `router` wall for exactly the same reason. This original version was titled `router-bleach`, for perhaps obvious resons. You probably _do_ want it to eat things that aren't part of the router, because you might otherwise get hostile particles jumping around that interfere with its internal operations. But you absolutely _don't_ want it eating anything past the router border.
+Which is much simpler than the version you saw earlier, but also a bit more interesting at the macro scale. It's basically gray goo with a whitelist. The idea is that when fully formed, a `router`s protective shell is as wide as the event-window radius, so whitelisting those cells will be enough to keep the fluid contained through inter-cell rather than intra-cell interactions. This causes two problems. Firstly, you need to make sure that the `router` wall is sealed before you spawn the first drop of `router-fluid` because it might otherwise escape and eat the world. Second, you'd damn well better hope that nothing breaches that `router` wall for exactly the same reason. This original version was titled `router-bleach`, for perhaps obvious resons. You probably _do_ want it to eat things that aren't part of the router, because you might otherwise get hostile particles jumping around that interfere with its internal operations. But you absolutely _don't_ want it eating anything past the router border.
 
-This is one of those places where it would help to have different conceptual structures than just grid-based accessors. It might help to have an idea of what it means to be inside of a particular space that isn't quite as low-level as the current `x`/`y` co-ordinate system. Because otherwise you have the choice between bounding the fluid explicitly[^which-seems-like], and bounding it implicitly[^which-has-the-problem].
+This is one of those places where it would help to have different conceptual structures than just grid-based accessors. It might help to have an idea of what it means to be inside of a particular space that isn't quite as low-level as the current `x`/`y` co-ordinate system. Because otherwise you have the choice between bounding the fluid explicitly[^which-seems-like], and bounding it implicitly[^which-has-the-problem]. It might be possible to split the difference by slowing down the rate at which router bleach eats things[^for-instance-by-state], but I'm not entirely convinced that this wouldn't merely give us both sets of problems.
 
 [^which-seems-like]: Which seems like it would make it harder to scale the `router` out to encompass more space later.
 
 [^which-has-the-problem]: Which has the problem we just discussed of posing a serious threat to the well-being of the world if it ever escapes. Although it seems like this might make for an interesting and dramatic story arc in some piece of science fiction, we realistically want to limit that risk.
+
+[^for-instance-by-state]: For instance, by introducing some state in the router fluid, and using it to only eat things that remain non-whitelisted entities for three or more turns at a time.
 
 ### Gray Goo
 
@@ -166,12 +168,31 @@ Yet another approach is to have each spawning cell conduct a census of its neigh
 
 [^there-is-no-explicit]: There is no explicit die-roll here. We check if there's "enough" messages running around to keep us busy, and if there are, we deterministically refrain from spawning new messages. The overall system behavior might still be very chaotic because of the shunting behavior of `router-endpoint`s or `router-message`s themselves, but that chaos is introduced elsewhere and not exacerbated by the census-conducting `router-input` cells.
 
+That's close, but not exactly the same as the [anthill approach](https://www.ted.com/talks/deborah_gordon_digs_ants), where we introduce state into individual cells. They keep count of the things they've seen and act accordingly. The downside to _this_ approach is that it relies on more long-lived cells than either the predation or census approaches. Reflexively, that means not having cells clobber each other quite as often, except that aggressively clobbering is a very good strategy to make sure that we don't grow over-reliant on some particular piece of internal state. Remember, the point is robustness. So relying on long-lived state which might disappear when it meets a non-cooperating[^cooperating-cells-are-ok] `spawn!`ing cell seems like a bad idea.
+
+[^cooperating-cells-are-ok]: Cooperating cells are ok, since they can save any state of the things they clobber when `spawn!`ing.
+
 ## The synchronization problem
 
-- Synchronizing a specific turn gets odd in the global context. While we're running single-threaded simulators, it's easy to imagine a turn being taken somewhere in a way that minimizes friction. In a distributed, decentralized system, it's much harder to understand how some field of 41 cells[^or-whatever-number] ends up deciding wh
+Synchronizing a specific turn gets odd in the global context. While we're running single-threaded simulators, it's easy to imagine a turn being taken somewhere in a way that minimizes friction. In a distributed, decentralized system, it's much harder to understand how some field of 41 cells[^or-whatever-number] ends up deciding that a particular cell should have write priority at the same time.
 
 [^or-whatever-number]: Or whatever number you ultimately ended up picking for your thing, it doesn't matter.
 
+In a simulator it's easy, because we're centralized and running locally. In a real system, where we're dealing with a distributed and decentralized network of cells all trying to inter-communicate, it involves either remote locking or partial neighborhood execution. Let me unpack that. We can _either_ say that we're going to lock a cells' full neighborhood while it acts, _or_ we can say that a cell will have to be able to execute its code while seeing only part of its neighborhood. If we go for locking the full neighborhood, we get into the phenomenally tricky remote locking problem, where we have to coordinate use of a shared resource with a number of remote agents. For this purpose, it might actually be better to have multi-cell tiles be the norm, rather than have each cell individually implemented as a separate machine[^since-that-requires-less]
 
-- Talk about interactions between synchronization problems and census taking. "This is problematic when you're expected to deal with partial neighborhoods (as you would in a lock-free system)"
-- You might also go with a stateful system a-la anthills (link to Deborah Gordon's TED talk). That is, each cell conducts a census each turn, and applies some temporal decay of that state. This is problematic in the situation where a cell is wiped out (because that loses a bunch of collected memory rather than just an extra computational unit)
+[^since-that-requires-less]: Since that requires fewer messages to establish locks on a neihborhood. Assuming your tiles were rectangular larger than the event window, you'd be able to establish a neighborhood lock with between zero and four exchanges rather than 41.
+
+If we instead say that the cell must be able to work on a partial neighborhood[^which-lets-be-honest], then a bunch of the census machinery we discussed above breaks in a non-trivial way. At minimum, you'd have to start dealing with neighborhood census percentages rather than raw counts, _and_ you'd have to tailor them in a way that can deal with the pessimal case of only getting one of your neighboring cells addressed in a "turn".
+
+[^which-lets-be-honest]: Which, lets be honest, might happen anyhow in the event of a fried tile or network error. But those would ideally be rare cases as opposed to what I'm proposing here.
+
+## What's Next
+
+A fuckton of thought, I guess. And I'll also want to actually talk to Dave Ackley at some point instead of merely consuming his written and video media on the topic.
+
+The particular things I still want to prototype and figure out are:
+
+- A simulation of cell tiles. Each tile contains some number of cells arranged in connected neighborhoods. Make sure that the tiles can communicate with each other in a sane way that's robust to tile failure, and ensure they can still establish neighborhood locks somewhat consistently.
+- More simulations of predation/census based systems. In particular see how it works when you restrict calling the `spawn!` command, but introduce a new `eat!` command that consumes a named resource in the target cell. This changes the grey goo dynamic significantly, _without_ introducing cost into the system.
+
+I'm sure I'll find more as I actually do the work.
