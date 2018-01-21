@@ -1,6 +1,8 @@
-Ok, so a while ago, I gave [a PW<3 talk](https://www.youtube.com/watch?v=ddlG2YZuXCw) on one of [Ackley's pieces](http://www.cs.unm.edu/~ackley/papers/hotos-11.pdf)[PDF]. In order to properly give that talk, and point out interesting ideas and approaches in this kind of distributed computation, I had to write a [Router](https://github.com/inaimathi/trurl/blob/62f9c429710331f0d27b7ea00ede3ad489307245/machines.lisp#L23-L116).
+Ok, so a while ago, I gave [a PW<3 talk](https://www.youtube.com/watch?v=ddlG2YZuXCw) on one of [Ackley's pieces](http://www.cs.unm.edu/~ackley/papers/hotos-11.pdf)[PDF].
 
-![/static/img/the-router/the-router.gif](An animation of the router being spawned, unfolding and beginning to shunt messages)
+In order to properly give that talk, and point out interesting ideas and approaches in this kind of distributed computation, I had to write a [Router](https://github.com/inaimathi/trurl/blob/62f9c429710331f0d27b7ea00ede3ad489307245/machines.lisp#L23-L116).
+
+![An animation of the router being spawned, unfolding and beginning to shunt messages](/static/img/the-router/the-router.gif)
 
 This is the first involved program I've written in this style, and I learned a bunch of things doing it that weren't obvious to me even after all the time I spent thinking about it, so I thought I'd share.
 
