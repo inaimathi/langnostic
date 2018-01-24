@@ -112,6 +112,15 @@ This is the first involved program I've written in this style, and I learned a b
 
 This is what the code looks like. It's fugly, because I haven't had the time to really dive into what kinds of ideas we want to express in systems like this. As a consequence, we've got what should probably be abstracted logic threaded throughout these programs. And that's sort of to be expected given my inexperience in this context. But it might be instructive to go through it anyway. This style of programming involves defining `machine`s that work on the basis of a grid. The idea is that a `machine` is a prototype that defines a behavior that will be executed when an instance of the machine gets to take a turn. On a `machine`s turn, it can consider its surrounding environment, including all exposed state, terrain and population.
 
+This specific machine, from a high-level view, is composed out of a bunch of interacting components. We've got
+
+- `router` which is responsible for fencing off a segment of space to use. It can be thought of as the router skeleton, it spawns the initial drop of `router-fluid`, the first `router-endpoint` and the initial `router-input`. It also constantly regenerates an event-window sized shell of `lemon`s on its outside. It's represented by the black squares.
+- `router-fluid` which is responsible for clearing out the fenced area. It eats anything that isn't a router component. It's represented by the blue squares.
+- `router-input` which is responsibe for respawning `router-input`s along the bottom edge of the router, and generating `router-message`s to be consumed. In this demo, they generate random, randomly addressed messages, but it's easy to imagine them using a TCP socket as a source instead. It's represented by the fuzzy red circles.
+- `router-endpoint` which is responsible for setting up and maintaining  an addressed, sparse grid of `router-endpoint`s. Additionally, it's responsible for consuming messages addressed to it, and shunting along other messages. It's represented by the green squares.
+- `router-message` which carries addressed data along. It's responsible for nothing other than existing and occasionally hopping around to local `router-fluid`-occupied cells. It's represented by the fuzzy green circles.
+- `lemon` which does nothing. It's merely arranged by `router` into a protective shell to guard against possible incursion from outside the router. It's, appropriately enough, represented by the yellow squares.
+
 ## The environmental concerns
 ### Simple Router Fluid
 
