@@ -17,9 +17,11 @@ The availability/consistency decision here is pushed off to the application laye
 
 ## Locks
 
-1. locking full cell neighborhoods while they execute.
-- Slower because locks
-- Consistent because locks (in theory, unless something explodes horrifically)
+When a particular cells' turn comes up, lock its entire neighborhood and give it write access. Lock its _entire_ neighborhood, even if this involves remote locks which are a pain in the ass to implement correctly at the best of times, and even then, might behave unexpectedly in the face of extensive hardware and network failures.
+
+This is slower, because we have to implement remote locking. Which at once restricts computations at a number of cell sites depending on the size of the event window, _and_ involves some number of network calls just to establish that lock. It's Consistent and not Available because the locked cells don't get to do anything while locked, so they're guaranteed-ish to have consistent state across the turn. Guaranteed-_ish_ because downed tiles or network partitions cause remote locks to make hard decisions between eternal deadlock and pre-maturely invalidating locks, thereby introducing inconsistency.
+
+Now that I've kind of said this one out loud, it's pretty intuitively obvious that we don't want this solution, for various reasons. But it might still end up being the least evil, so we'll keep it in our back pocket.
 
 ## Synch-less
 
