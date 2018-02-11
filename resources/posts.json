@@ -255,3 +255,4 @@
 {"tags": ["clojure", "snippets"], "posted": 1507436072, "id": 254, "file": "clojars-notes", "title": "Clojars Notes"}
 {"tags": ["common-lisp", "lisp", "programming-environment"], "posted": 1508100155, "id": 255, "file": "quickproject-revisions", "title": "Quickproject Revisions"}
 {"tags": ["common-lisp", "lisp", "idea-peeling", "robust-first"], "posted": 1516514612, "id": 256, "file": "the-router", "title": "The Router"}
+{"tags": ["idea-peeling"], "posted": 1518302229, "id": 257, "file": "synchronization", "title": "Synchronization"}
