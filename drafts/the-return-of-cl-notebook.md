@@ -10,15 +10,15 @@ As far as I can tell, Jupyter has punted on all of the above.
 
 So as much as I'd like to, I can't declare the situation Good Enough that I can in good conscience stop working on `cl-notebook`, even if the underlying languages were equivalent. Given that situation, I've been looking at the codebase and thinking about how I'd go about getting it from where it is now to being a worthy competitor to Jupyter in terms of ease-of-use. Or at the very least, to a state where I can easily start accepting pushes from other contributors.
 
-And having pushed a commit to include general location notebook opening, I think I've crossed that line.
+And having pushed [a commit](https://github.com/inaimathi/cl-notebook/commit/be496750577ad37b80e9de15b5d44fc6868f0359) to include general-location notebook opening, I think I've satisfied the second requirement.
 
 There's a bunch of additional stuff noted in the [READMEs TODO section](https://github.com/inaimathi/cl-notebook#todo-also-this-section-should-eventually-be-moved-to-the-github-issue-tracker), but the things that need to be settled before other people can credibly hack on this system have more or less been settled. I'd like to work out a system by which we can let notebooks materially change the client side of the system both through JavaScript and CSS additions, and I'm still debating whether we'd be better or worse off with a [`minibuffer`](https://www.gnu.org/software/emacs/manual/html_node/emacs/Minibuffer.html) added to the system, but those are relatively minor points that can be dealt with in a fairly self-contained way.
 
-The next step for me is to start using it.
+The next step for me is to start using it, and encourage other people to start contributing to the project.
 
 ## Side-note on [`:house`](https://github.com/inaimathi/house)
 
-[`:house`](https://github.com/inaimathi/house) fucking sucks. It performs relatively poorly, coming in somewhere between `hunchentoot` and `tornado` on the [`woo` benchmark graph](https://github.com/fukamachi/woo#how-fast), it doesn't deal with `https`, it doesn't easily support [`websocket`s](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API) and it's pretty dumb in dealing with underlying system resources such as threads and static files.
+[`:house`](https://github.com/inaimathi/house) fucking sucks. It performs poorly, coming in somewhere between `hunchentoot` and `tornado` on the [`woo` benchmark graph](https://github.com/fukamachi/woo#how-fast), it doesn't deal with `https`, it doesn't easily support [`websocket`s](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API) and it's dumb in dealing with underlying system resources such as threads and static files.
 
 And yet...
 
@@ -216,7 +216,7 @@ Backtrace:
 ; Evaluation aborted
 ```
 
-I want to stress that I have not failed to install the above native libraries. It's just that I use `nix` as a package manager, so they get installed in a directory that `cffi` doesn't expect. I've also tried installing the same through `apt-get` and still get similar errors. And don't even get me started on `OS X` or Windows setups of the same.
+I want to stress that I have not failed to install the above "missing" native libraries. It's just that I use `nix` as a package manager, so they get installed in a directory that `cffi` doesn't expect. I've also tried installing the same through `apt-get` and still get similar errors. And don't even get me started on `OS X` or Windows setups of the same.
 
 So, unfortunately, a much as `:house` sucks, I'm sticking with it, and working around its shortcomings. I've also got plans to submit it to [`quicklisp`](https://github.com/quicklisp/quicklisp-projects) once I work up a reasonable test suite.
 
