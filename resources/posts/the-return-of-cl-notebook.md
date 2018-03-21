@@ -2,7 +2,7 @@ I haven't _just_ been directing my personal hacking/thinking time at massively d
 
 [^also-i-feel-old]: And I just noticed that I started it in 2014, which puts it at 4 years old. Which means that I have both a child younger _and_ a child older than this particular attempt at a cell-based editor. I feel fucking old.
 
-I recently served on a contract for which my team had to use [Jupyter Notebook](http://jupyter.org/), and I was pretty severely underwhelmed. I mean, the front-end has a level of polish you'd rightly never expect from a [one-dev affair](https://github.com/inaimathi/cl-notebook), and it has better cross-platform support than what I'm pulling off at the moment. But in terms of the big problems that I was tackling in the Common Lisp analog, I'm quite surprised to be ahead of the curve, even after having taken four about four years "off" development.
+I recently served on a contract for which my team had to use [Jupyter Notebook](http://jupyter.org/), and I was pretty severely underwhelmed. I mean, the front-end has a level of polish you'd rightly never expect from a [one-dev affair](https://github.com/inaimathi/cl-notebook), and it has better cross-platform support than what I'm pulling off at the moment. But in terms of the big problems that I was tackling in the Common Lisp analog, I'm quite surprised to be ahead of the curve, even after having taken four years "off" development.
 
 The things I was starting to think about were large problems like self-hosting, the implications of multi-user editing and how to best accomodate it, intelligent full-notebook loading and use on mobile devices. Not to mention the full-history system that I'd already built most of.
 
