@@ -221,3 +221,5 @@ I want to stress that I have not failed to install the above "missing" native li
 So, unfortunately, a much as `:house` sucks, I'm sticking with it, and working around its shortcomings. I've also got plans to submit it to [`quicklisp`](https://github.com/quicklisp/quicklisp-projects) once I work up a reasonable test suite.
 
 At that point, I won't have to take the `clone` step either.
+
+<hr />
