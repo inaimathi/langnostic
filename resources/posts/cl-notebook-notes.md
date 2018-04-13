@@ -31,5 +31,3 @@ The current implementation of these front-end hooks is a new `cell-type`; `paren
 As soon as I work through some of the [`cl-notebook` issues](https://github.com/inaimathi/cl-notebook/issues?q=is%3Aissue+is%3Aopen)...
 
 Sigh. No rest for the wicked.
-
-<hr />

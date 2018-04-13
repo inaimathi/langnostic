@@ -28,6 +28,8 @@ code, pre, pre code { font-family: monospace; }
 .next-post { float: right; }
 .prev-post { float: left; }
 
+.footnotes { border-top: 3px solid #CC0606; padding-top: 25px; }
+
 .tags-list li { list-style-type: none; display: inline-block; font-weight: bold; margin-right: 5px; }
 
 hr { border-color: #CC0606; background-color: #CC0606; display: block; clear: both; }
@@ -39,7 +41,8 @@ hr { border-color: #CC0606; background-color: #CC0606; display: block; clear: bo
 /* Rotation  */
 
 .top-menu-container, hr { width: 110%; margin-left: -5%; }
-.top-menu-container, .logo-bar, .post-nav, hr, .note { transform: rotate(-2deg); }
+.top-menu-container, .logo-bar, .post-nav, hr, .note, .footnotes { transform: rotate(-2deg); }
+.footnotes li { transform: rotate(2deg); margin-bottom: 15px; }
 
 /* cl-notebook-specific classes */
 
