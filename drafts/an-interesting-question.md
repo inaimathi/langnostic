@@ -4,7 +4,7 @@ So I was posed an interesting question recently, which is going to take some res
 
 That's the essence, in any case. The more precise set of questions is
 
-1. How much energy does it cost to perform a one-way hash? Something in te `SHA2` family, because we want some level of security.
+1. How much energy does it cost to perform a one-way hash? Something in the `SHA2` family, because we want some level of security.
 2. How much energy does it cost to produce one ECDSA signature on `1k` of data?
 3. How much energy does it cost to verify an ECDSA signature once on `1k` of data?
 4. How much energy does it cost to send a TCP message of `1k` of data from New York, US to London, UK.

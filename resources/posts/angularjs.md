@@ -2,15 +2,17 @@ Before I get to the actual article, there was enough interest in the sparse-arra
 
 ### Global Day of Code Retreat
 
-Was pretty goddamn awesome. For some reason, I became known as "the Haskell guy", despite the fact that I am nowhere even approaching mastery<a name="note-Mon-Dec-10-161221EST-2012"></a>[|1|](#foot-Mon-Dec-10-161221EST-2012). The attempts I made were
+Was pretty goddamn awesome. For some reason, I became known as "the Haskell guy", despite the fact that I am nowhere even approaching mastery[^but-give-me-ten-years]. The attempts I made were
 
-<ol>
-  <li>**Prolog** - With someone who is older than me and hadn't done any Prolog since graduating. This wasn't helped by the fact that the entirety of my Prolog experience was two read-throughs of the appropriate chapter in [Seven Languages](http://pragprog.com/book/btlang/seven-languages-in-seven-weeks). We got as far as figuring out how to compute a [Moore neighborhood](http://en.wikipedia.org/wiki/Moore_neighborhood) before time was called.</li>
-  <li>**Common Lisp** - With a young man looking to learn the language. Hopefully, I wasn't too enthusiastic in recommending that he drop by the <a name="note-Mon-Dec-10-161300EST-2012"></a>[|2|](http://www.lisptoronto.org/">Toronto Common Lisp User Group</a>[hash tables](#foot-Mon-Dec-10-161300EST-2012), and gave him enough of a taste for Lisp that it won't look alien next time. Unfortunately, the problem we were solving ran smack into Common Lisps' poor support for <a href="http://cl-cookbook.sourceforge.net/hashes.html), so the impression wasn't as positive as it otherwise might have been.</li>
-  <li>**Haskell** - With a friend I know through the Common Lisp User group who's looking to get into functional programming in general. We implemented the same gridless solution, except in five lines rather than ~20. Most of the time was actually spent showcasing the functional way of thinking, and the utility of a REPL in problem solving. After this session, a crowd gathered around my laptop and demanded that I incrementally take them through those five lines and prove they actually produced valid output. I did so successfully, which is probably where my reputation started.</li>
-  <li>**Smalltalk** - Where I and the same fellow TLUG attendee watched an old Smalltalk hand finally explain how [TDD](http://en.wikipedia.org/wiki/Test-driven_development) makes sense if you've got the proper tools built into the language to support it. It turns out that no language other than Smalltalk does. If you disagree, learn enough Smalltalk to do some TDD in it, then try to do it again in Java/Ruby/what-have-you without throwing up. If you can prove you've done so, I will concede the point. We didn't actually get an implementation going this time because our host was explaining the basics of the environment and the class hierarchy to us, but this was the first grid-based approach I tried the entire day.</li>
-  <li>**Clojure** - With a young woman looking to try Clojure, and coming from a Scheme/Java background. We finished the gridless solution, with a printed board this time, just before time was called. Interestingly, this is the first partner I had all day that was used to thinking functionally before we sat down, so it was light work pointing out the differences between Clojure and Scheme to her.</li>
-</ol>
+[^but-give-me-ten-years]: But give me ten years or so.
+
+1. **Prolog** - With someone who is older than me and hadn't done any Prolog since graduating. This wasn't helped by the fact that the entirety of my Prolog experience was two read-throughs of the appropriate chapter in [Seven Languages](http://pragprog.com/book/btlang/seven-languages-in-seven-weeks). We got as far as figuring out how to compute a [Moore neighborhood](http://en.wikipedia.org/wiki/Moore_neighborhood) before time was called.
+2. **Common Lisp** - With a young man looking to learn the language. Hopefully, I wasn't too enthusiastic in recommending that he drop by the [Toronto Common Lisp User Group](http://www.lisptoronto.org/)[^where-we-actually-discuss], and gave him enough of a taste for Lisp that it won't look alien next time. Unfortunately, the problem we were solving ran smack into Common Lisps' poor support for [hash tables](http://cl-cookbook.sourceforge.net/hashes.html), so the impression wasn't as positive as it otherwise might have been.
+3. **Haskell** - With a friend I know through the Common Lisp User group who's looking to get into functional programming in general. We implemented the same gridless solution, except in five lines rather than ~20. Most of the time was actually spent showcasing the functional way of thinking, and the utility of a REPL in problem solving. After this session, a crowd gathered around my laptop and demanded that I incrementally take them through those five lines and prove they actually produced valid output. I did so successfully, which is probably where my reputation started.
+4. **Smalltalk** - Where I and the same fellow TLUG attendee watched an old Smalltalk hand finally explain how [TDD](http://en.wikipedia.org/wiki/Test-driven_development) makes sense if you've got the proper tools built into the language to support it. It turns out that no language other than Smalltalk does. If you disagree, learn enough Smalltalk to do some TDD in it, then try to do it again in Java/Ruby/what-have-you without throwing up. If you can prove you've done so, I will concede the point. We didn't actually get an implementation going this time because our host was explaining the basics of the environment and the class hierarchy to us, but this was the first grid-based approach I tried the entire day.
+5. **Clojure** - With a young woman looking to try Clojure, and coming from a Scheme/Java background. We finished the gridless solution, with a printed board this time, just before time was called. Interestingly, this is the first partner I had all day that was used to thinking functionally before we sat down, so it was light work pointing out the differences between Clojure and Scheme to her.
+
+[^where-we-actually-discuss]: Where we actually discuss many things of interest to functional programmers, not just Common Lisp.
 
 As I said, I was *going* to try Forth, but Dann, the only one willing to partner on that language, had to leave before the last session.
 
@@ -18,17 +20,17 @@ My general impression of the event was extremely positive, and I'll certainly be
 
 ### Web Mote and Angular.js
 
-You haven't heard much about [Web-Mote](https://github.com/Inaimathi/web-mote) lately, and that's mainly because I've been porting it to [Angular.js](http://angularjs.org/), saving myself *quite* a few lines of code in the process. You may remember that [I called all the JS-MVC frameworks shit](http://langnostic.blogspot.ca/2012/09/js-frameworks.html) a little while ago. While my distaste for the needless OO-modeling that permeates most of them remains intact, a fellow Lisping web-developer told me to give [Angular](http://angularjs.org/) another try without reading their [godawful, over-engineered tutorial](http://docs.angularjs.org/tutorial/).
+You haven't heard much about [Web-Mote](https://github.com/Inaimathi/web-mote) lately, and that's mainly because I've been porting it to [Angular.js](http://angularjs.org/), saving myself *quite* a few lines of code in the process. You may remember that [I called all the JS-MVC frameworks shit](/posts/js-frameworks) a little while ago. While my distaste for the needless OO-modeling that permeates most of them remains intact, a fellow Lisping web-developer told me to give [Angular](http://angularjs.org/) another try without reading their [godawful, over-engineered tutorial](http://docs.angularjs.org/tutorial/).
 
 I've almost finished porting, and I must admit that I've become a believer. If you're already using
 
-<ul>
-  <li>an HTML [templating library](http://handlebarsjs.com/)</li>
-  <li>a JS [routing system](http://backbonejs.org/#Router)</li>
-  <li>and [jQuery](http://jquery.com/)</li>
-</ul>
+- an HTML [templating library](http://handlebarsjs.com/)
+- a JS [routing system](http://backbonejs.org/#Router)
+- and [jQuery](http://jquery.com/)
 
-you probably could have saved yourself a lot of code and headache by just picking up Angular, which elegantly solves most problems you'd be using the above for. It also turns out that <a name="note-Mon-Dec-10-161810EST-2012"></a>[|3|](http://docs.angularjs.org/api/angular.Module">Angular modules</a> are extremely composeable, *and* fail to get in the way of other frameworks<a href="#foot-Mon-Dec-10-161810EST-2012).
+you probably could have saved yourself a lot of code and headache by just picking up Angular, which elegantly solves most problems you'd be using the above for. It also turns out that [Angular modules](http://docs.angularjs.org/api/angular.Module) are extremely composeable, *and* fail to get in the way of other frameworks[^so-you-can-still-use-jquery].
+
+[^so-you-can-still-use-jquery]: So you can still use jQuery for the [one](http://api.jquery.com/jQuery.ajax/) or [two](http://api.jquery.com/jQuery.browser/) things Angular doesn't bother with.
 
 The "templating" in particular deserves special mention, though that's probably the wrong thought model to apply here. As the fellow Lisper explained, Angular gives you a [DSL](http://en.wikipedia.org/wiki/Domain-specific_language) for writing HTML front-ends. To illustrate, here's what the HTML component of the Handlebars/Backbone/jQuery version looked like
 
@@ -171,12 +173,3 @@ and *this* is what the exact same front-end looks like expressed in the Angular 
 What you don't see above is that the amount of JavaScript required for this new approach is easily 1/2 of what I needed to write to get comparable functionality with separate templating/routing/DOM libraries. Most of it, I get the feeling, is Angulars' use of [reactive programming](http://en.wikipedia.org/wiki/Reactive_programming), but I can't really be sure of that. Since I haven't done much testing yet, I also don't know what kind of performance hit I'm going to be taking by using such a transformative approach.
 
 Add that to the massive list of things I need to keep you posted about, I guess.
-
-* * *
-##### Footnotes
-
-1 - <a name="foot-Mon-Dec-10-161221EST-2012"></a>[|back|](#note-Mon-Dec-10-161221EST-2012) - But give me ten years or so.
-
-2 - <a name="foot-Mon-Dec-10-161300EST-2012"></a>[|back|](#note-Mon-Dec-10-161300EST-2012) - Where we actually discuss many things of interest to functional programmers, not just Common Lisp.
-
-3 - <a name="foot-Mon-Dec-10-161810EST-2012"></a>[|back|](#note-Mon-Dec-10-161810EST-2012) - So you can still use jQuery for the [one](http://api.jquery.com/jQuery.ajax/) or [two](http://api.jquery.com/jQuery.browser/) things Angular doesn't bother with.

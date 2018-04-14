@@ -1,5 +1,3 @@
-# WebMote the Right Way™©
-
 A [little while ago, I mentioned](http://langnostic.blogspot.ca/2012/09/js-frameworks.html) that while the new wave of JS frameworks I observed were shit overall, they encouraged the correct approach to web UI building. Well, since I'll have to do a pretty serious re-write of [WebMote](https://github.com/Inaimathi/web-mote) for use with the RasPi, I figured it would be a good time to apply the principle. This is going to be a two-parter; firstly because I really want to focus on the front-end today, secondly because I don't have the back-end done yet, thirdly because I'm planning to some pretty odd things or the server-side of this project, and fourthly because I'm trying not to bore the ever-loving fuck out of everyone reading this.
 
 So.
@@ -70,19 +68,19 @@ Most of that is framework code, of course. The only files I'll be going through 
         {{/each}}
       </ul>
     </script>
-    
+
     <!-- ---- -->
     <!-- Body -->
     <!-- ---- -->
     <ul id="file-list"></ul>
     <div id="controls"></div>
-    
+
     <!-- ------ -->
     <!-- Styles -->
     <!-- ------ -->
     <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="css/custom-theme/jquery-ui-1.8.13.custom.css" type="text/css" media="screen" />
-    
+
     <!-- ------- -->
     <!-- Scripts -->
     <!-- ------- -->
@@ -256,15 +254,15 @@ var mote = {
             $(mote.targetId).empty();
             $.each(fileList,
                    function (index, e){
-                       if (e.type == "directory") 
+                       if (e.type == "directory")
                            $(mote.targetId).append(templates.folder(e))
-                       else 
+                       else
                            $(mote.targetId).append(templates.file(e))
                    })
                 }
     },
     renderButton: function (control) {
-        
+
     },
     renderControls: function (controlLists) {
         $.each(controlLists,
@@ -276,7 +274,7 @@ var mote = {
         console.log(["cmd", "play", file]);
         $.post("/play",
                {"file" : file},
-               function (data, textStatus) { 
+               function (data, textStatus) {
                    console.log(["now playing", file, textStatus]);
                });
     },
@@ -318,7 +316,7 @@ var templates = {
     controlBlock : Handlebars.compile($("#tmp-control-block").html())
 }
 
-var Routes = Backbone.Router.extend({ 
+var Routes = Backbone.Router.extend({
     routes: {
         "navigate*path": "nav"
     },
@@ -359,7 +357,7 @@ is the `handlebars`-related code. `Handlebars.registerHelper` is what makes the 
 Below that, and intruding slightly into the `.ready()` method is our in-page `Router`.
 
 ```javascript
-var Routes = Backbone.Router.extend({ 
+var Routes = Backbone.Router.extend({
     routes: {
         "navigate*path": "nav"
     },
@@ -383,35 +381,35 @@ This is the entire reason I use `backbone` and its requirement `underscore`<a na
 Lets take a detour before finishing up though; `root-directory` is for the moment just a text file with some test JSON data in it.
 
 ```javascript
-[{"path": "/home/inaimathi/videos/a-show", 
-  "type": "directory", "name": "a-show"}, 
- {"path": "/home/inaimathi/videos/friendship-is-magic", 
-  "type": "directory", "name": "friendship-is-magic"}, 
- {"path": "/home/inaimathi/videos/khan-academy", 
-  "type": "directory", "name": "khan-academy"}, 
- {"path": "/home/inaimathi/videos/porn", 
-  "type": "directory", "name": "porn"}, 
- {"path": "/home/inaimathi/videos/bizarre-porn", 
-  "type": "directory", "name": "bizarre porn"}, 
- {"path": "/home/inaimathi/videos/horrible-porn", 
-  "type": "directory", "name": "horrible porn"}, 
- {"path": "/home/inaimathi/videos/unforgivable-porn", 
-  "type": "directory", "name": "unforgivable porn"}, 
- {"path": "/home/inaimathi/videos/Clojure-for-Lisp-Programmers-Part-1.mov", 
-  "type": "mov", "name": "Clojure-for-Lisp-Programmers-Part-1.mov"}, 
- {"path": "/home/inaimathi/videos/Clojure-for-Lisp-Programmers-Part-2.mov", 
-  "type": "mov", "name": "Clojure-for-Lisp-Programmers-Part-2.mov"}, 
- {"path": "/home/inaimathi/videos/Eben-Moglen--Why-Freedom-of-Thought-Requires-Free-Media-and-Why-Free-Media-Require-Free-Technology.mp4", 
-  "type": "mp4", "name": "Eben-Moglen--Why-Freedom-of-Thought-Requires-Free-Media-and-Why-Free-Media-Require-Free-Technology.mp4"}, 
- {"path": "/home/inaimathi/videos/Epic-Wub-Time--Musicians-of-Ponyville.mp4", 
-  "type": "mp4", "name": "Epic-Wub-Time--Musicians-of-Ponyville.mp4"}, 
- {"path": "/home/inaimathi/videos/Project-Glass--Live-Demo-At-Google-I-O.mp4", 
-  "type": "mp4", "name": "Project-Glass--Live-Demo-At-Google-I-O.mp4"}, 
- {"path": "/home/inaimathi/videos/in-the-fall-of-gravity.mp4", 
-  "type": "mp4", "name": "in-the-fall-of-gravity.mp4"}, 
- {"path": "/home/inaimathi/videos/beethoven-symphony-no-9.mp3", 
+[{"path": "/home/inaimathi/videos/a-show",
+  "type": "directory", "name": "a-show"},
+ {"path": "/home/inaimathi/videos/friendship-is-magic",
+  "type": "directory", "name": "friendship-is-magic"},
+ {"path": "/home/inaimathi/videos/khan-academy",
+  "type": "directory", "name": "khan-academy"},
+ {"path": "/home/inaimathi/videos/porn",
+  "type": "directory", "name": "porn"},
+ {"path": "/home/inaimathi/videos/bizarre-porn",
+  "type": "directory", "name": "bizarre porn"},
+ {"path": "/home/inaimathi/videos/horrible-porn",
+  "type": "directory", "name": "horrible porn"},
+ {"path": "/home/inaimathi/videos/unforgivable-porn",
+  "type": "directory", "name": "unforgivable porn"},
+ {"path": "/home/inaimathi/videos/Clojure-for-Lisp-Programmers-Part-1.mov",
+  "type": "mov", "name": "Clojure-for-Lisp-Programmers-Part-1.mov"},
+ {"path": "/home/inaimathi/videos/Clojure-for-Lisp-Programmers-Part-2.mov",
+  "type": "mov", "name": "Clojure-for-Lisp-Programmers-Part-2.mov"},
+ {"path": "/home/inaimathi/videos/Eben-Moglen--Why-Freedom-of-Thought-Requires-Free-Media-and-Why-Free-Media-Require-Free-Technology.mp4",
+  "type": "mp4", "name": "Eben-Moglen--Why-Freedom-of-Thought-Requires-Free-Media-and-Why-Free-Media-Require-Free-Technology.mp4"},
+ {"path": "/home/inaimathi/videos/Epic-Wub-Time--Musicians-of-Ponyville.mp4",
+  "type": "mp4", "name": "Epic-Wub-Time--Musicians-of-Ponyville.mp4"},
+ {"path": "/home/inaimathi/videos/Project-Glass--Live-Demo-At-Google-I-O.mp4",
+  "type": "mp4", "name": "Project-Glass--Live-Demo-At-Google-I-O.mp4"},
+ {"path": "/home/inaimathi/videos/in-the-fall-of-gravity.mp4",
+  "type": "mp4", "name": "in-the-fall-of-gravity.mp4"},
+ {"path": "/home/inaimathi/videos/beethoven-symphony-no-9.mp3",
   "type": "mp3", "name": "beethoven-symphony-no-9.mp3"},
- {"path": "/home/inaimathi/videos/first-lsdj.ogg", 
+ {"path": "/home/inaimathi/videos/first-lsdj.ogg",
   "type": "ogg", "name": "first-lsdj.ogg"}]
 ```
 
@@ -427,9 +425,9 @@ var mote = {
             $(mote.targetId).empty();
             $.each(fileList,
                    function (index, e){
-                       if (e.type == "directory") 
+                       if (e.type == "directory")
                            $(mote.targetId).append(templates.folder(e))
-                       else 
+                       else
                            $(mote.targetId).append(templates.file(e))
                    })
                 }
@@ -444,7 +442,7 @@ var mote = {
         console.log(["cmd", "play", file]);
         $.post("/play",
                {"file" : file},
-               function (data, textStatus) { 
+               function (data, textStatus) {
                    console.log(["now playing", file, textStatus]);
                });
     },
