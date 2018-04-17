@@ -34,4 +34,134 @@ So we've got a first datapoint there, in any case. It's hardware and presumably 
 
 ## Step 2: Do the work
 
-Ok; so we want to see the energy costs of some `SHA256` implementation, `ECDSA` signing and verification, and a `TCP` message. This sounds like a job for a profiler of some sort. Or rather, kinda. A profiler will tell us how much memory and compute is used
+Ok; so we want to see the energy costs of some `SHA256` implementation, `ECDSA` signing and verification, and a `TCP` message. This sounds like a job for a profiler of some sort. Or rather, kinda. A profiler will tell us how much memory and compute is used, but not necessarily how much juice. So we'll need to figure something out. My gut reaction says to use this as an excuse to learn about profiling in Clojure, but realistically, we'll want to do similar things against multiple implementations (and on multiple machines). So, here we go, off the top of my head,
+
+```clojure
+(ns clocking.core
+  (:require [clojure.java.io :as io]
+            [digest :as d]
+            [clj-pgp.core :as pgp]
+            [clj-pgp.generate :as pgp-gen]
+            [clj-pgp.signature :as pgp-sig]
+
+            [taoensso.tufte :as tufte :refer [p profiled profile]]))
+
+;;;;; Dummy Data
+(defn random-string [len]
+  (apply str (take len (repeatedly #(char (+ (rand 26) 102))))))
+
+(defn fresh-keypair []
+  (pgp-gen/generate-keypair (pgp-gen/ec-keypair-generator "secp160r2") :ecdsa))
+
+;;;;; Basic profiling
+(tufte/add-basic-println-handler! {})
+(defn sha256 [inp] (p :sha256 (d/sha-256 inp)))
+(defn ecdsa [keypair inp]
+  (let [sig (p :ecdsa-sign (pgp-sig/sign inp keypair))]
+    (p :ecdsa-verify (pgp-sig/verify inp sig keypair))))
+
+;;;;; Battery status
+(def bat "/sys/class/power_supply/BAT0/")
+(defn bslurp [name] (clojure.edn/read-string (slurp (str bat name))))
+(defn charging-status []
+  (keyword (clojure.string/lower-case (clojure.string/trim (slurp (str bat "status"))))))
+(defn battery-status []
+  {:charge {:now (bslurp "charge_now") :full (bslurp "charge_full") :design (bslurp "charge_full_design")}
+   :current {:now (bslurp "current_now")}
+   :voltage {:now (bslurp "voltage_now") :min (bslurp "voltage_min_design")}
+   :capacity (bslurp "capacity") :status (charging-status)})
+
+;;;;; Profiling
+(defn profile! [ct]
+  (let [inputs (take ct (repeatedly #(random-string 1000)))
+        keypair (fresh-keypair)]
+    (println (count inputs))
+    (let [before (battery-status)]
+      (profile
+       {} (doseq [inp inputs]
+            (sha256 inp)
+            (ecdsa keypair inp)))
+      {:before before :after (battery-status)})))
+```
+
+[tufte](https://github.com/ptaoussanis/tufte) is a pretty good profiling library, [clj-digest](https://github.com/tebeka/clj-digest) is an implementation of some digest hash functions, and [clj-pgp](https://github.com/greglook/clj-pgp) is a library that gives us access to ECDSA signing/verification via [BouncyCastle](https://www.bouncycastle.org/). I've included [clj-sockets](https://github.com/atroche/clj-sockets) as the TCP implementation, but haven't actually done anything with it yet. Also, since I'm on Debian, I can poke at `sysfs` to [get battery statistics](https://blog.sleeplessbeastie.eu/2013/01/02/debian-how-to-monitor-battery-capacity/) and hopefully back out energy costs from there.
+
+The gist of the above example is that last function.
+
+```
+(defn profile! [ct]
+  (let [inputs (take ct (repeatedly #(random-string 1000)))
+        keypair (fresh-keypair)]
+    (println (count inputs))
+    (let [before (battery-status)]
+      (profile
+       {} (doseq [inp inputs]
+            (sha256 inp)
+            (ecdsa keypair inp)))
+      {:before before :after (battery-status)})))
+```
+
+1. Generate a bunch of input data .
+2. Force the input strings sequence. _(Clojure is sometimes lazy, and I don't want it caching digest results. It would improve performance, but wouldn't end up giving me an accurate cost model. So instead of serially calling `sha256` or `sign`/`verify` on the same input string, we're generating a long-assed sequence of inputs, forcing it by hitting it with `count`, then calling the appropriate crypto functions on each one in turn)_
+3. Capture the `before` state of the battery
+4. Profile the appropriate crypto functions
+5. Report the `before` and `after` state of the battery
+
+```
+clocking.core> (profile! 100000)
+100000
+{:before {:charge {:now 5968000, :full 7163000, :design 8400000}, :current {:now 2435000}, :voltage {:now 11682000, :min 11100000}, :capacity 83, :status :discharging}, :after {:charge {:now 5916000, :full 7163000, :design 8400000}, :current {:now 2286000}, :voltage {:now 11700000, :min 11100000}, :capacity 82, :status :discharging}}
+
+           pId      nCalls        Min        Max        MAD       Mean   Time%        Time
+
+ :ecdsa-verify     100,000   436.72μs    21.09ms    16.10μs   469.59μs      61     46.96s 
+   :ecdsa-sign     100,000   232.81μs   100.51ms    12.42μs   248.28μs      32     24.83s 
+       :sha256     100,000    41.86μs     9.93ms     2.31μs    44.60μs       6      4.46s 
+
+    Clock Time                                                             100      1.28m 
+Accounted Time                                                              99      1.27m 
+
+clocking.core> 
+```
+
+That's about what I expected on a small-scale test. But two things
+
+1. We need a larger test set
+2. Because this is battery power on a laptop, I kind of want to know what baseline drain is in addition to the testing drain. Hopefully, I can back out some accurate numbers from the delta.
+
+```
+clocking.core> (profile! 1000000)
+OutOfMemoryError GC overhead limit exceeded  java.lang.Character.toString (Character.java:4636)
+clocking.core> 
+```
+
+Hmph. I guess forcing the full list up-front is kind of memory intensive. I still don't really want to incur the overhead of generating this list in-line with the test though. I guess risking cache is the lesser evil for now? Or at least, lets do both evils and see where we can factor them out.
+
+```
+(defn profile! [ct]
+  (let [inp (random-string 1000)
+        keypair (fresh-keypair)]
+    (let [before (battery-status)]
+      (profile
+       {} (dotimes [_ ct]
+            (sha256 inp)
+            (ecdsa keypair inp)))
+      {:before before :after (battery-status)})))
+```
+
+
+```
+clocking.core>
+
+           pId      nCalls        Min        Max        MAD       Mean   Time%        Time
+
+ :ecdsa-verify   1,000,000   433.54μs    27.67ms    14.40μs   469.96μs      61      7.83m 
+   :ecdsa-sign   1,000,000   232.17μs    14.93ms     8.74μs   246.32μs      32      4.11m 
+       :sha256   1,000,000    41.99μs    11.06ms     2.06μs    44.36μs       6     44.36s 
+
+    Clock Time                                                             100     12.75m 
+Accounted Time                                                              99     12.68m 
+ (profile! 1000000)
+{:before {:charge {:now 4875000, :full 7163000, :design 8400000}, :current {:now 1259000}, :voltage {:now 11491000, :min 11100000}, :capacity 68, :status :discharging}, :after {:charge {:now 4360000, :full 7163000, :design 8400000}, :current {:now 2007000}, :voltage {:now 11216000, :min 11100000}, :capacity 60, :status :discharging}}
+clocking.core> 
+```
