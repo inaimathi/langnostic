@@ -1,6 +1,8 @@
-Holy fuck, I guess I'm doing this shit.
+Holy fuck, I guess I'm doing this.
 
-[This](https://inaimathi.itch.io/clobble) is a client-side implementation of Boggle implemented entirely using [`cl-notebook`](https://github.com/Inaimathi/cl-notebook). It's called `Clobble`, becasue honestly, why wouldn't it be? I used the official die distribution cribbed from [this SE question](https://boardgames.stackexchange.com/questions/29264/boggle-what-is-the-dice-configuration-for-boggle-in-various-languages) and the challenge-mode scoring rules from [this WikiHow post](https://www.wikihow.com/Play-Boggle#/Image:Play-Boggle-Step-22.jpg)[^that-challenge-block]. Also, I used a static dictionary from [this project](https://github.com/insightcoder/boggle-dictionary), released under an MIT license.
+[This](https://inaimathi.itch.io/clobble) is a client-side implementation of Boggle implemented entirely using [`cl-notebook`](https://github.com/Inaimathi/cl-notebook). It's called `Clobble`, becasue honestly, why wouldn't it be? I used the official die distribution cribbed from [this SE question](https://boardgames.stackexchange.com/questions/29264/boggle-what-is-the-dice-configuration-for-boggle-in-various-languages) and the challenge-mode scoring rules from [this WikiHow post](https://www.wikihow.com/Play-Boggle#/Image:Play-Boggle-Step-22.jpg)[^that-challenge-block]. 
+
+Also, I used a static dictionary from [this project](https://github.com/insightcoder/boggle-dictionary), released under an MIT license.
 
 [^that-challenge-block]: That `Qu` block was a bitch to implement, by the way. I haven't generalized it completely, but it alone accounted for an extra half-hour or so of coding.
 
@@ -10,7 +12,9 @@ The challenges were many, and the [`cl-notebook` issues list](https://github.com
 
 ## `cl-notebook` needs to deal with external files
 
-So the dictionary itself is contained in a ~6MB external `js` file downloadable from the [itch page](https://inaimathi.itch.io/clobble) that declares a global variable with the appropriate `object`[^could-have-cut-that]. I could have cut that down to ~1MB by dropping the definitions and just keeping a word list, since the current implementatoin only really checks for the _presence_ of a word in the dictionary, but I had some plans that might have involved definitions. I ended up hacking around this limitation, as described later in this article, but it tells me that `cl-notebook` should _probably_ deal with static file bundles somehow.
+So the dictionary itself is contained in a ~6MB external `js` file downloadable from the [itch page](https://inaimathi.itch.io/clobble) that declares a global variable with the appropriate `object`[^could-have-cut-that]. I ended up hacking around this limitation, as described later in this article, but it tells me that `cl-notebook` should _probably_ deal with static file bundles somehow.
+
+[^could-have-cut-that]: I could have cut that down to ~1MB by dropping the definitions and just keeping a word list, since the current implementatoin only really checks for the _presence_ of a word in the dictionary, but I had some plans that might have involved definitions.
 
 Exactly _how_ opens up a bunch of worm cans. Or rather, at least one, my choice.
 
