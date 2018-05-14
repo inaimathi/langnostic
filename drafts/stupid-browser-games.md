@@ -52,6 +52,7 @@ So there's a bunch of low-hanging fruit I have lying around in my head as a resu
 - Namespace resolution
 - Hashing
 - Turing completeness
+- Interpreters
 
 So my suspicion is that, to a first approximation, you can pick between one and three total items from above, slap a leveling/progression scheme on it (whether the D&D style XP-gather-and-level or a base-management thing), and implement it in-browser to get a half-way decent game experience[^minus-excellent-visuals].
 
