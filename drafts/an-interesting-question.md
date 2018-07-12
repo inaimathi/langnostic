@@ -114,14 +114,14 @@ clocking.core> (profile! 100000)
 
            pId      nCalls        Min        Max        MAD       Mean   Time%        Time
 
- :ecdsa-verify     100,000   436.72μs    21.09ms    16.10μs   469.59μs      61     46.96s 
-   :ecdsa-sign     100,000   232.81μs   100.51ms    12.42μs   248.28μs      32     24.83s 
-       :sha256     100,000    41.86μs     9.93ms     2.31μs    44.60μs       6      4.46s 
+ :ecdsa-verify     100,000   436.72μs    21.09ms    16.10μs   469.59μs      61     46.96s
+   :ecdsa-sign     100,000   232.81μs   100.51ms    12.42μs   248.28μs      32     24.83s
+       :sha256     100,000    41.86μs     9.93ms     2.31μs    44.60μs       6      4.46s
 
-    Clock Time                                                             100      1.28m 
-Accounted Time                                                              99      1.27m 
+    Clock Time                                                             100      1.28m
+Accounted Time                                                              99      1.27m
 
-clocking.core> 
+clocking.core>
 ```
 
 That's about what I expected on a small-scale test. But two things
@@ -132,7 +132,7 @@ That's about what I expected on a small-scale test. But two things
 ```
 clocking.core> (profile! 1000000)
 OutOfMemoryError GC overhead limit exceeded  java.lang.Character.toString (Character.java:4636)
-clocking.core> 
+clocking.core>
 ```
 
 Hmph. I guess forcing the full list up-front is kind of memory intensive. I still don't really want to incur the overhead of generating this list in-line with the test though. I guess risking cache is the lesser evil for now? Or at least, lets do both evils and see where we can factor them out.
@@ -151,17 +151,54 @@ Hmph. I guess forcing the full list up-front is kind of memory intensive. I stil
 
 
 ```
-clocking.core>
+clocking.core> (profile! 1000000)
 
            pId      nCalls        Min        Max        MAD       Mean   Time%        Time
 
- :ecdsa-verify   1,000,000   433.54μs    27.67ms    14.40μs   469.96μs      61      7.83m 
-   :ecdsa-sign   1,000,000   232.17μs    14.93ms     8.74μs   246.32μs      32      4.11m 
-       :sha256   1,000,000    41.99μs    11.06ms     2.06μs    44.36μs       6     44.36s 
+ :ecdsa-verify   1,000,000   433.54μs    27.67ms    14.40μs   469.96μs      61      7.83m
+   :ecdsa-sign   1,000,000   232.17μs    14.93ms     8.74μs   246.32μs      32      4.11m
+       :sha256   1,000,000    41.99μs    11.06ms     2.06μs    44.36μs       6     44.36s
 
-    Clock Time                                                             100     12.75m 
-Accounted Time                                                              99     12.68m 
- (profile! 1000000)
+    Clock Time                                                             100     12.75m
+Accounted Time                                                              99     12.68m
+
 {:before {:charge {:now 4875000, :full 7163000, :design 8400000}, :current {:now 1259000}, :voltage {:now 11491000, :min 11100000}, :capacity 68, :status :discharging}, :after {:charge {:now 4360000, :full 7163000, :design 8400000}, :current {:now 2007000}, :voltage {:now 11216000, :min 11100000}, :capacity 60, :status :discharging}}
-clocking.core> 
+clocking.core>
+```
+
+Ok, that still only gives us half the story. It tells us about how much energy ECDSA and SHA256 take out of this equation. There's another component we wanted to discuss, which is the TCP component. After a few commits which I won't rehash here, we can take a stab at answering that question.
+
+```
+clocking.core> (profile! 10000)
+
+           pId      nCalls        Min        Max        MAD       Mean   Time%        Time
+
+ :ecdsa-verify      10,000   321.01μs    70.34ms    59.25μs   453.67μs      39      4.54s
+   :ecdsa-sign      10,000   253.40μs   521.14ms   147.48μs   386.85μs      33      3.87s
+     :tcp-send      10,000   130.68μs    28.21ms    52.10μs   206.71μs      18      2.07s
+       :sha256      10,000    52.94μs    46.42ms    19.59μs    78.33μs       7    783.31ms
+
+    Clock Time                                                             100     11.68s
+Accounted Time                                                              96     11.26s
+
+{:before {"/sys/class/power_supply/BAT1" {:energy {:now 37170000, :full 47860000, :design 47520000}, :power {:now 18652000}, :voltage {:now 11507000, :min 10800000}, :capacity 77, :status :discharging}, "/sys/class/power_supply/BAT0" {:energy {:now 22260000, :full 23170000, :design 23480000}, :power {:now 0}, :voltage {:now 12435000, :min 11400000}, :capacity 96, :status :unknown}}, :after {"/sys/class/power_supply/BAT1" {:energy {:now 37070000, :full 47860000, :design 47520000}, :power {:now 20635000}, :voltage {:now 11357000, :min 10800000}, :capacity 77, :status :discharging}, "/sys/class/power_supply/BAT0" {:energy {:now 22260000, :full 23170000, :design 23480000}, :power {:now 0}, :voltage {:now 12435000, :min 11400000}, :capacity 96, :status :unknown}}}
+```
+
+Ok, so far so good. You'll notice I'm also doing this on a laptop with a different battery configuration; I do like being at least minimally complete. Upping the count past 100k in this case runs my machine out of memory, possibly because of all the dangling sockets I'm leaving around. Which kind of sucks, but we can get better data than 10k, at least.
+
+```
+clocking.core> (profile! 40000)
+{:before {"/sys/class/power_supply/BAT1" {:energy {:now 23540000, :full 47860000, :design 47520000}, :power {:now 24860000}, :voltage {:now 10753000, :min 10800000}, :capacity 49, :status :discharging}, "/sys/class/power_supply/BAT0" {:energy {:now 22260000, :full 23170000, :design 23480000}, :power {:now 0}, :voltage {:now 12433000, :min 11400000}, :capacity 96, :status :unknown}}, :after {"/sys/class/power_supply/BAT1" {:energy {:now 23080000, :full 47860000, :design 47520000}, :power {:now 26716000}, :voltage {:now 10661000, :min 10800000}, :capacity 48, :status :discharging}, "/sys/class/power_supply/BAT0" {:energy {:now 22260000, :full 23170000, :design 23480000}, :power {:now 0}, :voltage {:now 12433000, :min 11400000}, :capacity 96, :status :unknown}}}
+
+           pId      nCalls        Min        Max        MAD       Mean   Time%        Time
+
+ :ecdsa-verify      40,000   324.21μs   146.39ms   108.14μs   577.92μs      42     23.12s
+   :ecdsa-sign      40,000   251.15μs   877.47ms   123.02μs   426.50μs      31     17.06s
+     :tcp-send      40,000   126.90μs     1.41s     90.62μs   239.04μs      17      9.56s
+       :sha256      40,000    50.36μs   569.40ms    38.04μs    96.91μs       7      3.88s
+
+    Clock Time                                                             100     55.36s
+Accounted Time                                                              97     53.61s
+
+clocking.core>
 ```
