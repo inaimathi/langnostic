@@ -229,7 +229,7 @@ One thing this unfortunately tells me is exactly how garbage this battery is[^as
 
 Ok, now. Because I'm not an engineer, I get to crib from the internet about the actual calculations once this data gathering is complete. Specifically, [here's](https://www.rc-electronics-usa.com/battery-electronics-101.html) how to calculate the Joules output by a battery, and the spec sheet on Lenovo laptop batteries has numbers on their [output voltage](https://www.laptop-ac-adapters.co.uk/lenovo-thinkpad-a275-laptop-battery-233652.html). Specifically, 11.4V.
 
-Ok, so `acpi -bi` tells me that my primary battery on this machine is full at around 4440mAh. I say "around", because output varies slightly on each call, which tells me that this is an (acceptably accurate) estimate
+`acpi -bi` tells me that my primary battery on this machine is full at around 4440mAh. I say "around", because output varies slightly on each call, which tells me that this is an estimate
 
 ```sh
 inaimathi@one:~/$ acpi -bi
@@ -285,7 +285,7 @@ Battery 1: design capacity 4338 mAh, last full capacity 4448 mAh = 100%
 inaimathi@one:~/$
 ```
 
-Ok, so. Baseline performance for ten minutes according to [that battery electronics page](https://www.rc-electronics-usa.com/battery-electronics-101.html) is:
+Baseline performance for ten minutes according to [that battery electronics page](https://www.rc-electronics-usa.com/battery-electronics-101.html) is:
 
 ```
 clocking.core> (defn joules-used [start-% end-%]
@@ -354,4 +354,8 @@ clocking.core> (let [total (- (joules-used 46 23) (joules-used 23 5))
 clocking.core>
 ```
 
-And since we know that each operation was called 1000000 in our clocking trial, we can guess how much a single operation consumed. It's on the order of millijoules; 1.65mJ for verification, 0.7mJ for signing and 0.1mJ for hashing using Sha256. Tadaa, I guess. The last thing to do is run our TCP profiling scheme to the same level.
+And since we know that each operation was called 1000000 in our clocking trial, we can guess how much a single operation consumed. It's on the order of millijoules; 1.65mJ for verification, 0.7mJ for signing and 0.1mJ for hashing using Sha256.
+
+Tadaa, I guess.
+
+The last thing to do is run our TCP profiling scheme to the same level, but since the Clojure sockets implementation is running me out of memor locally, I think this is going to call for hacking in something else. While I'm at it, I may as well add to the above data by taking measurements in different environments. I'm thinking Common Lisp next, and I'll let you know how it ends up going.
