@@ -15,7 +15,7 @@ I think at this point, I'm done cutting Slack any slack[^dad-jokes].
 Here's a bookmarklet you can use to export a single Slack channel from your browser into a local file in JSON format. If there's interest, it wouldn't be too hard to extend this to export all your visible channels rather than just one.
 
 ```
-(function () {
+javascript:(function () {
     var saveAs = saveAs || (function(view) {
 	"use strict";
 	// IE <10 is explicitly unsupported
@@ -186,8 +186,6 @@ Here's a bookmarklet you can use to export a single Slack channel from your brow
 
     var res = [];
     var date = null;
-    var latestSender = null;
-    var latestTime = null;
     document.querySelectorAll("div.c-virtual_list__item")
         .forEach(function (el) {
             var day = el.querySelector(".c-message_list__day_divider__label__pill");
@@ -196,22 +194,25 @@ Here's a bookmarklet you can use to export a single Slack channel from your brow
                 date = day.innerText;
             } else if (msg) {
                 var s = msg.querySelector(".c-message__sender");
+                var txt = msg.querySelector(".c-message__body").innerHTML;
+                var is_edited = !!msg.querySelector(".c-message__edited_label");
+                var body = { edited: is_edited, text: txt}
                 if (s) {
-                    latestSender = msg.querySelector(".c-message__sender").innerText
-                    latestTime = msg.querySelector(".c-timestamp__label").innerText
+                    res.push({
+                        date: date
+                        , time: msg.querySelector(".c-timestamp__label").innerText
+                        , sender: msg.querySelector(".c-message__sender").innerText
+                        , body: [body]
+                    })
+                } else {
+                    res[res.length-1].body.push(body)
                 }
-                res.push({
-                    date: date
-                    , time: latestTime
-                    , sender: latestSender
-                    , message: msg.querySelector(".c-message__body").innerHTML
-                })
             } else {
                 // console.log("GOT SOMETHING ELSE!")
             }
         })
     var blob = new Blob([JSON.stringify(res, null, 2)], {type: "application/json;charset=utf-8"});
-    saveAs(blob, "slack-export.json")
+    saveAs(blob, document.querySelector("#channel_name").innerText + ".json")
     return res;
 })()
 ```
