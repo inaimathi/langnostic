@@ -6,7 +6,9 @@ That was the point at which I actively started discouraging Slack use for any me
 
 Recently, I got into the situation where I had to export messages from some private channels. And because Slack is Slack, their [export tools for private channels]() are a premium service.
 
-I think at this point, I'm done cutting Slack any slack.
+I think at this point, I'm done cutting Slack any slack[^dad-jokes].
+
+[^dad-jokes]: Dad jokes.
 
 ## Slack Private Channel Export Bookmarklet
 
