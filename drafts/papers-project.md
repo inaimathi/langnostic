@@ -24,7 +24,7 @@ I think my preference is probably for Paradigms of Artificial Intelligence Progr
 
 ## The Recommendations
 
-Ok, so at some point we realized that we were a group of loosely affiliated people with limited, but focused free time that managed to seriously expand our collective and individual understanding of various computer science material over the course of about eight years. From that position, we might be able to put together a curriculum for other people in similar situations to do the same. The beginnings of that curriculum are [here](https://github.com/CompSciCabal/CS-as-she-is-wrote), but before we got there, we had a fantastic idea/scope-creep moment.
+At some point we realized that we were a group of loosely affiliated people with limited, but focused free time that managed to seriously expand our collective and individual understanding of various computer science material over the course of about eight years. From that position, we might be able to put together a curriculum for other people in similar situations to do the same. The beginnings of that curriculum are [here](https://github.com/CompSciCabal/CS-as-she-is-wrote), but before we got to any sort of end state, we had a new-idea/scope-creep moment.
 
 Could we automate that?
 
@@ -34,4 +34,4 @@ In `dxnn`'s words, "How hard could it be?". The beginnings of _that_ project are
 
 How hard could it be, right?
 
-The only thing I've learned so far is that, for whatever reason, [`gensim` implementation of `Doc2Vec`](https://radimrehurek.com/gensim/models/doc2vec.html) doesn't allow passing a generator as the initial data sequence. This is _unlike_ their [implementation of `Word2vec`](https://radimrehurek.com/gensim/models/word2vec.html). I have no idea yet whether this is some implementation detail that snuck by, or whether it's intrinsic to the Doc2Vec approach. I guess I'd better read the [related papers](https://datascience.stackexchange.com/questions/20076/word2vec-vs-sentence2vec-vs-doc2vec) first.
+The only thing I've learned so far is that, for whatever reason, the [`gensim` implementation of `Doc2Vec`](https://radimrehurek.com/gensim/models/doc2vec.html) doesn't allow passing a generator as the initial data sequence. This is _unlike_ their [implementation of `Word2vec`](https://radimrehurek.com/gensim/models/word2vec.html). I have no idea yet whether this is some implementation detail that snuck by, or whether it's intrinsic to the Doc2Vec approach. I guess I'd better read the [related papers](https://datascience.stackexchange.com/questions/20076/word2vec-vs-sentence2vec-vs-doc2vec) first.
