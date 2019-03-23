@@ -1,11 +1,12 @@
 #!/usr/bin/python
-import os.path, json
-
-from subprocess import check_output, call
+import json
+import os.path
 from optparse import OptionParser
+from subprocess import call, check_output
+
 
 def wc_l(fname):
-    return int(check_output(["wc", "-l", fname]).split(" ")[0])
+    return int(check_output(["wc", "-l", fname]).decode("utf-8").split(" ")[0])
 
 def slugFromFname(fname):
     return os.path.basename(os.path.splitext(fname)[0])
