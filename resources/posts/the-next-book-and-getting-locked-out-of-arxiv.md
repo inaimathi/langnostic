@@ -1,4 +1,4 @@
-The votes are in, we've confirmed with a quorum-reaching meeting that in May we'll be starting a full read-through of [Paradigms of Artificial Intelligence Programming](https://github.com/norvig/paip-lisp), aka `PAPE`. I've read large chunks of the Norvig book in order to build some [prolog](http://www.swi-prolog.org/)-like [logic engine](https://github.com/inaimathi/fact-base)s, but I've never gone through the whole thing, and certainly not in a group setting.
+The votes are in, we've confirmed with a quorum-reaching meeting that in May we'll be starting a full read-through of [Paradigms of Artificial Intelligence Programming](https://github.com/norvig/paip-lisp), aka `PAIP`. I've read large chunks of the Norvig book in order to build some [prolog](http://www.swi-prolog.org/)-like [logic engine](https://github.com/inaimathi/fact-base)s, but I've never gone through the whole thing, and certainly not in a group setting.
 
 This should be an interesting year or two, reading-wise.
 
