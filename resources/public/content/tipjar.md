@@ -18,7 +18,7 @@ The [EFF](https://supporters.eff.org/donate), the [FSF](https://my.fsf.org/donat
 
 I use some services that provide subscription bonuses.
 
-Specifically, [Digital Ocean](http://www.digitalocean.com/?refcode=445ca16e1a76), [Ritual](http://invite.ritual.co/LEO4857), [AirBnB](www.airbnb.ca/c/leoz1320) and [Uber](https://www.uber.com/?exp=hp-c). So if you're considering signing up for any of them, click [here](http://www.digitalocean.com/?refcode=445ca16e1a76) for DO, [here](http://invite.ritual.co/LEO4857) here for Ritual, [here](https://www.airbnb.ca/c/leoz1320) for AirBnB, or use the Uber invite code `leoz602ue` to give both of us a free kick in the appropriate service.
+Specifically, [Digital Ocean](http://www.digitalocean.com/?refcode=445ca16e1a76), [Ritual](http://invite.ritual.co/LEO4857), [AirBnB](http://www.airbnb.ca/c/leoz1320) and [Uber](https://www.uber.com/?exp=hp-c). So if you're considering signing up for any of them, click [here](http://www.digitalocean.com/?refcode=445ca16e1a76) for DO, [here](http://invite.ritual.co/LEO4857) here for Ritual, [here](https://www.airbnb.ca/c/leoz1320) for AirBnB, or use the Uber invite code `leoz602ue` to give both of us a free kick in the appropriate service.
 
 ### Hire Me
 
