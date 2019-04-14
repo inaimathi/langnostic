@@ -76,8 +76,8 @@
 
   (GET "/feed" [] (atom-feed (posts/all-posts)))
   (GET "/feed/atom" [] (atom-feed (posts/all-posts)))
-  (GET "/feed/atom/:tag" [tag] (atom-feed (posts/find-by-tag (posts/all-posts))))
-  (GET "/feed/atom/by-tag/:tag" [tag] (atom-feed (posts/find-by-tag (posts/all-posts))))
+  (GET "/feed/atom/:tag" [tag] (atom-feed (posts/find-by-tag tag)))
+  (GET "/feed/atom/by-tag/:tag" [tag] (atom-feed (posts/find-by-tag tag)))
 
   (route/resources "/static/")
   (route/not-found error-404))
