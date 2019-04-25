@@ -4,21 +4,21 @@ So I was just at [Clojure North](https://clojurenorth.com/).
 
 ...went ok.
 
-By which I mean it was the single most beautiful pile of flaming wreckage that I've ever had the pleasure of being involved in. I got about thirty seconds into the live-coding portion before Firefox (in which I was running [`cl-notebook`](https://github.com/inaimathi/cl-notebook)) crashed. Except when I tried to quit out of Firefox, it was unresponsive. And then when I pulled up `terminal` to try to get `htop` running so I could see what's going on with my system, `terminal` was completely unresponsive. So my entire computer ended up crashing. And then, when I went to restart my computer, in the middle of the talk that I had literally just spent a week working up on short notice, _the power button was unresponsive for about 30 seconds_. I ended up recovering from that, and still giving a half-way decent live-coding demonstration/QA session, but goddamn was it touch-and-go for about ten minutes there[^in-case-you-were-wondering].
+By which I mean it was the single most beautiful pile of flaming wreckage that I've ever had the priviledge of being involved in. I got about thirty seconds into the live-coding portion before Firefox (in which I was running [`cl-notebook`](https://github.com/inaimathi/cl-notebook)) crashed. Except when I tried to quit out of Firefox, it remained unresponsive. Then when I pulled up `terminal` to try to get `htop` running so I could see what's going on with my system, `terminal` remained completely unresponsive. So my entire computer ended up crashing. And then, when I went to restart my computer, in the middle of the talk that I had literally just spent a week working up on short notice, _the power button remained unresponsive for about a minute_. I ended up recovering from that, and still giving a half-way decent live-coding demonstration/QA session, but goddamn was it touch-and-go for about ten minutes there[^in-case-you-were-wondering].
 
-[^in-case-you-were-wondering]: In case you were wondering, my best guess is that [`kazam`](https://itsfoss.com/kazam-screen-recorder/), a piece of screen-recording software I was running, exploded and ate all my memory.
+[^in-case-you-were-wondering]: In case you were wondering, my best guess is that [`kazam`](https://itsfoss.com/kazam-screen-recorder/), a piece of screen-recording software I was running, exploded and ate all my memory at exactly the worst possible time. I'm not saying "stay the hell away from kazam", but I also can't give it a recommendation at the moment.
 
 It was fucking glorious.
 
 I'm kind of hoping they post the full, un-edited thing in all its burning, terrible, complete perfection just so that I can eventually link you to the exact timestamp the explosions start. It was bad enough that eight or so people came up to me afterwards to tell me how much they enjoyed my talk, and in particular how graceful the recovery was. It happened a few more times again the next day. To paraphrase a friend:
 
-> No matter how much people wanted to boo you because you're a crazy foreign Lisp person, when the Vice McMahon of presentation problems walks into the ring with you, _and you take it down_, they're going to cheer at the end. - _Gaelan_
+> No matter how much people wanted to boo you because you're a crazy foreign Lisp person, when the Vice McMahon of presentation problems walks into the ring with you, _and you take it down_, they're going to cheer at the end. - [_Gaelan_](https://github.com/RobotDisco)
 
 If absolutely nothing else, I've gotten about 15 minutes into making my game for [the 2019 Lisp Game Jam](https://itch.io/jam/lisp-game-jam-2019), and the absolute, cast-iron, certain knowledge that I don't crack under any reasonable amount of pressure. Both of those are good things to have.
 
 ## The Rest of the Conference
 
-All of the other talks I went to were interesting, and well put together. I couldn't catch them all, because that would require literally being in two places at once, but there wasn't a dull moment yet. The talks were all filmed, they'll presumably be linked to from the Clojure North website at some point, so I won't bother summarizing them for you here.
+All of the other talks I went to were interesting, and well put together. I couldn't catch them all, because that would require literally being in two places at once, but there wasn't a dull moment. The talks were all filmed, they'll presumably be linked to from the Clojure North website at some point, so I won't bother summarizing them for you here.
 
 The main takeaway from me is that hiring Clojure people is kinda hard. Which is mildly concerning, given that I'm trying to use it proffessionally. At one point, a speaker mentioned that they'd just plain given up on finding [`clojurescript`](https://clojurescript.org/) developers, because they realized that they may as well be looking for literal unicorns. Their plan now is to just hire smart people and train them in the languages they need.
 
