@@ -2,7 +2,7 @@ So I'm going to be working with Clojure for a bit. Like, at work. And as a resul
 
 ## S3 Wagon
 
-Setting up a private repository for Clojure libraries is really straightforward. Usually, when I'm working on something, I'll toss it up onto [Clojars](TODO), but _this_ time, I don't want these repos to be fully public. They're pieces of internal infrastructure that deal with how our deploys are going to work, and possibly reveal some internals that we'd rather keep proprietary for the moment. The alternative I settled on was using [`s3-wagon-private`](https://github.com/s3-wagon-private/s3-wagon-private) to host a bunch of library `jar`s on a private bucket. This effectively lets you run your own `maven` repository.
+Setting up a private repository for Clojure libraries is really straightforward. Usually, when I'm working on something, I'll toss it up onto [Clojars](https://clojars.org/), but _this_ time, I don't want these repos to be fully public. They're pieces of internal infrastructure that deal with how our deploys are going to work, and possibly reveal some internals that we'd rather keep proprietary for the moment. The alternative I settled on was using [`s3-wagon-private`](https://github.com/s3-wagon-private/s3-wagon-private) to host a bunch of library `jar`s on a private bucket. This effectively lets you run your own `maven` repository.
 
 There are only a couple fiddly bits. The [step-by-step guide](https://github.com/s3-wagon-private/s3-wagon-private/wiki/Creating-a-Private-Clojure-component-Step-By-Step-Guide) does a pretty good job of getting you through it.
 
