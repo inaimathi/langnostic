@@ -265,3 +265,4 @@
 {"id": 264, "title": "The Next Book And Getting Locked Out Of Arxiv", "file": "the-next-book-and-getting-locked-out-of-arxiv", "posted": 1553991241, "tags": ["journal", "cabal", "shell"]}
 {"tags": ["almost-literate-programming", "cabal", "clojure"], "posted": 1555207720, "id": 265, "file": "arxivore", "title": "Arxivore"}
 {"tags": ["clojure", "journal"], "posted": 1555882672, "id": 266, "file": "clojure-north-2019", "title": "Clojure North 2019"}
+{"tags": ["clojure"], "posted": 1556402429, "id": 267, "file": "professional-clojure", "title": "Professional Clojure"}
