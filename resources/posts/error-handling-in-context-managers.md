@@ -85,7 +85,7 @@ When you're deaing with deploying micro-services, it sometimes gets a bit tricki
 	 (remote-log "Failed to create tempfile")
 	 (error e))
        (error (e)
-	 (remote-log "Something horrific has gone wrong" e)
+	 (remote-log "An ancient evil stirs. Your lights flicker. In the distance, sirens." e)
 	 (error e)))))
 ```
 
