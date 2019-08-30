@@ -1,4 +1,4 @@
-It's been a while since I touched it, so I figured I'd download the Erlang reference and language implementation and play around with it. This is also the first time I've played with it while being an admitted Emacs user though[^emas-first-impressions].
+It's been a while since I touched it, so I figured I'd download the Erlang reference and language implementation and play around with it. This is also the first time I've played with it while being an admitted Emacs user though[^emacs-first-impressions].
 
 [^emacs-first-impressions]: If you go far enough back in the my blog archive, you'll note that my initial reaction to Emacs was something along the lines of "My eyes! The goggles do NOTHING!" [runs away]. And actually, you can't even do that. Because this blog has a longer history than is apparent from the archive section. It's just that some of it was bloody fucking awful even by my standards, so it was cut out entirely.
 
