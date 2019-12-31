@@ -89,7 +89,7 @@
    [:body
     [:a {:href "/"} [:img {:class "logo-bar" :src "/static/img/langnostic.png"}]]
     (if user
-      [:h1 (str "Hello, " (:name user) "!")]
+      [:h1 (str "Hello, " (:name user) "!") [:a {:href "/auth/log-out"} "Log Out"]]
       [:h1 [:a {:href (auth/login-url "patreon")} "Login"] "with Patreon"])
     (nav-bar section)
     [:div {:class "content"} content]

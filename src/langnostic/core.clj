@@ -5,6 +5,7 @@
             [compojure.route :as route]
             [clojure-watch.core :as watch]
             [ring.middleware.params :refer [wrap-params]]
+            [ring.middleware.session :refer [wrap-session]]
 
             [clojure.java.io :as io]
 
@@ -39,7 +40,8 @@
     (if-let [post (posts/find-by-slug name)]
       {:status 200
        :headers {"Content-Type" "text/html"}
-       :body (pages/template "blog" (post :title) (pages/post post))}
+       :body (pages/template "blog" (post :title) (pages/post post)
+                             :user (get-in req [:session :user]))}
       error-404)))
 
 (defn home [req]
@@ -50,7 +52,8 @@
           [:div
            (fs/file-content "resources/public/content/intro.md")
            [:hr]
-           (pages/latest-post)])})
+           (pages/latest-post)]
+          :user (get-in req [:session :user]))})
 
 (defn archive [posts]
   (fn [req]
@@ -58,7 +61,8 @@
      :headers {"Content-Type" "text/html"}
      :body (pages/template
             "archive" "Archive"
-            (pages/archive posts))}))
+            (pages/archive posts)
+            :user (get-in req [:session :user]))}))
 
 (defn atom-feed [posts]
   (fn [req]
@@ -73,13 +77,22 @@
     (let [user (auth/authenticate! auth-type (get-in req [:params "code"]))]
       {:status 200
        :headers {"Content-Type" "text/html"}
-       :body (pages/template "blog" "Authenticated" "Welcome!" :user user)})))
+       :body (pages/template "blog" "Authenticated" "Welcome!" :user user)
+       :session {:user user}})))
+
+(defn log-out
+  [req]
+  {:status 200
+   :headers {"Content-Type" "text/html"}
+   :body (pages/template "blog" "Log Out" "Goodbye!")
+   :session nil})
 
 (defroutes langnostic-routes
   (GET "/" [] home)
   (GET "/blog" [] home)
   (GET "/posts/:name" [name] (post name))
 
+  (GET "/auth/log-out" [] log-out)
   (GET "/auth/:auth-type" [auth-type] (authenticate auth-type))
 
   (GET "/archive" [] (archive (posts/all-posts)))
@@ -123,4 +136,8 @@
                       (reset! (post :content) nil))))}])
 
    (println "Listening on port" port "...")
-   (server/run-server (-> langnostic-routes wrap-params) {:port (read-string port)})))
+   (server/run-server
+    (-> langnostic-routes
+        wrap-params
+        wrap-session)
+    {:port (read-string port)})))
