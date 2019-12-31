@@ -7,6 +7,10 @@
 
 ## ToDo
 
+- Thread the user object through all the pages
+	- Add session to the server
+	- Anywhere you call `pages/template`, make sure you pass it the (possibly `nil`) user from sesison
+	- Make sure `pages/template` does the reasonable thing when given a user
 
 - Fixed FS signal problem. The reload of posts.json seems to hang at around 111 on the live system (not on the dev system, oddly). I suspect memory issues. See what you can do about it, but don't stress; this is going away once you move post metadata into the post markup itself.
 - Cache static pages, instead of reading them each time

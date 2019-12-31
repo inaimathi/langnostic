@@ -2,6 +2,7 @@
   (:require [hiccup.page :as pg]
             [clj-time.format :as fmt]
 
+            [langnostic.auth :as auth]
             [langnostic.posts :as posts]))
 
 (defn post-href [post]
@@ -75,7 +76,7 @@
 (defn stylesheet [url]
   [:link {:rel "stylesheet" :href url :type "text/css" :media "screen"}])
 
-(defn template [section page-title content]
+(defn template [section page-title content & {:keys [user]}]
   (pg/html5
    {:lang "en"}
    [:head
@@ -87,6 +88,9 @@
     [:script {:type "text/javascript"} "hljs.initHighlightingOnLoad();"]]
    [:body
     [:a {:href "/"} [:img {:class "logo-bar" :src "/static/img/langnostic.png"}]]
+    (if user
+      [:h1 (str "Hello, " (:name user) "!")]
+      [:h1 [:a {:href (auth/login-url "patreon")} "Login"] "with Patreon"])
     (nav-bar section)
     [:div {:class "content"} content]
     [:hr]

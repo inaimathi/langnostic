@@ -1,10 +1,14 @@
 (ns langnostic.core
   (:require [org.httpkit.server :as server]
+            [cheshire.core :as json]
+            [org.httpkit.client :as http]
             [compojure.route :as route]
             [clojure-watch.core :as watch]
+            [ring.middleware.params :refer [wrap-params]]
 
             [clojure.java.io :as io]
 
+            [langnostic.auth :as auth]
             [langnostic.feed :as feed]
             [langnostic.pages :as pages]
             [langnostic.posts :as posts]
@@ -62,10 +66,21 @@
      :headers {"Content-Type" "application/atom+xml"}
      :body (feed/atom-feed posts)}))
 
+(defn authenticate [auth-type]
+  (fn
+    [req]
+    (println (str req))
+    (let [user (auth/authenticate! auth-type (get-in req [:params "code"]))]
+      {:status 200
+       :headers {"Content-Type" "text/html"}
+       :body (pages/template "blog" "Authenticated" "Welcome!" :user user)})))
+
 (defroutes langnostic-routes
   (GET "/" [] home)
   (GET "/blog" [] home)
   (GET "/posts/:name" [name] (post name))
+
+  (GET "/auth/:auth-type" [auth-type] (authenticate auth-type))
 
   (GET "/archive" [] (archive (posts/all-posts)))
   (GET "/archive/by-tag/:tag" [tag] (archive (posts/find-by-tag tag)))
@@ -108,4 +123,4 @@
                       (reset! (post :content) nil))))}])
 
    (println "Listening on port" port "...")
-   (server/run-server langnostic-routes {:port (read-string port)})))
+   (server/run-server (-> langnostic-routes wrap-params) {:port (read-string port)})))
