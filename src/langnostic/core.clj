@@ -17,32 +17,34 @@
   (:use [compojure.core :only [defroutes GET POST DELETE ANY context]])
   (:gen-class))
 
-(def error-404
+(defn error-404
+  [user]
   {:status 404
    :headers {"Content-Type" "text/html"}
    :body (pages/template
           name name
           (fs/file-content
-           "resources/public/content/404.md"))})
-
-(defn resource-page [title file]
-  (if (fs/file-in-resources? file)
-    {:status 200
-     :headers {"Content-Type" "text/html"}
-     :body (pages/template file (clojure.string/capitalize title) (fs/file-content file))}
-    error-404))
+           "resources/public/content/404.md")
+          :user user)})
 
 (defn static-page [name]
-  (fn [req] (resource-page name (io/file "resources/public/content" (str name ".md")))))
+  (fn [req]
+    (let [file (io/file "resources/public/content" (str name ".md"))
+          user (get-in req [:session :user])]
+      (if (fs/file-in-resources? file)
+        {:status 200
+         :headers {"Content-Type" "text/html"}
+         :body (pages/template file (clojure.string/capitalize name) (fs/file-content file) :user user)}
+        (error-404 user)))))
 
 (defn post [name]
   (fn [req]
-    (if-let [post (posts/find-by-slug name)]
-      {:status 200
-       :headers {"Content-Type" "text/html"}
-       :body (pages/template "blog" (post :title) (pages/post post)
-                             :user (get-in req [:session :user]))}
-      error-404)))
+    (let [user (get-in req [:session :user])]
+      (if-let [post (posts/find-by-slug name)]
+        {:status 200
+         :headers {"Content-Type" "text/html"}
+         :body (pages/template "blog" (post :title) (pages/post post) :user user)}
+        (error-404 user)))))
 
 (defn home [req]
   {:status 200
@@ -108,7 +110,7 @@
   (GET "/feed/atom/by-tag/:tag" [tag] (atom-feed (posts/find-by-tag tag)))
 
   (route/resources "/static/")
-  (route/not-found error-404))
+  (route/not-found (fn [req] (error-404 (get-in req [:session :user])))))
 
 (defn -main
   ([] (-main "8000"))

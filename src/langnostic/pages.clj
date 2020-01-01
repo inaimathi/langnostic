@@ -41,14 +41,20 @@
             "(" count ")"])
          (into (sorted-map) (frequencies (mapcat :tags posts))))]])
 
-(defn nav-bar [section]
+(defn nav-bar [section user]
   [:div {:class "top-menu-container"}
    [:ul {:class "top-menu"}
     (map (fn [name]
            [:li (if (= name section)
                   name
                   [:a {:href (str "/" name)} name])])
-         ["blog" "archive" "links" "meta" "tipjar" "feed"])]])
+         ["blog" "archive" "links" "meta" "tipjar" "feed"])
+    [:li {:class "auth-button"}
+     (if user
+       [:span
+        [:a {:href "/auth/log-out"} "logout"]
+        [:img {:class "user-thumbnail" :src (:thumbnail user)}]]
+       [:a {:href (auth/login-url "patreon")} "login"])]]])
 
 (def footer
   [:div {:class "license"}
@@ -88,10 +94,7 @@
     [:script {:type "text/javascript"} "hljs.initHighlightingOnLoad();"]]
    [:body
     [:a {:href "/"} [:img {:class "logo-bar" :src "/static/img/langnostic.png"}]]
-    (if user
-      [:h1 (str "Hello, " (:name user) "!") [:a {:href "/auth/log-out"} "Log Out"]]
-      [:h1 [:a {:href (auth/login-url "patreon")} "Login"] "with Patreon"])
-    (nav-bar section)
+    (nav-bar section user)
     [:div {:class "content"} content]
     [:hr]
     footer]))
