@@ -61,12 +61,12 @@
   [:div {:class "license"}
    [:a {:rel "license" :href "http://creativecommons.org/licenses/by-sa/3.0/"}
     [:img {:alt "Creative Commons License" :style "border-width:0;float: left; margin: 0px 15px 15px 0px;"
-           :src "http://i.creativecommons.org/l/by-sa/3.0/88x31.png"}]]
+           :src "https://i.creativecommons.org/l/by-sa/3.0/88x31.png"}]]
    [:p
-    [:span {:xmlns:dct "http://purl.org/dc/terms/" :property "dct:title"}
+    [:span {:xmlns:dct "https://purl.org/dc/terms/" :property "dct:title"}
      "all articles at langnostic"]
     " are licensed under a "
-    [:a {:rel "license" :href "http://creativecommons.org/licenses/by-sa/3.0/"}
+    [:a {:rel "license" :href "https://creativecommons.org/licenses/by-sa/3.0/"}
      "Creative Commons Attribution-ShareAlike 3.0 Unported License"]]
    [:p
     "Reprint, rehost and distribute freely (even for profit), but attribute the work and allow your readers the same freedoms. "
