@@ -7,7 +7,6 @@
 
 ## ToDo
 
-- Make logout and authenticate pages redirect at the end of their lifecycle instead of sticking to a page where refreshing hits an error
 - Add a simple comment system
 
 - Cache static pages, instead of reading them each time

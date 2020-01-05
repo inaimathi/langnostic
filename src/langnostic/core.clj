@@ -77,16 +77,14 @@
     [req]
     (println (str req))
     (let [user (auth/authenticate! auth-type (get-in req [:params "code"]))]
-      {:status 200
-       :headers {"Content-Type" "text/html"}
-       :body (pages/template "blog" "Authenticated" "Welcome!" :user user)
+      {:status 303
+       :headers {"Location" "/"}
        :session {:user user}})))
 
 (defn log-out
   [req]
-  {:status 200
-   :headers {"Content-Type" "text/html"}
-   :body (pages/template "blog" "Log Out" "Goodbye!")
+  {:status 303
+   :headers {"Location" "/"}
    :session nil})
 
 (defroutes langnostic-routes
