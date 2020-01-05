@@ -7,12 +7,9 @@
 
 ## ToDo
 
-- Thread the user object through all the pages
-	- Make the template look purdy (add stuff to the nav line instead of doing silly things with H1s)
 - Make logout and authenticate pages redirect at the end of their lifecycle instead of sticking to a page where refreshing hits an error
-- Add a Patreon link to the tipjar
+- Add a simple comment system
 
-- Fixed FS signal problem. The reload of posts.json seems to hang at around 111 on the live system (not on the dev system, oddly). I suspect memory issues. See what you can do about it, but don't stress; this is going away once you move post metadata into the post markup itself.
 - Cache static pages, instead of reading them each time
 
 - Revisit old blogs. NOW AT: `id:93`

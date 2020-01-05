@@ -1,10 +1,12 @@
 # TipJar
 
-So. You've read a bunch of my crazy-ass ramblings, and you feel a compulsion to throw spare change at me.
+So. You've read a bunch of my crazy-ass ramblings, and you're abuzz with energy that you'd like to convert into action. Here's what you can do...
 
-Well, don't worry about it.
+### Support My [Patreon](https://www.patreon.com/langnostic)
 
-I'm a freelancing Toronto programmer, whose writing is crafted for the dual purposes of a log stream and my own amusement. You've paid me quite enough by reading. If that's really not good enough, and you feel the need to engage in reciprocation...
+I'm [langnostic](https://www.patreon.com/langnostic) there, because someone else got `inaimathi`.
+
+Right now, it's just you handing me spare change. You can log into this blog as long as you have a Patreon account. Coming soon is a comment system for patrons, and there'll be more interesting projects happening that involve supporters thereafter.
 
 ### Discuss
 
