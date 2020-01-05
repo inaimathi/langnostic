@@ -52,7 +52,8 @@
     [:li {:class "auth-button"}
      (if user
        [:span
-        [:a {:href "/auth/log-out"} "logout"]
+        [:a {:href "/auth/log-out"} "logout"] " "
+        [:span {:class "user-name"} (:name user)]
         [:img {:class "user-thumbnail" :src (:thumbnail user)}]]
        [:a {:href (auth/login-url "patreon")} "login"])]]])
 

@@ -17,8 +17,7 @@
         toks (.getTokens client code)
         api-client (new com.patreon.PatreonAPI (.getAccessToken toks))
         user (.get (.fetchUser api-client))]
-    {:name (.getFullName user) :email (.getEmail user) :verified? (.getIsEmailVerified user)
-     :url (.getUrl user) :about (.getAbout user)
+    {:site "patreon"
+     :name (.getFullName user) :email (.getEmail user) :url (.getUrl user)
      :image (.getImageUrl user) :thumbnail (.getThumbUrl user)
-     :like-count (.getLikeCount user)
-     :vanity (.getVanity user) :pledges (.getPledges user)}))
+     :pledges (.getPledges user)}))

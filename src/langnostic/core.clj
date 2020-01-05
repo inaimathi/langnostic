@@ -75,7 +75,6 @@
 (defn authenticate [auth-type]
   (fn
     [req]
-    (println (str req))
     (let [user (auth/authenticate! auth-type (get-in req [:params "code"]))]
       {:status 303
        :headers {"Location" "/"}
