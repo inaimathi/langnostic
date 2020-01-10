@@ -2,6 +2,7 @@
   (:require [hiccup.page :as pg]
             [clj-time.format :as fmt]
 
+            [langnostic.auth :as auth]
             [langnostic.posts :as posts]))
 
 (defn post-href [post]
@@ -40,25 +41,32 @@
             "(" count ")"])
          (into (sorted-map) (frequencies (mapcat :tags posts))))]])
 
-(defn nav-bar [section]
+(defn nav-bar [section user]
   [:div {:class "top-menu-container"}
    [:ul {:class "top-menu"}
     (map (fn [name]
            [:li (if (= name section)
                   name
                   [:a {:href (str "/" name)} name])])
-         ["blog" "archive" "links" "meta" "tipjar" "feed"])]])
+         ["blog" "archive" "links" "meta" "tipjar" "feed"])
+    [:li {:class "auth-button"}
+     (if user
+       [:span
+        [:a {:href "/auth/log-out"} "logout"] " "
+        [:span {:class "user-name"} (:name user)]
+        [:img {:class "user-thumbnail" :src (:thumbnail user)}]]
+       [:a {:href (auth/login-url "patreon")} "login"])]]])
 
 (def footer
   [:div {:class "license"}
    [:a {:rel "license" :href "http://creativecommons.org/licenses/by-sa/3.0/"}
     [:img {:alt "Creative Commons License" :style "border-width:0;float: left; margin: 0px 15px 15px 0px;"
-           :src "http://i.creativecommons.org/l/by-sa/3.0/88x31.png"}]]
+           :src "https://i.creativecommons.org/l/by-sa/3.0/88x31.png"}]]
    [:p
-    [:span {:xmlns:dct "http://purl.org/dc/terms/" :property "dct:title"}
+    [:span {:xmlns:dct "https://purl.org/dc/terms/" :property "dct:title"}
      "all articles at langnostic"]
     " are licensed under a "
-    [:a {:rel "license" :href "http://creativecommons.org/licenses/by-sa/3.0/"}
+    [:a {:rel "license" :href "https://creativecommons.org/licenses/by-sa/3.0/"}
      "Creative Commons Attribution-ShareAlike 3.0 Unported License"]]
    [:p
     "Reprint, rehost and distribute freely (even for profit), but attribute the work and allow your readers the same freedoms. "
@@ -75,7 +83,7 @@
 (defn stylesheet [url]
   [:link {:rel "stylesheet" :href url :type "text/css" :media "screen"}])
 
-(defn template [section page-title content]
+(defn template [section page-title content & {:keys [user]}]
   (pg/html5
    {:lang "en"}
    [:head
@@ -87,7 +95,7 @@
     [:script {:type "text/javascript"} "hljs.initHighlightingOnLoad();"]]
    [:body
     [:a {:href "/"} [:img {:class "logo-bar" :src "/static/img/langnostic.png"}]]
-    (nav-bar section)
+    (nav-bar section user)
     [:div {:class "content"} content]
     [:hr]
     footer]))
