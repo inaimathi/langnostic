@@ -1,0 +1,11 @@
+Before I go any further, this one is firmly staying in the drafts folder, because personal stuff and also bullshit that literally no one anywhere cares about.
+
+So I'm a shlepper, I guess?
+
+It sort of makes quasi-sense, because I live in a fundamentally capitalist North American country, and never explicitly thought about reducing the amount of stuff I own besides the occasional, ritualistic, mostly-cosmetic purging of excess excess excess. Now that I've been moving around though, it's pretty obvious that I have way too much stuff. Ideally, it would be possible for me to move to the next place by taking a backpack, a gym bag and maybe a medium-sized suitcase. Even this is shlepping by the [Walkaway](https://en.wikipedia.org/wiki/Walkaway_(Doctorow_novel)) definition, but we haven't exactly reached the level of matter-fungibility as that potential future. I mean, _ideally_ ideally, I'd be able to move with nothing more than a backpack, but that would take either some serious planning, or some serious cheating.
+
+This has me thinking about the nature of minimalism in the context of modern living.
+
+If you're rich enough, it's fairly easy to be a "minimalist" by just renting everything. You can live in an AirBnB/hotel and thus own no furniture. You can treat clothing as disposable. You can eat exclusively at restaurants, and you can move around by some combination of Uber, public transport, bikeshares and your legs. _Technically_, you can own nothing more than a laptop and laptop bag, a phone and a bank account. _Effectively_, you're still taking advantage of all the effects of modern life and participate in its' supply-chain and economies. If you want to be a minimalist in the deeper sense, you need to divest yourself from as many of these things as you can.
+
+You need to organize your life so that it's not dependent on external transport. Walk where you can. You need to eat in a simple, self-contained way. Cook for yourself, using one or two pots and a minimum of very general tools to prepare food. Wear what you can carry. This is the limiting factor I'm hitting at the moment; I kinda need at least a weeks' worth of clothing to make the laundry cycle worth my while. A set of two or three bacteria/scent-shedding clothes would do equally well, but I don't think we've reached that tech level as a species quite yet.
