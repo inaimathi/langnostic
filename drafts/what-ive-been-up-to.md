@@ -1,0 +1,5 @@
+Another one that stays in the drafts folder. Although, I might end up starting a `diary` or `non-technical` tag or something, just so I can discuss various non-programming related things here. It _is_ supposed to be a journal, after all, not just a record of the programmery things I try.
+
+Ok, so its been like a year at this point? My post timestamps say about eight months. Which is mildly worrysome, since it seriously feels more like a high, single-digit number of years. So in the meantime, I've mainly been doing and thinking about non-coding things. The professional stuff I've dealt with has varied from lisp AI stuff, to web development, to a bit of Lambda development, to machine learning in both Lisp and Python flavors.
+
+The personal stuff has been a mindfuck and a half. The _current_ stuff is between three-quarters and four-fifths over, which is no guarantee that more won't crop up. The main highlight is that I'm going through a divorce-ish thing right now. Ish in that it's a lot more complicated. There are kids and other partners involved, because we opened the relationship a little while ago, but the fallout is still going to be the same thing.
