@@ -55,7 +55,10 @@
         [:a {:href "/auth/log-out"} "logout"] " "
         [:span {:class "user-name"} (:name user)]
         [:img {:class "user-thumbnail" :src (:thumbnail user)}]]
-       [:a {:href (auth/login-url "patreon")} "login"])]]])
+       [:span {:class "login-menu"}
+        [:a {:href "#" :class "placeholder"} "login"]
+        [:a {:href (auth/login-url "patreon") :class "provider"} "patreon"]
+        [:a {:href (auth/login-url "github") :class "provider"} "github"]])]]])
 
 (def footer
   [:div {:class "license"}

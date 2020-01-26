@@ -11,8 +11,12 @@ body { width: 100%; margin:0px; padding: 0px; font-family: sans-serif serif; ove
 .top-menu a { color: #FFF; }
 .top-menu a:hover { color: #999; }
 
-.auth-button { margin-left: 60px; float: right; }
+.auth-button { margin-left: 60px; float: right; min-width: 200px; text-align: right}
 .auth-button .user-thumbnail { height: 16px; margin-left: 3px; padding: 2px; border: 1px solid #fff; background-color: #fff; }
+.auth-button .login-menu .placeholder { display: block }
+.auth-button .login-menu .provider { display: none; margin-left: 3px; padding: 3px}
+.auth-button .login-menu:hover .placeholder { display: none }
+.auth-button .login-menu:hover .provider { display: inline-block }
 
 h1, h1 a { color: #CC0606; margin-bottom: 0px; text-decoration: none; }
 .posted { font-style: oblique; color: #AAA; display: block; font-size: small; text-align: right; margin-bottom: 10px;}
