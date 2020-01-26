@@ -16,6 +16,7 @@
 (defmethod authenticate! :default
   [provider code]
   (println "UNKNOWN PROVIDER" provider code))
+
 (defmethod authenticate! "patreon"
   [provider code]
   (let [client (new com.patreon.PatreonOAuth (conf/patreon :id) (conf/patreon :secret) (redirect-url "patreon"))
@@ -26,6 +27,7 @@
      :name (.getFullName user) :url (.getUrl user)
      :image (.getImageUrl user) :thumbnail (.getThumbUrl user)
      :pledges (.getPledges user)}))
+
 (defmethod authenticate! "github"
   [provider code]
   (let [token (git/oauth-access-token (conf/github :id) (conf/github :secret) code (redirect-url "github"))
