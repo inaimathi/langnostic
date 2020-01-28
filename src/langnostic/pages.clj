@@ -19,8 +19,6 @@
       (next :title) "->"])])
 
 (defn post-comments [post]
-  (println "RENDERING COMMENTS" (str post))
-  (println "DOING THINGS" (str (comments/get-comments-for (:id post))))
   [:div {:class "post-comments"}
    [:hr]
    [:h3 "Comments"]
@@ -38,9 +36,9 @@
 
 (defn post [post]
   [:div
-   [:h1 [:a {:href (post-href post)} (post :title)]]
+   [:h1 [:a {:href (post-href post)} (:title post)]]
    [:span {:class "posted"}
-    (fmt/unparse (fmt/formatter "E MMM d, Y") (post :posted))]
+    (fmt/unparse (fmt/formatter "E MMM d, Y") (:posted post))]
    (posts/post-content post)
    (post-links post)
    (post-comments post)])

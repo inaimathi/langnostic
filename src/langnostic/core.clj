@@ -80,6 +80,15 @@
        :headers {"Location" "/"}
        :session {:user user}})))
 
+(defn post-comment
+  [req]
+  (println "POSTING COMMENT" (str req))
+  (let [user (get-in req [:session :user])]
+    (println "   USER" (str user))
+    {:status 200
+     :headers {"Content-Type" "text/plain"}
+     :body "Okily Dokily"}))
+
 (defn log-out
   [req]
   {:status 303
@@ -90,6 +99,9 @@
   (GET "/" [] home)
   (GET "/blog" [] home)
   (GET "/posts/:name" [name] (post name))
+
+  (POST "/posts/:id/comment" [] post-comment)
+  (POST "/posts/:id/comment/reply" [] post-comment)
 
   (GET "/auth/log-out" [] log-out)
   (GET "/auth/:auth-type" [auth-type] (authenticate auth-type))
