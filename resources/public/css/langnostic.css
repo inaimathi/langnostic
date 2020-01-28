@@ -37,6 +37,13 @@ code, pre, pre code { font-family: monospace; }
 
 .footnotes { border-top: 3px solid #CC0606; padding-top: 25px; }
 
+.post-comments {}
+.post-comments .comment .author-image {
+    max-width: 30px; max-height: 30px; margin: 0px; padding: 5px; background-color: #fff; display: inline-block; margin-right: 5px; }
+.post-comments .replies { margin-left: 20px; border-left: 1px solid #CC0606; }
+.post-comments .replies .author-image { border-left: 0px; }
+.post-comments .replies .comment-content { padding-left: 10px; }
+
 .tags-list li { list-style-type: none; display: inline-block; font-weight: bold; margin-right: 5px; }
 
 hr { border-color: #CC0606; background-color: #CC0606; display: block; clear: both; }

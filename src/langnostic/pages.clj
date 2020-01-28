@@ -3,19 +3,38 @@
             [clj-time.format :as fmt]
 
             [langnostic.auth :as auth]
-            [langnostic.posts :as posts]))
+            [langnostic.posts :as posts]
+            [langnostic.comments :as comments]))
 
 (defn post-href [post]
   (str "/posts/" (post :file)))
 
 (defn post-links [post]
   [:div {:class "post-nav"}
-   (if-let [prev (get @posts/posts (dec (post :id)))]
+   (if-let [prev (get @posts/posts (dec (:id post)))]
      [:a {:class "prev-post" :href (post-href prev)}
       "<-" (prev :title)])
-   (if-let [next (get @posts/posts (inc (post :id)))]
+   (if-let [next (get @posts/posts (inc (:id post)))]
      [:a {:class "next-post" :href (post-href next)}
       (next :title) "->"])])
+
+(defn post-comments [post]
+  (println "RENDERING COMMENTS" (str post))
+  (println "DOING THINGS" (str (comments/get-comments-for (:id post))))
+  [:div {:class "post-comments"}
+   [:hr]
+   [:h3 "Comments"]
+   (map
+    (fn rec [comment]
+      [:div {:class "comment" :path (str (:path comment))}
+       [:span {:class "comment-author"}
+        [:img {:class "author-image" :src (get-in comment [:user :image])}]
+        [:a {:class "author-link" :href (get-in comment [:user :url])} (get-in comment [:user :name])]]
+       [:pre {:class "comment-content"} (:content comment)]
+       (when (not (empty? (:replies comment)))
+         [:div {:class "replies"}
+          (map rec (:replies comment))])])
+    (comments/get-comments-for (:id post)))])
 
 (defn post [post]
   [:div
@@ -23,7 +42,8 @@
    [:span {:class "posted"}
     (fmt/unparse (fmt/formatter "E MMM d, Y") (post :posted))]
    (posts/post-content post)
-   (post-links post)])
+   (post-links post)
+   (post-comments post)])
 
 (defn latest-post []
   (post (last @posts/posts)))
