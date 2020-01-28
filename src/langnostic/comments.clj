@@ -23,10 +23,10 @@
      (let [target (conj comment-path :replies)
            new-ix (count (db/get-at tx (concat [:posts post-id :comments] target)))
            path (conj target new-ix)]
-       (-> tx
-           (db/update-at
-            (concat [:posts post-id :comments] target)
-            #(conj % {:user user :path path :content content :replies []})))))))
+       (db/update-at
+        tx [:posts post-id :comments]
+        (fn [comments]
+          (update-in comments target #(conj % {:user user :path path :content content :replies []}))))))))
 
 (defn edit-comment!
   [user comment-path new-content]
