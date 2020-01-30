@@ -1,6 +1,7 @@
 (ns langnostic.pages
   (:require [hiccup.page :as pg]
             [clj-time.format :as fmt]
+            [ring.util.codec :as cod]
 
             [langnostic.auth :as auth]
             [langnostic.posts :as posts]
@@ -18,7 +19,7 @@
      [:a {:class "next-post" :href (post-href next)}
       (next :title) "->"])])
 
-(defn post-comments [post]
+(defn post-comments [post user]
   [:div {:class "post-comments"}
    [:hr]
    [:h3 "Comments"]
@@ -29,22 +30,33 @@
         [:img {:class "author-image" :src (get-in comment [:user :image])}]
         [:a {:class "author-link" :href (get-in comment [:user :url])} (get-in comment [:user :name])]]
        [:pre {:class "comment-content"} (:content comment)]
+       (when user
+         [:form {:class "reply-form"
+                 :action (str "/posts/" (:id post) "/comment/reply?path="
+                              (cod/url-encode (:path comment)))
+                 :method "POST"}
+          [:textarea {:name "comment"}]
+          [:input {:type "Submit" :value "Reply"}]])
        (when (not (empty? (:replies comment)))
          [:div {:class "replies"}
           (map rec (:replies comment))])])
-    (comments/get-comments-for (:id post)))])
+    (comments/get-comments-for (:id post)))
+   (when user
+     [:form {:class "post-comment-form" :action (str "/posts/" (:id post) "/comment") :method "POST"}
+      [:textarea {:name "comment"}]
+      [:input {:type "Submit" :value "Post"}]])])
 
-(defn post [post]
+(defn post [post & {:keys [user]}]
   [:div
    [:h1 [:a {:href (post-href post)} (:title post)]]
    [:span {:class "posted"}
     (fmt/unparse (fmt/formatter "E MMM d, Y") (:posted post))]
    (posts/post-content post)
    (post-links post)
-   (post-comments post)])
+   (post-comments post user)])
 
-(defn latest-post []
-  (post (last @posts/posts)))
+(defn latest-post [user]
+  (post (last @posts/posts) :user user))
 
 (defn archive [posts]
   [:div

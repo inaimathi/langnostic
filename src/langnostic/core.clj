@@ -1,5 +1,6 @@
 (ns langnostic.core
-  (:require [org.httpkit.server :as server]
+  (:require [clojure.edn :as edn]
+            [org.httpkit.server :as server]
             [cheshire.core :as json]
             [org.httpkit.client :as http]
             [compojure.route :as route]
@@ -13,7 +14,8 @@
             [langnostic.feed :as feed]
             [langnostic.pages :as pages]
             [langnostic.posts :as posts]
-            [langnostic.files :as fs])
+            [langnostic.files :as fs]
+            [langnostic.comments :as comments])
   (:use [compojure.core :only [defroutes GET POST DELETE ANY context]])
   (:gen-class))
 
@@ -43,7 +45,7 @@
       (if-let [post (posts/find-by-slug name)]
         {:status 200
          :headers {"Content-Type" "text/html"}
-         :body (pages/template "blog" (post :title) (pages/post post) :user user)}
+         :body (pages/template "blog" (post :title) (pages/post post :user user) :user user)}
         (error-404 user)))))
 
 (defn home [req]
@@ -54,7 +56,7 @@
           [:div
            (fs/file-content "resources/public/content/intro.md")
            [:hr]
-           (pages/latest-post)]
+           (pages/latest-post (get-in req [:session :user]))]
           :user (get-in req [:session :user]))})
 
 (defn archive [posts]
@@ -82,12 +84,16 @@
 
 (defn post-comment
   [req]
-  (println "POSTING COMMENT" (str req))
-  (let [user (get-in req [:session :user])]
-    (println "   USER" (str user))
-    {:status 200
-     :headers {"Content-Type" "text/plain"}
-     :body "Okily Dokily"}))
+  (let [user (get-in req [:session :user])
+        {post-id :id content "comment" path "path"} (:params req)
+        post-id (edn/read-string post-id)
+        path (edn/read-string path)]
+    (when user
+      (if path
+        (comments/post-comment! user post-id path content)
+        (comments/post-comment! user post-id content)))
+    {:status 303
+     :headers {"Location" (get-in req [:headers "referer"])}}))
 
 (defn log-out
   [req]
@@ -95,8 +101,18 @@
    :headers {"Location" "/"}
    :session nil})
 
+(defn dummy-user
+  [req]
+  {:status 303
+   :headers {"Location" "/"}
+   :session {:user {:site "patreon"
+                    :name "inaimathi" :url "https://inaimathi.ca"
+                    :image "/static/img/wonka.jpg" :thumbnail "/static/img/wonka.jpg"
+                    :pledges []}}})
+
 (defroutes langnostic-routes
   (GET "/" [] home)
+  (GET "/dev/dummy-user" [] dummy-user)
   (GET "/blog" [] home)
   (GET "/posts/:name" [name] (post name))
 
