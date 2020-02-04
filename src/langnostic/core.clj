@@ -20,53 +20,53 @@
   (:gen-class))
 
 (defn error-404
-  [user]
+  []
   {:status 404
    :headers {"Content-Type" "text/html"}
    :body (pages/template
           name name
           (fs/file-content
-           "resources/public/content/404.md")
-          :user user)})
+           "resources/public/content/404.md"))})
 
 (defn static-page [name]
   (fn [req]
-    (let [file (io/file "resources/public/content" (str name ".md"))
-          user (get-in req [:session :user])]
-      (if (fs/file-in-resources? file)
-        {:status 200
-         :headers {"Content-Type" "text/html"}
-         :body (pages/template file (clojure.string/capitalize name) (fs/file-content file) :user user)}
-        (error-404 user)))))
+    (let [file (io/file "resources/public/content" (str name ".md"))]
+      (binding [auth/USER (get-in req [:session :user])]
+        (if (fs/file-in-resources? file)
+
+          {:status 200
+           :headers {"Content-Type" "text/html"}
+           :body (pages/template file (clojure.string/capitalize name) (fs/file-content file))}
+          (error-404))))))
 
 (defn post [name]
   (fn [req]
-    (let [user (get-in req [:session :user])]
+    (binding [auth/USER (get-in req [:session :user])]
       (if-let [post (posts/find-by-slug name)]
         {:status 200
          :headers {"Content-Type" "text/html"}
-         :body (pages/template "blog" (post :title) (pages/post post :user user) :user user)}
-        (error-404 user)))))
+         :body (pages/template "blog" (post :title) (pages/post post))}
+        (error-404)))))
 
 (defn home [req]
-  {:status 200
-   :headers {"Content-Type" "text/html"}
-   :body (pages/template
-          "blog" "Welcome"
-          [:div
-           (fs/file-content "resources/public/content/intro.md")
-           [:hr]
-           (pages/latest-post (get-in req [:session :user]))]
-          :user (get-in req [:session :user]))})
-
-(defn archive [posts]
-  (fn [req]
+  (binding [auth/USER (get-in req [:session :user])]
     {:status 200
      :headers {"Content-Type" "text/html"}
      :body (pages/template
-            "archive" "Archive"
-            (pages/archive posts)
-            :user (get-in req [:session :user]))}))
+            "blog" "Welcome"
+            [:div
+             (fs/file-content "resources/public/content/intro.md")
+             [:hr]
+             (pages/latest-post)])}))
+
+(defn archive [posts]
+  (fn [req]
+    (binding [auth/USER (get-in req [:session :user])]
+      {:status 200
+       :headers {"Content-Type" "text/html"}
+       :body (pages/template
+              "archive" "Archive"
+              (pages/archive posts))})))
 
 (defn atom-feed [posts]
   (fn [req]

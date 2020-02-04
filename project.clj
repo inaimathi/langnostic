@@ -1,4 +1,4 @@
-(defproject langnostic "0.1.1-SNAPSHOT"
+(defproject langnostic "0.1.2-SNAPSHOT"
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
   :license {:name "Expat License"
@@ -20,6 +20,14 @@
 
                  [cheshire "5.6.3"]
                  [markdown-clj "0.9.89"]
-                 [hiccup "1.0.5"]]
+                 [hiccup "1.0.5"]
+                 [crate "0.2.4"]]
+  :hooks [leiningen.cljsbuild]
+  :plugins [[lein-cljsbuild "1.1.7"]]
+  :cljsbuild {:builds [{:source-paths ["src/langnostic/client"]
+                        :compiler {:output-to "resources/public/js/langnostic.js"
+                                   :optimizations :whitespace
+                                   :pretty-print true}
+                        :jar true}]}
   :main langnostic.core
   :aot [langnostic.core])

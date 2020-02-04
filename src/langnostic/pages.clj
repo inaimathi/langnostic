@@ -2,6 +2,7 @@
   (:require [hiccup.page :as pg]
             [clj-time.format :as fmt]
             [ring.util.codec :as cod]
+            [cheshire.core :as json]
 
             [langnostic.auth :as auth]
             [langnostic.posts :as posts]
@@ -19,7 +20,7 @@
      [:a {:class "next-post" :href (post-href next)}
       (next :title) "->"])])
 
-(defn post-comments [post user]
+(defn post-comments [post]
   [:div {:class "post-comments"}
    [:hr]
    [:h3 "Comments"]
@@ -30,7 +31,7 @@
         [:img {:class "author-image" :src (get-in comment [:user :image])}]
         [:a {:class "author-link" :href (get-in comment [:user :url])} (get-in comment [:user :name])]]
        [:pre {:class "comment-content"} (:content comment)]
-       (when user
+       (when auth/USER
          [:form {:class "reply-form"
                  :action (str "/posts/" (:id post) "/comment/reply?path="
                               (cod/url-encode (:path comment)))
@@ -41,22 +42,22 @@
          [:div {:class "replies"}
           (map rec (:replies comment))])])
     (comments/get-comments-for (:id post)))
-   (when user
+   (when auth/USER
      [:form {:class "post-comment-form" :action (str "/posts/" (:id post) "/comment") :method "POST"}
       [:textarea {:name "comment"}]
       [:input {:type "Submit" :value "Post"}]])])
 
-(defn post [post & {:keys [user]}]
+(defn post [post]
   [:div
    [:h1 [:a {:href (post-href post)} (:title post)]]
    [:span {:class "posted"}
     (fmt/unparse (fmt/formatter "E MMM d, Y") (:posted post))]
    (posts/post-content post)
    (post-links post)
-   (post-comments post user)])
+   (post-comments post)])
 
-(defn latest-post [user]
-  (post (last @posts/posts) :user user))
+(defn latest-post []
+  (post (last @posts/posts)))
 
 (defn archive [posts]
   [:div
@@ -71,7 +72,7 @@
             "(" count ")"])
          (into (sorted-map) (frequencies (mapcat :tags posts))))]])
 
-(defn nav-bar [section user]
+(defn nav-bar [section]
   [:div {:class "top-menu-container"}
    [:ul {:class "top-menu"}
     (map (fn [name]
@@ -80,11 +81,11 @@
                   [:a {:href (str "/" name)} name])])
          ["blog" "archive" "links" "meta" "tipjar" "feed"])
     [:li {:class "auth-button"}
-     (if user
+     (if auth/USER
        [:span
         [:a {:href "/auth/log-out"} "logout"] " "
-        [:span {:class "user-name"} (:name user)]
-        [:img {:class "user-thumbnail" :src (:thumbnail user)}]]
+        [:span {:class "user-name"} (:name auth/USER)]
+        [:img {:class "user-thumbnail" :src (:thumbnail auth/USER)}]]
        [:span {:class "login-menu"}
         [:a {:href "#" :class "placeholder"} "login"]
         [:a {:href (auth/login-url "patreon") :class "provider"} "patreon"]
@@ -116,7 +117,7 @@
 (defn stylesheet [url]
   [:link {:rel "stylesheet" :href url :type "text/css" :media "screen"}])
 
-(defn template [section page-title content & {:keys [user]}]
+(defn template [section page-title content]
   (pg/html5
    {:lang "en"}
    [:head
@@ -125,10 +126,13 @@
     (stylesheet "/static/css/langnostic.css")
     (stylesheet "/static/css/default.css")
     [:script {:type "text/javascript" :src "/static/js/highlight.pack.js"}]
+    [:script {:type "text/javascript" :src "/static/js/langnostic.js"}]
+    (when auth/USER
+      [:script {:type "text/javascript"} (str "const user = " (json/encode auth/USER) ";")])
     [:script {:type "text/javascript"} "hljs.initHighlightingOnLoad();"]]
    [:body
     [:a {:href "/"} [:img {:class "logo-bar" :src "/static/img/langnostic.png"}]]
-    (nav-bar section user)
+    (nav-bar section)
     [:div {:class "content"} content]
     [:hr]
     footer]))

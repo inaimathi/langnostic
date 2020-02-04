@@ -4,6 +4,7 @@
 
             [langnostic.conf :as conf]))
 
+(def ^:dynamic USER nil)
 
 (defn redirect-url [provider]
   (str conf/REDIRECT-URL provider))
