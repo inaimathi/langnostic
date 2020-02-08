@@ -19,6 +19,14 @@ function commentSetup(el) {
     })
 }
 
+document.addEventListener("keyup", function (event) {
+    if (event.key == "Escape") {
+	document.querySelectorAll(".reply-form").forEach(function (elReplyForm) {
+	    elReplyForm.classList.add("hidden")
+	})
+    }
+})
+
 document.addEventListener("DOMContentLoaded", function () {
     if (user) {
 	commentSetup(document);
