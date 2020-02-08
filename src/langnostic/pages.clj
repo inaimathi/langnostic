@@ -1,29 +1,60 @@
 (ns langnostic.pages
   (:require [hiccup.page :as pg]
             [clj-time.format :as fmt]
+            [ring.util.codec :as cod]
+            [cheshire.core :as json]
 
             [langnostic.auth :as auth]
-            [langnostic.posts :as posts]))
+            [langnostic.posts :as posts]
+            [langnostic.comments :as comments]))
 
 (defn post-href [post]
   (str "/posts/" (post :file)))
 
 (defn post-links [post]
   [:div {:class "post-nav"}
-   (if-let [prev (get @posts/posts (dec (post :id)))]
+   (if-let [prev (get @posts/posts (dec (:id post)))]
      [:a {:class "prev-post" :href (post-href prev)}
       "<-" (prev :title)])
-   (if-let [next (get @posts/posts (inc (post :id)))]
+   (if-let [next (get @posts/posts (inc (:id post)))]
      [:a {:class "next-post" :href (post-href next)}
       (next :title) "->"])])
 
+(defn post-comments [post]
+  [:div {:class "post-comments"}
+   [:hr]
+   [:h3 "Comments"]
+   (map
+    (fn rec [comment]
+      [:div {:class "comment" :path (str (:path comment))}
+       [:span {:class "comment-author"}
+        [:img {:class "author-image" :src (get-in comment [:user :image])}]
+        [:a {:class "author-link" :href (get-in comment [:user :url])} (get-in comment [:user :name])]]
+       [:pre {:class "comment-content"} (:content comment)]
+       (when auth/USER
+         [:form {:class "reply-form"
+                 :action (str "/posts/" (:id post) "/comment/reply?path="
+                              (cod/url-encode (:path comment)))
+                 :method "POST"}
+          [:textarea {:name "comment"}]
+          [:input {:type "Submit" :value "Reply"}]])
+       (when (not (empty? (:replies comment)))
+         [:div {:class "replies"}
+          (map rec (:replies comment))])])
+    (comments/get-comments-for (:id post)))
+   (when auth/USER
+     [:form {:class "post-comment-form" :action (str "/posts/" (:id post) "/comment") :method "POST"}
+      [:textarea {:name "comment"}]
+      [:input {:type "Submit" :value "Post"}]])])
+
 (defn post [post]
   [:div
-   [:h1 [:a {:href (post-href post)} (post :title)]]
+   [:h1 [:a {:href (post-href post)} (:title post)]]
    [:span {:class "posted"}
-    (fmt/unparse (fmt/formatter "E MMM d, Y") (post :posted))]
+    (fmt/unparse (fmt/formatter "E MMM d, Y") (:posted post))]
    (posts/post-content post)
-   (post-links post)])
+   (post-links post)
+   (post-comments post)])
 
 (defn latest-post []
   (post (last @posts/posts)))
@@ -41,7 +72,7 @@
             "(" count ")"])
          (into (sorted-map) (frequencies (mapcat :tags posts))))]])
 
-(defn nav-bar [section user]
+(defn nav-bar [section]
   [:div {:class "top-menu-container"}
    [:ul {:class "top-menu"}
     (map (fn [name]
@@ -50,12 +81,15 @@
                   [:a {:href (str "/" name)} name])])
          ["blog" "archive" "links" "meta" "tipjar" "feed"])
     [:li {:class "auth-button"}
-     (if user
+     (if auth/USER
        [:span
         [:a {:href "/auth/log-out"} "logout"] " "
-        [:span {:class "user-name"} (:name user)]
-        [:img {:class "user-thumbnail" :src (:thumbnail user)}]]
-       [:a {:href (auth/login-url "patreon")} "login"])]]])
+        [:span {:class "user-name"} (:name auth/USER)]
+        [:img {:class "user-thumbnail" :src (:thumbnail auth/USER)}]]
+       [:span {:class "login-menu"}
+        [:a {:href "#" :class "placeholder"} "login"]
+        [:a {:href (auth/login-url "patreon") :class "provider"} "patreon"]
+        [:a {:href (auth/login-url "github") :class "provider"} "github"]])]]])
 
 (def footer
   [:div {:class "license"}
@@ -83,7 +117,7 @@
 (defn stylesheet [url]
   [:link {:rel "stylesheet" :href url :type "text/css" :media "screen"}])
 
-(defn template [section page-title content & {:keys [user]}]
+(defn template [section page-title content]
   (pg/html5
    {:lang "en"}
    [:head
@@ -92,10 +126,12 @@
     (stylesheet "/static/css/langnostic.css")
     (stylesheet "/static/css/default.css")
     [:script {:type "text/javascript" :src "/static/js/highlight.pack.js"}]
+    [:script {:type "text/javascript"} (str "var user = " (json/encode auth/USER) ";")]
+    [:script {:type "text/javascript" :src "/static/js/langnostic.js"}]
     [:script {:type "text/javascript"} "hljs.initHighlightingOnLoad();"]]
    [:body
     [:a {:href "/"} [:img {:class "logo-bar" :src "/static/img/langnostic.png"}]]
-    (nav-bar section user)
+    (nav-bar section)
     [:div {:class "content"} content]
     [:hr]
     footer]))

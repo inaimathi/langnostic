@@ -1,4 +1,4 @@
-(defproject langnostic "0.1.1-SNAPSHOT"
+(defproject langnostic "0.1.2-SNAPSHOT"
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
   :license {:name "Expat License"
@@ -7,12 +7,14 @@
 
                  [http-kit "2.1.18"]
                  [org.apache.httpcomponents/httpclient "4.3.5"]
-                 [oauth-clj "0.1.16-SNAPSHOT"]
+                 [oauth-clj "0.1.16"]
                  [compojure "1.5.1"]
                  [clj-time "0.12.0"]
                  [im.chit/hara.io.scheduler "2.3.6"]
                  [clojure-watch "0.1.11"]
                  [javax.servlet/servlet-api "2.5"]
+
+                 [codax "1.3.1"]
 
                  [com.patreon/patreon "0.4.2"]
 

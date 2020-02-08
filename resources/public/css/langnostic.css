@@ -11,8 +11,12 @@ body { width: 100%; margin:0px; padding: 0px; font-family: sans-serif serif; ove
 .top-menu a { color: #FFF; }
 .top-menu a:hover { color: #999; }
 
-.auth-button { margin-left: 60px; float: right; }
-.auth-button .user-thumbnail { height: 16px; padding: 0px; padding-left: 5px; }
+.auth-button { margin-left: 60px; float: right; min-width: 200px; text-align: right}
+.auth-button .user-thumbnail { height: 16px; margin-left: 3px; padding: 2px; border: 1px solid #fff; background-color: #fff; }
+.auth-button .login-menu .placeholder { display: block }
+.auth-button .login-menu .provider { display: none; margin-left: 3px; padding: 3px}
+.auth-button .login-menu:hover .placeholder { display: none }
+.auth-button .login-menu:hover .provider { display: inline-block }
 
 h1, h1 a { color: #CC0606; margin-bottom: 0px; text-decoration: none; }
 .posted { font-style: oblique; color: #AAA; display: block; font-size: small; text-align: right; margin-bottom: 10px;}
@@ -32,6 +36,18 @@ code, pre, pre code { font-family: monospace; }
 .prev-post { float: left; }
 
 .footnotes { border-top: 3px solid #CC0606; padding-top: 25px; }
+
+.post-comments .comment .author-image { max-width: 30px; max-height: 30px; margin: 0px; padding: 5px; background-color: #fff; display: inline-block; margin-right: 5px; }
+.post-comments .replies { margin-left: 20px; border-left: 1px solid #CC0606; }
+.post-comments .replies .author-image { border-left: 0px; }
+.post-comments .replies .comment-content { padding-left: 10px; }
+.post-comments .reply-form { width: 90%; padding: 15px; }
+.post-comments .reply-form textarea { width: 100%; }
+.post-comments .reply-form.hidden { display: none; }
+.post-comments input { border: 2px solid #CC0606; color: #fff; font-weight: bolder; background-color: #CC0606; cursor: pointer; }
+.post-comments input:hover { background-color: #fff; color: #CC0606; }
+.post-comments textarea { border: 1px solid #CC0606; }
+.post-comments .post-comment-form textarea { width: 100%; height: 150px; margin-top: 10px; }
 
 .tags-list li { list-style-type: none; display: inline-block; font-weight: bold; margin-right: 5px; }
 

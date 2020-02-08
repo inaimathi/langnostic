@@ -1,5 +1,6 @@
 (ns langnostic.core
-  (:require [org.httpkit.server :as server]
+  (:require [clojure.edn :as edn]
+            [org.httpkit.server :as server]
             [cheshire.core :as json]
             [org.httpkit.client :as http]
             [compojure.route :as route]
@@ -13,58 +14,59 @@
             [langnostic.feed :as feed]
             [langnostic.pages :as pages]
             [langnostic.posts :as posts]
-            [langnostic.files :as fs])
+            [langnostic.files :as fs]
+            [langnostic.comments :as comments])
   (:use [compojure.core :only [defroutes GET POST DELETE ANY context]])
   (:gen-class))
 
 (defn error-404
-  [user]
+  []
   {:status 404
    :headers {"Content-Type" "text/html"}
    :body (pages/template
           name name
           (fs/file-content
-           "resources/public/content/404.md")
-          :user user)})
+           "resources/public/content/404.md"))})
 
 (defn static-page [name]
   (fn [req]
-    (let [file (io/file "resources/public/content" (str name ".md"))
-          user (get-in req [:session :user])]
-      (if (fs/file-in-resources? file)
-        {:status 200
-         :headers {"Content-Type" "text/html"}
-         :body (pages/template file (clojure.string/capitalize name) (fs/file-content file) :user user)}
-        (error-404 user)))))
+    (let [file (io/file "resources/public/content" (str name ".md"))]
+      (binding [auth/USER (get-in req [:session :user])]
+        (if (fs/file-in-resources? file)
+
+          {:status 200
+           :headers {"Content-Type" "text/html"}
+           :body (pages/template file (clojure.string/capitalize name) (fs/file-content file))}
+          (error-404))))))
 
 (defn post [name]
   (fn [req]
-    (let [user (get-in req [:session :user])]
+    (binding [auth/USER (get-in req [:session :user])]
       (if-let [post (posts/find-by-slug name)]
         {:status 200
          :headers {"Content-Type" "text/html"}
-         :body (pages/template "blog" (post :title) (pages/post post) :user user)}
-        (error-404 user)))))
+         :body (pages/template "blog" (post :title) (pages/post post))}
+        (error-404)))))
 
 (defn home [req]
-  {:status 200
-   :headers {"Content-Type" "text/html"}
-   :body (pages/template
-          "blog" "Welcome"
-          [:div
-           (fs/file-content "resources/public/content/intro.md")
-           [:hr]
-           (pages/latest-post)]
-          :user (get-in req [:session :user]))})
-
-(defn archive [posts]
-  (fn [req]
+  (binding [auth/USER (get-in req [:session :user])]
     {:status 200
      :headers {"Content-Type" "text/html"}
      :body (pages/template
-            "archive" "Archive"
-            (pages/archive posts)
-            :user (get-in req [:session :user]))}))
+            "blog" "Welcome"
+            [:div
+             (fs/file-content "resources/public/content/intro.md")
+             [:hr]
+             (pages/latest-post)])}))
+
+(defn archive [posts]
+  (fn [req]
+    (binding [auth/USER (get-in req [:session :user])]
+      {:status 200
+       :headers {"Content-Type" "text/html"}
+       :body (pages/template
+              "archive" "Archive"
+              (pages/archive posts))})))
 
 (defn atom-feed [posts]
   (fn [req]
@@ -80,16 +82,42 @@
        :headers {"Location" "/"}
        :session {:user user}})))
 
+(defn post-comment
+  [req]
+  (let [user (get-in req [:session :user])
+        {post-id :id content "comment" path "path"} (:params req)
+        post-id (edn/read-string post-id)
+        path (edn/read-string path)]
+    (when user
+      (if path
+        (comments/post-comment! user post-id path content)
+        (comments/post-comment! user post-id content)))
+    {:status 303
+     :headers {"Location" (get-in req [:headers "referer"])}}))
+
 (defn log-out
   [req]
   {:status 303
    :headers {"Location" "/"}
    :session nil})
 
+(defn dummy-user
+  [req]
+  {:status 303
+   :headers {"Location" "/"}
+   :session {:user {:site "patreon"
+                    :name "inaimathi" :url "https://inaimathi.ca"
+                    :image "/static/img/wonka.jpg" :thumbnail "/static/img/wonka.jpg"
+                    :pledges []}}})
+
 (defroutes langnostic-routes
   (GET "/" [] home)
+  (GET "/dev/dummy-user" [] dummy-user)
   (GET "/blog" [] home)
   (GET "/posts/:name" [name] (post name))
+
+  (POST "/posts/:id/comment" [] post-comment)
+  (POST "/posts/:id/comment/reply" [] post-comment)
 
   (GET "/auth/log-out" [] log-out)
   (GET "/auth/:auth-type" [auth-type] (authenticate auth-type))
