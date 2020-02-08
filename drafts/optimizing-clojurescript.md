@@ -11,7 +11,7 @@ Walking `clojure` datastructures is fairly expensive. The lesson being that you 
 ## Advanced compilation is moderately-effective, relatively low-hanging fruit
 
 - using `:optimizations :advanced` instead of `:optimizations :whitespace` is an obvious piece of low-hanging fruit.
-- The resulting JS code is less readable, but if you provide `:output-dir`, `:output-to` and `:source-map` options and then serve the resuling source+maps, you get translations back
+- The resulting JS code is less readable, but if you provide `:output-dir`, `:output-to` and `:source-map` options and then serve the resuling source+maps, you get translations back. This made the compiler occasionally shit itself.
 
 ## Multimethods are expensive
 
