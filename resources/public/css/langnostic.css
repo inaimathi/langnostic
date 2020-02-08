@@ -37,16 +37,16 @@ code, pre, pre code { font-family: monospace; }
 
 .footnotes { border-top: 3px solid #CC0606; padding-top: 25px; }
 
-.post-comments {}
-.post-comments .comment .author-image {
-    max-width: 30px; max-height: 30px; margin: 0px; padding: 5px; background-color: #fff; display: inline-block; margin-right: 5px; }
+.post-comments .comment .author-image { max-width: 30px; max-height: 30px; margin: 0px; padding: 5px; background-color: #fff; display: inline-block; margin-right: 5px; }
 .post-comments .replies { margin-left: 20px; border-left: 1px solid #CC0606; }
 .post-comments .replies .author-image { border-left: 0px; }
 .post-comments .replies .comment-content { padding-left: 10px; }
 .post-comments .reply-form { width: 90%; padding: 15px; }
 .post-comments .reply-form textarea { width: 100%; }
 .post-comments .reply-form.hidden { display: none; }
-
+.post-comments input { border: 2px solid #CC0606; color: #fff; font-weight: bolder; background-color: #CC0606; cursor: pointer; }
+.post-comments input:hover { background-color: #fff; color: #CC0606; }
+.post-comments textarea { border: 1px solid #CC0606; }
 .post-comments .post-comment-form textarea { width: 100%; height: 150px; margin-top: 10px; }
 
 .tags-list li { list-style-type: none; display: inline-block; font-weight: bold; margin-right: 5px; }
