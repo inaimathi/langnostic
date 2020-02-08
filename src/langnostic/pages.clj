@@ -21,31 +21,33 @@
       (next :title) "->"])])
 
 (defn post-comments [post]
-  [:div {:class "post-comments"}
-   [:hr]
-   [:h3 "Comments"]
-   (map
-    (fn rec [comment]
-      [:div {:class "comment" :path (str (:path comment))}
-       [:span {:class "comment-author"}
-        [:img {:class "author-image" :src (get-in comment [:user :image])}]
-        [:a {:class "author-link" :href (get-in comment [:user :url])} (get-in comment [:user :name])]]
-       [:pre {:class "comment-content"} (:content comment)]
+  (let [comment-tree (comments/get-comments-for (:id post))]
+    (when (or auth/USER (not (empty? comment-tree)))
+      [:div {:class "post-comments"}
+       [:hr]
+       [:h3 "Comments"]
+       (map
+        (fn rec [comment]
+          [:div {:class "comment" :path (str (:path comment))}
+           [:span {:class "comment-author"}
+            [:img {:class "author-image" :src (get-in comment [:user :image])}]
+            [:a {:class "author-link" :href (get-in comment [:user :url])} (get-in comment [:user :name])]]
+           [:pre {:class "comment-content"} (:content comment)]
+           (when auth/USER
+             [:form {:class "reply-form"
+                     :action (str "/posts/" (:id post) "/comment/reply?path="
+                                  (cod/url-encode (:path comment)))
+                     :method "POST"}
+              [:textarea {:name "comment"}]
+              [:input {:type "Submit" :value "Reply"}]])
+           (when (not (empty? (:replies comment)))
+             [:div {:class "replies"}
+              (map rec (:replies comment))])])
+        comment-tree)
        (when auth/USER
-         [:form {:class "reply-form"
-                 :action (str "/posts/" (:id post) "/comment/reply?path="
-                              (cod/url-encode (:path comment)))
-                 :method "POST"}
+         [:form {:class "post-comment-form" :action (str "/posts/" (:id post) "/comment") :method "POST"}
           [:textarea {:name "comment"}]
-          [:input {:type "Submit" :value "Reply"}]])
-       (when (not (empty? (:replies comment)))
-         [:div {:class "replies"}
-          (map rec (:replies comment))])])
-    (comments/get-comments-for (:id post)))
-   (when auth/USER
-     [:form {:class "post-comment-form" :action (str "/posts/" (:id post) "/comment") :method "POST"}
-      [:textarea {:name "comment"}]
-      [:input {:type "Submit" :value "Post"}]])])
+          [:input {:type "Submit" :value "Post"}]])])))
 
 (defn post [post]
   [:div
