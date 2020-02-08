@@ -1,5 +1,6 @@
 (ns langnostic.pages
-  (:require [hiccup.page :as pg]
+  (:require [markdown.core :as md]
+            [hiccup.page :as pg]
             [clj-time.format :as fmt]
             [ring.util.codec :as cod]
             [cheshire.core :as json]
@@ -32,7 +33,12 @@
            [:span {:class "comment-author"}
             [:img {:class "author-image" :src (get-in comment [:user :image])}]
             [:a {:class "author-link" :href (get-in comment [:user :url])} (get-in comment [:user :name])]]
-           [:pre {:class "comment-content"} (:content comment)]
+           [:span {:class "comment-content"}
+            (-> (:content comment)
+                (clojure.string/replace "&" "&amp;")
+                (clojure.string/replace "<" "&lt;")
+                (clojure.string/replace "\"" "&quot;")
+                md/md-to-html-string)]
            (when auth/USER
              [:form {:class "reply-form"
                      :action (str "/posts/" (:id post) "/comment/reply?path="

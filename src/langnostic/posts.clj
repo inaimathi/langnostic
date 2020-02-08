@@ -1,6 +1,5 @@
 (ns langnostic.posts
-  (:require [markdown.core :as md]
-            [cheshire.core :as json]
+  (:require [cheshire.core :as json]
             [clj-time.coerce :as time]
 
             [clojure.java.io :as io]

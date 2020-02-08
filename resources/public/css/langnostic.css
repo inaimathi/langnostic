@@ -40,9 +40,9 @@ code, pre, pre code { font-family: monospace; }
 .post-comments .comment .author-image { max-width: 30px; max-height: 30px; margin: 0px; padding: 5px; background-color: #fff; display: inline-block; margin-right: 5px; }
 .post-comments .replies { margin-left: 20px; border-left: 1px solid #CC0606; }
 .post-comments .replies .author-image { border-left: 0px; }
-.post-comments .replies .comment-content { padding-left: 10px; }
+.post-comments .replies .comment-content { display: block; padding-left: 10px; }
 .post-comments .reply-form { width: 90%; padding: 15px; }
-.post-comments .reply-form textarea { width: 100%; }
+.post-comments .reply-form textarea { width: 100%; height: 100px; }
 .post-comments .reply-form.hidden { display: none; }
 .post-comments input { border: 2px solid #CC0606; color: #fff; font-weight: bolder; background-color: #CC0606; cursor: pointer; }
 .post-comments input:hover { background-color: #fff; color: #CC0606; }
