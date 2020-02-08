@@ -135,7 +135,7 @@
   (GET "/feed/atom/by-tag/:tag" [tag] (atom-feed (posts/find-by-tag tag)))
 
   (route/resources "/static/")
-  (route/not-found (fn [req] (error-404 (get-in req [:session :user])))))
+  (route/not-found (fn [req] (error-404))))
 
 (defn -main
   ([] (-main "8000"))
