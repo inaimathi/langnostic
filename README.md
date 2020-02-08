@@ -9,6 +9,8 @@
 
 - Test and modify the comment system so that it works transparently on mobile
 
+- Add some admin capability for myself
+
 - Revisit old blogs. NOW AT: `id:93`
 
 - `BGG Data Sifting` is MIA. All the cl-notebook articles have issues with the translation-from-markdown approach. `cl-notebook` obviously needs an export-to-markdown feature.
