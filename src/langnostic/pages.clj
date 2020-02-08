@@ -126,9 +126,8 @@
     (stylesheet "/static/css/langnostic.css")
     (stylesheet "/static/css/default.css")
     [:script {:type "text/javascript" :src "/static/js/highlight.pack.js"}]
+    [:script {:type "text/javascript"} (str "var user = " (json/encode auth/USER) ";")]
     [:script {:type "text/javascript" :src "/static/js/langnostic.js"}]
-    (when auth/USER
-      [:script {:type "text/javascript"} (str "const user = " (json/encode auth/USER) ";")])
     [:script {:type "text/javascript"} "hljs.initHighlightingOnLoad();"]]
    [:body
     [:a {:href "/"} [:img {:class "logo-bar" :src "/static/img/langnostic.png"}]]

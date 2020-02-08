@@ -20,14 +20,6 @@
 
                  [cheshire "5.6.3"]
                  [markdown-clj "0.9.89"]
-                 [hiccup "1.0.5"]
-                 [crate "0.2.4"]]
-  :hooks [leiningen.cljsbuild]
-  :plugins [[lein-cljsbuild "1.1.7"]]
-  :cljsbuild {:builds [{:source-paths ["src/langnostic/client"]
-                        :compiler {:output-to "resources/public/js/langnostic.js"
-                                   :optimizations :whitespace
-                                   :pretty-print true}
-                        :jar true}]}
+                 [hiccup "1.0.5"]]
   :main langnostic.core
   :aot [langnostic.core])

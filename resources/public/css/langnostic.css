@@ -43,6 +43,7 @@ code, pre, pre code { font-family: monospace; }
 .post-comments .replies { margin-left: 20px; border-left: 1px solid #CC0606; }
 .post-comments .replies .author-image { border-left: 0px; }
 .post-comments .replies .comment-content { padding-left: 10px; }
+.post-comments .reply-form.hidden { display: none; }
 
 .tags-list li { list-style-type: none; display: inline-block; font-weight: bold; margin-right: 5px; }
 
