@@ -112,7 +112,7 @@
 
 (defroutes langnostic-routes
   (GET "/" [] home)
-  (GET "/dev/dummy-user" [] dummy-user)
+  ;; (GET "/dev/dummy-user" [] dummy-user)
   (GET "/blog" [] home)
   (GET "/posts/:name" [name] (post name))
 
