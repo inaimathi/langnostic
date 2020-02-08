@@ -7,9 +7,7 @@
 
 ## ToDo
 
-- Add a simple comment system
-
-- Cache static pages, instead of reading them each time
+- Test and modify the comment system so that it works transparently on mobile
 
 - Revisit old blogs. NOW AT: `id:93`
 
