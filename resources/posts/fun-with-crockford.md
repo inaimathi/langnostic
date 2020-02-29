@@ -1,6 +1,6 @@
 I'm trying something new this time. I've recently watched and followed along with [this video](https://www.youtube.com/watch?v=Aa_OWn03mDo), which is a long talk/exercise lecture by [Douglas Crockford](https://www.crockford.com/add.html). The rest of this post is a giant, literate-ish code-block that encodes my attempt at following along in Python.
 
-If you want to run it, just paste the below into a `py` file and import it. It uses some Python 3 features, so I'd recommend `python3.7` or higher. Note that this contains spoilers, and if you want to follow along with [the video](https://www.youtube.com/watch?v=Aa_OWn03mDo), you should probably watch the entire thing first.
+If you want to run it, just paste the below into a `py` file and import it. It uses some Python 3 features, so I'd recommend `python3.7` or higher.
 
 ```
 class TrivialTest:
