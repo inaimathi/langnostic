@@ -27,16 +27,11 @@ class TrivialTest:
         self.failures = []
         self.tested = 0
 
-
 tests = TrivialTest()
-
-
 tt = tests.trivial_test  # I'm lazy, fuck you
-
 
 def identity(x):
     return x
-
 
 tt("identity(3) == 3")
 
@@ -44,18 +39,14 @@ tt("identity(3) == 3")
 def add(a, b):
     return a + b
 
-
 def sub(a, b):
     return a - b
-
 
 def mul(a, b):
     return a * b
 
-
 def identityf(value):
     return lambda: value
-
 
 tt("identityf(3)() == 3", "identityf(3)() == identity(3)")
 
@@ -63,13 +54,11 @@ tt("identityf(3)() == 3", "identityf(3)() == identity(3)")
 def addf(a):
     return lambda b: a + b
 
-
 tt("addf(3)(4) == 7", "addf(3)(4) == add(3, 4)")
 
 
 def liftf(fn):
     return lambda a: lambda b: fn(a, b)
-
 
 tt("liftf(add)(3)(4) == addf(3)(4) == add(3, 4)")
 
@@ -77,10 +66,8 @@ tt("liftf(add)(3)(4) == addf(3)(4) == add(3, 4)")
 def curry(fn, a):
     return liftf(fn)(a)
 
-
 def curry(fn, *args):
     return lambda *brgs: fn(*args, *brgs)
-
 
 tt(
     "curry(add, 3)(4) == 7",
@@ -101,7 +88,6 @@ tt(*inc_tests)
 def twice(fn):
     return lambda a: fn(a, a)
 
-
 doubl = twice(add)
 square = twice(mul)
 
@@ -111,20 +97,17 @@ tt("doubl(11) == 22", "square(11) == 121")
 def reverse(fn):
     return lambda a, b: fn(b, a)
 
-
 tt("reverse(sub)(3, 2) == -1")
 
 
 def composeu(fna, fnb):
     return lambda a: fnb(fna(a))
 
-
 tt("composeu(doubl, square)(5) == 100")
 
 
 def composeb(fna, fnb):
     return lambda a, b, c: fnb(fna(a, b), c)
-
 
 tt("composeb(add, mul)(2, 3, 7) == 35")
 
@@ -137,7 +120,6 @@ def limit(fn, times):
             return fn(*args)
 
     return _internal
-
 
 add_ltd = limit(add, 1)
 tt("add_ltd(3, 4) == 7", "add_ltd(3, 5) is None")
@@ -152,7 +134,6 @@ def from_(initial):
         return initial
 
     return _internal
-
 
 index = from_(0)
 tt("index() == 0", "index() == 1", "index() == 2")
@@ -171,14 +152,12 @@ def to_(gen, limit):
 
     return _internal
 
-
 index = to_(from_(1), 3)
 tt("index() == 1", "index() == 2", "index() is None")
 
 
 def fromTo(initial, limit):
     return to_(from_(initial), limit)
-
 
 index = fromTo(0, 3)
 tt("index() == 0", "index() == 1", "index() == 2", "index() is None")
@@ -196,7 +175,6 @@ def element(arr, gen):
 
     return _internal
 
-
 ele = element(["a", "b", "c", "d"], fromTo(1, 3))
 tt("ele() == 'b'", "ele() == 'c'", "ele() is None")
 
@@ -211,7 +189,6 @@ def element(arr, gen=None):
 
     return _internal
 
-
 ele = element(["a", "b", "c", "d"])
 tt("ele() == 'a'", "ele() == 'b'", "ele() == 'c'", "ele() == 'd'", "ele() is None")
 
@@ -224,7 +201,6 @@ def collect(gen, arr):
             return val
 
     return _internal
-
 
 ARRAY = []
 col = collect(fromTo(0, 2), ARRAY)
@@ -240,7 +216,6 @@ def filter(gen, pred):
         return _internal()
 
     return _internal
-
 
 fil = filter(fromTo(0, 5), lambda v: (v % 3) == 0)
 tt("fil() == 0", "fil() == 3", "fil() is None")
@@ -259,7 +234,6 @@ def concat(gena, genb):
 
     return _internal
 
-
 con = concat(fromTo(0, 3), fromTo(0, 2))
 tt(
     "con() == 0",
@@ -274,7 +248,6 @@ tt(
 def gensymf(sym):
     gen = from_(1)
     return lambda: f"{sym}{gen()}"
-
 
 geng = gensymf("G")
 genh = gensymf("H")
@@ -294,7 +267,6 @@ def fibonnacif(a, b):
 
     return concat(fromTo(a, b + 1), _internal)
 
-
 fib = fibonnacif(0, 1)
 tt(
     "fib() == 0",
@@ -311,14 +283,10 @@ tt(
 # sense as Javascript. This is a piece of utility for
 # compatibility purposes.
 
-import math  # Need this later
 from collections import namedtuple
-
 
 def Obj(**kwargs):
     return namedtuple("Object", " ".join(kwargs.keys()))(**kwargs)
-
-
 ##############################
 
 
@@ -359,7 +327,7 @@ tt("rev.invoke(3, 4) == 7", "rev.revoke() is None", "rev.invoke(3, 4) is None")
 def m(value, source=None):
     return Obj(value=value, source=source if source is not None else str(value))
 
-
+import math
 tt(
     "m(1).value == 1",
     "m(1).source == '1'",
@@ -370,7 +338,6 @@ tt(
 
 def addm(a, b):
     return m(add(a.value, b.value), f"({a.source}+{b.source})")
-
 
 tt(
     "addm(m(3), m(4)).value == 7",
@@ -384,7 +351,6 @@ def liftm(fn, label):
     return lambda *args: m(
         fn(*[a.value for a in args]), f"({label.join([a.source for a in args])})"
     )
-
 
 addm = liftm(add, "+")
 tt(
@@ -416,7 +382,6 @@ def liftm(fn, label):
         fn(*[val(a) for a in args]), f"({label.join([src(a) for a in args])})"
     )
 
-
 addm = liftm(add, "+")
 tt(
     "addm(m(3), m(4)).value == 7",
@@ -434,7 +399,6 @@ def exp(sae):
     else:
         return sae
 
-
 tt("exp([mul, 5, 11]) == 55", "exp(42) == 42")
 
 
@@ -443,7 +407,6 @@ def exp(nae):
         return nae[0](*[exp(arg) for arg in nae[1:]])
     else:
         return nae
-
 
 nae = [math.sqrt, [add, [square, 3], [square, 4]]]
 tt("exp(nae) == 5")
@@ -466,7 +429,6 @@ def addg(a=None):
         # and I'm not sure how I feel about it.
 
         return recur
-
 
 tt(
     "addg() is None",
@@ -496,7 +458,6 @@ def liftg(fn):
 
     return fng
 
-
 addg = liftg(add)
 tt(
     "addg() is None",
@@ -517,13 +478,11 @@ def arrayg(a=None):
     else:
         return liftg(lambda memo, elem: memo + [elem])([a])  # I got extra credit :p
 
-
 tt("arrayg() == []", "arrayg(3)() == [3]", "arrayg(3)(4)(5)() == [3, 4, 5]")
 
 
 def continuize(fn):
     return lambda callback, *args: callback(fn(*args))
-
 
 tt(
     "continuize(math.sqrt)(identity, 81) == 9",
