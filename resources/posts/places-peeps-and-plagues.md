@@ -88,7 +88,8 @@
 
 (defmethod show ((peep peep)) (health->string (health peep)))
 
-;; A world is a list of places, occupied by peeps. This worl
+;; A world is a list of places, occupied by peeps. The world we start
+;; peeps in also determines their routine.
 
 (defun gen-world (&key (num-places 20) (num-peeps 100))
   (let ((places (loop repeat num-places collect (gen-place))))
@@ -128,22 +129,22 @@
        do (setf (todo p) (routine p))))
   world)
 
-;; Don't worry about the details of how to `tick!` peeps or places yet
+;; Don't worry about the details of how to `tick!` peeps or places yet.
 
-;;   Ok, here's where it gets a bit darker. Although, we _did_
-;; foreshadow this in the definition of `peep`. And also  in the title
+;;   Ok, here's where it gets a bit darker. Although we _did_
+;; foreshadow this in the definition of `peep`. And also in the title
 ;; of the accompanying blog post.
 
 ;; A plague is another living thing.
 ;; It has
 ;;  - a host (a peep that it's infecting)
-;;  - a signature (a token representing its' lineage and strain)
+;;  - a signature (a token representing its lineage and strain)
 ;;  - health (how well it's doing inside its host)
 ;;  - virulence (how likely it is to spread to another host)
 ;;  - efficiency (how efficient they are at feeding)
 ;;  - reproduce (a function that returns a new instance to push into a new host)
 ;;  - and a strategy (a function, possibly closed, that takes
-;;    itself and its host peep and mutates
+;;    itself and its host peep and mutates)
 
 ;; Plagues do not collect points; they score differently.
 
@@ -192,16 +193,17 @@
 	  :test #'string=))
 
 ;;  `tick!`ing a plague causes it to weaken and also carry out its strategy.
-;; This models the background effect of the immune system of its' host.
+;; This models the background effect of the immune system of its host.
 
 (defmethod tick! ((plague plague))
   (decf (health plague) 1)
   (funcall (strategy plague) plague (host plague))
   plague)
 
-;;  Ticking a peep means moving them to their next place, and also ticking
-;; any plagues they may have contracted. Also, peeps are resilient; they
-;; heal a small amount each time they tick (to a maximum of 100)
+;;  `tick!`ing a peep means moving them to their next place, and also
+;; `tick!`ing any plagues they may have contracted. Also, peeps are
+;; resilient; they heal a small amount each time they tick (to a
+;; maximum of 100).
 ;;  If a peep dies, they no longer move. And their plagues probably
 ;; won't do well. Peeps like to go places. They score points for each
 ;; place they go to.
@@ -220,7 +222,7 @@
 	peep))))
 
 ;; `tick!`ing a place causes it to score for each `peep` present. And it causes
-;; any `plague`s on present `peep`s to try to infect! other nearby peeps.
+;; any `plague`s on present `peep`s to try to `infect!` other nearby peeps.
 ;; Places also lose points for each dead peep they contain.
 
 (defmethod tick! ((place place))
@@ -249,7 +251,7 @@
 ;;   A plague player's score is the total number of health of their plagues,
 ;; with a multiplier equal to the number of places fully infected by
 ;; their plague.
-;;   A place player's score is the total number of points in their places
+;;   A place player's score is the total number of points in their places.
 
 (defun score (world)
   (list :peep (let ((score 0))
