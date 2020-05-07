@@ -135,7 +135,15 @@ The basic navigation is four functions; `down`, `up`, `left` and `right`
       fresh)))
 ```
 
-- a handful of compound navigation primitives
+The bad news is that since Common Lisp doesn't have [pervasive functional data structures](file:///home/inaimathi/Downloads/ctries-techreport.pdf), I have to explicitly copy `loc`s while moving through a tree. The good news is that the copy is fairly light weight. Effectively, I'm copying out a set of 5 pointers, and could get that down to 3 by defining an intermediate struct.
+
+Hm.
+
+Which I probably should do. Note to self.
+
+The definition of `up` sticks to the paper definition and skips over the `end?` flag
+
+Out of those, we get three compound navigation functions. With more probably coming soon. Specifically, I found `find` useful for the work I did. It's easily externally definable, but would be a useful thing to just bundle along. The ones I've already implemented are `root`, `leftmost` and `rightmost`.
 
 ```lisp
 ;;;;;;;;;;;;;;; Compound navigation
@@ -147,8 +155,20 @@ The basic navigation is four functions; `down`, `up`, `left` and `right`
 
 (defun rightmost (zipper) (while zipper #'right))
 ```
+Each of these involve an intermediate call to `while`. Which isn't a generic `macro`; it's a function defined in [`util.lisp`](https://github.com/inaimathi/cl-zipper/blob/master/src/util.lisp)
 
-- a few basic modification functions
+```lisp
+...
+(defun until (zipper f)
+  (let ((z zipper))
+    (loop for next = (funcall f z) while next
+       when next do (setf z next))
+    z))
+...
+```
+As you can see, all it does is repeatedly call a given function on a `zipper` and return the last non-`nil` result.
+
+That's the traversals done. Next up, we've got modification, without which this library is fairly useless. The basics are `replace`, `delete` and the `insert`/`child` twins.
 
 ```lisp
 ;;;;;;;;;; Modification
