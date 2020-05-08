@@ -8,11 +8,11 @@ Using them this way, combined with the general state of the world and my free ti
 
 Seriously.
 
-Its logo is up top in the language bar, I was one of the inaugural members of the Toronto Clojure User Group, I [recommend it](/posts/recommendations) as a first lisp you should learn, and have for about six years now. I'm _also_ absolutely aware of the [shortcomings of Common Lisp](/posts/recommendations#why), and make no excuses for them.
+Its logo is up top in the language bar, I was one of the inaugural members of the Toronto Clojure User Group, I [recommend it](/posts/recommendations) as a first lisp you should learn, and have for about six years now. I'm _also_ painfully aware of the [shortcomings of Common Lisp](/posts/recommendations#why), and make no excuses for them.
 
 However.
 
-I don't like the JVM. It's slow as balls, its' deployment options are less than ideal for my purposes, and Clojure without it [is unlikely](https://old.reddit.com/r/Clojure/comments/6hhg1h/why_isnt_there_a_compiled_or_interpreted_clojure/diz006j/). Clojurescript build incompatiblities are, if anything, worse[^theres-absolutel-a-reason]. I don't like the underlying [licensing decisions](https://clojure.org/community/license).
+I don't like the JVM. It's slow as balls, its' deployment options are less than ideal for my purposes, its' error system is at best useless, and Clojure without it [is unlikely](https://old.reddit.com/r/Clojure/comments/6hhg1h/why_isnt_there_a_compiled_or_interpreted_clojure/diz006j/). Clojurescript build incompatiblities are, if anything, worse[^theres-absolutel-a-reason]. Finally, I don't like the underlying [licensing decisions](https://clojure.org/community/license). These are deep reasons to stay away. They're not the sort of thing I can paper over with a library or two. Fixing them would mean a superhuman amount of work poured into the underlying technical and social infrastructure, and I'm not into it.
 
 [^theres-absolutel-a-reason]: There's a reason that [`langnostic.js`](/static/js/langnostic.js) is a raw JS file, rather than compiled from `clojurescript` source, and that reason is like 90% that the compilation process is nontrivial to set up.
 
@@ -20,7 +20,7 @@ Whether or not I think _you_ should probably learn Clojure as _your_ first[^note
 
 [^note-that-i-say]: "First", not "only". You can probably make educated guesses about which other ones I think you should learn.
 
-It _is_ enough for me to start plotting a smash-and-grab of as much of the stuff I like as I can carry. Which is exactly what [`clj`](https://github.com/inaimathi/clj) represents. As of this writing, it defines and exports exactly four symbols: `if-let`, `when-let`, `->` and `->>`. This is a tiny beginning of the list, and I fully plan to put something more substantial together using [`cl-hamt`](https://quickref.common-lisp.net/cl-hamt.html), [`named-readtables`](https://common-lisp.net/project/named-readtables/#important_api_idiosyncrasies), [`test-utils`](https://github.com/inaimathi/test-utils) and possibly [`optima`](https://quickref.common-lisp.net/optima.html). This is just the start, but it's not the focus today.
+It _is_ enough for me to start plotting a smash-and-grab of as much of the stuff I like as I can carry. Which is exactly what [`clj`](https://github.com/inaimathi/clj) represents. As of this writing, it defines and exports exactly four symbols: `if-let`, `when-let`, `->` and `->>`. This is a tiny beginning of the list, and I fully plan to put something more substantial together using [`cl-hamt`](https://quickref.common-lisp.net/cl-hamt.html), [`named-readtables`](https://common-lisp.net/project/named-readtables/#important_api_idiosyncrasies), [`test-utils`](https://github.com/inaimathi/test-utils) and possibly [`optima`](https://quickref.common-lisp.net/optima.html). Stay tuned; this is just the start, but it's not the focus today.
 
 ## `cl-zipper`
 
@@ -28,7 +28,7 @@ Like I said, the thing that percipitated this thought was having used the Clojur
 
 [^in-which-case-why]: In which case, why are you here? This blog could kill you accidentally with an errant click or two. You should probably just go do something else.
 
-The operations defined in the paper are `left`, `right`, `up`, `down`, `insert_right`, `insert_left`, `insert_down` and `delete`. There's a few conveniences defined for the Clojure version, and I've implemented some of my own stuff too. There's also, oddly, a couple ways that the Clojure version and original paper conflict. I have some idea why that is in a couple places, but others seem arbitrary. We'll get to all of it. Lets go through [the main file](https://github.com/inaimathi/cl-zipper/blob/master/src/cl-zipper.lisp) in [almost-literate](http://inaimathi.ca/archive/by-tag/almost-literate-programming) style.
+The operations defined in the paper are `left`, `right`, `up`, `down`, `insert_right`, `insert_left`, `insert_down` and `delete`. There's a few conveniences defined for the Clojure version, and I've implemented some of my own stuff too. There's also, oddly, a couple ways that the Clojure version and original paper conflict [:TODO - reword]. I have some idea why that is in a couple places, but others seem arbitrary. We'll get to all of it. Lets go through [the main file](https://github.com/inaimathi/cl-zipper/blob/master/src/cl-zipper.lisp) in [almost-literate](http://inaimathi.ca/archive/by-tag/almost-literate-programming) style.
 
 First up, we have constructors.
 
@@ -57,7 +57,7 @@ First up, we have constructors.
   (funcall (loc-fn-make-node zipper) zipper children))
 ```
 
-You can see influence from both [`clojure.zip`](https://github.com/clojure/clojure/blob/master/src/clj/clojure/zip.clj) and the paper here. I'm taking the lead from the paper by explicitly separating the `path` triple our from the `loc` definition. However, I'm not explicitly defining my own `type tree` the way that Huet does. Instead, I'm going to be dealing with assorted `lisp` trees. These could be implemented as `list`s, `vector`s, `hash`es, or a bunch of other formats. I'm going to implement a few type-distpatching build-ins, including the `make-zipper lisp` method above, but the basic `zipper` function just needs to take an interface as an argument in the form of `branch?`, `children` and `make-node` arguments. This is the same solution that the Clojure implementation went with, and I see no reason to go a different way. The only material difference is that theirs uses the Clojure [`metadata`](https://clojure.org/reference/metadata) system, while I explicitly define slots in the `loc` structure.
+You can see influence from both [`clojure.zip`](https://github.com/clojure/clojure/blob/master/src/clj/clojure/zip.clj) and the paper here. I'm taking the lead from the paper by explicitly separating the `path` triple our from the `loc` definition. However, I'm not explicitly defining my own `type tree` the way that Huet does. Instead, I'm going to be dealing with assorted `lisp` trees. These could be implemented as `list`s, `vector`s, `hash`es, or a bunch of other formats. I'm going to implement a few type-distpatching built-ins, including the `make-zipper list` method above, but the basic `zipper` function just needs to take an interface as input in the form of `branch?`, `children` and `make-node` arguments. This is the same solution that the Clojure implementation went with, and I see no reason to go a different way. The only material difference is that theirs uses the Clojure [`metadata`](https://clojure.org/reference/metadata) system, while I explicitly define slots in the `loc` structure.
 
 Now that we can construct, we need to be able to select.
 
@@ -131,13 +131,13 @@ The basic navigation is four functions; `down`, `up`, `left` and `right`
       fresh)))
 ```
 
+The main difference between this and the paper is that I've chosen `nil` as my `Top` representation, which lets me pull the trick of using `when` to check for the presence of a `path`, and its' non-`Top`-ness at the same time.
+
 The bad news is that since Common Lisp doesn't have [pervasive functional data structures](file:///home/inaimathi/Downloads/ctries-techreport.pdf), I have to explicitly copy `loc`s while moving through a tree. The good news is that the copy is fairly light weight. Effectively, I'm copying out a set of 5 pointers, and could get that down to 3 by defining an intermediate struct.
 
 Hm.
 
 Which I probably should do. Note to self.
-
-The definition of `up` sticks to the paper definition and skips over the `end?` flag
 
 Out of those, we get three compound navigation functions. With more probably coming soon. Specifically, I found `find` useful for the work I did. It's easily externally definable, but would be a useful thing to just bundle along. The ones I've already implemented are `root`, `leftmost` and `rightmost`.
 
@@ -192,7 +192,7 @@ That's the traversals done. Next up, we've got modification, without which this 
    (make-node
     zipper
     (cond ((not (branch? zipper))
-	   (list (node zipper) node))
+	   (list node (node zipper)))
 	  ((children zipper)
 	   (cons node (children zipper)))
 	  (t (list node))))))
@@ -223,9 +223,9 @@ That's the traversals done. Next up, we've got modification, without which this 
     fresh))
 ```
 
-- append-child and insert-child is slightly more than the original paper does stuff, but I wanted the flexibility
+The paper defines an `insert_down` function. It fails on a Leaf node, and otherwise inserts a singleton branch at the given location. The `insert`/`append` child functions above also insert nodes at a lower level at the current `loc`. They give you a choice about whether to insert the new node as the leftmost or rightmost child, and additionally succeed on Leaf nodes by including the leaf value as a child of the new branch.
 
-- finally, some compound modification functions
+There are, thus far, three compound modification functions; `edit`, `splice-left` and `splice-right`.
 
 ```lisp
 (defun edit (zipper f &rest args)
@@ -238,4 +238,10 @@ That's the traversals done. Next up, we've got modification, without which this 
   (reduce #'insert-right (reverse node-list) :initial-value zipper))
 ```
 
-I haven't yet implemented `next`, `prev` and `remove` because these _might_ relate to the different representation of the [traversal `end?` state](https://github.com/clojure/clojure/blob/master/src/clj/clojure/zip.clj#L244). The reason for this _seems_ to be that `next`/`prev`/`remove` assume a [depth-first traversal](https://www.cs.usfca.edu/~galles/visualization/DFS.html). The reason I'm being weasely here is that I haven't thought about it hard enough to be sure that the `end?` marker is really necessary.
+`edit` takes a function instead of a new node, and replaces the node at `loc` with the result of running that function on the existing node. The `splice-*` twins are fairly self-explanatory; they're like `insert-left`/`insert-right`, but work on multiple nodes rather than single ones.
+
+I haven't yet implemented `next`, `prev` and `remove` because these _might_ relate to the different representation of the [traversal `end?` state](https://github.com/clojure/clojure/blob/master/src/clj/clojure/zip.clj#L244). The reason for this _seems_ to be that `next`/`prev`/`remove` assume a [depth-first traversal](https://www.cs.usfca.edu/~galles/visualization/DFS.html). The reason I'm being weasely here is that I haven't thought about it hard enough to be sure that the `end?` marker is really necessary. It also seems odd to privilege depth-first over breadth-first traversals; ideally, I think you'd want to be able to support either. Possibly interchangeably.
+
+## Minor Housekeeping
+
+That wraps it up for this edition. My immediate intention is to do more work on the `cl-zipper` and `clj` libraries, as well as that game I mentioned last time. Ideally, I'd like to up my blogging output too. Probably not to the same volume as I had at my peak, but it was definitely helpful to keep some sort of written journal around for a while. The current state of the world is, hopefully, going to make it easy for me to get more programming time in. All things considered, I'd count that as a win.
