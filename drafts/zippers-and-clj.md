@@ -14,17 +14,13 @@ However.
 
 I don't like the JVM. It's slow as balls, its' deployment options are less than ideal for my purposes, and Clojure without it [is unlikely](https://old.reddit.com/r/Clojure/comments/6hhg1h/why_isnt_there_a_compiled_or_interpreted_clojure/diz006j/). Clojurescript build incompatiblities are, if anything, worse[^theres-absolutel-a-reason]. I don't like the underlying [licensing decisions](https://clojure.org/community/license).
 
-[^theres-absolutel-a-reason]: There's a reason that [`langnostic.js`](/static/js/langnostic.js) is a raw JS file, rather than compiled from `clojurescript` source, and that reason is like 90% that the compilation process is nontrivial.
+[^theres-absolutel-a-reason]: There's a reason that [`langnostic.js`](/static/js/langnostic.js) is a raw JS file, rather than compiled from `clojurescript` source, and that reason is like 90% that the compilation process is nontrivial to set up.
 
 Whether or not I think you should learn Clojure as _your_ first[^note-that-i-say] lisp, it definitely wasn't _my_ first lisp. The more uniform, mostly-better-thought-out interface, lack of historical baggage and functional data structures are not enough to pull me all the way over.
 
 [^note-that-i-say]: "First", not "only". You can probably make educated guesses about which other ones I think you should learn.
 
-Especially since I can implement it in Lisp anyway.
-
-## `clj`
-
-[`clj`](https://github.com/inaimathi/clj) is basically the beginning of this. So far, it defines and exports exactly four symbols: `if-let`, `when-let`, `->` and `->>`. This is the minimal list of things that I miss from Clojure, realized I'd like sooner rather than later, and could implement almost trivially. I'm planning to add some more things once I brush up on [reader macros](https://letoverlambda.com/index.cl/guest/chap4.html).
+It _is_ enough for me to start plotting a smash-and-grab of as much of the stuff I like about it though. Which is exactly what [`clj`](https://github.com/inaimathi/clj) represents. As of this writing, it defines and exports exactly four symbols: `if-let`, `when-let`, `->` and `->>`. This is a tiny beginning of the list, and I fully plan to put something more substantial together using [`cl-hamt`](https://quickref.common-lisp.net/cl-hamt.html), [`named-readtables`](https://common-lisp.net/project/named-readtables/#important_api_idiosyncrasies), `[`test-utils`](https://github.com/inaimathi/test-utils) and possibly [`optima`](https://quickref.common-lisp.net/optima.html). This is just the start, but it's not the focus today.
 
 ## `cl-zipper`
 
