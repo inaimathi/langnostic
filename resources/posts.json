@@ -272,3 +272,4 @@
 {"tags": ["clojure", "almost-literate-programming"], "posted": 1582427222, "id": 271, "file": "the-comment-system", "title": "The Comment System"}
 {"tags": ["python", "almost-literate-programming"], "posted": 1583002614, "id": 272, "file": "fun-with-crockford", "title": "Fun With Crockford"}
 {"tags": ["common-lisp"], "posted": 1587869070, "id": 273, "file": "places-peeps-and-plagues", "title": "Places, Peeps And Plagues"}
+{"tags": ["data-structures", "common-lisp", "clojure"], "posted": 1588963792, "id": 274, "file": "zippers-and-clj", "title": "Zippers And Clj"}
