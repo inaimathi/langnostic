@@ -96,7 +96,7 @@ I'm not sure how to feel about that. On the one hand, yes, empty checks are easi
 >>>
 ```
 
-Despite those built-ins, it does seem to be possible to define your own Falsies. You can either define a `[__nonzero__](http://docs.python.org/2/reference/datamodel.html#object.__nonzero__)` method for your class, which should return the explicit boolean value you want it mapped to, or a `[__len__](http://docs.python.org/2/reference/datamodel.html#object.__len__)` method, in which case your class will be treated as Falsy if its `len` is zero.
+Despite those built-ins, it does seem to be possible to define your own Falsies. You can either define a [`__nonzero__`](http://docs.python.org/2/reference/datamodel.html#object.__nonzero__) method for your class, which should return the explicit boolean value you want it mapped to, or a [`__len__`](http://docs.python.org/2/reference/datamodel.html#object.__len__) method, in which case your class will be treated as Falsy if its `len` is zero.
 
 ```python
 >>> class Falsy(object):
