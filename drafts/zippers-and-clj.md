@@ -16,15 +16,15 @@ I don't like the JVM. It's slow as balls, its' deployment options are less than 
 
 [^theres-absolutel-a-reason]: There's a reason that [`langnostic.js`](/static/js/langnostic.js) is a raw JS file, rather than compiled from `clojurescript` source, and that reason is like 90% that the compilation process is nontrivial to set up.
 
-Whether or not I think you should learn Clojure as _your_ first[^note-that-i-say] lisp, it definitely wasn't _my_ first lisp. The more uniform, mostly-better-thought-out interface, lack of historical baggage and functional data structures are not enough to pull me all the way over.
+Whether or not I think _you_ should probably learn Clojure as _your_ first[^note-that-i-say] lisp, it definitely wasn't _my_ first lisp. The more uniform, mostly-better-thought-out interface, lack of historical baggage and functional data structures are not enough to pull me all the way over.
 
 [^note-that-i-say]: "First", not "only". You can probably make educated guesses about which other ones I think you should learn.
 
-It _is_ enough for me to start plotting a smash-and-grab of as much of the stuff I like about it though. Which is exactly what [`clj`](https://github.com/inaimathi/clj) represents. As of this writing, it defines and exports exactly four symbols: `if-let`, `when-let`, `->` and `->>`. This is a tiny beginning of the list, and I fully plan to put something more substantial together using [`cl-hamt`](https://quickref.common-lisp.net/cl-hamt.html), [`named-readtables`](https://common-lisp.net/project/named-readtables/#important_api_idiosyncrasies), `[`test-utils`](https://github.com/inaimathi/test-utils) and possibly [`optima`](https://quickref.common-lisp.net/optima.html). This is just the start, but it's not the focus today.
+It _is_ enough for me to start plotting a smash-and-grab of as much of the stuff I like as I can carry. Which is exactly what [`clj`](https://github.com/inaimathi/clj) represents. As of this writing, it defines and exports exactly four symbols: `if-let`, `when-let`, `->` and `->>`. This is a tiny beginning of the list, and I fully plan to put something more substantial together using [`cl-hamt`](https://quickref.common-lisp.net/cl-hamt.html), [`named-readtables`](https://common-lisp.net/project/named-readtables/#important_api_idiosyncrasies), [`test-utils`](https://github.com/inaimathi/test-utils) and possibly [`optima`](https://quickref.common-lisp.net/optima.html). This is just the start, but it's not the focus today.
 
 ## `cl-zipper`
 
-Like I said, the thing that percipitated this thought was having used the `clojure` Zipper implementation. So, obviously, this is something I want next time I need to manipulate trees in Common Lisp. The paper is [here](https://www.st.cs.uni-saarland.de/edu/seminare/2005/advanced-fp/docs/huet-zipper.pdf), and unless you have a terminal phobia of datastructures[^in-which-case-why], you should totally read it. It's six pages, they're light, one of them is spent on the intro and references, and one more is spent on margins.
+Like I said, the thing that percipitated this thought was having used the Clojure Zipper implementation. So, obviously, this is something I want next time I need to manipulate trees in Common Lisp. The paper is [here](https://www.st.cs.uni-saarland.de/edu/seminare/2005/advanced-fp/docs/huet-zipper.pdf), and unless you have a terminal phobia of datastructures[^in-which-case-why], you should totally read it. It's six pages, they're light, one of them is spent on the intro and references, and one more is spent on margins.
 
 [^in-which-case-why]: In which case, why are you here? This blog could kill you accidentally with an errant click or two. You should probably just go do something else.
 
