@@ -1,4 +1,4 @@
-So recently, I had to use [`zipper`s](https://www.st.cs.uni-saarland.de/edu/seminare/2005/advanced-fp/docs/huet-zipper.pdf) at work. Specifically, the [Clojure implementation](https://clojuredocs.org/clojure.zip). There was some work I needed to do with arbitrary trees, involving some close-to-arbitrary transformations and it turned out that `zipper`s were more efficient than the alternatives[^although-admittedly-it].
+So recently, I had to use [`zipper`s](https://www.st.cs.uni-saarland.de/edu/seminare/2005/advanced-fp/docs/huet-zipper.pdf) at work. Specifically, the [Clojure implementation](https://clojuredocs.org/clojure.zip). There were some close-to-arbitrary transformations I needed to do with some close-to-arbitrary trees and it turned out that `zipper`s were more efficient than the alternatives[^although-admittedly-it].
 
 [^although-admittedly-it]: Although admittedly, it does require me to explain the concept of `zipper`s to a few other people for maintenance purposes. So ironically, this _adds_ complexity despite being much more technically elegant than other options.
 
@@ -12,23 +12,27 @@ Its logo is up top in the language bar, I was one of the inaugural members of th
 
 However.
 
-I don't like the JVM. It's slow as balls, its' deployment options are less than ideal for my purposes, its' error system is at best useless, and Clojure without it [is unlikely](https://old.reddit.com/r/Clojure/comments/6hhg1h/why_isnt_there_a_compiled_or_interpreted_clojure/diz006j/). Clojurescript build incompatiblities are, if anything, worse[^theres-absolutel-a-reason]. Finally, I don't like the underlying [licensing decisions](https://clojure.org/community/license). These are deep reasons to stay away. They're not the sort of thing I can paper over with a library or two. Fixing them would mean a superhuman amount of work poured into the underlying technical and social infrastructure, and I'm not into it.
+- I don't like the JVM. It's slow as balls, its' deployment options are less than ideal for my purposes, its' error system is at best useless, and Clojure without it [is unlikely](https://old.reddit.com/r/Clojure/comments/6hhg1h/why_isnt_there_a_compiled_or_interpreted_clojure/diz006j/).
+- Clojurescript build incompatiblities are, if anything, worse[^theres-absolutely-a-reason].
+- I don't like the underlying [licensing decisions](https://clojure.org/community/license).
 
-[^theres-absolutel-a-reason]: There's a reason that [`langnostic.js`](/static/js/langnostic.js) is a raw JS file, rather than compiled from `clojurescript` source, and that reason is like 90% that the compilation process is nontrivial to set up.
+These are deep reasons to stay away. They're not the sort of thing I can paper over with a library or two. Fixing them would mean a superhuman amount of work poured into the underlying technical and social infrastructure, and I'm not into it. I wouldn't be into it even if the community was interested in heading that way, and near as I can tell, they're not particularly.
 
-Whether or not I think _you_ should probably learn Clojure as _your_ first[^note-that-i-say] lisp, it definitely wasn't _my_ first lisp. The more uniform, mostly-better-thought-out interface, lack of historical baggage and functional data structures are not enough to pull me all the way over.
+[^theres-absolutely-a-reason]: There's a reason that [`langnostic.js`](/static/js/langnostic.js) is a raw JS file, rather than compiled from `clojurescript` source, and that reason is like 90% that the compilation process is nontrivial to set up.
+
+Whether or not I think _you_ should learn Clojure as _your_ first[^note-that-i-say] lisp, it definitely wasn't _my_ first lisp. The more uniform, mostly-better-thought-out interface, lack of historical baggage and functional data structures are not enough to pull me all the way over.
 
 [^note-that-i-say]: "First", not "only". You can probably make educated guesses about which other ones I think you should learn.
 
-It _is_ enough for me to start plotting a smash-and-grab of as much of the stuff I like as I can carry. Which is exactly what [`clj`](https://github.com/inaimathi/clj) represents. As of this writing, it defines and exports exactly four symbols: `if-let`, `when-let`, `->` and `->>`. This is a tiny beginning of the list, and I fully plan to put something more substantial together using [`cl-hamt`](https://quickref.common-lisp.net/cl-hamt.html), [`named-readtables`](https://common-lisp.net/project/named-readtables/#important_api_idiosyncrasies), [`test-utils`](https://github.com/inaimathi/test-utils) and possibly [`optima`](https://quickref.common-lisp.net/optima.html). Stay tuned; this is just the start, but it's not the focus today.
+It _is_ enough for me to start plotting a smash-and-grab of as much of the stuff I like as I can carry. Which is exactly what [`clj`](https://github.com/inaimathi/clj) represents. As of this writing, it defines and exports exactly four symbols: `if-let`, `when-let`, `->` and `->>`. This is a tiny beginning of the list, and I fully plan to put something more substantial together using [`cl-hamt`](https://quickref.common-lisp.net/cl-hamt.html), [`named-readtables`](https://common-lisp.net/project/named-readtables/#important_api_idiosyncrasies), [`test-utils`](https://github.com/inaimathi/test-utils) and possibly [`optima`](https://quickref.common-lisp.net/optima.html). Stay tuned to that repo if you're interested, but it's not the focus today.
 
 ## `cl-zipper`
 
-Like I said, the thing that percipitated this thought was having used the Clojure Zipper implementation. So, obviously, this is something I want next time I need to manipulate trees in Common Lisp. The paper is [here](https://www.st.cs.uni-saarland.de/edu/seminare/2005/advanced-fp/docs/huet-zipper.pdf), and unless you have a terminal phobia of datastructures[^in-which-case-why], you should totally read it. It's six pages, they're light, one of them is spent on the intro and references, and one more is spent on margins.
+The thing that percipitated this thought was having used the Clojure Zipper implementation. So, obviously, this is something I want next time I need to manipulate trees in Common Lisp. The paper is [here](https://www.st.cs.uni-saarland.de/edu/seminare/2005/advanced-fp/docs/huet-zipper.pdf), and unless you have a terminal phobia of datastructures[^in-which-case-why], you should go read it. It's six pages, they're light, and one of them taken up by the intro and references.
 
 [^in-which-case-why]: In which case, why are you here? This blog could kill you accidentally with an errant click or two. You should probably just go do something else.
 
-The operations defined in the paper are `left`, `right`, `up`, `down`, `insert_right`, `insert_left`, `insert_down` and `delete`. There's a few conveniences defined for the Clojure version, and I've implemented some of my own stuff too. There's also, oddly, a couple ways that the Clojure version and original paper conflict [:TODO - reword]. I have some idea why that is in a couple places, but others seem arbitrary. We'll get to all of it. Lets go through [the main file](https://github.com/inaimathi/cl-zipper/blob/master/src/cl-zipper.lisp) in [almost-literate](http://inaimathi.ca/archive/by-tag/almost-literate-programming) style.
+The operations defined in the paper are `left`, `right`, `up`, `down`, `insert_right`, `insert_left`, `insert_down` and `delete`. There's a few conveniences defined for the Clojure version, and I've implemented some of my own stuff too. Lets go through [the main file](https://github.com/inaimathi/cl-zipper/blob/master/src/cl-zipper.lisp) in [almost-literate](http://inaimathi.ca/archive/by-tag/almost-literate-programming) style.
 
 First up, we have constructors.
 
@@ -57,7 +61,7 @@ First up, we have constructors.
   (funcall (loc-fn-make-node zipper) zipper children))
 ```
 
-You can see influence from both [`clojure.zip`](https://github.com/clojure/clojure/blob/master/src/clj/clojure/zip.clj) and the paper here. I'm taking the lead from the paper by explicitly separating the `path` triple our from the `loc` definition. However, I'm not explicitly defining my own `type tree` the way that Huet does. Instead, I'm going to be dealing with assorted `lisp` trees. These could be implemented as `list`s, `vector`s, `hash`es, or a bunch of other formats. I'm going to implement a few type-distpatching built-ins, including the `make-zipper list` method above, but the basic `zipper` function just needs to take an interface as input in the form of `branch?`, `children` and `make-node` arguments. This is the same solution that the Clojure implementation went with, and I see no reason to go a different way. The only material difference is that theirs uses the Clojure [`metadata`](https://clojure.org/reference/metadata) system, while I explicitly define slots in the `loc` structure.
+You can see influence from both [`clojure.zip`](https://github.com/clojure/clojure/blob/master/src/clj/clojure/zip.clj) and the paper here. I'm taking the lead from the paper by explicitly separating the `path` triple our from the `loc` definition. However, I'm not explicitly defining my own `type tree` the way that Huet does. Instead, I'm going to be dealing with assorted `lisp` trees. These could be implemented as `list`s, `vector`s, `hash`es, or any number of other formats. I'm going to implement a few type-distpatching built-ins, including the `make-zipper list` method above, but the basic `zipper` function just needs to take an interface as input in the form of `branch?`, `children` and `make-node` arguments. This is the same solution that the Clojure implementation went with, and I see no reason to go a different way. The only material difference is that theirs uses the Clojure [`metadata`](https://clojure.org/reference/metadata) system, while I explicitly define slots in the `loc` structure.
 
 Now that we can construct, we need to be able to select.
 
@@ -139,7 +143,7 @@ Hm.
 
 Which I probably should do. Note to self.
 
-Out of those, we get three compound navigation functions. With more probably coming soon. Specifically, I found `find` useful for the work I did. It's easily externally definable, but would be a useful thing to just bundle along. The ones I've already implemented are `root`, `leftmost` and `rightmost`.
+Out of those, we get three compound navigation functions. With more probably coming soon. Specifically, I found `find` useful for the work I did. It's easily externally definable, but would be even easier to bundle along. The ones I've already implemented are `root`, `leftmost` and `rightmost`.
 
 ```lisp
 ;;;;;;;;;;;;;;; Compound navigation
@@ -162,7 +166,7 @@ Each of these involve an intermediate call to `while`. Which isn't a generic `ma
     z))
 ...
 ```
-As you can see, all it does is repeatedly call a given function on a `zipper` and return the last non-`nil` result.
+As you can see, all it does is repeatedly call a given function on a `zipper` and return the last non-`nil` `loc` result. That's `loc`, not `node`, so this _doesn't_ run into the usual Common Lisp conflict of "Did you fail to find a thing, or find the element `nil`?".
 
 That's the traversals done. Next up, we've got modification, without which this library is fairly useless. The basics are `replace`, `delete` and the `insert`/`child` twins.
 
