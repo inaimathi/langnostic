@@ -91,6 +91,8 @@ CLJ>
 
 - TODO - show some tests to verify the above properties and go through some testing stuff
 
+Realistically, I should just use and re-export symbols from `arrow-macros` and make sure they test out under the same properties, but it's still a good idea to think about what must be underneath the immediate interface we see.
+
 ### Hash and Set literals with functional underpinnings
 _Implementation Complexity: Difficult_
 
@@ -110,5 +112,116 @@ To get this for our representations, we need to define `print-object` methods fo
 ### Recursive dicts and sets
 _Implementation Complexity: Tricky_
 
-- we need to define a hashing method that is `cl-hamt` compatible and works with [`cl-murmurhash`](TODO).
-- we need a polymorphic equality. It needs to be designed to be simple to use to start with, but bypassable if the user wants to optimize for performance and have things inlined.
+We need to define a hashing method that is `cl-hamt` compatible and works with [`cl-murmurhash`](TODO). That's relatively simple, because `murmurhash` is a [generic function](TODO), so all we really need are specializers on `hash-set` and `hash-dict`. That looks something like
+
+```
+(defmethod cl-murmurhash:murmurhash ((object cl-hamt:hash-dict) &key (seed cl-murmurhash:*default-seed*) mix-only)
+  (cl-murmurhash:murmurhash (cl-hamt:dict->alist object) :seed seed :mix-only mix-only))
+
+(defmethod cl-murmurhash:murmurhash ((object cl-hamt:hash-set) &key (seed cl-murmurhash:*default-seed*) mix-only)
+  (cl-murmurhash:murmurhash (cl-hamt:set->list object) :seed seed :mix-only mix-only))
+```
+
+With that, `set`s can contain `set`s, `dict`s can contain `dict`s, even as keys, and they can both contain each other. Sort of.
+
+```
+CLJ> {:a 1}
+{:A 1}
+CLJ> {:a {:b 1}}
+{:A {:B 1}}
+CLJ> {{:a 1} {:b 1}}
+{{:A 1} {:B 1}}
+CLJ> (cl-hamt:dict-lookup {{:a 1} {:b 1}} {:a 1})
+NIL
+NIL
+CLJ> (cl-hamt:set-lookup #{1 2 {:a 1}} {:a 1})
+NIL
+```
+
+The problem is that two `set`s/`dict`s are not `equal` or even `equalp` to each other.
+
+```
+CLJ> (equal {:a 1} {:a 1})
+NIL
+CLJ> (equalp {:a 1} {:a 1})
+NIL
+CLJ> (equal #{:a 1} #{:a 1})
+NIL
+CLJ> (equalp #{:a 1} #{:a 1})
+NIL
+CLJ>
+```
+
+So to get any real use out of this, we actually also need...
+
+### Polymorphic operators
+_Implementation Complexity: Fiendish_
+
+Clojure doesn't have a bunch of equality operators. It has one; [`=`](TODO - link to the operator or possibly source code). [Equality is fraught](TODO - link to when is one thing equal to another paper), and if you don't believe me, give that a read. The basics are actually easy.
+
+```
+(defmethod == (a b) (equalp a b))
+(defmethod == ((a cl-hamt:hash-dict) (b cl-hamt:hash-dict))
+  (cl-hamt:dict-eq a b :value-test #'==))
+(defmethod == ((a cl-hamt:hash-set) (b cl-hamt:hash-set))
+  (cl-hamt:set-eq a b))
+```
+
+With that,
+
+```
+CLJ> (== {:a 1} {:a 1})
+READING :A -> 1
+READING :A -> 1
+T
+CLJ> (== {:a 1} {:a 2})
+READING :A -> 1
+READING :A -> 2
+NIL
+CLJ> (== #{:a 1} #{:a 1})
+T
+CLJ> (== #{:a 1} #{:a 2})
+NIL
+CLJ>
+```
+
+And, once we wire up our literal definition to account for it,
+
+```
+...
+(defun hash-literal-reader (stream char)
+  (declare (ignore char))
+  (loop with dict = (cl-hamt:empty-dict :test #'==)
+     for (k v) on (read-delimited-list #\} stream t) by #'cddr
+     do (setf dict (cl-hamt:dict-insert dict k v))
+     finally (return dict)))
+...
+(defun set-literal-reader (stream sub-char numarg)
+  (declare (ignore sub-char numarg))
+  (reduce
+   (lambda (set elem)
+     (cl-hamt:set-insert set elem))
+   (read-delimited-list #\} stream t)
+   :initial-value (cl-hamt:empty-set :test #'==)))
+...
+```
+
+we get the behavior we want out of our hashes.
+
+```
+CLJ> (cl-hamt:dict-lookup {:A 1 {:B 2} :C} {:b 2})
+READING :B -> 2
+:C
+T
+CLJ>
+```
+
+In the correctness sense, at least. The problem is, we've entered generic function land. And that's good in terms of interface, but if the day comes when we want to squeeze extra performance out of these structures, it might be annoying to pay the cost of performing a polymorphic equality. What we'd really want is a way to declare the types of our `dict`s/`set`s and use the tightest applicable sense of equality for those types so that the inliner has a chance of doing us some good for those cases where performance matters.
+
+I _think_ the best way to do this is to introduce type hints for the datatypes I'll be putting together. I'm thinking a syntax that looks something like
+
+```
+(:: (-> keyword integer) {:a 1 :b 2})
+```
+
+which would put together a map that assumes keyword keys and integer values. I'm going to do some testing, research and/or profiling before embarking on this journey.
