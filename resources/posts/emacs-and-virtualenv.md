@@ -2,7 +2,7 @@ Minor diversion into Emacs Lisp.
 
 So, at work I'm one of the few dinosaurs who still uses [Emacs](https://www.gnu.org/software/emacs/) for basically everything. You can see evidence of this in [my machine setup routine](https://github.com/inaimathi/machine-setup). I one hundred percent recommend you do the same, especially if you have any interest in any Lisps at all.
 
-My work _mostly_ isn't Lisp, byt Python. And one of the things I end up doing is running `emacs -nw` in a bunch of different [`virtualenv`](https://docs.python.org/3/tutorial/venv.html)-enabled directories[^this-is-mainly-because]. This has been annoying in one noticeable way; it's hard to juggle so many instances of the editor mentally, and I've found myself getting confused about which one is getting called where.
+My work _mostly_ isn't Lisp, but Python. And one of the things I end up doing is running `emacs -nw` in a bunch of different [`virtualenv`](https://docs.python.org/3/tutorial/venv.html)-enabled directories[^this-is-mainly-because]. This has been annoying in one noticeable way; it's hard to juggle so many instances of the editor mentally, and I've found myself getting confused about which one is getting called where.
 
 [^this-is-mainly-because]: This is mainly because, despite my attempts at doing so, I have not _yet_ read up on and practiced enough with [`guix`](https://guix.gnu.org/) to seriously recommend it as the one package manager to rule them all. I'm getting dangerously close. What I've read and seen so far has had me replacing my `nix` installation with a `guix` one even though I likely won't have much time to pour in it.
 

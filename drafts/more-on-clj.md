@@ -1,11 +1,11 @@
-I mentioned the [`clj`](TODO) repo last time. And mentioned off-handedly that there's a bunch of things I _really_ like about Clojure, and also a few reason that, for my personal use at least, I'm definitely going to continue developing things in Common Lisp.
+I mentioned the [`clj`](https://github.com/inaimathi/clj) repo last time. And mentioned off-handedly that there's a bunch of things I _really_ like about Clojure, and also a few reason that, for my personal use at least, I'm definitely going to continue developing things in Common Lisp.
 
-I intend to do something about this. If you like, you can [follow along](TODO -- link to clj repo). Who knows, we may both learn something. We'll go from the trivial, to the difficult but hopefully possible. I'm not writing this piece after finishing development, the intent is to journal as I go.
+I intend to do something about this. If you like, you can [follow along](https://github.com/inaimathi/clj/tree/master/src). Who knows, we may both learn something. We'll go from the trivial, to the difficult but hopefully possible. I'm not writing this piece after finishing development, the intent is to journal as I go.
 
 ### Readable Anaphora
 _Implementation Complexity: Trivial_
 
-There's a chapter in [On Lisp](TODO) that defines some [anaphoric macros](TODO). Things that bind the results of intermediate computations and expose them as symbols in their result bodies. The archetypal ones are `aif` and `awhen`, roughly defined as
+There's a chapter in [On Lisp](http://www.paulgraham.com/onlisp.html) that defines some [anaphoric macros](https://letoverlambda.com/index.cl/guest/chap6.html). Things that bind the results of intermediate computations and expose them as symbols in their result bodies. The archetypal ones are `aif` and `awhen`, roughly defined as
 
 ```
 (defmacro aif (test then &optional else)
@@ -93,6 +93,46 @@ CLJ>
 
 Realistically, I should just use and re-export symbols from `arrow-macros` and make sure they test out under the same properties, but it's still a good idea to think about what must be underneath the immediate interface we see.
 
+### Anaphoric lambda
+_Implementation Complexity: Tricky_
+
+Anaphoric `lambda`, as opposed to `if-let` and `when-let` takes some matching to get working properly. So, we need to pull in [`optima`](TODO) for this one. I _don't_ think some of the things that the Clojure dudes are up to in terms of argument lists are worth the complexity. In particular, the way they do optional arguments, while it does sound more flexible, doesn't seem especially useful given the complexity it introduces. I prefer the Common Lisp approach to `rest`/`body`/`keyword` args. Their `fn` has one trick up its' sleeve that I definitely want though, which is the ability to refer to itself.
+
+```clojure
+user=> (fn a [b c] (if (even? c) (+ b c) (a b (inc c))))
+#object[user$eval2021$a__2022 0x52b57247 "user$eval2021$a__2022@52b57247"]
+user=> ((fn a [b c] (if (even? c) (+ b c) (a b (inc c)))) 3 5)
+9
+user=>
+```
+
+It's not useful often, but is sometimes. And I friggin' want it. The unfortunate part of this one, is that, even _with_ `optima`, I can't figure out how to evaluate the function name only once.
+
+```
+(defmacro fn (&rest args)
+  (optima:match args
+    ((optima:guard
+      (cons name (cons params (cons docstring body)))
+      (and (symbolp name) (listp params) (stringp docstring)))
+     `(labels ((,name ,params ,docstring ,@body))
+	#',name))
+    ((optima:guard
+      (cons name (cons params body))
+      (and (symbolp name) (listp params)))
+     `(labels ((,name ,params ,@body))
+	#',name))
+    ((optima:guard
+      (cons params (cons docstring body))
+      (and (listp params) (stringp docstring)))
+     `(lambda ,params ,docstring ,@body))
+    ((optima:guard
+      (cons params body)
+      (and (listp params)))
+     `(lambda ,params ,@body))))
+```
+
+The only comfort I have is that it's guaranteed to be a symbol, so I figure that's not the worst thing that could happen.
+
 ### Hash and Set literals with functional underpinnings
 _Implementation Complexity: Difficult_
 
@@ -157,7 +197,7 @@ So to get any real use out of this, we actually also need...
 ### Polymorphic operators
 _Implementation Complexity: Fiendish_
 
-Clojure doesn't have a bunch of equality operators. It has one; [`=`](TODO - link to the operator or possibly source code). [Equality is fraught](TODO - link to when is one thing equal to another paper), and if you don't believe me, give that a read. The basics are actually easy.
+Clojure doesn't have a bunch of equality operators. It has one; [`=`](https://clojure.org/guides/equality). [Equality is fraught](http://people.math.harvard.edu/~mazur/preprints/when_is_one.pdf), and if you don't believe me, give that a read. The basics are actually easy.
 
 ```
 (defmethod == (a b) (equalp a b))
@@ -224,4 +264,6 @@ I _think_ the best way to do this is to introduce type hints for the datatypes I
 (:: (-> keyword integer) {:a 1 :b 2})
 ```
 
-which would put together a map that assumes keyword keys and integer values. I'm going to do some testing, research and/or profiling before embarking on this journey.
+which would put together a map that assumes keyword keys and integer values. I'm going to do some testing, research and/or profiling before embarking on this journey. And, to be fair, [Clojure equality performance](https://clojureverse.org/t/is-fast-in-clojure/2182/2) is also kind of up in the air, so shrug I guess?
+
+That's all I've got the energy for in one go. I'll keep you up to date on further developments.
