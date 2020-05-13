@@ -183,7 +183,7 @@ This is because
 
 It looks like no amount of aliasing is going to get us out of this one, but feel free to correct me if I'm wrong.
 
-### Hash and Set literals with functional underpinnings
+### Map and Set literals with functional underpinnings
 _Implementation Complexity: Difficult_
 
 The data structures on their own are already implemented in the form of [`cl-hamt`](https://quickref.common-lisp.net/cl-hamt.html). We don't necessarily want to commit to it, but it's available and we can probably make the interface agnostic to some degree. The syntax stuff involves defining some simple reader macros. Ideally, they'd be namespace-bounded which means we're pulling out `named-readtables`.
@@ -237,20 +237,184 @@ Once that's all done, we need to define a local `read-table`
 
 This is such a table that uses the `:standard` Common Lisp readers, but adds support for forms beginning with  `{`/`#{` and ending with `}` to be handled as part of the read step. In some other file of the project, we need to add a call to `(named-readtables:in-readtable syntax)`. Externally, we can use `(named-readtables:in-readtable clj:syntax)` to get access to these reader macros.
 
+Once, we get all that evaluated, we've got `map` and `set` literals.
+
+```
+CLJ> {:a 1 :b 2}
+#<CL-HAMT:HASH-DICT {1003068E13}>
+CLJ> #{:a :b :c}
+#<CL-HAMT:HASH-SET {10034E20B3}>
+CLJ>
+```
+And that's the very next thing I want to fix.
+
 ### Readable datastructure representations
 _Implementation Complexity: Tricky_
 
-This one's really only difficult because of the testing involved. One thing Clojure does nicely and consistently is emit both its hashes and sets in a `read`-able format. Lisp does this for `list`s and `simple-vector`s, but not `hash`es. And that kind of sucks.
+One thing Clojure does nicely and consistently is emit both its maps and sets in a `read`-able format. Lisp does this for `list`s and `simple-vector`s, but not `hash-tables`es or `hash-dict`s. And that kind of sucks.
 
-To get this for our representations, we need to define `print-object` methods for them.
+To get this for our representations, we need to define `print-object` methods for them. That's the long and the short of it. It's _tricky_, not _difficult_. All we need to do is make sure that the `print-object` method for our datatypes emits the syntax we defined in our macros earlier.
 
+```
+(defmethod print-object ((object cl-hamt:hash-dict) stream)
+  "The printable representation for clj:maps"
+  (format
+       stream
+       "{~{~s ~s~^ ~}}"
+       (reverse (cl-hamt:dict-reduce (lambda (memo k v) (cons v (cons k memo))) object nil))))
+```
+
+We need to iterate through the `hamt-dict`, collecting keys and values along the way, then `format` them into the given stream surrounded by `{` and `}`. And with that, we've left the world of opaque data.
+
+```
+CLJ> {:a 1 :b 2}
+{:A 1 :B 2}
+CLJ> (prin1-to-string {:a 1 :b 2})
+"{:A 1 :B 2}"
+CLJ> (read-from-string (prin1-to-string {:a 1 :b 2}))
+{:A 1 :B 2}
+11
+CLJ>
+```
+
+The only real problem left here is that it won't work unless we're in the `clj:syntax` `read-table`. As in
+
+```
+CLJ> (defparameter *D* {:a 1 :b 2 :c 3})
+*D*
+CLJ> *d*
+{:A 1 :C 3 :B 2}
+CLJ> (in-package :cl-user)
+#<PACKAGE "COMMON-LISP-USER">
+CL-USER> clj::*D*
+{:A 1 :C 3 :B 2}
+CL-USER> (prin1-to-string clj::*D*)
+"{:A 1 :C 3 :B 2}"
+CL-USER> (read-from-string (prin1-to-string clj::*D*))
+
+Package { does not exist.
+
+  Line: 1, Column: 2, File-Position: 2
+
+  Stream: #<SB-IMPL::STRING-INPUT-STREAM {1008382BB3}>
+   [Condition of type SB-INT:SIMPLE-READER-PACKAGE-ERROR]
+
+Restarts:
+ 0: [RETRY] Retry SLIME REPL evaluation request.
+ 1: [*ABORT] Return to SLIME's top level.
+ 2: [ABORT] abort thread (#<THREAD "repl-thread" RUNNING {1004F29B63}>)
+
+Backtrace:
+  0: (SB-IMPL::READER-FIND-PACKAGE "{" #<SB-IMPL::STRING-INPUT-STREAM {1008382BB3}>)
+  1: (SB-IMPL::READ-TOKEN #<SB-IMPL::STRING-INPUT-STREAM {1008382BB3}> #\{)
+  2: (SB-IMPL::READ-MAYBE-NOTHING #<SB-IMPL::STRING-INPUT-STREAM {1008382BB3}> #\{)
+  3: (SB-IMPL::%READ-PRESERVING-WHITESPACE #<SB-IMPL::STRING-INPUT-STREAM {1008382BB3}> T (NIL) T)
+  4: (SB-IMPL::%READ-PRESERVING-WHITESPACE #<SB-IMPL::STRING-INPUT-STREAM {1008382BB3}> T (NIL) NIL)
+  5: (READ #<SB-IMPL::STRING-INPUT-STREAM {1008382BB3}> T NIL NIL)
+  6: (SB-IMPL::%READ-FROM-STRING "{:A 1 :C 3 :B 2}" T NIL 0 NIL NIL)
+  7: (SB-INT:SIMPLE-EVAL-IN-LEXENV (READ-FROM-STRING (PRIN1-TO-STRING CLJ::*D*)) #<NULL-LEXENV>)
+  8: (EVAL (READ-FROM-STRING (PRIN1-TO-STRING CLJ::*D*)))
+ --more--
+ ```
+
+Not a deal-breaker exactly, but it's not a great thing for interoperability. If we define our `print-object` as
+
+```
+(defmethod print-object ((object cl-hamt:hash-dict) stream)
+  "The printable representation for clj:maps"
+  (if (eq 'clj:syntax (named-readtables:readtable-name *readtable*))
+      (format
+       stream
+       "{~{~s ~s~^ ~}}"
+       (reverse (cl-hamt:dict-reduce (lambda (memo k v) (cons v (cons k memo))) object nil)))
+      (format stream "(CLJ:ALIST->MAP (LIST ~{~S~^ ~}))" (cl-hamt:dict->alist object))))
+```
+
+instead, and additionally define
+
+```
+(defun alist->map (alist)
+  (loop with dict = (cl-hamt:empty-dict :test #'==)
+     for (k . v) in alist do (setf dict (cl-hamt:dict-insert dict k v))
+     finally (return dict)))
+```
+
+we get what we want, although the representation _is_ uglier.
+
+```
+CL-USER> clj::*D*
+(CLJ:ALIST->MAP (LIST (:B . 2) (:C . 3) (:A . 1)))
+CL-USER> (prin1-to-string clj::*D*)
+"(CLJ:ALIST->MAP (LIST (:B . 2) (:C . 3) (:A . 1)))"
+CL-USER> (read-from-string (prin1-to-string clj::*D*))
+(CLJ:ALIST->MAP (LIST (:B . 2) (:C . 3) (:A . 1)))
+50
+CL-USER>
+```
+
+The corresponding `set` method is
+
+```
+(defmethod print-object ((object cl-hamt:hash-set) stream)
+  (if (eq 'clj:syntax (named-readtables:readtable-name *readtable*))
+      (format stream "#{~{~s~^ ~}}" (cl-hamt:set->list object))
+      (format stream "(CLJ:LIST->SET (LIST ~{~S~^ ~}))" (cl-hamt:set->list object))))
+```
+
+Next, we do in fact want these to be recursive. And, currently, they're not.
+
+```
+CLJ> {:a 1 :b 2}
+{:A 1 :B 2}
+CLJ> {:a 1 :b {:c 3}}
+{:A 1 :B {:C 3}}
+CLJ> {{:a 1} {:b 2}}
+Don't know how to hash {:A 1}
+   [Condition of type CL-MURMURHASH:UNHASHABLE-OBJECT-ERROR]
+
+Restarts:
+ 0: [RETRY] Retry SLIME REPL evaluation request.
+ 1: [*ABORT] Return to SLIME's top level.
+ 2: [ABORT] abort thread (#<THREAD "repl-thread" RUNNING {1004F29B63}>)
+
+Backtrace:
+  0: ((:METHOD CL-MURMURHASH:MURMURHASH (T)) {:A 1}) [fast-method]
+  1: (CL-HAMT:DICT-INSERT {} {:A 1} {:B 2})
+  2: (MAP-LITERAL-READER #<SB-IMPL::STRING-INPUT-STREAM {1002A726D3}> #<unused argument>)
+  3: (SB-IMPL::READ-MAYBE-NOTHING #<SB-IMPL::STRING-INPUT-STREAM {1002A726D3}> #\{)
+  4: (SB-IMPL::%READ-PRESERVING-WHITESPACE #<SB-IMPL::STRING-INPUT-STREAM {1002A726D3}> NIL (NIL) T)
+  5: (SB-IMPL::%READ-PRESERVING-WHITESPACE #<SB-IMPL::STRING-INPUT-STREAM {1002A726D3}> NIL (NIL) NIL)
+  6: (READ #<SB-IMPL::STRING-INPUT-STREAM {1002A726D3}> NIL #<SB-IMPL::STRING-INPUT-STREAM {1002A726D3}> NIL)
+ --more--
+CLJ> #{1 #{:a} #{"a"}}
+
+Don't know how to hash #{:A}
+   [Condition of type CL-MURMURHASH:UNHASHABLE-OBJECT-ERROR]
+
+Restarts:
+ 0: [RETRY] Retry SLIME REPL evaluation request.
+ 1: [*ABORT] Return to SLIME's top level.
+ 2: [ABORT] abort thread (#<THREAD "repl-thread" RUNNING {1004F29B63}>)
+
+Backtrace:
+  0: ((:METHOD CL-MURMURHASH:MURMURHASH (T)) #{:A}) [fast-method]
+  1: ((FLET CL-HAMT::%INSERT :IN CL-HAMT:SET-INSERT) #<CL-HAMT::SET-TABLE {10028D25D3}> #{:A})
+  2: (REDUCE #<CLOSURE (FLET CL-HAMT::%INSERT :IN CL-HAMT:SET-INSERT) {10028D265B}> (#{:A}) :INITIAL-VALUE #<CL-HAMT::SET-TABLE {10028D25D3}>)
+  3: (CL-HAMT:SET-INSERT #{1} #{:A})
+  4: (REDUCE #<FUNCTION (LAMBDA (SET ELEM) :IN LIST->SET) {228B851B}> (1 #{:A} #{"a"}) :INITIAL-VALUE #{})
+  5: (SB-IMPL::READ-MAYBE-NOTHING #<SB-IMPL::STRING-INPUT-STREAM {100247DD93}> #\#)
+  6: (SB-IMPL::%READ-PRESERVING-WHITESPACE #<SB-IMPL::STRING-INPUT-STREAM {100247DD93}> NIL (NIL) T)
+  7: (SB-IMPL::%READ-PRESERVING-WHITESPACE #<SB-IMPL::STRING-INPUT-STREAM {100247DD93}> NIL (NIL) NIL)
+  8: (READ #<SB-IMPL::STRING-INPUT-STREAM {100247DD93}> NIL #<SB-IMPL::STRING-INPUT-STREAM {100247DD93}> NIL)
+ --more--
+```
 - Show the methods, go over the tests
 - Show off how this works outside of the `clj` readtable
 
 ### Recursive dicts and sets
 _Implementation Complexity: Tricky_
 
-We need to define a hashing method that is `cl-hamt` compatible and works with [`cl-murmurhash`](TODO). That's relatively simple, because `murmurhash` is a [generic function](TODO), so all we really need are specializers on `hash-set` and `hash-dict`. That looks something like
+We need to define a hashing method that is `cl-hamt` compatible and works with [`cl-murmurhash`](https://github.com/ruricolist/cl-murmurhash). All we really need are specializers on `hash-set` and `hash-dict`. Again, _tricky_, not _difficult_. It looks like
 
 ```
 (defmethod cl-murmurhash:murmurhash ((object cl-hamt:hash-dict) &key (seed cl-murmurhash:*default-seed*) mix-only)
@@ -260,7 +424,7 @@ We need to define a hashing method that is `cl-hamt` compatible and works with [
   (cl-murmurhash:murmurhash (cl-hamt:set->list object) :seed seed :mix-only mix-only))
 ```
 
-With that, `set`s can contain `set`s, `dict`s can contain `dict`s, even as keys, and they can both contain each other. Sort of.
+With that, `set`s can contain `set`s, `map`s can contain `map`s, even as keys, and they can both contain each other. Sort of.
 
 ```
 CLJ> {:a 1}
@@ -327,20 +491,24 @@ And, once we wire up our literal definition to account for it,
 
 ```
 ...
-(defun hash-literal-reader (stream char)
+(defun alist->map (alist)
+  (loop with dict = (cl-hamt:empty-dict :test #'==)
+     for (k . v) in alist do (setf dict (cl-hamt:dict-insert dict k v))
+     finally (return dict)))
+
+(defun map-literal-reader (stream char)
   (declare (ignore char))
+  ;; TODO - check for an even number of elements here and throw an error if there isn't
   (loop with dict = (cl-hamt:empty-dict :test #'==)
      for (k v) on (read-delimited-list #\} stream t) by #'cddr
      do (setf dict (cl-hamt:dict-insert dict k v))
-     finally (return dict)))
+     finally (return dict))))
 ...
-(defun set-literal-reader (stream sub-char numarg)
-  (declare (ignore sub-char numarg))
+(defun list->set (lst)
   (reduce
    (lambda (set elem)
      (cl-hamt:set-insert set elem))
-   (read-delimited-list #\} stream t)
-   :initial-value (cl-hamt:empty-set :test #'==)))
+   lst :initial-value (cl-hamt:empty-set :test #'==))))
 ...
 ```
 
@@ -348,20 +516,24 @@ we get the behavior we want out of our hashes.
 
 ```
 CLJ> (cl-hamt:dict-lookup {:A 1 {:B 2} :C} {:b 2})
-READING :B -> 2
 :C
+T
+CLJ> (cl-hamt:dict-lookup {{:a 1} {:b 2}} {:a 1})
+{:B 2}
 T
 CLJ>
 ```
 
-In the correctness sense, at least. The problem is, we've entered generic function land. And that's good in terms of interface, but if the day comes when we want to squeeze extra performance out of these structures, it might be annoying to pay the cost of performing a polymorphic equality. What we'd really want is a way to declare the types of our `dict`s/`set`s and use the tightest applicable sense of equality for those types so that the inliner has a chance of doing us some good for those cases where performance matters.
+In the correctness sense, at least.
 
-I _think_ the best way to do this is to introduce type hints for the datatypes I'll be putting together. I'm thinking a syntax that looks something like
+The problem is, we've entered generic function land. And that's good in terms of interface, but if the day comes when we want to squeeze extra performance out of these structures, it might be annoying to pay the cost of performing a fully polymorphic equality. What we'd really want is a way to declare the types of our `dict`s/`set`s and use the tightest applicable sense of equality for those types so that the inliner has a chance of doing us some good for those cases where performance matters.
+
+I _think_ the best way to do this is to introduce type hints. Something like
 
 ```
-(:: (-> keyword integer) {:a 1 :b 2})
+(:: (map keyword integer) {:a 1 :b 2})
 ```
 
-which would put together a map that assumes keyword keys and integer values. I'm going to do some testing, research and/or profiling before embarking on this journey. And, to be fair, [Clojure equality performance](https://clojureverse.org/t/is-fast-in-clojure/2182/2) is also kind of up in the air, so shrug I guess?
+which would put together a map that assumes keyword keys and integer values. I'm going to do some testing, research and/or profiling before embarking on this journey. To be fair, [Clojure equality performance](https://clojureverse.org/t/is-fast-in-clojure/2182/2) is also kind of up in the air, so this might not be the biggest deal. I'd still like to give it some serious thought?
 
 That's all I've got the energy for in one go. I'll keep you up to date on further developments.
