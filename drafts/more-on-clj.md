@@ -44,12 +44,12 @@ vs
   (some-interesting-transformation it))
 ```
 
-The only finer point here is the use of the intermediate variable `tmp`, because we don't want to evaluate either `name` or `test` more than once.
+The only finer point here is the use of the intermediate variable `tmp`, because we don't want to evaluate any of the inputs more than once.
 
 ### Arrow macros
 _Implementation Complexity: Simple_
 
-The basic arrow macros are `->` and `->>`. There's a few more that you can see over at the [`arrow-macros` project](https://github.com/hipeta/arrow-macros/blob/master/arrow-macros.lisp), but I'm interested, as usual, in keeping this library minimal. So for the moment, I'm only implementing the two above. The only non-trivial part of this is compensating for `lambda` expressions and `#'` symbols.
+The basic arrow macros are `->` and `->>`. There's a bunch more that you can see over at the [`arrow-macros` project](https://github.com/hipeta/arrow-macros/blob/master/arrow-macros.lisp), but I'm going to stick to those two for now. The only non-trivial part of this is compensating for `lambda` expressions and `#'` symbols.
 
 That is, it's not enough to
 
@@ -63,7 +63,13 @@ That is, it's not enough to
    ops :initial-value exp))
 ```
 
-because that fails on inputs like `(-> foo #'bar (lambda (n) (baz n)))`. Macroexpanding it will show you why: `(LAMBDA (FUNCTION FOO BAR) (N) (BAZ N))`. Ew.
+because that fails on inputs like `(-> foo #'bar (lambda (n) (baz n)))`. Macroexpanding it will show you why:
+
+```
+(LAMBDA (FUNCTION FOO BAR) (N) (BAZ N))
+```
+
+Ew.
 
 You need to account for at least those two edge cases.
 
@@ -89,14 +95,60 @@ T
 CLJ>
 ```
 
-- TODO - show some tests to verify the above properties and go through some testing stuff
+Testing these by example is probably a thing we want. The particular two arrows we have above have some common ground:
 
-Realistically, I should just use and re-export symbols from `arrow-macros` and make sure they test out under the same properties, but it's still a good idea to think about what must be underneath the immediate interface we see.
+```
+(subtest "Common threads"
+  (is-expand (-> a foo) (foo a)
+	     "Thread applies a function to an argument")
+  (is-expand (-> a foo bar) (bar (foo a))
+	     "Thread can compose multiple functions")
+  (is-expand (->> a foo) (foo a)
+	     "Rthread applies a function to an argument")
+  (is-expand (->> a foo bar) (bar (foo a))
+	     "Rthread can compose multiple functions"))
+```
+
+Function application and trivial composition ends up coming out the same way regardless of which you pick. That's where the similarities end though.
+
+```
+ (subtest "Thread"
+   (is-expand (-> a (foo 1)) (foo a 1)
+	      "If called with a partially applied multi-argument function, thread plants the target in the first slot")
+   (is-expand (-> a (foo 1) (foo 2)) (foo (foo a 1) 2)
+	      "Thread can nest multi-arity function calls")
+   (is-expand (-> a foo (bar 1) (bar 2)) (bar (bar (foo a) 1) 2)
+	      "Thread can nest single and multi-arity function calls")
+   (is-expand (-> a foo (bar 1) (bar 2) baz) (baz (bar (bar (foo a) 1) 2))
+	      "Thread can nest single and multi-arity function calls. Again.")
+   (is-expand (-> a #'foo (lambda (b) (bar b)) baz)
+	      (BAZ (FUNCALL (LAMBDA (B) (BAR B)) (FUNCALL #'FOO A)))
+	      "Thread handles #' terms and lambda forms properly"))
+```
+
+Using `->` stitches each sub-expression in as the first argument of the next, while using `->>` slots it into the _last_ argument.
+
+```
+(subtest "Rthread"
+   (is-expand (->> a (foo 1)) (foo 1 a)
+	      "If called with a partially applied multi-argument function, rthread plants the target in the last slot")
+   (is-expand (->> a (foo 1) (foo 2)) (foo 2 (foo 1 a))
+	      "Rthread can nest multi-arity function calls")
+   (is-expand (->> a foo (bar 1) (bar 2)) (bar 2 (bar 1 (foo a)))
+	      "Rthread can nest single and multi-arity function calls")
+   (is-expand (->> a foo (bar 1) (bar 2) baz) (baz (bar 2 (bar 1 (foo a))))
+	      "Rthread can nest single and multi-arity function calls. Again.")
+   (is-expand (->> a #'foo (lambda (b) (bar b)) baz)
+	      (BAZ (FUNCALL (LAMBDA (B) (BAR B)) (FUNCALL #'FOO A)))
+	      "Rthread handles #' terms and lambda forms properly"))
+```
+
+Realistically, the only worthwhile code here is that test section. I should just use and re-export symbols from `arrow-macros` and make sure they check out. But it's still a good idea to think about what must be underneath the immediate interface we see, and why it might be there.
 
 ### Anaphoric lambda
 _Implementation Complexity: Tricky_
 
-Anaphoric `lambda`, as opposed to `if-let` and `when-let` takes some matching to get working properly. So, we need to pull in [`optima`](TODO) for this one. I _don't_ think some of the things that the Clojure dudes are up to in terms of argument lists are worth the complexity. In particular, the way they do optional arguments, while it does sound more flexible, doesn't seem especially useful given the complexity it introduces. I prefer the Common Lisp approach to `rest`/`body`/`keyword` args. Their `fn` has one trick up its' sleeve that I definitely want though, which is the ability to refer to itself.
+Anaphoric `lambda`, as opposed to `if-let` and `when-let` takes some matching to get working properly. So, we need to pull in [`optima`](https://github.com/m2ym/optima) for this one. I _don't_ think some of the things that the Clojure dudes are up to in terms of argument lists are worth the complexity. In particular, the way they do optional arguments, while it is slightly more flexible, doesn't end up being especially useful given the complexity it introduces. I prefer the Common Lisp approach to `rest`/`body`/`keyword` args. Their `fn` has one trick up its' sleeve that I definitely want though, which is the ability to refer to itself.
 
 ```clojure
 user=> (fn a [b c] (if (even? c) (+ b c) (a b (inc c))))
@@ -106,39 +158,84 @@ user=> ((fn a [b c] (if (even? c) (+ b c) (a b (inc c)))) 3 5)
 user=>
 ```
 
-It's not useful often, but is sometimes. And I friggin' want it. The unfortunate part of this one, is that, even _with_ `optima`, I can't figure out how to evaluate the function name only once.
+It's not useful often, but is sometimes. And I friggin' want it. The unfortunate part of this one, is that, even _with_ `optima`, I can't figure out how to evaluate the function name only once. Also, ironically, this is one of the maybe handful of situations where Clojure-style optional arguments would be useful.
 
 ```
 (defmacro fn (&rest args)
   (optima:match args
-    ((optima:guard
-      (cons name (cons params (cons docstring body)))
-      (and (symbolp name) (listp params) (stringp docstring)))
-     `(labels ((,name ,params ,docstring ,@body))
-	#',name))
     ((optima:guard
       (cons name (cons params body))
       (and (symbolp name) (listp params)))
      `(labels ((,name ,params ,@body))
 	#',name))
     ((optima:guard
-      (cons params (cons docstring body))
-      (and (listp params) (stringp docstring)))
-     `(lambda ,params ,docstring ,@body))
-    ((optima:guard
       (cons params body)
       (and (listp params)))
      `(lambda ,params ,@body))))
 ```
 
-The only comfort I have is that it's guaranteed to be a symbol, so I figure that's not the worst thing that could happen.
+The only comfort I have is that it's guaranteed to be a symbol if it's there, so I figure that's not the worst thing that could happen. The named lambda case is about the only place I can think of where it seems you literally can't get around the requirement to evaluate the argument twice.
+
+This is because
+
+1. The `body` needs to be able to refer to that `name`, which means it has to be present in the `labels` binding
+2. We want to return that function which means we need to `name` it in the return value.
+
+It looks like no amount of aliasing is going to get us out of this one, but feel free to correct me if I'm wrong.
 
 ### Hash and Set literals with functional underpinnings
 _Implementation Complexity: Difficult_
 
-The data structures on their own are already implemented in the form of [`cl-hamt`](TODO). We don't necessarily want to commit to it, but it's available and we can probably make the interface agnostic to some degree. The syntax stuff involves defining some simple reader macros. Ideally, they'd be namespace-bounded which means we're pulling out `named-readtables`.
+The data structures on their own are already implemented in the form of [`cl-hamt`](https://quickref.common-lisp.net/cl-hamt.html). We don't necessarily want to commit to it, but it's available and we can probably make the interface agnostic to some degree. The syntax stuff involves defining some simple reader macros. Ideally, they'd be namespace-bounded which means we're pulling out `named-readtables`.
 
-- Summarize `named-readtables` use, and how to go about writing simple readers using the built-in `read-delimited-list`. Show and explain the initial implementation.
+So, reader macros are things you can do in Lisp. You can read more about them [here](https://gist.github.com/chaitanyagupta/9324402). The short version is that in order to get _namespaced_ reader macros, which we want so that we don't have to stomp on everyone elses' tightly wound DSLs, we need to use [`named-readtables`](https://common-lisp.net/project/named-readtables/).
+
+In order to use it, you need to define some `macro-char`s and some parsing functions. Luckily for me, Common Lisp happens to already have [`read-delimited-list`](http://www.lispworks.com/documentation/HyperSpec/Body/f_rd_del.htm), which does exactly what I want when defining `map` and `set` literals.
+
+```
+(defun map-literal-reader (stream char)
+  (declare (ignore char))
+  (loop with dict = (cl-hamt:empty-dict)
+     for (k v) on (read-delimited-list #\} stream t) by #'cddr
+     do (setf dict (cl-hamt:dict-insert dict k v))
+     finally (return dict))
+```
+
+This is going to do exactly what you think it is. We `read-delimited-list` from the incoming stream, with `#\}` as the stop chararcter.
+
+```
+CLJ> (with-input-from-string (stream ":a 1 :b 2}") (read-delimited-list #\} stream nil))
+(:A 1 :B 2)
+CLJ>
+```
+
+The function definition has a `t` in place of that trailing `nil` parameter because we'll want to read recursively from `standard-output`, but can't from a `string-stream`.
+
+The trailing `t` of that call means we do this recursively if we have-sub-forms. Once we have the form `read`, we walk it pairwise, adding each pair of characters to a`cl-hamt:hash-dict`. Note to self; add some error handling here if we read an odd set of elements. The `set-literal-reader` is about the same thing but simpler because we don't need to worry about pairing elements off.
+
+```
+(defun list->set (lst)
+  (reduce
+   (lambda (set elem)
+     (cl-hamt:set-insert set elem))
+   lst :initial-value (cl-hamt:empty-set)))
+
+(defun set-literal-reader (stream sub-char numarg)
+  (declare (ignore sub-char numarg))
+  (list->set (read-delimited-list #\} stream t))))
+```
+
+Once that's all done, we need to define a local `read-table`
+
+```
+(named-readtables:defreadtable syntax
+  (:merge :standard)
+  (:macro-char #\{ #'map-literal-reader nil)
+  (:macro-char #\} (get-macro-character #\)) nil)
+  (:dispatch-macro-char #\# #\{ #'set-literal-reader))
+```
+
+This is such a table that uses the `:standard` Common Lisp readers, but adds support for forms beginning with  `{`/`#{` and ending with `}` to be handled as part of the read step. In some other file of the project, we need to add a call to `(named-readtables:in-readtable syntax)`. Externally, we can use `(named-readtables:in-readtable clj:syntax)` to get access to these reader macros.
 
 ### Readable datastructure representations
 _Implementation Complexity: Tricky_
@@ -148,6 +245,7 @@ This one's really only difficult because of the testing involved. One thing Cloj
 To get this for our representations, we need to define `print-object` methods for them.
 
 - Show the methods, go over the tests
+- Show off how this works outside of the `clj` readtable
 
 ### Recursive dicts and sets
 _Implementation Complexity: Tricky_
