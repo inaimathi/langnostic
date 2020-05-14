@@ -274,3 +274,4 @@
 {"tags": ["common-lisp"], "posted": 1587869070, "id": 273, "file": "places-peeps-and-plagues", "title": "Places, Peeps And Plagues"}
 {"tags": ["data-structures", "common-lisp", "clojure"], "posted": 1588963792, "id": 274, "file": "zippers-and-clj", "title": "Zippers And Clj"}
 {"tags": ["emacs", "elisp", "programming-environment"], "posted": 1589164749, "id": 275, "file": "emacs-and-virtualenv", "title": "Emacs And Virtualenv"}
+{"tags": ["common-lisp", "clojure", "lisp", "idea-peeling", "almost-literate-programming"], "posted": 1589419416, "id": 276, "file": "more-on-clj", "title": "More On clj"}
