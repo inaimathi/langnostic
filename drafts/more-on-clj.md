@@ -408,8 +408,6 @@ Backtrace:
   8: (READ #<SB-IMPL::STRING-INPUT-STREAM {100247DD93}> NIL #<SB-IMPL::STRING-INPUT-STREAM {100247DD93}> NIL)
  --more--
 ```
-- Show the methods, go over the tests
-- Show off how this works outside of the `clj` readtable
 
 ### Recursive dicts and sets
 _Implementation Complexity: Tricky_
@@ -498,7 +496,6 @@ And, once we wire up our literal definition to account for it,
 
 (defun map-literal-reader (stream char)
   (declare (ignore char))
-  ;; TODO - check for an even number of elements here and throw an error if there isn't
   (loop with dict = (cl-hamt:empty-dict :test #'==)
      for (k v) on (read-delimited-list #\} stream t) by #'cddr
      do (setf dict (cl-hamt:dict-insert dict k v))
@@ -534,6 +531,6 @@ I _think_ the best way to do this is to introduce type hints. Something like
 (:: (map keyword integer) {:a 1 :b 2})
 ```
 
-which would put together a map that assumes keyword keys and integer values. I'm going to do some testing, research and/or profiling before embarking on this journey. To be fair, [Clojure equality performance](https://clojureverse.org/t/is-fast-in-clojure/2182/2) is also kind of up in the air, so this might not be the biggest deal. I'd still like to give it some serious thought?
+which would put together a map that assumes keyword keys and integer values. I'm going to do some testing, research and/or profiling before embarking on this journey. To be fair, [Clojure equality performance](https://clojureverse.org/t/is-fast-in-clojure/2182/2) is also kind of up in the air, so this might not be the biggest deal. I'd still like to give it some serious thought.
 
 That's all I've got the energy for in one go. I'll keep you up to date on further developments.
