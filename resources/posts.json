@@ -119,8 +119,8 @@
 {"id":118,"title":"Autopair, Paredit and Bitching","file":"autopair-paredit-burnout","posted":1357448400,"tags":["emacs","elisp","bitching"]}
 {"id":119,"title":"Wai Without Yesod - Simple Example of Haskell Web Development","file":"wai-without-yesod","posted":1360472400,"tags":["haskell","almost-literate-programming"]}
 {"id":120,"title":"Wai Without Yesod - The Front End","file":"wai-without-yesod--the-front-end","posted":1360990800,"tags":["jquery","javascript","html","angularjs"]}
-{"id":121,"title":"Haskell Profiling Redux. Also, briefly Ponies.","file":"haskell-profiling-redux","posted":1361077200,"tags":["haskell"]}
-{"id":122,"title":"Haskell Profiling: Third Impact, or, AcidState vs. The World","file":"haskell-benchmarking","posted":1362891600,"tags":["haskell","databases"]}
+{"id":121,"title":"Haskell Profiling Redux. Also, briefly Ponies.","file":"haskell-profiling-redux","posted":1361077200,"tags":["haskell", "profiling"]}
+{"id":122,"title":"Haskell Profiling: Third Impact, or, AcidState vs. The World","file":"haskell-benchmarking","posted":1362891600,"tags":["haskell","databases", "profiling"]}
 {"id":123,"title":"What Programming Language Should I Learn?","file":"what-language-should-i-learn","posted":1363233600,"tags":["idea-peeling","general-programming-thoughts"]}
 {"id":124,"title":"Actors","file":"actors","posted":1363924800,"tags":["idea-peeling","common-lisp"]}
 {"id":125,"title":"Actors Again","file":"actors-again","posted":1364529600,"tags":["idea-peeling","common-lisp"]}
@@ -243,7 +243,7 @@
 {"tags": ["bitching", "hardware"], "posted": 1481432824, "id": 242, "file": "minor-bitching", "title": "Minor Bitching"}
 {"tags": ["lisp", "common-lisp", "almost-literate-programming"], "posted": 1481432651, "id": 243, "file": "house-keeping", "title": "House Keeping"}
 {"tags": ["common-lisp", "lisp", "idea-peeling"], "posted": 1481644801, "id": 244, "file": "house-types", "title": "House Types"}
-{"tags": ["lisp", "common-lisp", "performance", "almost-literate-programming"], "posted": 1482791243, "id": 245, "file": "house-performance", "title": "House Performance"}
+{"tags": ["lisp", "common-lisp", "performance", "almost-literate-programming", "profiling"], "posted": 1482791243, "id": 245, "file": "house-performance", "title": "House Performance"}
 {"tags": ["journal", "idea-peeling"], "posted": 1484565395, "id": 246, "file": "ansible-and-house", "title": "Ansible And House"}
 {"tags": ["zouk", "dance", "idea-peeling"], "posted": 1488996094, "id": 247, "file": "zouk-and-graph-theory", "title": "Zouk And Graph Theory"}
 {"tags": ["journal", "languages", "reading-group"], "posted": 1490708667, "id": 248, "file": "pfpl-in-memoriam", "title": "PFPL In Memoriam"}
@@ -275,3 +275,4 @@
 {"tags": ["data-structures", "common-lisp", "clojure"], "posted": 1588963792, "id": 274, "file": "zippers-and-clj", "title": "Zippers And Clj"}
 {"tags": ["emacs", "elisp", "programming-environment"], "posted": 1589164749, "id": 275, "file": "emacs-and-virtualenv", "title": "Emacs And Virtualenv"}
 {"tags": ["common-lisp", "clojure", "lisp", "idea-peeling", "almost-literate-programming"], "posted": 1589419416, "id": 276, "file": "more-on-clj", "title": "More On clj"}
+{"tags": ["common-lisp", "lisp", "clj", "almost-literate-programming", "profiling", "performance"], "posted": 1589935909, "id": 277, "file": "profiling-polymorphic-options", "title": "Profiling Polymorphic Options"}
