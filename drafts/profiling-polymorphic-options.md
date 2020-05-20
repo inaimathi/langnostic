@@ -1,10 +1,10 @@
-I mentioned at the [tail end of last piece](http://inaimathi.ca/posts/more-on-clj#polymorphic-operators) that a set of polymorphic data operators is what we want in the correctness sense, but is pretty poor from the performance standpoint. It turns out that there's a bunch of options aimed at improving the performance of generic functions. There's [`static-dispatch`](https://github.com/alex-gutev/static-dispatch), [`fast-generic-functions`](https://github.com/marcoheisig/fast-generic-functions), and the archived but still available [`inlined-generic-function`](https://github.com/guicho271828/inlined-generic-function). I'll also be testing one of my own approaches for improving the performance of some of these calls.
+I mentioned at the [tail end of last piece](/posts/more-on-clj#polymorphic-operators) that a set of polymorphic data operators is what we want in the correctness sense, but is pretty poor from the performance standpoint. It turns out that there's a bunch of options aimed at improving the performance of generic functions. There's [`static-dispatch`](https://github.com/alex-gutev/static-dispatch), [`fast-generic-functions`](https://github.com/marcoheisig/fast-generic-functions), and the archived but still available [`inlined-generic-function`](https://github.com/guicho271828/inlined-generic-function).
 
 ### The operators
 
 So, we want `==`, that's obvious. But the end usability goal also _probably_ demands `lookup`, `insert` and `len`. I'm leaving out some things we'll realistically _want_ but that would be more complicated to implement[^for-instance-things-like]. I want a minimal, benchmarkeabla set for my current purposes.
 
-[^for-instance-things-like]: Things like polymorphic `map`, `reduce`, `mapcat`, `concat`, possibly `->list`. First, these might be more complicated to implement, but second, I'm not entirely sure I want to or how specifically to do so. Most of the functions I list in this footnote could be implemented using an underlying `next`. Part of the thought for these systems is putting them together in a way that lets the end users define as little as they can to get the full benefit.
+[^for-instance-things-like]: Things like polymorphic `map`, `reduce`, `mapcat`, `concat`, possibly `->list` and `conj`. First, these might be more complicated to implement, but second, I'm not entirely sure I want to or how specifically to do so. Most of the functions I list in this footnote could be implemented using an underlying `next`. Part of the thought for these systems is putting them together in a way that lets the end users define as little as they can to get the full benefit.
 
 The naive implementations of these look like
 
@@ -233,7 +233,13 @@ Now that we've got our operators, we need to test between four and six approache
 		  (funcall len inserted))))))
 ```
 
-You'll notice that the chunkier of these benchmarks makes use of `generator`s exposed through `test-utils`. If you don't want to set this up yourself, check out the [`benchmark.lisp` file in the main `clj` repo](https://github.com/inaimathi/clj/blob/master/src/benchmark.lisp). You should be able to just
+Let me highlight a few things, just to make them explicit.
+
+First, the `equality-benchmark` only compares numbers. I wanted a single type so that we could have a general comparison benchmark that includes `fgf-==`. I had to play some tricks to achieve this; in particular, I had to comment out the `fgf-== (a b)` method, because generalizing a method like this makes it unsealable.
+
+Second, the latter benchmark does not run against a sealed `fgf-==` method. Because there can't be a default fall-through case, I can't use a sealed `fgf-==` to compare keys on a polymorphic `cl-hamt:hash-dict`; it would throw errors.
+
+Third, that second benchmark makes use of `generator`s exposed through `test-utils`. If you don't want to set this up yourself, check out the [`benchmark.lisp` file in the main `clj` repo](https://github.com/inaimathi/clj/blob/master/src/benchmark.lisp). You should be able to just
 
 ```
 CL-USER> (ql:quickload :clj) (in-package :clj) (load "benchmark.lisp")
@@ -309,9 +315,9 @@ overhead estimation parameters:
 CLJ>
 ```
 
-Not... that big a difference, it looks like. To a first approximation, in this specific case, `fast-generic-function` is much worse than the alternatives, taking more than double the time and more than 1000x the space of the next most performant option.
+Not... that big a difference, it looks like. To a first approximation, in this specific case, `fast-generic-function` is much worse than the alternatives, taking more than double the time and more than 1000x the space of the next most performant option. This is pretty damning, given that the test was pared down specifically to conform to the limitations of `seal-domain` here.
 
-Maybe it makes up for it in the deeper tests?
+Moving on.
 
 ```
 CLJ> (lookup/insert/len-benchmark #'static-dispatch-== #'static-dispatch-insert #'static-dispatch-lookup #'static-dispatch-len :times 10000)
@@ -345,11 +351,15 @@ overhead estimation parameters:
   6.0e-9s/call, 1.4459999e-6s total profiling, 6.9e-7s internal profiling
 ```
 
-So, weirdly, for our specific use-case, it looks like the `fast-generic-function` versions of these are slightly _worse_ than just built-in generic functions, while the `static-dispatch` implementations are slightly faster. I do emphasize _slightly_ in both of these situations. To the point that I'm seriously wondering whether the performance improvement made available by [`static-dispatch`](https://github.com/alex-gutev/static-dispatch) is actually workth [giving up `before`/`after`/`around` methods the way their documentation implies](https://github.com/alex-gutev/static-dispatch#usage).
+So, weirdly, for our specific use-case, it looks like the `fast-generic-function` versions of these are slightly _worse_ than just built-in generic functions, while the `static-dispatch` implementations are slightly faster. I do emphasize _slightly_ in both of these situations. To the point that I'm seriously wondering whether the performance improvement made available by [`static-dispatch`](https://github.com/alex-gutev/static-dispatch) is actually worth [giving up `before`/`after`/`around` methods the way their documentation implies](https://github.com/alex-gutev/static-dispatch#usage). I don't specifically want any of those for `clj` internals, but `clj` _would_ have to expose `static-dispatch:defmethod` in order to avoid some weird interface incompatibility edge cases.
+
+To be sure, there's a pretty serious improvement to `static-dispatch:insert` when compared to `insert` or `fgf-insert`, but the picture for `len`, `lookup` and `==` is less rosy. The naive `cl:defmethod` implementation beats both the others solidly for `len` and puts in a strong showing for both `==` and `lookup`. It's sort of hard for me to argue that `insert` is a more important operation than `lookup` or `==`. It probably depends on your use case, but this is not really a ringing endorsement either way.
 
 
 ### Conclusions
 
-The tentative conclusion is that all this performance grubbing is a boondoggle. So it goes sometimes.
+The tentative conclusion is that all this performance grubbing is a relative boondoggle. For the moment, given a bout this undecisive, I have to give victory to the incumbent.
+
+So it goes sometimes.
 
 I'll keep the `benchmark` file around for fun and possibly future profiling purposes. I was going to talk a bit about the approaches I'm thinking about to save cycles at low-effort where it matters, but I think this piece is already long and dense enough. If you want a sneak peek, check out [`types.lisp` in the main repo](https://github.com/inaimathi/clj/blob/master/src/types.lisp), but I'm not going to talk about it quite yet.
