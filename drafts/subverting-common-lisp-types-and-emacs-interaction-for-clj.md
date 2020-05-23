@@ -20,6 +20,22 @@ Here's how I have to define type `dict`.
 
 Hopefully, you recognize how batshit insane that is. In order to properly define a polymorphic key/value type, I have to _manually intern predicates that deal with the specific types in question at declaration time_. Holy fucking hell, what am I writing here, C++? I mean, I can do it, but it's nausiating to have to.
 
+The problem is that `satisfies` specifically only accepts a `symbol` that evaluates to a `function` of one argument that's meant to return a `boolean`. If it could take `lambda` terms, I could do something like
+
+```
+(defun kv-type (k-type v-type)
+  (lambda (thing)
+    (and (map? thing)
+	 (every (lambda (pair)
+		  (and (typep (car pair) k-type)
+		       (typep (cdr pair) v-type)))
+		(values thing)))))
+...
+(satisfies (kv-type 'keyword 'integer))
+```
+
+but no dice. So I'm stuck interning fresh, special purpose predicates like a chump.
+
 Once I've got that, I can declare things.
 
 ### Checking for equalities
