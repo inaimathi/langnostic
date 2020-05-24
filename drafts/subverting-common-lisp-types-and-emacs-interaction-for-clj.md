@@ -186,7 +186,7 @@ The next step is, we want to use this equality selection procedure to make our `
      lst :initial-value (cl-hamt:empty-set :test equality))))
 ```
 
-So, we've got a `*type*` [special var](TODO) that we can use to declare the type of the `map`/`set` we're defining, and if it's set, we use it to pick an appropriate equality. Otherwise, we just go with `#'==`, because that's as general as it gets.
+So, we've got a `*type*` [special var](http://clhs.lisp.se/Body/d_specia.htm) that we can use to declare the type of the `map`/`set` we're defining, and if it's set, we use it to pick an appropriate equality. Otherwise, we just go with `#'==`, because that's as general as it gets.
 
 ```
 CLJ> (list->set (list 1 2 3 4))
@@ -240,7 +240,7 @@ The naive solution here is
 
 ```
 
-I don't really want to define this as using `::` because of the implications of doing `(make-dispatch-macro-character #\:)`. I would if it wasn't such a headache, but I'm trying to avoid those for the moment. Same story with `#:`, because [uninterned symbols](TODO) are common and I don't want to stomp them here. So, I have to pick something else, and randomly accepted `##`.
+I don't really want to define this as using `::` because of the implications of doing `(make-dispatch-macro-character #\:)`. I would if it wasn't such a headache, but I'm trying to avoid those for the moment. Same story with `#:`, because [uninterned symbols](https://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node110.html) are common and I don't want to stomp them here. So, I have to pick something else, and randomly accepted `##`, even though `#t` or `#T` would have been equally reasonable choices.
 
 This technically works.
 
@@ -254,11 +254,38 @@ CLJ> (cl-hamt::hamt-test ## (map keyword t) {:a 1 :b 2 :c 3})
 CLJ>
 ```
 
-But I kind of want to avoid calling `eval` as part of it.
+But I want to avoid calling `eval` as part of it. The more macro-like version would look something more like
 
-TODO - Try a non-`eval`-calling version
+```
+(defun type-literal-reader (stream sub-char numarg)
+  (declare (ignore sub-char numarg))
+  (let* ((*type* (read stream))
+	 (form (read stream))
+	 (res (gensym)))
+    (if *type*
+	`(let ((,res ,form))
+	   (check-type ,res ,*type*)
+	   ,res)
+	res)))
+```
 
-Fucking woo! Note to self, maybe have the reader infer the correct type based on the keys provided? It's a bit dangerous, because the user might `insert` more general keys later, but it could save some cycles.
+It still works...
+
+```
+CLJ> ## (map keyword t) {:a 1 :b 2}
+{:A 1 :B 2}
+CLJ> (cl-hamt::hamt-test ## (map keyword t) {:a 1 :b 2})
+#<FUNCTION EQ>
+CLJ>
+```
+
+... but has the added bonuses of not calling `eval` and also making use of `check-type`, which we couldn't do if we wanted to do that check inline at read time.
+
+I don't really like the syntax[^ideal-type-annotation-syntax], but that's good enough for now[^future-improvements-include].
+
+[^ideal-type-annotation-syntax]: Ideally, the type annotation would be declared like `(:: type form)`, `:: type form`, or possibly `type :: form`. However, infix operators are more complicated to deal with, and `:` already has various meanings in Common Lisp that would make using it as a `read-macro-char` more complicated than I'd like.
+
+[^future-improvements-include]: Possible future improvements include inferring the type of a `map` literal based on its initial values, and storing the type annotation somehow so that it can be checked against by `insert` later. I'm not sure any of this is worth the time, and once we pick an appropriate interface, it'll be easy to change internals later.
 
 ### Performance implications
 
@@ -280,7 +307,7 @@ Fucking woo! Note to self, maybe have the reader infer the correct type based on
 		(len inserted)))))
 ```
 
-With the above defined in [`benchmark.lisp`](TODO), running the benchmarks and reporting them with `M-x slime-profile-report slime-profile-reset` gives us...
+With the above defined in [`benchmark.lisp`](https://github.com/inaimathi/clj/blob/master/src/benchmark.lisp), running the benchmarks and reporting them with `M-x slime-profile-report slime-profile-reset` gives us...
 
 ```
 CLJ> (untyped-benchmark :times 1000000)
@@ -344,7 +371,7 @@ So, the sad thing about all of this is that I've been lying to you. Whenever I s
 
 to a mode-map somewhere, because that _does_ pair them, but _doesn't_ help with navigation.
 
-After messing around with modifying existing `syntax-table`s, redefining `matching-paren`, and poking around in [`paredit`](TODO) internals, the solution I settled on was just adding a `mode-hook` to a bunch of `lisp` modes and `slime-repl` modes that activates the `clojure-mode-syntax-table`.
+After messing around with modifying existing `syntax-table`s, redefining `matching-paren`, and poking around in [`paredit`](https://www.emacswiki.org/emacs/ParEdit) internals, the solution I settled on was just adding a `mode-hook` to a bunch of `lisp` modes and `slime-repl` modes that activates the `clojure-mode-syntax-table`.
 
 You can do this in _your_ `.emacs` file by doing something like
 
@@ -366,6 +393,6 @@ I added it to _my_ .emacs by doing
        (lambda () (set-syntax-table (set-syntax-table clojure-mode-syntax-table))))
 ```
 
-Which is both more thorough and more extensive, but requires me to define [some conveniences](TODO) first.
+Which is both more thorough and more extensive, but requires me to define [some conveniences](https://github.com/inaimathi/machine-setup/blob/master/convenience.el#L61-L81) first.
 
 The next time I write about `CLJ`, the SLIME `repl` snippets will _not_ be a lie.
