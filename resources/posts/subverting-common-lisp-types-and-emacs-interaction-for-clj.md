@@ -283,7 +283,7 @@ CLJ>
 
 I don't really like the syntax[^ideal-type-annotation-syntax], but that's good enough for now[^future-improvements-include].
 
-[^ideal-type-annotation-syntax]: Ideally, the type annotation would be declared like `(:: type form)`, `:: type form`, or possibly `type :: form`. However, infix operators are more complicated to deal with, and `:` already has various meanings in Common Lisp that would make using it as a `read-macro-char` more complicated than I'd like.
+[^ideal-type-annotation-syntax]: Ideally, the type annotation would be declared like `(:: type form)`, `:: type form`, or possibly `type :: form`. However, infix operators are more complicated to deal with, and `:` already has various meanings in Common Lisp that would make using it as a `read-macro-char` more complicated than I'd like. Specifically, as hinted at above, doing `(make-dispatch-macro-character #\:)` instantly complicates the parsing of `keyword`s, `uninterned-symbol`s and any qualified name you end up typing. I'll read up on it a bit and see if there's a way to fall through to the default behavior somehow, but in the absence of that option, this is absolutely more hassle than it's worth.
 
 [^future-improvements-include]: Possible future improvements include inferring the type of a `map` literal based on its initial values, and storing the type annotation somehow so that it can be checked against by `insert` later. I'm not sure any of this is worth the time, and once we pick an appropriate interface, it'll be easy to change internals later.
 
