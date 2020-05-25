@@ -219,7 +219,7 @@ CLJ> (let ((*type* '(map keyword t))) (cl-hamt::hamt-test {:a 1 :b 2 :c 3}))
 CLJ>
 ```
 
-THe problem is that, because we have reader syntax for our `map`s and `set`s, this decision kicks in too late to deal with them. We unfortunately also need a reader macro to handle type declarations.
+The problem is that, because we have reader syntax for our `map`s and `set`s, this decision kicks in too late to deal with them. We unfortunately also need a reader macro to handle type declarations.
 
 ### Reader Macro for Type Declaration
 
@@ -240,7 +240,7 @@ The naive solution here is
 
 ```
 
-I don't really want to define this as using `::` because of the implications of doing `(make-dispatch-macro-character #\:)`. I would if it wasn't such a headache, but I'm trying to avoid those for the moment. Same story with `#:`, because [uninterned symbols](https://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node110.html) are common and I don't want to stomp them here. So, I have to pick something else, and randomly accepted `##`, even though `#t` or `#T` would have been equally reasonable choices.
+I don't really want to define this as using `::` because of the headache-inducing implications of doing `(make-dispatch-macro-character #\:)`. I'm trying to avoid those for the moment. Same story with `#:`, because [uninterned symbols](https://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node110.html) are common and I don't want to stomp them here. So, I had to pick something else, and arbitrarily accepted `##` even though `#t` or `#T` would have been equally reasonable choices.
 
 This technically works.
 
@@ -373,7 +373,7 @@ to a mode-map somewhere, because that _does_ pair them, but _doesn't_ help with 
 
 After messing around with modifying existing `syntax-table`s, redefining `matching-paren`, and poking around in [`paredit`](https://www.emacswiki.org/emacs/ParEdit) internals, the solution I settled on was just adding a `mode-hook` to a bunch of `lisp` modes and `slime-repl` modes that activates the `clojure-mode-syntax-table`.
 
-You can do this in _your_ `.emacs` file by doing something like
+_You_ can do this in _your_ `.emacs` file by doing something like
 
 ```
 (defun use-clojure-syntax-table () (set-syntax-table (set-syntax-table clojure-mode-syntax-table)))
@@ -382,7 +382,7 @@ You can do this in _your_ `.emacs` file by doing something like
 (add-hook 'slime-repl-mode-hook 'use-clojure-syntax-table)
 ```
 
-I added it to _my_ .emacs by doing
+_I_ added it to _my_ `.emacs` by doing
 
 ```
 (hooks (common-lisp lisp emacs-lisp scheme lisp-interaction slime clojure slime-repl)

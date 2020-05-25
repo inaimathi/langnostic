@@ -276,3 +276,4 @@
 {"tags": ["emacs", "elisp", "programming-environment"], "posted": 1589164749, "id": 275, "file": "emacs-and-virtualenv", "title": "Emacs And Virtualenv"}
 {"tags": ["common-lisp", "clojure", "lisp", "idea-peeling", "almost-literate-programming"], "posted": 1589419416, "id": 276, "file": "more-on-clj", "title": "More On clj"}
 {"tags": ["common-lisp", "lisp", "clj", "almost-literate-programming", "profiling", "performance"], "posted": 1589935909, "id": 277, "file": "profiling-polymorphic-options", "title": "Profiling Polymorphic Options"}
+{"tags": ["common-lisp", "almost-literate-programming", "clj", "elisp", "emacs"], "posted": 1590330064, "id": 278, "file": "subverting-common-lisp-types-and-emacs-interaction-for-clj", "title": "Subverting Common Lisp Types And Emacs Interaction For Clj"}
