@@ -12,12 +12,12 @@ at the top of every file where I want to use my cool new [`map`/`set` literal sy
 
 The project I put some work into is an old piece of arcana from the earlier days of the [Toronto CS Cabal](http://cscabal.com). A [simple voting system](https://github.com/inaimathi/cl-vote) to help us decide what we're reading in a given week. The next step I'm going to take is implementing the actual voting. Step one was just the authentication system.
 
-So here's the deal. Passwords suck, public keys aren't really being used widely, and that doesn't seem to be something I can easily change. [Authenticator apps](https://freeotp.github.io/) and 2FA are propagating though. For low-security-requirement situtations, one plausible alternative to passwords is just using that authenticator. So, like, 1FA. The current state of [`cl-vote`](https://github.com/inaimathi/cl-vote) is an implementation of such a system in Common Lisp.
+So here's the deal. Passwords suck, public keys aren't really being used widely for website/app authentication, and that doesn't seem to be something I can easily change. [Authenticator apps](https://freeotp.github.io/) and 2FA are propagating though. For low-security-requirement situtations, one plausible alternative to passwords is just using that authenticator. So, like, 1FA. The current state of [`cl-vote`](https://github.com/inaimathi/cl-vote) is an implementation of such a system in Common Lisp.
 
 The workflow looks like this:
 
 1. You register by picking a user name that hasn't already been picked.
-2. The system instantly sends you to a screen that displays a QR code compatible with [FreeOTP](https://freeotp.github.io/) or [Authy](https://authy.com/)
+2. The system instantly sends you to a screen that displays a QR code compatible with [FreeOTP](https://freeotp.github.io/) or [Authy](https://authy.com/) or whatever
 3. When you want to log in later, enter your username and your authentication code
 
 That's fairly simple. There's no need to remember passwords, though you do now need your phone or authenticator app/browser plugin/what-have-you.
@@ -34,7 +34,9 @@ A user name solves enough problems that I'm content burdening users with the tas
 
 ## Considering Further Security
 
-Once I combine it with some form of hammering protection, this system is resistant to the sorts of guessing attacks that plague password systems. It's still not resistant against server database breaches. Granted, this _particular_ one is tricky to crack in that way because it's immune to injection attacks as a result of its' [data storage](https://github.com/inaimathi/fact-base) model (and also the "Who would actually try to hack a Common Lisp app" thing), but that's cold comfort. If you did manage to expropriate a user record, you'd gain access to that users' shared secret and could thereafter generate correct solutions for their account at will.
+Once I combine it with some form of hammering protection, this system is resistant to the sorts of guessing attacks that plague password systems. It's still not resistant against server database breaches. Granted, this _particular_ one is tricky to crack in that way because it's immune to injection attacks as a result of its' [data storage](https://github.com/inaimathi/fact-base) model [^and-also-the-who-would], but that's cold comfort. If you did manage to expropriate a user record, you'd gain access to that users' shared secret and could thereafter generate correct solutions for their account at will.
+
+[^and-also-the-who-would]: And also the "Who would actually try to hack a Common Lisp app" thing. There are definitely lower hanging positions that bear more fruit.
 
 That's sort of the point.
 
