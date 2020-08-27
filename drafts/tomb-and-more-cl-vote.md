@@ -1,4 +1,4 @@
-So apparently, there's no `bcrypt` implementation for Common Lisp. Which is mildly annoying, because as mentioned [last time](TODO), I need to store tokens basically the same way I would store passwords. There doesn't seem to be anything similar at a cursory glance, although it's always possible I missed something.
+So apparently, there's no `bcrypt` implementation for Common Lisp. Which is mildly annoying, because as mentioned [last time](/posts/authentication-part-4.875), I need to store tokens basically the same way I would store passwords. There doesn't seem to be anything similar at a cursory glance, although it's always possible I missed something.
 
 Oh well.
 
@@ -140,6 +140,6 @@ Once we've done this, we stitch everything together into a string that contains 
 
 ## Next Step
 
-This library is now [on `github`](TODO) in case you are like me, and want to experiment with low-security-but-principled systems. For my part, I'll probably add it to `quicklisp`, and definitely as a requirement to `cl-vote` so that I can put together a good recovery token system.
+This library is now [on `github`](https://github.com/inaimathi/tomb) in case you are like me, and want to experiment with low-security-but-principled systems. For my part, I'll probably add it to `quicklisp`, and definitely as a requirement to `cl-vote` so that I can put together a good recovery token system.
 
 It mildly amuses me to think that knowing that token in this case is technically a "known plaintext" attack.
