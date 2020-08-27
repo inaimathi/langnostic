@@ -16,7 +16,7 @@ So.
 
 I preface this by saying that I am not a crypto nerd. Probably don't use this in production anywhere, and definitely don't use it anywhere security is an actual concern. _I'm_ not aware of a way to back out the initial plaintext, but you should take [Schneier's advice](https://www.schneier.com/blog/archives/2011/04/schneiers_law.html) about what to think of that.
 
-That being said, I've got this toy project with a `bcrypt`-shaped hole in its `:depends-on` list, and may as well try something.
+That being said, I've got this toy project with a `bcrypt`-shaped hole in its `:depends-on` list, and I may as well try something.
 
 ```
 ;;;; src/tomb.lisp
@@ -103,7 +103,7 @@ The first thing we do is `concatenate` the `string` and `salt` values, convert t
 ...
 ```
 
-It looks like `sha256` is good enough for most of the `ECB` capable ciphers in `ironclad`, but `threefish512` and `threefish1024` need larger keys than it provides, so we use other approaches when using those ciphers.
+It looks like `sha256` is good enough for most of the `ECB` capable ciphers in `ironclad`, but `threefish512` and `threefish1024` need larger keys than it provides, so we use other approaches when using those ciphers. I don't want to make it too easy to use weaker ciphers, so I don't bother using hashes that result in keys smaller than `sha256`.
 
 ```
 ...
@@ -140,6 +140,6 @@ Once we've done this, we stitch everything together into a string that contains 
 
 ## Next Step
 
-This library is now [on `github`](https://github.com/inaimathi/tomb) in case you are like me, and want to experiment with low-security-but-principled systems. For my part, I'll probably add it to `quicklisp`, and definitely as a requirement to `cl-vote` so that I can put together a good recovery token system.
+This library is now [on `github`](https://github.com/inaimathi/tomb) in case you are like me, and want to experiment with low-security-but-principled systems. For my part, I'll probably add it to `quicklisp`, and definitely as a requirement to [`cl-vote`](https://github.com/inaimathi/cl-vote) so that I can put together a good recovery token system.
 
 It mildly amuses me to think that knowing that token in this case is technically a "known plaintext" attack.
