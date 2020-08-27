@@ -1,8 +1,8 @@
-So apparently, there's no `bcrypt` implementation for Common Lisp. Which is mildly annoying, because as mentioned [last time](/posts/authentication-part-4.875), I need to store tokens basically the same way I would store passwords. There doesn't seem to be anything similar at a cursory glance, although it's always possible I missed something.
+So apparently, there's no `bcrypt` implementation for Common Lisp. There's an [ffi wrapper](https://github.com/gigamonkey/monkeylib-bcrypt) which isn't in `quicklisp`, but that's all I could find. Which is mildly annoying, because as mentioned [last time](/posts/authentication-part-4.875), I need to store tokens basically the same way I would store passwords. There doesn't seem to be anything similar at a cursory glance, although it's always possible I missed something.
 
 Oh well.
 
-According to the [Wikipedia article pseudocode](https://en.wikipedia.org/wiki/Bcrypt#Algorithm), it looks like the essence of the algorithm is using the password we want to hash as
+According to the [Wikipedia article pseudocode](https://en.wikipedia.org/wiki/Bcrypt#Algorithm), it looks like the essence of the algorithm is
 
 - use the password as a key
 - to encrypt the plaintext "OrpheanBeholderScryDoubt" using `blowfish` in `ECB` mode
@@ -16,7 +16,7 @@ So.
 
 I preface this by saying that I am not a crypto nerd. Probably don't use this in production anywhere, and definitely don't use it anywhere security is an actual concern. _I'm_ not aware of a way to back out the initial plaintext, but you should take [Schneier's advice](https://www.schneier.com/blog/archives/2011/04/schneiers_law.html) about what to think of that.
 
-That being said, I've got this toy project, a `bcrypt`-shaped hole in my `:depends-on` list, and may as well try something.
+That being said, I've got this toy project with a `bcrypt`-shaped hole in its `:depends-on` list, and may as well try something.
 
 ```
 ;;;; src/tomb.lisp
