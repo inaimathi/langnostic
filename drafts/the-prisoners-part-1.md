@@ -11,7 +11,7 @@ But don't worry about that for the moment.
 (in-package #:the-prisoners)
 (named-readtables:in-readtable clj:syntax)
 ```
-I'm using [`clj`](TODO). You can find it on [my github](TODO), and it'll be included as part of the `asd` file.
+I'm using [`clj`](/posts/subverting-common-lisp-types-and-emacs-interaction-for-clj). You can find it on [my github](https://github.com/inaimathi/clj), and it'll be included as part of the `asd` file.
 
 Ahem.
 
@@ -81,7 +81,7 @@ We can now play. Would you like to play a game?
 
 ### The Simplest Game
 
-![](TODO - saw pic)
+![Wanna play a game?](/static/img/the-prisoners/would-you-like-to-play-a-game.jpg)
 
 ```
 THE-PRISONERS> (play! #'one-time (defector) (cooperator))
