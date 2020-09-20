@@ -325,6 +325,7 @@ An adventure of even 5 scenarios will end up being repetitive since we currently
 
 This gives me some ideas about how to go about generating scenarios a lot more programmatically, but I'll leave that for later, when I'm in the right frame of mind to do cosmetic improvements.
 
+![Wanna play a game?](/static/img/the-prisoners/wanna-play-a-game.jpg)
 
 ```
 THE-PRISONERS> (repl! (mk-adventure))
