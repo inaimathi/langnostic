@@ -81,7 +81,7 @@ We can now play. Would you like to play a game?
 
 ### The Simplest Game
 
-![Wanna play a game?](/static/img/the-prisoners/would-you-like-to-play-a-game.jpg)
+![Would you like to play a game?](/static/img/the-prisoners/would-you-like-to-play-a-game.jpg)
 
 ```
 THE-PRISONERS> (play! #'one-time (defector) (cooperator))

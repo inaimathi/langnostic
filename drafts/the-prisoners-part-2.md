@@ -2,7 +2,7 @@ Dawn of the second day.
 
 According to the internet, the thing I intend to build is [called a Roguelikelike](https://bp.io/howroguelike/), teetering on the very edge of being a Roguelike. So it goes; we'll see if I end up taking the title or not.
 
-Last time, we laid out the basics of prisoners, their interactions and their strategies. This time, lets get some different scenarios and some player interaction going.
+Last time, we laid out the basics of `prisoner`s, their interactions and their strategies. This time, lets get some different scenarios and some player interaction going.
 
 ## Scenarios
 
@@ -291,7 +291,7 @@ This isn't enough for the Roguelikelike title, and I don't think I'll get there 
     adventure))
 ```
 
-Of course, even 5 scenarios will end up being repetitive since we currently only have a grand total of two. But we can do something about that...
+An adventure of even 5 scenarios will end up being repetitive since we currently only have a grand total of two. But we can do something about that...
 
 ```
 (defun random-scenario ()
@@ -321,9 +321,10 @@ Of course, even 5 scenarios will end up being repetitive since we currently only
      "At the end of your travails with your co-conspirator, you get to the treasure first and can pocket some if you want."
      :cooperate "Take it" :defect "No, we split fairly"
      :prisoner (gambler :defect 5) :scenario dilemma})))
- ```
+```
 
 This gives me some ideas about how to go about generating scenarios a lot more programmatically, but I'll leave that for later, when I'm in the right frame of mind to do cosmetic improvements.
+
 
 ```
 THE-PRISONERS> (repl! (mk-adventure))
