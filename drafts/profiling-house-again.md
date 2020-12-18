@@ -76,8 +76,298 @@ The first point is a nit, but the second one is worth dealing with in the contex
 
 [^wait-why-methods]: Wait, why use methods then? They're good _specifically_ in the situation where
 
-- TODO - some code conversions
-- TODO - another benchmark round
+Some of these are trivial conversions
+
+```
+;;; house.lisp
+...
+-(defmethod start ((port integer) &optional (host usocket:*wildcard-host*))
++(defun start (port &optional (host usocket:*wildcard-host*))
++  (assert (integerp port))
+...
+-(defmethod process-ready ((ready stream-server-usocket) (conns hash-table))
+-  (setf (gethash (socket-accept ready :element-type 'octet) conns) nil))
+-
+-(defmethod process-ready ((ready stream-usocket) (conns hash-table))
++(defun process-ready (ready conns)
++  (assert (hash-table-p conn))
++  (etypecase ready
++    (stream-server-usocket (setf (gethash (socket-accept ready :element-type 'octet) conns) nil))
++    (stream-usocket
+...
+-(defmethod parse-cookies ((cookie string))
++(defun parse-cookies (cookie)
++  (assert (stringp cookie))
+...
+-(defmethod handle-request! ((sock usocket) (req request))
++(defun handle-request! (sock req)
+...
+-(defmethod error! ((err response) (sock usocket) &optional instance)
+-  (declare (ignorable instance))
++(defun error! (err sock)
+,,,
+```
+
+```
+;;; session.lisp
+...
+-(defmethod new-session-hook! ((callback function))
++(defun new-session-hook! (callback)
+...
+-(defmethod poke! ((sess session))
++(defun poke! (sess)
+...
+```
+
+```
+;;; util.lisp
+...
+-(defmethod path->uri ((path pathname) &key stem-from)
++(defun path->uri (path &key stem-from)
+...
+-(defmethod path->mimetype ((path pathname))
++(defun path->mimetype (path)
+...
+```
+
+Some are _slightly_ more complicated. In particular, `parse` looks like it would conflate two entirely separate functions, but on inspection, we know the type of its argument at every call site.
+
+```
+./house.lisp:46:		      (setf (parameters (request buf)) (nconc (parse buf) (parameters (request buf)))))
+./house.lisp:68:	   do (multiple-value-bind (parsed expecting) (parse buffer)
+./house.lisp:92:(defmethod parse ((str string))
+./house.lisp:110:(defmethod parse ((buf buffer))
+./house.lisp:116:	(parse str))))
+```
+
+So, we can convert `parse` to two separate, named functions. `write!` is basically the same situation.
+
+```
+;;; house.lisp
+...
+-(defmethod parse ((str string))
++(defun parse-request-string (str)
+...
+-(defmethod parse ((buf buffer))
++(defun parse-buffer (buf)
+...
+-(defmethod write! ((res response) (stream stream))
++(defun write-response! (res stream)
+...
+-(defmethod write! ((res sse) (stream stream))
++(defun write-sse! (res stream)
+...
+```
+
+Not pictured; changes at each call-site to call the correct one.
+
+The `parse-params` method is a bit harder to tease out. Because it looks like it genuinely is one polymorphic function. Again, though, on closer inspection of the _fully internal to `house`_ call-sites makes it clear that we almost always know what we're passing as arguments at compile-time.
+
+```
+./house.lisp:78:(defmethod parse-params (content-type (params null)) nil)
+./house.lisp:79:(defmethod parse-params (content-type (params string))
+./house.lisp:83:(defmethod parse-params ((content-type (eql :application/json)) (params string))
+./house.lisp:107:	(setf (parameters req) (parse-params nil parameters))
+./house.lisp:113:	(parse-params
+					 (->keyword (cdr (assoc :content-type (headers (request buf)))))
+					 str)
+```
+
+That always is going to be a slight pain though; we need to do a runtime dispatch inside of `parse-buffer` to figure out whether we're parsing JSON or a param string.
+
+```
+...
+-(defmethod parse-params (content-type (params null)) nil)
+-(defmethod parse-params (content-type (params string))
++(defun parse-param-string (params)
+   (loop for pair in (split "&" params)
+-     for (name val) = (split "=" pair)
+-     collect (cons (->keyword name) (or val ""))))
+-
+-(defmethod parse-params ((content-type (eql :application/json)) (params string))
+-  (cl-json:decode-json-from-string params))
++	for (name val) = (split "=" pair)
++	collect (cons (->keyword name) (or val ""))))
+...
+-	(parse-params
+-	 (->keyword (cdr (assoc :content-type (headers (request buf)))))
+-	 str)
+-	(parse str))))
++	(if (eq :application/json (->keyword (cdr (assoc :content-type (headers (request buf))))))
++	    (cl-json:decode-json-from-string str)
++	    (parse-param-string str))
++	(parse-request-string str))))
+...
+```
+
+The _last_ one is going to be a headache. The `lookup` method is meant to be a general accessor, _and_ has a `setf` method defined. I'm not going that way right now; lets see if we gained anything with our current efforts.
+
+Second verse same as the first.
+
+```
+; SLIME 2.26
+CL-USER> (ql:quickload :house)
+To load "house":
+  Load 1 ASDF system:
+    house
+; Loading "house"
+.....
+(:HOUSE)
+CL-USER> (in-package :house)
+#<PACKAGE "HOUSE">
+HOUSE> (define-handler (root) () "Hello world!")
+#<HANDLER-TABLE {1004593CF3}>
+HOUSE> (house:start 5000)
+```
+
+```
+inaimathi@this:~/quicklisp/local-projects/house$ wrk -c 10 -t 4 -d 10 http://127.0.0.1:5000
+Running 10s test @ http://127.0.0.1:5000
+  4 threads and 10 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     0.96ms    4.02ms  76.87ms   98.43%
+    Req/Sec     2.70k     0.98k    7.57k    73.83%
+  103951 requests in 10.10s, 30.34MB read
+  Socket errors: connect 0, read 103947, write 0, timeout 0
+Requests/sec:  10292.48
+Transfer/sec:      3.00MB
+inaimathi@this:~/quicklisp/local-projects/house$ wrk -c 10 -t 4 -d 10 http://127.0.0.1:5000
+Running 10s test @ http://127.0.0.1:5000
+  4 threads and 10 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   846.32us    2.63ms  58.29ms   98.26%
+    Req/Sec     2.64k     0.94k   11.13k    72.89%
+  102661 requests in 10.10s, 29.96MB read
+  Socket errors: connect 0, read 102658, write 0, timeout 0
+Requests/sec:  10165.46
+Transfer/sec:      2.97MB
+inaimathi@this:~/quicklisp/local-projects/house$ wrk -c 100 -t 4 -d 10 http://127.0.0.1:5000
+Running 10s test @ http://127.0.0.1:5000
+  4 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     8.57ms   90.07ms   1.66s    98.96%
+    Req/Sec     3.71k     2.87k   11.73k    74.30%
+  105162 requests in 10.10s, 30.69MB read
+  Socket errors: connect 0, read 105159, write 0, timeout 2
+Requests/sec:  10412.91
+Transfer/sec:      3.04MB
+inaimathi@this:~/quicklisp/local-projects/house$ wrk -c 100 -t 4 -d 10 http://127.0.0.1:5000
+Running 10s test @ http://127.0.0.1:5000
+  4 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     5.69ms   70.32ms   1.66s    99.25%
+    Req/Sec     3.06k     1.82k    9.46k    74.40%
+  101302 requests in 10.10s, 29.56MB read
+  Socket errors: connect 0, read 101299, write 0, timeout 3
+Requests/sec:  10030.14
+Transfer/sec:      2.93MB
+inaimathi@this:~/quicklisp/local-projects/house$
+```
+
+Aaand it looks like the effect was neglegible. Oh well. I honestly think that the untangling we've done so far makes the parts of the codebase that its' touched _more_ readable, so I'm keeping them, but there's no great improvement yet. Perhaps if we inline some things?
+
+```
+;;; package.lisp
+-(declaim (inline crlf write-ln idling? flex-stream))
++(declaim (inline crlf write-ln idling? flex-stream write-response! write-sse! process-ready parse-param-string parse-request-string))
+```
+
+```inaimathi@this:~/quicklisp/local-projects/house$ wrk -c 10 -t 4 -d 10 http://127.0.0.1:5000
+Running 10s test @ http://127.0.0.1:5000
+  4 threads and 10 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     1.71ms   15.37ms 412.51ms   98.91%
+    Req/Sec     2.69k     0.91k    6.28k    65.37%
+  103607 requests in 10.10s, 30.24MB read
+  Socket errors: connect 0, read 103603, write 0, timeout 0
+Requests/sec:  10258.44
+Transfer/sec:      2.99MB
+inaimathi@this:~/quicklisp/local-projects/house$ wrk -c 10 -t 4 -d 10 http://127.0.0.1:5000
+Running 10s test @ http://127.0.0.1:5000
+  4 threads and 10 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   837.49us    2.66ms  58.36ms   98.36%
+    Req/Sec     2.63k   836.52     3.81k    49.37%
+  103449 requests in 10.10s, 30.19MB read
+  Socket errors: connect 0, read 103446, write 0, timeout 0
+Requests/sec:  10242.91
+Transfer/sec:      2.99MB
+inaimathi@this:~/quicklisp/local-projects/house$ wrk -c 100 -t 4 -d 10 http://127.0.0.1:5000
+Running 10s test @ http://127.0.0.1:5000
+  4 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     6.23ms   74.76ms   1.89s    99.08%
+    Req/Sec     4.01k     2.20k   10.23k    58.89%
+  101524 requests in 10.10s, 29.63MB read
+  Socket errors: connect 0, read 101522, write 0, timeout 4
+Requests/sec:  10052.56
+Transfer/sec:      2.93MB
+inaimathi@this:~/quicklisp/local-projects/house$ wrk -c 100 -t 4 -d 10 http://127.0.0.1:5000
+Running 10s test @ http://127.0.0.1:5000
+  4 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     5.75ms   70.98ms   1.67s    99.27%
+    Req/Sec     3.19k     2.11k   10.26k    81.39%
+  100944 requests in 10.01s, 29.46MB read
+  Socket errors: connect 0, read 100941, write 0, timeout 1
+Requests/sec:  10088.23
+Transfer/sec:      2.94MB
+```
+
+Again, no huge difference. On closer inspection, `lookup` is only used in one place internally, and it's easy to replace with `gethash` so I'm just going to do that and re-check real quick.
+
+```
+;;; channel.lisp
+...
+-  (push sock (lookup channel *channels*))
++  (push sock (gethash channel *channels*))
+...
+```
+
+```
+inaimathi@this:~/quicklisp/local-projects/house$ wrk -c 10 -t 4 -d 10 http://127.0.0.1:5000
+Running 10s test @ http://127.0.0.1:5000
+  4 threads and 10 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     0.95ms    3.72ms  72.70ms   98.43%
+    Req/Sec     2.66k     1.00k   11.52k    73.45%
+  102839 requests in 10.10s, 30.01MB read
+  Socket errors: connect 0, read 102835, write 0, timeout 0
+Requests/sec:  10183.46
+Transfer/sec:      2.97MB
+inaimathi@this:~/quicklisp/local-projects/house$ wrk -c 10 -t 4 -d 10 http://127.0.0.1:5000
+Running 10s test @ http://127.0.0.1:5000
+  4 threads and 10 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     0.87ms    2.85ms  59.32ms   98.19%
+    Req/Sec     2.62k     0.86k    3.87k    54.82%
+  102818 requests in 10.10s, 30.00MB read
+  Socket errors: connect 0, read 102814, write 0, timeout 0
+Requests/sec:  10180.62
+Transfer/sec:      2.97MB
+inaimathi@this:~/quicklisp/local-projects/house$ wrk -c 100 -t 4 -d 10 http://127.0.0.1:5000
+Running 10s test @ http://127.0.0.1:5000
+  4 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     6.96ms   80.03ms   1.68s    99.10%
+    Req/Sec     3.11k     2.12k   11.72k    78.40%
+  105460 requests in 10.10s, 30.78MB read
+  Socket errors: connect 0, read 105456, write 0, timeout 5
+Requests/sec:  10441.77
+Transfer/sec:      3.05MB
+inaimathi@this:~/quicklisp/local-projects/house$ wrk -c 100 -t 4 -d 10 http://127.0.0.1:5000
+Running 10s test @ http://127.0.0.1:5000
+  4 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     8.22ms   83.95ms   1.66s    98.84%
+    Req/Sec     3.19k     2.07k   11.66k    73.23%
+  103933 requests in 10.10s, 30.33MB read
+  Socket errors: connect 0, read 103930, write 0, timeout 5
+Requests/sec:  10290.43
+Transfer/sec:      3.00MB
+```
+
+To no ones' great surprise, still not much of a difference. I'm going to let the `lookup` issue dangle for the moment, because it has to do with a trick I want to pull a bit later on, but before we get to that...
 
 ## Step 2 - Kill Classes
 
