@@ -133,7 +133,7 @@ class Crypto:
         return self.API.buy(self.ID, security_id, quantity, value, dry_run)
 
     def sell(self, security_id, quantity=None, value=None, dry_run=False):
-        return self.API.buy(self.ID, security_id, quantity, value, dry_run)
+        return self.API.sell(self.ID, security_id, quantity, value, dry_run)
 
     def quote(self, sec_id):
         security = self.API.security(sec_id)
