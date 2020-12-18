@@ -371,13 +371,191 @@ To no ones' great surprise, still not much of a difference. I'm going to let the
 
 ## Step 2 - Kill Classes
 
-The second step is to kill `class` definitions entirely. Their `accessor` functions are _also_ generic, and therefore rely on method dispatch. `struct`s are a bit clumsier, but _probably_ faster in the end.
+The second step is to kill `class` definitions entirely. Their `accessor` functions are _also_ generic, and therefore rely on method dispatch. `struct`s are a bit clumsier, but _probably_ faster in the end. Now, we can't _really_ mess with `session`, `request` and `response`, because those are part of `house`s' external interface, but there's three places where we can replace `defclass` with `defstruct`.
 
-- TODO - some code conversions
-- TODO - another benchmark round
+Re-writing `buffer`, `sse` and `handler-entry` ...
+
+```
+;;; model.lisp
+...
+-(defclass sse ()
+-  ((id :reader id :initarg :id :initform nil)
+-   (event :reader event :initarg :event :initform nil)
+-   (retry :reader retry :initarg :retry :initform nil)
+-   (data :reader data :initarg :data)))
+...
+-(defclass buffer ()
+-  ((tries :accessor tries :initform 0)
+-   (contents :accessor contents :initform nil)
+-   (bi-stream :reader bi-stream :initarg :bi-stream)
+-   (total-buffered :accessor total-buffered :initform 0)
+-   (started :reader started :initform (get-universal-time))
+-   (request :accessor request :initform nil)
+-   (expecting :accessor expecting :initform 0)))
+...
+-(defclass handler-entry ()
+-  ((fn :reader fn :initarg :fn :initform nil)
+-   (closing? :reader closing? :initarg :closing? :initform t)))
+...
+```
+
+```
+;;; house.lisp
+...
+-(defun write-sse! (res stream)
+-  (format stream "~@[id: ~a~%~]~@[event: ~a~%~]~@[retry: ~a~%~]data: ~a~%~%"
+-	  (id res) (event res) (retry res) (data res)))
+...
+-(defun buffer! (buffer)
+-  (handler-case
+-      (let ((stream (bi-stream buffer)))
+-	(incf (tries buffer))
+-	(loop for char = (read-char-no-hang stream)
+-	   until (or (null char) (eql :eof char))
+-	   do (push char (contents buffer))
+-	   do (incf (total-buffered buffer))
+-	   when (request buffer) do (decf (expecting buffer))
+-	   when (and #-windows(char= char #\linefeed)
+-		     #+windows(char= char #\newline)
+-		 (line-terminated? (contents buffer)))
+-	   do (multiple-value-bind (parsed expecting) (parse-buffer buffer)
+-		(setf (request buffer) parsed
+-		      (expecting buffer) expecting
+-		      (contents buffer) nil)
+-		(return char))
+-	   when (> (total-buffered buffer) +max-request-size+) return char
+-	   finally (return char)))
+-    (error () :eof)))
+...
+-(defun parse-buffer (buf)
+-  (let ((str (coerce (reverse (contents buf)) 'string)))
+-    (if (request buf)
+-	(if (eq :application/json (->keyword (cdr (assoc :content-type (headers (request buf))))))
+-	    (cl-json:decode-json-from-string str)
+-	    (parse-param-string str))
+-	(parse-request-string str))))
+...
+```
+
+```
+;;; define-handler.lisp
++(defstruct handler-entry
++  (fn nil)
++  (closing? t))
+...
+-    (make-instance
+-     'handler-entry
++    (make-handler-entry
+```
+
+```
+;;; channel.lisp
+...
++(defstruct (sse (:constructor make-sse (data &key id event retry)))
++  (id nil) (event nil) (retry nil)
++  (data (error "an SSE must have :data") :type string))
+...
+-(defun make-sse (data &key id event retry)
+-  (make-instance 'sse :data data :id id :event event :retry retry))
++(defun write-sse! (res stream)
++  (format stream "~@[id: ~a~%~]~@[event: ~a~%~]~@[retry: ~a~%~]data: ~a~%~%"
++	  (ss-id res) (sse-event res) (sse-retry res) (sse-data res)))
+...
+```
+
+```
+;;; buffer.lisp
++(in-package :house)
++
++(defstruct (buffer (:constructor make-buffer (bi-stream)))
++  (tries 0 :type integer)
++  (contents nil)
++  (bi-stream nil)
++  (total-buffered 0 :type integer)
++  (started (get-universal-time))
++  (request nil)
++  (expecting 0 :type integer))
++
++(defun buffer! (buffer)
++  (handler-case
++      (let ((stream (buffer-bi-stream buffer)))
++	(incf (buffer-tries buffer))
++	(loop for char = (read-char-no-hang stream)
++	   until (or (null char) (eql :eof char))
++	   do (push char (buffer-contents buffer))
++	   do (incf (buffer-total-buffered buffer))
++	   when (buffer-request buffer) do (decf (buffer-expecting buffer))
++	   when (and #-windows(char= char #\linefeed)
++		     #+windows(char= char #\newline)
++		 (line-terminated? (buffer-contents buffer)))
++	   do (multiple-value-bind (parsed expecting) (parse-buffer buffer)
++		(setf (buffer-request buffer) parsed
++		      (buffer-expecting buffer) expecting
++		      (buffer-contents buffer) nil)
++		(return char))
++	   when (> (buffer-total-buffered buffer) +max-request-size+) return char
++	   finally (return char)))
++    (error () :eof)))
++
++(defun parse-buffer (buf)
++  (let ((str (coerce (reverse (buffer-contents buf)) 'string)))
++    (if (buffer-request buf)
++	(if (eq :application/json (->keyword (cdr (assoc :content-type (headers (buffer-request buf))))))
++	    (cl-json:decode-json-from-string str)
++	    (parse-param-string str))
++	(parse-request-string str))))
+```
+
+
+```
+inaimathi@this:~/quicklisp/local-projects/house$ wrk -c 10 -t 4 -d 10 http://127.0.0.1:5000
+Running 10s test @ http://127.0.0.1:5000
+  4 threads and 10 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     1.09ms    6.18ms 202.73ms   98.55%
+    Req/Sec     2.69k     0.89k    4.02k    56.74%
+  105108 requests in 10.10s, 30.67MB read
+  Socket errors: connect 0, read 105105, write 0, timeout 0
+Requests/sec:  10406.92
+Transfer/sec:      3.04MB
+inaimathi@this:~/quicklisp/local-projects/house$ wrk -c 10 -t 4 -d 10 http://127.0.0.1:5000
+Running 10s test @ http://127.0.0.1:5000
+  4 threads and 10 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     0.98ms    5.78ms 204.47ms   98.86%
+    Req/Sec     2.67k   848.77     3.98k    54.71%
+  104242 requests in 10.10s, 30.42MB read
+  Socket errors: connect 0, read 104242, write 0, timeout 0
+Requests/sec:  10321.40
+Transfer/sec:      3.01MB
+inaimathi@this:~/quicklisp/local-projects/house$ wrk -c 100 -t 4 -d 10 http://127.0.0.1:5000
+Running 10s test @ http://127.0.0.1:5000
+  4 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     6.93ms   79.75ms   1.66s    99.10%
+    Req/Sec     3.33k     2.46k   11.95k    79.87%
+  105920 requests in 10.10s, 30.91MB read
+  Socket errors: connect 0, read 105918, write 0, timeout 2
+Requests/sec:  10487.59
+Transfer/sec:      3.06MB
+inaimathi@this:~/quicklisp/local-projects/house$ wrk -c 100 -t 4 -d 10 http://127.0.0.1:5000
+Running 10s test @ http://127.0.0.1:5000
+  4 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     4.78ms   61.11ms   1.68s    99.30%
+    Req/Sec     2.83k     1.26k    7.01k    70.22%
+  103381 requests in 10.10s, 30.17MB read
+  Socket errors: connect 0, read 103378, write 0, timeout 0
+Requests/sec:  10235.14
+Transfer/sec:      2.99MB
+```
+
+Very little noticeable gain, I'm afraid. Ok, there's one more thing I'm tempted to try. There were hints earlier that this was coming, including [this](TODO - link to ticket), but if you don't follow my `github` you might still be surprised.
 
 ## Step 3 - CLJ
 
-This is for my own edification. Now that we have what I _think_ is the fastest possible version of house without going multi-worker, I want to see whether[^more-realistically-how] [`clj`](TODO) does performance damage to the implementation. I want to see this because, the `clj` datastructures and syntax _really_ improve readability and `REPL` development; there's a _bunch_ of situations in which I missed having that level of visibility into my structures before I even began this benchmark article. There's even probably a few places where it _saves_ some performance by referencing other partial structures. The problem is that _I'm guessing_ it's a net negative in terms of performance, so I want to see what a conversion would do to my benchmark before I go through with it.
+Now that we have what I _think_ is a reasonably fast implementation of house, I want to see whether[^more-realistically-how] [`clj`](TODO) does performance damage to the implementation. I want to see this because, the `clj` datastructures and syntax _really_ improve readability and `REPL` development; there's a _bunch_ of situations in which I missed having that level of visibility into my structures before I even began this benchmark article. There's even probably a few places where it _saves_ some performance by referencing other partial structures. The problem is that _I'm guessing_ it's a net negative in terms of performance, so I want to see what a conversion would do to my benchmark before I go through with it.
 
 [^more-realistically-how]: More realistically, "how much" rather than "whether"
+
+This is going to be _especially_ useful for `house`s' external interface. And given that I've already had to break compatibility to write this overhaul, this is probably the best possible time to test the theory. So, on we go.
