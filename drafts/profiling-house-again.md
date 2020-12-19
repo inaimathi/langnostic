@@ -552,10 +552,22 @@ Transfer/sec:      2.99MB
 
 Very little noticeable gain, I'm afraid. Ok, there's one more thing I'm tempted to try. There were hints earlier that this was coming, including [this](TODO - link to ticket), but if you don't follow my `github` you might still be surprised.
 
-## Step 3 - CLJ
+## Step 3 - Musing on CLJ
 
 Now that we have what I _think_ is a reasonably fast implementation of house, I want to see whether[^more-realistically-how] [`clj`](TODO) does performance damage to the implementation. I want to see this because, the `clj` datastructures and syntax _really_ improve readability and `REPL` development; there's a _bunch_ of situations in which I missed having that level of visibility into my structures before I even began this benchmark article. There's even probably a few places where it _saves_ some performance by referencing other partial structures. The problem is that _I'm guessing_ it's a net negative in terms of performance, so I want to see what a conversion would do to my benchmark before I go through with it.
 
 [^more-realistically-how]: More realistically, "how much" rather than "whether"
 
-This is going to be _especially_ useful for `house`s' external interface. And given that I've already had to break compatibility to write this overhaul, this is probably the best possible time to test the theory. So, on we go.
+This is going to be _especially_ useful for `house`s' external interface. And given that I've already had to break compatibility to write this overhaul, this is probably the best possible time to test the theory. The trouble is that I'm not _entirely_ sure what the real interface looks like quite yet, so I'm _not_ going to be implementing it today. These are just some musings.
+
+The current `house` model for `handler`/`response` interaction is that a handler returns either a `response` (in the event of a `redirect!`) or a `string` (in any other event). This makes a few things kind of difficult. Firstly, it means that `session` and `header` manipulation has to happen by effect. That is, they're not included as part of the return value; they have to be exposed in some other way. In the case of `headers`, it's via an `alist` bound to the invisible symbol `headers` inside of the handler body. This ... is less than ideal.
+
+If we take the `http-kit` approach, we'd expect our handlers to always return a `map`. And if that `map` had slots for `headers`/`session`, those things would be set as appropriate in the outgoing `response` and/or server state. Our input would _also_ be a `map`. And it would naturally contain `method`/`headers`/`path`/`parameters`/`session`/etc slots that a handler writer would want to make use of. I'm not _entirely_ clear on whether we'd want to make this the primary internal and external representation, or if we're just looking for an easily manipulated layer for the users. I'm leaning towards the first of those options.
+
+This ... actually doesn't sound too hard if cut at the right level. Lets give it a shot, I guess.
+
+![](/static/img/one-eternity-later.jpg)
+
+It wasn't.
+
+There's enough weird shit happening here that I need a fresh brain for it. That was enough for now.
