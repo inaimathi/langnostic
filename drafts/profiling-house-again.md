@@ -1,6 +1,6 @@
-So I've plowed some of my vacation time into polishing up/hacking on some old projects. Including [`house`](TODO), the web server I [complained](TODO) was garbage, but still had one distinct advantage over other Common Lisp webservers. Namely; because it's the only natively implemented one, it will work out-of-the-box, without issue, anywhere you can install [`quicklisp`](TODO) and a LISP it runs on.
+So I've plowed some of my vacation time into polishing up/hacking on some old projects. Including [`house`](https://github.com/inaimathi/house), the web server I [complained](http://langnostic.inaimathi.ca/posts/a-bit-more-work-on-cl-vote#house-still-sucks-and-i-m-still-keeping-it) was garbage, but still had one distinct advantage over other Common Lisp webservers. Namely; because it's the only natively implemented one, it will work out-of-the-box, without issue, anywhere you can install [`quicklisp`](https://www.quicklisp.org/beta/) and a LISP it runs on.
 
-This hacking attempt was aimed at addressing the complaint. _Most_ of [the `major-overhaul` branch](TODO) was aimed at making the code more readable and sensical. Making `handlers` and `http-type`s much simpler, both implementationally and conceptually. But I want to throw at least _a little_ effort at performance. With that in mind, I wanted a preliminary benchmark. I'm following [`fukamachi`s' procedure for `woo`](https://github.com/fukamachi/woo/blob/master/benchmark.md). Note that, since `house` is a single-threaded server (for now), I'm only doing single-threaded benchmarks.
+This hacking attempt was aimed at addressing the complaint. _Most_ of [the `major-overhaul` branch](https://github.com/inaimathi/house/tree/major-overhaul) was aimed at making the code more readable and sensical. Making `handlers` and `http-type`s much simpler, both implementationally and conceptually. But I want to throw at least _a little_ effort at performance. With that in mind, I wanted a preliminary benchmark. I'm following [`fukamachi`s' procedure for `woo`](https://github.com/fukamachi/woo/blob/master/benchmark.md). Note that, since `house` is a single-threaded server (for now), I'm only doing single-threaded benchmarks.
 
 ```
 ; SLIME 2.26
@@ -550,11 +550,11 @@ Requests/sec:  10235.14
 Transfer/sec:      2.99MB
 ```
 
-Very little noticeable gain, I'm afraid. Ok, there's one more thing I'm tempted to try. There were hints earlier that this was coming, including [this](TODO - link to ticket), but if you don't follow my `github` you might still be surprised.
+Very little noticeable gain, I'm afraid. Ok, there's one more thing I'm tempted to try. There were hints earlier that this was coming, including [this](https://github.com/inaimathi/house/issues/18), but if you don't follow my `github` you might still be surprised.
 
 ## Step 3 - Musing on CLJ
 
-Now that we have what I _think_ is a reasonably fast implementation of house, I want to see whether[^more-realistically-how] [`clj`](TODO) does performance damage to the implementation. I want to see this because, the `clj` datastructures and syntax _really_ improve readability and `REPL` development; there's a _bunch_ of situations in which I missed having that level of visibility into my structures before I even began this benchmark article. There's even probably a few places where it _saves_ some performance by referencing other partial structures. The problem is that _I'm guessing_ it's a net negative in terms of performance, so I want to see what a conversion would do to my benchmark before I go through with it.
+Now that we have what I _think_ is a reasonably fast implementation of house, I want to see whether[^more-realistically-how] [`clj`](https://github.com/inaimathi/clj) does performance damage to the implementation. I want to see this because, the `clj` datastructures and syntax _really_ improve readability and `REPL` development; there's a _bunch_ of situations in which I missed having that level of visibility into my structures before I even began this benchmark article. There's even probably a few places where it _saves_ some performance by referencing other partial structures. The problem is that _I'm guessing_ it's a net negative in terms of performance, so I want to see what a conversion would do to my benchmark before I go through with it.
 
 [^more-realistically-how]: More realistically, "how much" rather than "whether"
 
