@@ -72,9 +72,9 @@ So that puts `house` comfortably in the same league as Tornado on PyPy or the `n
 1. You'll often get a `no-defined-method` error on weird input, rather than something more descriptive and specific the way you probably would when using a normal function
 2. Your performance will sometimes irredeemably suck.
 
-The first point is a nit, but the second one is worth dealing with in the context of a library that should probably perform reasonably well at least _some_ time. The _cause_ of that problem is that `method`s can't be `inline`d. Because the point of them is to dispatch on a type-table of their arguments at runtime, they can't do their work at compile-time to inline the result without some [serious trickery](http://metamodular.com/SICL/generic-dispatch.pdf)[^wait-why-methods]. Today, I'm avoiding trickery and just re-writing every `method` in `house` that I can into a function, usually by using `etypecase`.
+The first point is a nit, but the second one is worth dealing with in the context of a library that should probably perform reasonably well at least _some_ of the time. The _cause_ of that problem is that `method`s can't be `inline`d. Because the point of them is to dispatch on a type-table of their arguments at runtime, they can't do their work at compile-time to inline the result without some [serious trickery](http://metamodular.com/SICL/generic-dispatch.pdf)[^wait-why-methods]. Today, I'm avoiding trickery and just re-writing every `method` in `house` that I can into a function, usually by using `etypecase`.
 
-[^wait-why-methods]: Wait, why use methods then? They're good _specifically_ in the situation where
+[^wait-why-methods]: Wait, why use methods then? They're good _specifically_ in the situation where you want to establish an interface for a set of datastructures that you expect to have to extend _outside of your library_. If all the extension is going to happen inside, you can still make the argument that `etypecase` is the right way to go. But if you want the _callers_ of your code to be able to define new behaviors for datastructures they specify themselves, then absolutely reach for `defmethod`.
 
 Some of these are trivial conversions
 
@@ -173,7 +173,7 @@ The `parse-params` method is a bit harder to tease out. Because it looks like it
 					 str)
 ```
 
-That always is going to be a slight pain though; we need to do a runtime dispatch inside of `parse-buffer` to figure out whether we're parsing JSON or a param string.
+That "almost" is going to be a slight pain though; we need to do a runtime dispatch inside of `parse-buffer` to figure out whether we're parsing JSON or a param-encoded string.
 
 ```
 ...
@@ -506,6 +506,7 @@ Re-writing `buffer`, `sse` and `handler-entry` ...
 +	(parse-request-string str))))
 ```
 
+... should get us _something. Right?
 
 ```
 inaimathi@this:~/quicklisp/local-projects/house$ wrk -c 10 -t 4 -d 10 http://127.0.0.1:5000
@@ -554,7 +555,7 @@ Very little noticeable gain, I'm afraid. Ok, there's one more thing I'm tempted 
 
 ## Step 3 - Musing on CLJ
 
-Now that we have what I _think_ is a reasonably fast implementation of house, I want to see whether[^more-realistically-how] [`clj`](https://github.com/inaimathi/clj) does performance damage to the implementation. I want to see this because, the `clj` datastructures and syntax _really_ improve readability and `REPL` development; there's a _bunch_ of situations in which I missed having that level of visibility into my structures before I even began this benchmark article. There's even probably a few places where it _saves_ some performance by referencing other partial structures. The problem is that _I'm guessing_ it's a net negative in terms of performance, so I want to see what a conversion would do to my benchmark before I go through with it.
+Now that we have what I _think_ is a reasonably fast implementation of `house`, I want to see whether[^more-realistically-how] [`clj`](https://github.com/inaimathi/clj) does performance damage to the implementation. I want to see this because, the `clj` datastructures and syntax _really_ improve readability and `REPL` development; there's a _bunch_ of situations in which I missed having that level of visibility into my structures before I even began this benchmark article. There's even probably a few places where it _saves_ some performance by referencing other partial structures. The problem is that _I'm guessing_ it's a net negative in terms of performance, so I want to see what a conversion would do to my benchmark before I go through with it.
 
 [^more-realistically-how]: More realistically, "how much" rather than "whether"
 
@@ -570,4 +571,6 @@ This ... actually doesn't sound too hard if cut at the right level. Lets give it
 
 It wasn't.
 
-There's enough weird shit happening here that I need a fresh brain for it. That was enough for now.
+There's enough weird shit happening here that I need a fresh brain for it. That was enough for now. The main roadblock I hit is that it turns out that a lot more of the internal interface here depends on mutation than I thought. This is bad for readability and coceptual simplicity, but good in the sense that I can move away from these models first, _then_ see about integrating `clj` later.
+
+I'll _probably_ take another run up this hill later, but for now, I think I'm moving on to [other issues](https://github.com/inaimathi/house/issues).
