@@ -35,8 +35,6 @@ brew install nodejs
 brew install --cask android-sdk
 ```
 
-/Users/inaimathi/Library/Android/sdk/emulator/emulator -avd Pixel_3a_API_33_arm64-v8a
-
 that'll give you a bunch of SDK-level tools in `~/Library/Android/sdk`. In particular, it lets _me_ do
 
 ```
@@ -45,7 +43,7 @@ that'll give you a bunch of SDK-level tools in `~/Library/Android/sdk`. In parti
 
 in order to get an emulator up and running. It'll let _you_ do something different, both because your name is not `inaimathi` _and_ because I'm not entirely clear on how exactly the emulator `Pixel_3a_API_33_arm64-v8a` got installed. Yours might be different; check using `~/Library/Android/sdk/emulator/emulator -list-avds`, and possibly install one manually ... somehow?
 
-Next, in another terminal window so your emulator can keep running,
+Next, in another terminal window so your emulator can do
 
 ```
 npm i -g androidjs-builder
@@ -57,13 +55,13 @@ once you've got that globally installed, you should have `androidjs` exposed as 
 androidjs init
 ```
 
-to get a skeleton project put together (it'll ask you for the name of your project, no, it doesn't look like you can pass it in as a command-line flag). You should _then_ be able to `cd` into your project directory and run
+to get a skeleton project put together (it'll ask you for the name of your project, no, it doesn't look like you can pass it in as a command-line flag). You should _then_ be able to `cd` into your project directory and do
 
 ```
 androidjs build ; ~/Library/Android/sdk/platform-tools/adb install dist/yourproject.apk
 ```
 
-That shoudl build your project into an `apk` and then perform a streamed install into your local emulator. You'll need to "swipe" around it with your mouse to see where it's at, but it should get you up and running.
+That should build your project into an `apk` and then perform a streamed install into your local emulator. You'll need to "swipe" around it with your mouse to see where it's at, but it should get you up and running despite the meh development loop. Maybe I'll put an `emacs` mode together for this.
 
 # Hang on, Why?
 
