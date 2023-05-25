@@ -10,12 +10,11 @@
 
             [clojure.java.io :as io]
 
-            [langnostic.auth :as auth]
             [langnostic.feed :as feed]
             [langnostic.pages :as pages]
             [langnostic.posts :as posts]
             [langnostic.files :as fs]
-            [langnostic.comments :as comments])
+            [langnostic.scratch :as scratch])
   (:use [compojure.core :only [defroutes GET POST DELETE ANY context]])
   (:gen-class))
 
@@ -31,69 +30,43 @@
 (defn static-page [name]
   (fn [req]
     (let [file (io/file "resources/public/content" (str name ".md"))]
-      (binding [auth/USER (get-in req [:session :user])]
-        (if (fs/file-in-resources? file)
-
-          {:status 200
-           :headers {"Content-Type" "text/html"}
-           :body (pages/template file (clojure.string/capitalize name) (fs/file-content file))}
-          (error-404))))))
+      (if (fs/file-in-resources? file)
+        {:status 200
+         :headers {"Content-Type" "text/html"}
+         :body (pages/template file (clojure.string/capitalize name) (fs/file-content file))}
+        (error-404)))))
 
 (defn post [name]
   (fn [req]
-    (binding [auth/USER (get-in req [:session :user])]
-      (if-let [post (posts/find-by-slug name)]
-        {:status 200
-         :headers {"Content-Type" "text/html"}
-         :body (pages/template "blog" (post :title) (pages/post post))}
-        (error-404)))))
+    (if-let [post (posts/find-by-slug name)]
+      {:status 200
+       :headers {"Content-Type" "text/html"}
+       :body (pages/template "blog" (post :title) (pages/post post))}
+      (error-404))))
 
 (defn home [req]
-  (binding [auth/USER (get-in req [:session :user])]
-    {:status 200
-     :headers {"Content-Type" "text/html"}
-     :body (pages/template
-            "blog" "Welcome"
-            [:div
-             (fs/file-content "resources/public/content/intro.md")
-             [:hr]
-             (pages/latest-post)])}))
+  {:status 200
+   :headers {"Content-Type" "text/html"}
+   :body (pages/template
+          "blog" "Welcome"
+          [:div
+           (fs/file-content "resources/public/content/intro.md")
+           [:hr]
+           (pages/latest-post)])})
 
 (defn archive [posts]
   (fn [req]
-    (binding [auth/USER (get-in req [:session :user])]
-      {:status 200
-       :headers {"Content-Type" "text/html"}
-       :body (pages/template
-              "archive" "Archive"
-              (pages/archive posts))})))
+    {:status 200
+     :headers {"Content-Type" "text/html"}
+     :body (pages/template
+            "archive" "Archive"
+            (pages/archive posts))}))
 
 (defn atom-feed [posts]
   (fn [req]
     {:status 200
      :headers {"Content-Type" "application/atom+xml"}
      :body (feed/atom-feed posts)}))
-
-(defn authenticate [auth-type]
-  (fn
-    [req]
-    (let [user (auth/authenticate! auth-type (get-in req [:params "code"]))]
-      {:status 303
-       :headers {"Location" "/"}
-       :session {:user user}})))
-
-(defn post-comment
-  [req]
-  (let [user (get-in req [:session :user])
-        {post-id :id content "comment" path "path"} (:params req)
-        post-id (edn/read-string post-id)
-        path (edn/read-string path)]
-    (when user
-      (if path
-        (comments/post-comment! user post-id path content)
-        (comments/post-comment! user post-id content)))
-    {:status 303
-     :headers {"Location" (get-in req [:headers "referer"])}}))
 
 (defn log-out
   [req]
@@ -115,12 +88,6 @@
   ;; (GET "/dev/dummy-user" [] dummy-user)
   (GET "/blog" [] home)
   (GET "/posts/:name" [name] (post name))
-
-  (POST "/posts/:id/comment" [] post-comment)
-  (POST "/posts/:id/comment/reply" [] post-comment)
-
-  (GET "/auth/log-out" [] log-out)
-  (GET "/auth/:auth-type" [auth-type] (authenticate auth-type))
 
   (GET "/archive" [] (archive (posts/all-posts)))
   (GET "/archive/by-tag/:tag" [tag] (archive (posts/find-by-tag tag)))
