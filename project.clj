@@ -5,7 +5,7 @@
             :url "http://directory.fsf.org/wiki/License:Expat"}
   :dependencies [[org.clojure/clojure "1.8.0"]
 
-                 [http-kit "2.1.18"]
+                 [http-kit "2.6.0"]
                  [org.apache.httpcomponents/httpclient "4.3.5"]
                  [oauth-clj "0.1.16"]
                  [compojure "1.5.1"]
@@ -18,7 +18,7 @@
 
                  [com.patreon/patreon "0.4.2"]
 
-                 [cheshire "5.6.3"]
+                 [cheshire "5.11.0"]
                  [markdown-clj "0.9.89"]
                  [hiccup "1.0.5"]]
   :main langnostic.core
