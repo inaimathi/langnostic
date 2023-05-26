@@ -74,12 +74,6 @@ So it turns out that one thing that doesn't seem to exist is a basic workout-rou
 
 I'm not going to recommend anything in the first three categories, but if you're somewhat interested in the last one, check out [BeStronger](https://play.google.com/store/apps/details?id=com.shvagerfm.bestronger). It _is_ a paid app if you don't want the ad flood, but half-way decent after a one-time fee. It can also _technically_ let you build your own workouts, but the process is a lot less streamlined than I'd like given my usual stretching routines.
 
-Anyway, I'd like to change that. So after I've poked around my new environment for a while, I'm going to follow up
+Anyway, I'd like to change that. So after I've poked around my new environment for a while, I'm going to follow up by putting together a minimal timer app just to satisfy myself that this is a thing that is possible.
 
-- Set up android SDK using brew
-- follow instructions from TODO-insert-link (errors on figwheel build)
-- Remove java xml library reference from `project.cljs` (fails on gradle build)
-- Download latest Java dmg (fails on gradle build, but differently)
-- `brew install openjdk`, try again (fails slightly differently)
-- `export PATH="/Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/bin":$PATH` (fails _slightly_ differently, telling me that I don't have a running emulator)
-- run emulator in a separate terminal, try again (still fails the same way)
+Realistically, that's a complete lie. This was an exercise in seeing if I could still blog satisfyingly, and get an Android environment up and running. I'm probably never touching it again, in favor of poking at more interesting things instead.
