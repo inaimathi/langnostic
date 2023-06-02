@@ -36,8 +36,8 @@
     (if (= 1 (count drafts))
       (let [file (first drafts)
             slug (slug-from-file file)
-            title (title-from-file file)
-            record {:id (next-id) :title (or title (title-from-file file))
+            title (or title (title-from-file file))
+            record {:id (next-id) :title title
                     :file (slug-from-file file)
                     :posted (quot (System/currentTimeMillis) 1000)
                     :tags tags}]
