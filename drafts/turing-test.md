@@ -49,10 +49,10 @@ I think I've put enough work into this that I want to talk about this now, even 
 
 The main thing I want to talk about is actually in `model.clj`, and the rest of this is relatively boring if you've ever read my output, so lets breeze through the rest.
 
-- `core.clj` starts a server and player thread
+- `core.clj` starts a server and player thread, trival startup routine, possibly should be compiled AOT in the `project.clj`, but whatever. Next!
 - `server.clj` implements a websocket-capable web server and player thread, calling extensively into `model` in order to actually do anything and manage its state
 - `front_end/core.clj` implements the basic websocket-capable web UI for the game
-- `sound.clj` is a bunch of experiments I'm eventually going to chop off and make into its own repo
+- `sound.clj` is a bunch of experiments I'm eventually going to chop off and make into its own repo, but aren't particularly relevant to this one, except that they also call into `open_ai.clj`. Speaking of...
 - `open_ai.clj` is a minimal HTTP API to the AI server
 
 And `model.clj` is where this side of the magic happens, the other side being on the other side of `open_ai` calls.
