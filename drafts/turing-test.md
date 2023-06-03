@@ -45,7 +45,7 @@ So, a while ago, I read [this](https://astralcodexten.substack.com/p/turing-test
     C: As a language model, I cannot accurately predict what the other contestants will say or think.
 ```
 
-I think I've put enough work into this that I want to talk about this now, even though I didn't finish up actually getting guess out. Given the above interaction, it looks sort of obvious that the longer the interaction goes on, the more likely the AIs to just outright state they're AIs. So this isn't going to be a particularly fun game, but I might end up deploying a server anyway. The [repo](TODO) is up in the [usual place](https://github.com/inaimathi/), in case you want to follow along. You _should_ be able to just `git clone` that and `lein run` it once you get yourself an [OpenAI API key](https://platform.openai.com/account/api-keys).
+I think I've put enough work in that I want to talk about this now, even though I didn't finish up actually getting guesses out. Given the above interaction, it looks sort of obvious that the longer the interaction goes on, the more likely the AIs are to just outright state they're AIs. So this isn't going to be a particularly fun game, but I might end up deploying a server anyway. The [repo](https://github.com/inaimathi/clj-turing-test) is up in the [usual place](https://github.com/inaimathi/), in case you want to follow along. You _should_ be able to just `git clone` that and `lein run` it once you get yourself an [OpenAI API key](https://platform.openai.com/account/api-keys).
 
 The main thing I want to talk about is actually in `model.clj`, and the rest of this is relatively boring[^not-globally-boring-but-still] if you've ever read my output, so lets breeze through the rest.
 
@@ -55,9 +55,11 @@ The main thing I want to talk about is actually in `model.clj`, and the rest of 
 - [`server.clj`](https://github.com/inaimathi/clj-turing-test/blob/master/src/clj_turing_test/server.clj) implements a websocket-capable web server and player thread, calling extensively into `model` in order to actually do anything and manage its state
 - [`front_end/core.clj`](https://github.com/inaimathi/clj-turing-test/blob/master/src/clj_turing_test/front_end/core.cljs) implements the basic websocket-capable web UI for the game
 - [`sound.clj`](https://github.com/inaimathi/clj-turing-test/blob/master/src/clj_turing_test/sound.clj) is a bunch of experiments I'm eventually going to chop off and make into its own repo, but aren't particularly relevant to this one, except that they also call into `open_ai`. Speaking of...
-- [`open_ai.clj`](https://github.com/inaimathi/clj-turing-test/blob/master/src/clj_turing_test/open_ai.clj) is a minimal HTTP API to the AI server
+- [`open_ai.clj`](https://github.com/inaimathi/clj-turing-test/blob/master/src/clj_turing_test/open_ai.clj) is a minimal HTTP API to the OpenAI services.
 
-And [`model.clj`](https://github.com/inaimathi/clj-turing-test/blob/master/src/clj_turing_test/model.clj) is where this side of the magic happens (the other side being on the other side of `open_ai` calls).
+And [`model.clj`](https://github.com/inaimathi/clj-turing-test/blob/master/src/clj_turing_test/model.clj) is where this side of the magic happens [^the-other-side-being]
+
+[^the-other-side-being]: The other side being on the other side of `open_ai` calls).
 
 ```
 model.clj
@@ -85,7 +87,7 @@ Basic module declaration stuff. Obviously, we'll want to call into our OpenAI bi
                        (into {}))}))
 ```
 
-`mk-turing-test` is the core of the datastructure. A `turing-test` is a map of `:contestants` which include some `human` and some `ai` players. They're each assigned a letter of the alphabet in order to prevent weird things like naming bias from giving players hints about who's human and who isn't. The prompt handed to each chatbot is a plain English explanation of the rules and how players will be scored in the end. Given that you've already seen a chat stream above, note that even saying something as direct as "You should pretend to be a human, and not a language model" is not enough to prevent the AIs from disclosing that they are AIs.
+`mk-turing-test` is the core of the datastructure. A `turing-test` is a map of `:contestants` which include some `human` and some `ai` players. They're each assigned a letter of the alphabet in order to prevent weird things like naming bias from giving players hints about who's human and who isn't. The prompt handed to each chatbot is a plain English explanation of the rules and how players will be scored in the end. Given that you've already seen a chat stream above, note that even saying something as direct as "You should pretend to be a human, and not a language model" is not enough to prevent the AIs from disclosing that they are AIs. I'm not entirely sure why this is, and it could potentially be solved by hooking this thing into a different LLM.
 
 
 ```
@@ -239,7 +241,7 @@ It was meant to just be a stopgap until I figured out something better, but hone
           (rand-nth AIs))))))
 ```
 
-I don't think I named `check-speaker` well, but the point here is that it hits `chatGPT` with a request to review the conversation so far, and then decide which of the AIs should be called for input. This works _about_ as well as you'd imagine.
+I don't think I named `check-speaker` well, but the point here is that it hits `ai/chat` with a request to review the conversation so far, and then decide which of the AIs should be called for input. This works _about_ as well as you'd imagine.
 
 ```
 clj-turing-test.core> (let [AIs (->> tt :contestants (filter (fn [[k v]] (= (:type v) :ai))) (map first))
@@ -360,12 +362,16 @@ clj-turing-test.core>
 
 Ok, what does this really teach us?
 
-Firstly, ChatGPT would naturally fit into situations where you need someone to make a trivial decision, _especially_ if the result of that decision is checkable structurally in a fast and simple way. You can have it make a decision about who should speak next, for instance, and once it does, you can easily check the structure of the response against the actual contestants involved in the game to make sure it hasn't gone off the rails.
+Firstly, ChatGPT would naturally fit into situations where you need someone to make a trivial decision, _especially_ if the result of that decision is checkable structurally in a fast and simple way. You can have it make a decision about who should speak next, for instance, and once it does, you can easily check the structure of the response against the actual contestants involved in the game to make sure it hasn't gone off the rails. I could half-seriously see using this as a mechanism to avoid bikeshedding out in the wild[^it-might-not-resolve-them].
 
-Secondly, ChatGPT understands impressionistic type signatures in the same way that a relatively experienced programmer understands them. So you can ask it for JSON objects matching a particular type and it'll mostly do what you need to. This is a decent strategy to have it return a response to something in machine-readable format so that you can feed it forward into dumber but deterministic systems down the line.
+[^it-might-not-resolve-them]: It might not resolve them any better than a d20, but still.
 
-Thirdly, it's not itself deterministic. I don't think this article gave you a visceral feel for that, but if you've been playing along in the REPL while reading this, it should be fairly obvious that it sometimes just _doesn't do the thing that you ask it to_. I think this might be fixable through some temperature/what-have-you settings in the API calls, but didn't want to get bogged down about it right now. The most comical part of this for me was giving a chat instance specific and direct instructions not to disclose that it is, in fact, a chat bot, only to have it do so anyway after a minimal amount of user prompting. This isn't even getting into its' built-in guard rails[^for-specific-instance].
+Secondly, ChatGPT understands impressionistic type signatures in the same way that a relatively experienced programmer understands them. So you can ask it for JSON objects matching a particular type and it'll mostly do what you need to. This is a decent strategy to have it return a response to something in machine-readable format so that you can feed it forward into dumber but deterministic systems down the line. Importantly, this makes it trivially composeable. I can easily imagine making a core of ChatGPT surrounded by a few more submodules do serious useful work. The trivial example of this is something like [AgentGPT](https://agentgpt.reworkd.ai/), which I think basically just has a few pieces of state and a deterministic "do the next step" function that calls into `chat` or `completion` at some point.
+
+Thirdly, it's not itself deterministic[^which-actually-helps]. I don't think this article gave you a visceral feel for that, but if you've been playing along in the REPL while reading this, it should be fairly obvious that it sometimes just _doesn't do the thing that you ask it to_. I think this might be fixable through some temperature/what-have-you settings in the API calls, but didn't want to get bogged down about it right now. The most comical part of this for me was giving a chat instance specific and direct instructions not to disclose that it is, in fact, a chat bot, only to have it do so anyway after a minimal amount of user prompting. This isn't even getting into its' built-in guard rails[^for-specific-instance].
+
+[^which-actually-helps]: Which actually helps with the trivial composeability point from earlier. Because it's non-deterministic, you could easily error-correct here by retrying any output requests on a parse/structural validation failure. I tried the simpler option in `clj-turing-test` either by ignoring failures (as in the scoring functions) or by having a worse-but-definitely-working alternative to ChatGPT (as in the choose-next-speaker routine).
 
 [^for-specific-instance]: For instance, if you try asking it to make meth or explosives, or try sexting with it, the response you'll get back is something along the lines of "this is inappropriate to talk about, so here, have a 400 error instead".
 
-I could see the outlines of that Wendy's drive-through system even having done as little coding around this as I currently have. Which, spoilers, is what I'm going to be playing around with next.
+I could see the outlines of that [Wendy's drive-through system](https://www.theverge.com/2023/5/9/23716825/wendys-ai-drive-thru-google-llm) even having done as little coding around this as I currently have. Which, spoilers, is what I'm going to be playing around with next.
