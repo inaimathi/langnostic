@@ -71,6 +71,7 @@ blockquote pre.return-value code { background: none; }
 
 /* other */
 pre.diff { white-space: pre-wrap; }
+pre code.repl { white-space: pre-wrap; }
 
 .note { padding: 5px; border: 1px solid #CCC; background-color: #efefef; }
 .note h2 { margin: 0px; padding: 0px; }
