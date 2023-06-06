@@ -74,6 +74,13 @@ nil
 trivial-openai.core> (ask "Please return an object of type Map String Number encoded in Ruby Object format with no other commentary")
 {"a"=>1, "b"=>2, "c"=>3}
 nil
+trivial-openai.core> (ask "Please return an object of type Map String Number encoded in Rebol object format with no other commentary")
+map [
+    "key1" 1
+    "key2" 2
+    "key3" 3
+]
+nil
 trivial-openai.core> (ask "Please return an object of type Map String Number encoded in C struct format with no other commentary")
 struct Map {
   char* key;
@@ -83,13 +90,6 @@ nil
 trivial-openai.core> (ask "Please return an object of type Map String Number encoded in Haskell Record format with no other commentary")
 
 data MyMap = MyMap { getMap :: Map String Number }
-nil
-trivial-openai.core> (ask "Please return an object of type Map String Number encoded in Rebol object format with no other commentary")
-map [
-    "key1" 1
-    "key2" 2
-    "key3" 3
-]
 nil
 ```
 
