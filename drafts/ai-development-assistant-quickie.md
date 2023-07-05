@@ -231,4 +231,4 @@ Use cl-loop at the top-level instead of mapc with an inner cl-loop
 
 Close enough.
 
-I'm planning to do some more UI work on this, and possibly some more exploration regarding the prompt engineering involved in getting decent responses here.
+I'm planning to do some more UI work on this, and possibly some more exploration regarding the prompt engineering involved in getting decent responses here. As always, I'll let you know how it goes.
