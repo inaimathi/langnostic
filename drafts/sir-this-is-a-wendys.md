@@ -1,4 +1,4 @@
-Ok, so I've been foreshadowing this for a while, and I don't think I can help myself anymore. Ever since I read [this](TODO - wendy's drive through employee article), I've had it in my head that it wouldn't be too hard to put together with the already existing assortment of random open-source software that already exists in the world. Combined with the [OpenAI API](TODO) endpoints for [chat](TODO) and [voice transcription](TODO), it actually doesn't even sound like a first cut at this thing would take up a full hackathon attempt. So, lets step into a totally unbranded drive-thru establishment and see what it would look like to have a robot handling the human interaction at the front end.
+Ok, so I've been foreshadowing this for a while, and I don't think I can help myself anymore. Ever since I read [this](https://www.theverge.com/2023/5/9/23716825/wendys-ai-drive-thru-google-llm), I've had it in my head that it wouldn't be too hard to put together with the already existing assortment of random open-source software that already exists in the world. Combined with the [OpenAI API](https://openai.com/blog/openai-api) endpoints for [chat](https://platform.openai.com/docs/api-reference/chat) and [voice transcription](https://platform.openai.com/docs/api-reference/audio), it actually doesn't even sound like a first cut at this thing would take up a full hackathon attempt. So, lets step into a totally unbranded drive-thru establishment and see what it would look like to have a robot handling the human interaction at the front end.
 
 ;; 1. Have a background-thread waiting to record audio at a given threshold into a subdirectory of the working directory
 ;; 2. Have a background-process watching that directory
@@ -11,17 +11,99 @@ Ok, so I've been foreshadowing this for a while, and I don't think I can help my
 
 ## Voice Recording at the User End
 
-- show how to use `rec` to get exactly what we want here, including only kicking in at a particular volume of sound, and cutting out at a certain amount of silence
-- speculate about how to use labelling and a camera to improve customer detection, but don't bother actually implementing it
+There's two different recording types we want here. First we should just ambiently record all the time so we can do things when noise levels get high enough to imply directed speech, and second, once we're in the middle of taking an order, we need to be able to record a block of time until the user is done (silent) for a second or two. Both of these are going to be in the [`sound` submodule](TODO). And, as you'll see based on the implementation I ended up putting together here, I'm not doing any of [my usual cross-platform support stuff](TODO - link to my :cl-mop library or possibly some of the ifdefs in :house), this thing straight-up assumes MacOS[^i-think-im-going-to-change].
+
+[^i-think-im-going-to-change]: I _think_ I'm going to change that shortly. One of the things writing this project has taught me is that just having a vocal chatbot (as opposed to one you have to type at) is oddly compelling to people, and pulling that capability out into a separate library just seems like the right thing to do in a general sense. _That's_ definitely happening on my linux machine though.
+
+```
+(defn record-ambient [& {:keys [dir]}]
+  (shell/sh
+   REC "order.wav"
+   "silence" "1" ".05" "1.3%" ;; wait until we hear activity above the threshold for more than 1/20th of a second then start recording
+   "1" "3.0" "3.0%" ;; stop recording when audible activity falls to zero for 3.0 seconds
+   "vad" ;; trim silence from the beginning of voice detection
+   "gain" "-n" ;; normalize the gain
+   ":" "newfile" ;; store result in a new file
+   ;; ":" "restart" ;; restart listening process
+   :dir dir))
+```
+
+`REC` is literally an alias for the `rec` command line tool. There's a definition earlier in `sound.clj` that reads `(def REC "/opt/homebrew/bin/rec")`. And that set of parameters I pass to it is something I ripped bleeding from a [StackOverflow answer](TODO) after some fairly painful googling. It does what the comments imply it does, but this seems like a situation where you've got a weirdly idiosyncratic enough tool that putting this command together myself would be a multi-day exercise in learning and frustration.
+
+The other one is more interesting.
+
+```
+(defn record-until-silence [& {:keys [dir filename silence-size] :or {filename "order.wav" silence-size 2.0}}]
+  (let [res (shell/sh
+             REC filename
+             "vad" ;; trim silence from the beginning of voice detection
+             "silence" "1" ".05" "1.3%" ;; wait until we hear activity above the threshold for more than 1/20th of a second
+             "1" (str silence-size) "3.0%" ;; stop recording when audible activity falls to zero for silence-size seconds
+             "gain" "-n" ;; normalize the gain
+             :dir dir)]
+    (if (= 0 (:exit res)) filename)))
+```
+
+I mean, it doesn't _look_ more interesting, but this is an example of something I didn't think [`aidev`](TODO - link to your emacs library) would be good for that turns out to be its' most useful feature. I got the basic skeleton of this function by highlighting the above `record-ambient` definition and doing
+
+```
+M-x aidev-refactor-region-with-chat RET
+This function records ambient sound into files starting with non-silent sound and keeps going until terminated. Please re-write it so that it instead begins recording immediately, records until a block of silence and then stops (rather than recording into a fresh file afterwards). RET
+```
+
+It didn't give me back _exactly the definition I ended up committing. In particular, I had to rejig its parameters and rename it. But the key part, the changed parameters to `shell/sh`, got dropped in directly from the result. This isn't _fantastically_ impressive, but the I could imaginge the process it I would need to follow in order to generate that shell call myself, and it definitely involves doing a stupid amount of googling and/or reading `man rec`. The ~1.5 second API call from my editor followed by a minute or two of re-structuring the resulting function definition is _much_ better. If this is the future of programming, I could definitely get used to it.
+
+The part of the top-level work process that I'm going to end up leaving as an exercise for the reader includes hwo to actually determine when we should start the interaction process. The initial approach I thought of, which involved running `record-ambient` until it started generating files, doesn't _quite_ work. Specifically, it gets weird because the point of this interaction is that you're going to be playing synthesized speech back in the same general area where you're doing ambient recording to figure out what the user wants. You could _probably_ do the work to just keep the recorded users' stream, but it doesn't seem worth it[^also-doing-record-ambient-then].
+
+[^also-doing-record-ambient-then]: Also, doing `record-ambient`, then killing it in order to start a loop of `record-user -> ai-responds` and then restarting `record-ambient` with some delay at the end didn't _trivially_ work, and I wanted to get this blog post out.
+
+There's definitely a company's worth of work waiting to be done here, and if some enterprising business dude out there wants to handle that part, I'll gladly sign on as CTO, but I'm doing this with an eye to exploration rather than amassing wealth.
 
 ## Voice transcription
 
-- Basic call up to the OpenAI API to transcribe a voice recording, demonstrate return value
+Dealing with the voice input of the user is something that gets dealt with in [`model.clj`](TODO), with calls out to the `sound` functions from above, and also out to [my API library](TODO).
+
+```
+(defn wait-for-user-response! [& {:keys [attempts] :or {attempts 3}}]
+  (when (> attempts 0)
+    (let [fname (str (:name @ORDER) "/user-speaks" (count (get-history)) ".wav")
+          file (snd/record-until-silence :filename fname)]
+      (if file
+        (do (order-log! {:user-voiced file})
+            (let [message (ai/transcription file)]
+              (when-let [txt (get message "text")]
+                (order-log! {:ai-transcribed txt})
+                (user-chat! txt))))
+        (wait-for-user-response! :attempts (- attempts 1))))))
+```
+
+Easy, right? We're going to try a few times (in case recording or transcription errors for some reason), but the thing we're doing in an attempt is
+
+1. Calling `record-until-silence` with a filename that isn't yet taken in this orders' subfolder
+2. If that went fine, we log the call with `order-log!` and then send a request to `ai/transcription`
+3. If that went fine, we log it again, and then call `user-chat!` (which is just a utility function that adds the message to this orders' history)
 
 ## Feed conversation into the chat interface
 
-- Show how we maintain state between voice messages and feed each incremental addition through the chat interface
-- Show how we use the same expedient of having the AI decide when an order is complete and then feed the result into the rest of the system in JSON format
+Once a user has initiated an order, we need the AI to respond. Which is pretty straightforward once you think about it.
+
+```
+(defn robot-response! []
+  (let [resp (ai/chat (get @ORDER :interaction))
+        ai-txt (get-in resp ["choices" 0 "message" "content"])]
+    (order-log! {:ai-response-id (get resp "id")})
+    (order-log! {:ai-says ai-txt})
+    (robot-chat! ai-txt)
+    (let [ai-mp3 (snd/text->mp3 ai-txt :dir (:name @ORDER))]
+      (order-log! {:ai-voiced ai-mp3})
+      (snd/play ai-mp3))))
+```
+
+We just feed `(get @ORDER :interaction)` into `ai/chat`, store the result in interaction history and output the result both to the `order-log!` and to an MP3 file on disk, which we then immediately play for the user.
+
+You'll note that this implies a particular structure for an `ORDER`.
+
+TODO - talk about order structure and log/state maintenance
 
 ## Prompting with a menu
 
