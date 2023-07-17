@@ -26,4 +26,4 @@ By analogy, I don't forsee ChatGPT outperforming me at generating elegant Common
 
 [^at-least-not-for]: At least not for another few months.
 
-I'm familiar with the strain of thought that says we're at an inflection point on amount of intelligence that we can expect computers to display. The [hinge of history](TODO - hour before dawn in san francisco). I'm not sure I subscribe to this, but the tools that we have _already_ seem to have a lot of untapped potential to automate away drudgery in a lot of cases. I'm interested in exploiting that potential as hard as I possibly can.
+I'm familiar with the strain of thought that says we're at an inflection point on amount of intelligence that we can expect computers to display. The [hinge of history](https://astralcodexten.substack.com/p/half-an-hour-before-dawn-in-san-francisco). I'm not sure I subscribe to this, but the tools that we have _already_ seem to have a lot of untapped potential to automate away drudgery in a lot of cases. I'm interested in exploiting that potential as hard as I possibly can.
