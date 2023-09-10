@@ -2,7 +2,7 @@ Ok, so I've been foreshadowing this for a while, and I don't think I can help my
 
 ## Voice Recording at the User End
 
-There's two different recording types we want here. First we should just ambiently record all the time so we can do things when noise levels get high enough to imply directed speech, and second, once we're in the middle of taking an order, we need to be able to record a block of time until the user is done (silent) for a second or two. Both of these are going to be in the [`sound` submodule](TODO). And, as you'll see based on the implementation I ended up putting together here, I'm not doing any of [my usual cross-platform support stuff](TODO - link to my :cl-mop library or possibly some of the ifdefs in :house), this thing straight-up assumes MacOS[^i-think-im-going-to-change].
+There's two different recording types we want here. First we should just ambiently record all the time so we can do things when noise levels get high enough to imply directed speech, and second, once we're in the middle of taking an order, we need to be able to record a block of time until the user is done (silent) for a second or two. Both of these are going to be in the [`sound` submodule](https://github.com/inaimathi/clj-drivethru/blob/master/src/clj_drivethru/sound.clj). And, as you'll see based on the implementation I ended up putting together here, I'm not doing any of [my usual cross-platform support stuff](https://github.com/inaimathi/house/blob/master/src/buffer.lisp#L12-L31), this thing straight-up assumes MacOS[^i-think-im-going-to-change].
 
 [^i-think-im-going-to-change]: I _think_ I'm going to change that shortly. One of the things writing this project has taught me is that just having a vocal chatbot (as opposed to one you have to type at) is oddly compelling to people, and pulling that capability out into a separate library just seems like the right thing to do in a general sense. _That's_ definitely happening on my linux machine though.
 
@@ -19,7 +19,7 @@ There's two different recording types we want here. First we should just ambient
    :dir dir))
 ```
 
-`REC` is literally an alias for the `rec` command line tool. There's a definition earlier in `sound.clj` that reads `(def REC "/opt/homebrew/bin/rec")`. And that set of parameters I pass to it is something I ripped bleeding from a [StackOverflow answer](TODO) after some fairly painful googling. It does what the comments imply it does, but this seems like a situation where you've got a weirdly idiosyncratic enough tool that putting this command together myself would be a multi-day exercise in learning and frustration.
+`REC` is literally an alias for the `rec` command line tool, encoded in a way that explicitly assumes [a `brew` installation](https://brew.sh/). There's a definition earlier in `sound.clj` that reads `(def REC "/opt/homebrew/bin/rec")`. And that set of parameters I pass to it is something I got from a [StackExchange answer](https://unix.stackexchange.com/questions/55032/end-sox-recording-once-silence-is-detected) after some fairly painful googling. It does what the comments imply it does, but this seems like a situation where you've got a weirdly idiosyncratic enough tool that putting this command together myself would be a multi-day exercise in learning and frustration.
 
 The other one is more interesting.
 
@@ -35,7 +35,7 @@ The other one is more interesting.
     (if (= 0 (:exit res)) filename)))
 ```
 
-I mean, it doesn't _look_ more interesting, but this is an example of something I didn't think [`aidev`](TODO - link to your emacs library) would be good for that turns out to be its' most useful feature. I got the basic skeleton of this function by highlighting the above `record-ambient` definition and doing
+I mean, it doesn't _look_ more interesting, but this is an example of something I didn't think [`aidev`](https://github.com/inaimathi/machine-setup/blob/master/emacs/aidev.el) would be good for that turns out to be its' most useful feature. I got the basic skeleton of this function by highlighting the above `record-ambient` definition and doing
 
 ```
 M-x aidev-refactor-region-with-chat RET
@@ -48,11 +48,11 @@ The part of the top-level work process that I'm going to end up leaving as an ex
 
 [^also-doing-record-ambient-then]: Also, doing `record-ambient`, then killing it in order to start a loop of `record-user -> ai-responds` and then restarting `record-ambient` with some delay at the end didn't _trivially_ work, and I wanted to get this blog post out.
 
-There's definitely a company's worth of work waiting to be done here, and if some enterprising business dude out there wants to handle that part, I'll gladly sign on as CTO, but I'm doing this with an eye to exploration rather than amassing wealth.
+There's definitely a company's worth of work waiting to be done here, and if some enterprising business dude out there wants to handle that part, I'll gladly sign on as CTO, but I'm doing this with an eye to exploration rather than amassing wealth. I'll point out some of the known or suspected shortcomings in the conclusion.
 
 ## Voice transcription
 
-Dealing with the voice input of the user is something that gets dealt with in [`model.clj`](TODO), with calls out to the `sound` functions from above, and also out to [my API library](TODO).
+Dealing with the voice input of the user is something that gets dealt with in [`model.clj`](https://github.com/inaimathi/clj-drivethru/blob/master/src/clj_drivethru/model.clj), with calls out to the `sound` functions from above, and also out to [my API library](https://github.com/inaimathi/trivial-openai).
 
 ```
 (defn wait-for-user-response! [& {:keys [attempts] :or {attempts 3}}]
@@ -181,7 +181,7 @@ We set up a loop using a named anonymous function, and in it we alternate betwee
     res))
 ```
 
-## Dromroll...
+## Drumroll...
 
 Once you have all of that wired up, you can do things approximately like (edited slightly for brevity, and also because the original interactions happened in audio format):
 
@@ -223,12 +223,19 @@ Once you have all of that wired up, you can do things approximately like (edited
 {:ai-says "Great choice! Our Bacon Cheeseburger is one of our popular options. Will that be all for you today?"}
 ```
 
-## Toughts on AI interaction
+## Toughts on AI interaction and General Conclusions
 
 As you can see by the last couple of example interactions, I also tried some light trolling. And, while I suspect I could eventually trip the drive-thru bot up in ways that no humans would get confused by, it slightly surprised me that it's not _this_ easy. After all, the original prompt didn't explicitly say "your restaurant doesn't serve alcohol", or "you shouldn't let customers add things to the menu".
 
-- Actually surprisingly bad at plain booleans (the `should-extract?` function still kinda fails occasionally when I tell it to return "Yes"/"No", but it failed _even worse_ back when I asked it to return a JSON boolean that corresponded to the same yes/no answer) despite the [earlier success at encoding machine-readable datastructures](TODO - link to previous post on this)
-- At least mildly resistant to command insertion attacks (see this order <TODO - add the order where I try to add a $-5.00 back cheeseburger to the menu>), and it kinda sticks to the menu (<TODO - add the order wherein I try to order vodka>)
-- Part of the `sound` module is AI-generated. Or... er, I guess AI-assisted? I got the `record-until-silence` function by using my [`emacs` refactor mode](TODO) to give it my definition of `record-ambient` and prompting it with `"This function records ambient sound into files starting with non-silent sound and keeps going until terminated. Please re-write it so that it instead begins recording immediately, records until a block of silence and then stops (rather than recording into a fresh file afterwards)."` It failed to change the name of the function or its' inputs, but did give me the correct invocation of the `rec` command line tool to accomplish what I wanted. This definitely saved me a bunch of googling/doc-reading, and I'm unclear whether it just got lucky and handed me something that worked or whether it would consistently give correct answers here.
+One thing that surprised me here is exactly how bad ChatGPT is at making boolean decisions, despite the [earlier success at encoding machine-readable datastructures](/posts/quickie-formatting-test). It still occasionally fails now that I'm asking it to return a "Yes" or "No" answer, but it was failing _much worse_ when the prompt told it to return a JSON response of type `boolean`. It's the sort of thing that I'd naively expect it to be at least _decent_ at, but the original, boolean-encoded `should-extract?` function didn't do much better than a coin-toss. As in, during testing, I'd relatively frequently see it return `true` for empty orders, or `false` for ones where the AI had clearly pased the "Please drive through" call-to-action. This is obviously less than ideal, and it's one of the things you'd absolutely want to solve if your goal was to commercialize this product. Other such problems
 
-Overall, having used [that emacs interaction mode](TODO - link to your aidev library) for a bit, I'm much more confident about having an AI perform boilerplate-involving-but-basic-refactorings than I used to be, I'm fairly comfortabl with having it explain what a particular function does or tries to, but I'm much _less_ likely to use it for straight-up code generation or automated architecture. I'm still planning to try a few things in that general direction, but from here, it looks like it'll be much more work than I initially thought it'd be. Still a big win, mind you, improving my productivity by 2x or 3x is still a _really_ nice payoff for what amounts to a ~$2.00 per month subscription fee. I'll keep you posted if I change my opinion again in any significant way.
+- I made a very cursory attempt at adversarial interactions with the agent. It didn't fail the specific things I tried, but I'd still _probably_ want some sort of guard rails against users ordering things off-menu, or trying other shenanigans
+- There's a possible attack open at the moment that involves starting an audio loop when you get to the "wait for user input" phase of the workflow. In general, I'm fairly confident that the agent as coded would _mostly_ work for a cooperative customer, and fairly confident that a persistent adversary could force explosions in some way
+- Right now, the interaction starts when audio crosses a fairly arbitrary, tested-in-my-room-on-my-computer-against-my-voice threshold. It almost _certainly_ wouldn't be the right choice for field conditions that probably include wind and loud but ignorable ambient sound. If you're using this to replace traditional drive-throughs, you'd probably want to analyze a camera feed to see if an approximately car-shaped object is in the appropriate position to be issuing orders[^you-could-probably-do-that]. If you're using this as a supplement to the traditional "drive through" workflow and exposing it over an online or app-based interface, you probably want to have a button the user presses do the appropriate thing.
+- At the moment, this is hard-coded to be MacOS specific, and assumes you install a bunch of stuff through `homebrew`. All things considered, that's probably the _easiest_ obvious problem to solve
+- In the same vein as ChatGPT being surprisingly bad at booleans, it's also not exaxctly great with sums. In testing, it would frequently tell the user the wrong order total by around fifty cents in either direction. I'm not sure what causes this, but it happened often enough that I'd probably want a production system built on top of this to use deterministic machine arithmetic rather than relying on the AI to do any math in its' head.
+[^you-could-probably-do-that]: You could probably do that with an [image labelling service](https://developers.google.com/ml-kit/vision/image-labeling) of some sort if you wanted to keep it simple for yourself.
+
+This is just an incomplete list of the problems I see off the top of my head. There are definitely more, and absolutely _lots_ more that I haven't thought of. I did mean it when I said that you've got about a company's worth of problems to solve here if you're up for it. All of these are being left as an exercise for the reader though. As I mentioned earlier, after I meditate for a bit, my next move is going to be extracting a voice chat library from this project, and possibly seeing if I can get it to do any interesting "Tea, Earl Grey, Hot" style things for me.
+
+As always, I'll let you know how it goes.
