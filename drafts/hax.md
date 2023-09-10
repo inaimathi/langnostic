@@ -430,7 +430,7 @@ results in
 > - You could modify the `silence` function to generate silent audio files in different formats or with specific audio properties (e.g., bit depth).
 > - You could modify the `cat` function to support different concatenation methods, such as fading in and out between segments or applying effects.
 
-That's pretty good for about five seconds' worth of work, and is incidentally the best use I've put ChatGPT to so far. The end result of running this script, in an admittedly convoluted way, on an earlier draft of this post is [this](https://static.inaimathi.ca/langnostic--hax.mp3). It still has some rough edges, which I can very probably deal with in the next version of the script. I intend to release this, or possibly do something else with it.
+That's pretty good for about five seconds' worth of work, and is incidentally the best use I've put ChatGPT to so far. The end result of running this script, in an admittedly convoluted way, on an earlier draft of this post is [this](https://static.inaimathi.ca/langnostic--hax.mp3). It still has some rough edges, which I can very probably deal with in the next version. I intend to release this, and possibly do something else with it too.
 
 Ok, this is the end of the part where I'm soberly describing what I've done and going off on a wild speculative tangent. You've been warned.
 
@@ -438,18 +438,22 @@ Ok, this is the end of the part where I'm soberly describing what I've done and 
 
 [voices.com](https://www.voices.com/) is a website where voice actors submit voice clips in order to audition for prospective clients to give them work, and clients can find people to voice their whatevers. Audiobook, inane advertisement, weird company coaching thing, podcast, whatever it is you want to be read by someone with an appropriately sexy voice. I just showed you the nascent steps of a robot that can effectively do their job. Oh, right, did I mention that `tortoise-tts` can take a ~10 minutes of voice audio in mp3 format and read in _that_ voice instead of one of the defaults like I did above? There's [already](https://www.naturalreaders.com/online/) a [few](https://speechify.com/) sites [using](https://audioread.com/) this as a business model.
 
-If you're a good capitalist, you can use this robot to obsolete that site. You set up a service where people can get their whatevers read for cheaper, and then you collect your winnings until someone else manages to undercut _you_. Eventually, the floor falls out of the "people"-with-sexy-voices-reading-things market and we all move on to the next industry.
+If you're a good capitalist, you can use this robot to obsolete that entire industry. You set up a service where people can get their whatevers read for cheaper, and then you collect your winnings until someone else manages to undercut _you_. Eventually, the floor falls out of the "people"-with-sexy-voices-reading-things market and we all move on to the next industry.
 
-If you're a good anti-capitalist, you lobby for tighter natural/moral/copyrights to apply to voices and snicker at the dumb tech-bros for trying to undermine existing industries without the legislative power of the state.
+If you're a good anti-capitalist, you lobby for tighter natural/moral/copyrights to apply to voices and snicker at the dumb tech-bros for trying to undermine existing industries without the legislative power of the state. Empirically, you also entrench an oligopoly of existing players by doing this, but no one's going to tell _you_ that you're a fucking moron over _that_ minor detail, so whatever.
 
-If you're a good, charismatic utopian... As far as I can tell, you do this:
+If you're a good, charismatic techno-optimist... As far as I can tell, you do this:
 
-1. Get a bunch of voice actors together and make them an offer: they let you use their voices to envoice your robot army, and in exchange they get a cut of the robot army's profits. They get to specify what kinds of jobs they want their voices used for, and you enforce their will.
+1. Get a bunch of voice actors together and make them an offer: they let you use their pronouncements to envoice your robot army, and in exchange they get a cut of the robot army's profits. They get to specify what kinds of jobs they want their voices used for, and you enforce their will.
 2. Make an interface that accepts voice acting gigs on behalf of your voice actors. Each time a gig comes in ask the voice actor if they want to do this one themselves.
 	a. If they do, take a token cut, like 5% or something, coordinate a way to get their voice to the client, collect payment and send them their lion's share.
 	b. If they don't, or take longer than 24 hours to respond, have a robot do it instead. In this case, take a large but not lions' share, more like 30%-50% and send them the rest.
 3. Spread the word to anyone who needs voice services, and gradually absorb more and more voice actors until you rule the world (or more realistically, until competitors spring up and you undercut each other to give your clients' cheaper voice services and/or your talent higher pay)
 
-I'm not sure if I'm a charismatic enough utopian, but I have to say, I find this a pretty interesting possibility. Near as I can tell, there's a future coming up where machines can do equivalent or better jobs than humans in _a lot_ of ways. And an excellent mechanism to _not_ plunge anyone into desperate poverty without kneecapping our progress involves giving humans the right, but not responsibility to do any work that they're capable of. Any work they refuse to do, give it to robots trained on the basis of their skill, and pay them for the privilege of the training.
+I'm not sure if I'm a charismatic enough techno-optimist, but I have to say, I find this a pretty interesting possibility. Near as I can tell, there's a future coming up where machines can do equivalent or better jobs than humans in _a lot_ of ways. And an excellent mechanism to _not_ plunge anyone into desperate poverty without kneecapping our progress involves giving humans the right, but not responsibility to do any work that they're capable of. Any work they refuse to do, give it to robots trained on the basis of their skill, and pay them for the privilege of the training.
 
-This is purely a musing at the moment, but I must admit, if someone gave me this offer, I'd definitely take it.
+We can almost trivially run this playbook for voice actors, illustrators, transcribers and minor copywriters. We're within striking distance of doing it for writers in full generality, non-full-stack programmers, anyone involved in graphic novel or video production, and all call-centers[^here-i-mean-the-kind]. And we have straight-line, not-currently-possible-but-no-obvious-technical-obstacles approaches to take on programming in full generality, sculpting, delivery, construction, accounting, driving and cooking. If we could add food production to that list, we'd actually _be_ in the world of fully-automated luxury, gay, space, communism world. And near as I could tell, it'd _be_ a utopia as long as we could solve the real-estate allocation problem.
+
+[^here-i-mean-the-kind]: Here I mean the kind that offer third party support for any sort of technical product. The kind that cold call you about duct cleaning I'm _hoping_ just die in a fire, but realistically they'll all hang on the same way.
+
+This is purely a crazy, star-eyed-optimist musing at the moment, but if someone gave me the offer, I'd definitely take it.
