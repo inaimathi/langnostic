@@ -416,7 +416,7 @@ results in
 > 3. `cat(script, output)`: This function concatenates multiple audio files together into an output file. It takes a list of `script` blocks and an `output` filename as input. For each `block` in the script, it checks if the block is already stored in a `CACHE` dictionary. If it is, it appends the corresponding file path to the `inputs` list. If the block is a dictionary (indicating a silent audio segment), it generates a silent audio file using the `silence` function, stores it in the `CACHE` dictionary, and appends its file path to the `inputs` list. Finally, it executes the following `sox` command using `check_output`:
 >
 >   ```
->   sox <input_files> <output_filename>
+>   sox &lt;input\_files> &lt;output\_filename>
 >   ```
 >
 >   The `inputs` list is constructed by concatenating all the input file paths. The output filename is specified as the final argument. The `check_output` function executes the command, resulting in the concatenation of the input audio files into the output file. The output filename is then returned.
