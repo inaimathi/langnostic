@@ -408,7 +408,7 @@ results in
 > 2. `silence(duration, rate=24000, channels=1)`: This function generates a silent audio file with a specified duration. It uses the `check_output` function to execute the following `sox` command:
 >
 >   ```
->   sox -n -r <rate> -c <channels> <output_filename> trim 0.0 <duration>
+>   sox -n -r &lt;rate> -c &lt;channels> &lt;output_filename> trim 0.0 &lt;duration>
 >   ```
 >
 >   The `rate` and `channels` parameters determine the audio properties (defaulting to 24000 Hz and 1 channel). The output filename is determined dynamically based on the specified duration. The generated silent audio file is then returned.
