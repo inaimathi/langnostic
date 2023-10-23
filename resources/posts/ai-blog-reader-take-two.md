@@ -125,7 +125,7 @@ You can see that there are components dealing with acronyms, specific mispronoun
 
 ## On Trying Things Out
 
-Other than basic pronunciation errors, `tortoise` sometimes just straight-up fails to produce audio. I'll get a sentence that starts well, and then cuts off suddenly before all of its' content is spoken. Sometimes I'll even get back an audio file of rustling or spooky whooshing noises instead of anything resembling human speech. These are the failure modes I imagined could be avoided by doing a transcription pass and checking the output of that against the initial input of `tortoise`. That's still something I want to try,and I'm well positioned to do it.
+Other than basic pronunciation errors, `tortoise` sometimes just straight-up fails to produce audio. I'll get a sentence that starts well, and then cuts off suddenly before all of its' content is spoken. Sometimes I'll even get back an audio file of rustling or spooky whooshing noises instead of anything resembling human speech. These are the failure modes I imagined could be avoided by doing a transcription pass and checking the output of that against the initial input of `tortoise`. That's still something I want to try, and I'm well positioned to do it.
 
 On the flip side, there's already a few places where the recording has pointed to bugs in the original article. Either something that I initially take for a pronunciation error that I then realize is actually a spelling error in the original, or something that ends up sounding awful enough when spoken that I have to go back and re-write the textual sentence. These aren't benefits I was expecting, but I'm thankful for them in any case.
 
