@@ -38,7 +38,7 @@ def block_by_ip():
 ##############################
 ```
 
-You can see some of the exploits that I directly witnessed in logs. Near as I can tell, `geoserver`, `actuator` and `redlion` are all industrial firmware hosting frameworks. That `gch` call is something exposed by old cable modems, and `boaform` is some sort of [exploitable fiber optic modem](https://webmasters.stackexchange.com/questions/137142/vulnerability-in-boaform-admin-formlogin).
+You can see some of the exploits that I directly witnessed in logs. Near as I can tell, `geoserver`, `actuator` and `redlion` are all industrial firmware hosting frameworks. That `gch` call is something exposed by old cable modems, and `boaform` is some sort of [exploitable fibre optic modem](https://webmasters.stackexchange.com/questions/137142/vulnerability-in-boaform-admin-formlogin).
 
 The idea behind the above block is that
 
@@ -50,9 +50,9 @@ This _definitely_ isn't an approach that I'd recommend to anyone doing anything 
 
 ## On reading things wrong sometimes
 
-Tortoise TTS [doesn't always pronounce things correctly](https://github.com/neonbjb/tortoise-tts/issues/392). For instance, "TTS" as "tits" instead of "tee tee ess", "ChatGPT" as "Chat" or "Chat gipt" instead of "Chat jee pee tee". It also, surprise, doesn't pronounce emojis at all. _And_ it embarrasses me by pronouncing various Toronto-related words wrong _in my own voice_. I think I could eventually solve some of this by training it further, and I'm going to try that eventually, but I'm also going to do [this](https://github.com/inaimathi/catwalk/blob/master/blogcast/horrifying_hacks.py).
+Tortoise TTS [doesn't always pronounce things correctly](https://github.com/neonbjb/tortoise-tts/issues/392). For instance, "TTS" as "tits" instead of "tee tee ess", "ChatGPT" as "Chat" or "Chat gipt" instead of "Chat jee pee tee". It also, surprise, doesn't pronounce emojis at all. _And_ it embarrasses me by mispronouncing various Toronto-related words _in my own voice_. I think I could eventually solve some of this by training it further, and I'm going to try that eventually, but I'm also going to do [this](https://github.com/inaimathi/catwalk/blob/master/blogcast/horrifying_hacks.py).
 
-Sometimes, the correct solution is a thing that's nebulous or risky enough that you want some stopgap in the short term. And when that happens, it's helpful to name it in a way that reminds you that it _is_ a stopgap. Hence, `horrifying_hacks.py`. As of this writing, it's
+Sometimes, the correct solution is a thing that's nebulous or risky enough that you want some stopgap in the short term. And when that happens, it's helpful to name it in a way that reminds you that it _is_ a stopgap. Hence, `horrifying_hacks.py`. As of this writing, it contains
 
 ```python
 import re
@@ -125,9 +125,9 @@ You can see that there are components dealing with acronyms, specific mispronoun
 
 ## On Trying Things Out
 
-Other than basic pronounciation errors, `tortoise` sometimes just straight-up fails to produce audio. I'll get a sentence that starts well, and then cuts off suddenly before all of its' content is spoken. Sometimes I'll even get back an audio file of rustling or spooky whooshing noises instead of anything resembling human speech. These are the failure modes I imagined could be avoided by doing a transcription pass and checking the output of that against the initial input of `tortoise`. That's still something I want to try,and I'm well positioned to do it.
+Other than basic pronunciation errors, `tortoise` sometimes just straight-up fails to produce audio. I'll get a sentence that starts well, and then cuts off suddenly before all of its' content is spoken. Sometimes I'll even get back an audio file of rustling or spooky whooshing noises instead of anything resembling human speech. These are the failure modes I imagined could be avoided by doing a transcription pass and checking the output of that against the initial input of `tortoise`. That's still something I want to try,and I'm well positioned to do it.
 
-On the flipside, there's already a few places where the recording has pointed to bugs in the original article. Either something that I initially take for a pronounciation error that I then realize is actually a spelling error in the original, or something that ends up sounding awful enough when spoken that I have to go back and re-write the textual sentence. These aren't benefits I was expecting, but I'm thankful for them in any case.
+On the flip side, there's already a few places where the recording has pointed to bugs in the original article. Either something that I initially take for a pronunciation error that I then realize is actually a spelling error in the original, or something that ends up sounding awful enough when spoken that I have to go back and re-write the textual sentence. These aren't benefits I was expecting, but I'm thankful for them in any case.
 
 I've put together a small `emacs` interface for myself to compile these audio files effectively and stitch them together. There isn't a full round-trip happening yet, and I won't document that until I have at least a few of my blog posts up as podcasts. The goal at this point is to get a full round trip happening, even if it's initially with some human input, and then let it loose on my archive. There's a few more finicky procedural details I need to work through, but over all, I'm within a few hours of work of having it add a podcast linked alongside each blog post.
 
