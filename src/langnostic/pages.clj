@@ -5,6 +5,8 @@
             [ring.util.codec :as cod]
             [cheshire.core :as json]
 
+            [clojure.java.io :as io]
+
             [langnostic.posts :as posts]))
 
 (defn post-href [post]
@@ -24,6 +26,10 @@
    [:h1 [:a {:href (post-href post)} (:title post)]]
    [:span {:class "posted"}
     (fmt/unparse (fmt/formatter "E MMM d, Y") (:posted post))]
+   (try
+     (when (.exists (io/as-file (io/resource (str "public/audio/" (:file post) ".ogg"))))
+       [:a {:class "post-audio" :href (str "/static/audio/" (:file post) ".ogg") :target "blank"} "Listen to this post"])
+     (catch Exception e nil))
    (posts/post-content post)
    (post-links post)])
 
