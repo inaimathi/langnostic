@@ -8,4 +8,6 @@ Currently, I'm working as a senior device engineer at [Raydiant](https://www.ray
 
 ## About This Site
 
-This site was built out of parentheses and higher-order functions. The site itself is just over 300 lines of relatively readable Clojure, which I still plan to refine over the next couple of weeks. There's still no database; just some [`markdown`](https://daringfireball.net/projects/markdown/) and [`JSON`](http://www.json.org/), processed and then served up by [`http-kit`](https://http-kit.github.io/).
+This site was built out of parentheses and higher-order functions. The site itself is just over 300 lines of relatively readable Clojure, which I still plan to refine. There's still no database; just some [`markdown`](https://daringfireball.net/projects/markdown/) and [`JSON`](http://www.json.org/), processed and then served up by [`http-kit`](https://http-kit.github.io/).
+
+The audio links on some posts were generated with [`catwalk`](https://github.com/inaimathi/catwalk).
