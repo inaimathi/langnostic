@@ -26,10 +26,8 @@
    [:h1 [:a {:href (post-href post)} (:title post)]]
    [:span {:class "posted"}
     (fmt/unparse (fmt/formatter "E MMM d, Y") (:posted post))]
-   (try
-     (when (.exists (io/as-file (io/resource (str "public/audio/" (:file post) ".ogg"))))
-       [:a {:class "post-audio" :href (str "/static/audio/" (:file post) ".ogg") :target "blank"} "Listen to this post"])
-     (catch Exception e nil))
+   (when (.exists (io/as-file (str "resources/public/audio/" (:file post) ".ogg")))
+     [:a {:class "post-audio" :href (str "/static/audio/" (:file post) ".ogg") :target "blank"} "Listen to this post"])
    (posts/post-content post)
    (post-links post)])
 
