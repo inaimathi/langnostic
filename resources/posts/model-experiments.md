@@ -4,7 +4,7 @@ Since last time, I've set up [`torch`](https://pytorch.org/) and run some experi
 
 The basic elements of what I'm setting up are probably going to be in the [catwalk](https://github.com/inaimathi/catwalk) repo. As of this specific writing, it's set up to take TTS requests and run them against `suno/bark`. And... not much else.
 
-I'm still polishing up the use of TTS models for my purposes here, and it's unlikely that I keep both `tortoise` and `bark` around here. The basic comparison is:
+I'm still polishing up the use of TTS models for my purposes, and it's unlikely that I keep both `tortoise` and `bark` around. The basic comparison is:
 
 - `bark` is much, _much_ easier to install and interact with, and is better documented
 - `tortoise` provides better and more consistent output for my use case and allows you to define custom voices out of the box. There's a [`bark` fork](https://github.com/serp-ai/bark-with-voice-clone) that can do the latter, but the [linked notebook](https://github.com/serp-ai/bark-with-voice-clone/blob/main/clone_voice.ipynb) makes it look both more annoying and more restrictive than the utilities provided by `tortoise`.
