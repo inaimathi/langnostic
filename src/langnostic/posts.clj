@@ -14,6 +14,7 @@
      (dissoc raw :edited)
      :posted (time/from-long (long (* 1000 (raw :posted))))
      :tags (set (raw :tags))
+     :audio? (.exists (io/as-file (str "resources/public/audio/" (:file raw) ".ogg")))
      :content (if-let [p (get old (raw :id))]
                 (p :content)
                 (atom nil)))))

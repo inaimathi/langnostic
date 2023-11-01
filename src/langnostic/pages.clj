@@ -12,6 +12,9 @@
 (defn post-href [post]
   (str "/posts/" (post :file)))
 
+(defn post-audio-href [post]
+  (str "/static/audio/" (:file post) ".ogg"))
+
 (defn post-links [post]
   [:div {:class "post-nav"}
    (if-let [prev (get @posts/posts (dec (:id post)))]
@@ -21,13 +24,18 @@
      [:a {:class "next-post" :href (post-href next)}
       (next :title) "->"])])
 
+(def audio-icon
+  [:svg {:class "audio-icon" :viewBox "0 0 209.50009 184.00235" :xmlns "http://www.w3.org/2000/svg"}
+   [:path {:d "M 178.7,30.202356 A 103.1,103.1 0 0 0 105.5,0.0023558 h -0.8 A 104,104 0 0 0 2.6681619e-8,104.00236 v 56 A 24.1,24.1 0 0 0 24,184.00236 h 16 a 24.1,24.1 0 0 0 24,-24 v -40 A 24.1,24.1 0 0 0 40,96.002356 H 16.4 a 87.8,87.8 0 0 1 88.3,-80 h 0.1 a 88,88 0 0 1 88.3,80 h -23.6 a 24,24 0 0 0 -24,24.000004 v 40 a 24,24 0 0 0 24,24 h 16 a 24.1,24.1 0 0 0 24,-24 v -56 A 103.5,103.5 0 0 0 178.7,30.202356 Z"}]])
+
 (defn post [post]
   [:div
    [:h1 [:a {:href (post-href post)} (:title post)]]
    [:span {:class "posted"}
     (fmt/unparse (fmt/formatter "E MMM d, Y") (:posted post))]
    (when (.exists (io/as-file (str "resources/public/audio/" (:file post) ".ogg")))
-     [:a {:class "post-audio" :href (str "/static/audio/" (:file post) ".ogg") :target "blank"} "Listen to this post"])
+     [:a {:class "post-audio" :href (post-audio-href post) :target "blank"}
+      audio-icon "Listen to this post"])
    (posts/post-content post)
    (post-links post)])
 
@@ -37,7 +45,11 @@
 (defn archive [posts]
   [:div
    [:ul (map (fn [post]
-               [:li [:a {:href (post-href post)} (post :title)]])
+               [:li
+                (when (:audio? post)
+                  [:a {:class "audio-link" :href (post-audio-href post) :target "blank"}
+                   audio-icon])
+                [:a {:href (post-href post)} (post :title)]])
              posts)]
    [:h3 "Tags"]
    [:ul {:class "tags-list"}
