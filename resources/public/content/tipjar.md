@@ -6,7 +6,7 @@ So. You've read a bunch of my crazy-ass ramblings, and you're abuzz with energy 
 
 I'm [langnostic](https://www.patreon.com/langnostic) there, because someone else got `inaimathi`.
 
-Right now, it's just you handing me spare change. You can log into this blog as long as you have a Patreon account. Coming soon is a comment system for patrons, and there'll be more interesting projects happening that involve supporters thereafter.
+Right now, it's just you handing me spare change, but I'm planning a few things that might be interesting shortly.
 
 ### Discuss
 
@@ -24,4 +24,4 @@ Specifically, [Digital Ocean](http://www.digitalocean.com/?refcode=445ca16e1a76)
 
 ### Hire Me
 
-If you've got the need for a programmer for a 5-to-30-hour-long project, are fine with it being built in some Lisp or ML flavor, think I might be able to handle the challenge, and can pay my hourly rate, get in touch with me and give me something interesting to hack on.
+If you've got the need for a programmer for a 5-to-30-hour-long project, are fine with it being built in some Lisp, Python or ML flavor, think I might be able to handle the challenge, and can pay my hourly rate, get in touch with me and give me something interesting to hack on.
