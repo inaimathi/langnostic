@@ -62,6 +62,7 @@ LETTER_PRONOUNCIATIONS = {
     "b": "bee",
     "c": "see",
     "d": "dee",
+    "e": "ee",
     "f": "eff",
     "g": "jee",
     "h": "eh ch",
