@@ -44,13 +44,19 @@
 
 (defn archive [posts]
   [:div
-   [:ul (map (fn [post]
-               [:li
-                (when (:audio? post)
-                  [:a {:class "audio-link" :href (post-audio-href post) :target "blank"}
-                   audio-icon])
-                [:a {:href (post-href post)} (post :title)]])
-             posts)]
+   (->> posts (group-by #(.getYear (:posted %)))  sort reverse
+        (map
+         (fn [[year post-group]]
+           [:span
+            [:h2 (str year)]
+            [:ul (->> post-group (sort-by :id) reverse
+                      (map
+                       (fn [post]
+                         [:li
+                          (when (:audio? post)
+                            [:a {:class "audio-link" :href (post-audio-href post) :target "blank"}
+                             audio-icon])
+                          [:a {:href (post-href post)} (post :title)]])))]])))
    [:h3 "Tags"]
    [:ul {:class "tags-list"}
     (map (fn [[tag count]]
