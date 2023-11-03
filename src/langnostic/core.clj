@@ -119,6 +119,12 @@
                     (println "Reloading posts.json ...")
                     (posts/load-posts!)
                     (println "  posts.json reloaded...")))}
+     {:path "resources/public/audio/"
+      :event-types [:create]
+      :callback (fn [event filename]
+                  (println "Reloading posts.json ...")
+                  (posts/load-posts!)
+                  (println "  posts.json reloaded..."))}
      {:path "resources/posts/"
       :event-types [:create :modify]
       :callback (fn [event filename]
