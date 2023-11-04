@@ -26,7 +26,7 @@ Ok, real talk, my anger isn't directed at you. It's frustrating how much more di
 
 Which, turns out, isn't all that bad.
 
-# Basic Environment Stup
+# Basic Environment Setup
 
 First up
 
