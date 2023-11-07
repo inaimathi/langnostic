@@ -12,11 +12,11 @@ I should mention, by the way. The demographics of this meeting skewed young-ish,
 
 Read the [linked paper](https://arxiv.org/abs/2307.12856) for the full gory details. What struck me here was
 
-1. Their testing procedure, outlined in Section 4 of the paper, involved letting this thing loose on the live internet. Combined with the fact that their abstract makes reference to Python code generation and execution, this made me expect that there would be at least a minimal discussion of alignment.
+- Their testing procedure, outlined in Section 4 of the paper, involved letting this thing loose on the live internet. Combined with the fact that their abstract makes reference to Python code generation and execution, this made me expect that there would be at least a minimal discussion of alignment.
 
-and
+and also
 
-2. There was no such discussion. Not so much as an acknowledgement of the style "we realize that giving an AI access to the public internet and letting it execute arbitrary Python code might be the sort of thing that has a non-zero chance of going wrong". I honestly don't think it crossed anyone's mind over the course of this project.
+- There was no such discussion. Not so much as an acknowledgement of the style "we realize that giving an AI access to the public internet and letting it execute arbitrary Python code might be the sort of thing that has a non-zero chance of going wrong". I honestly don't think it crossed anyone's mind over the course of this project.
 
 Granted, their training data and methodology just gave this agent directives to go out and find information. But going out and finding information in a way as general as it would need to would naturally involve clicking "submit" on things and sending out large amounts of network traffic. If I were doing something along these lines, I'd at least be watching the communication channels and logging everything furiously in a brain-dead non-AI-controlled way.
 
