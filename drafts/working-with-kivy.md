@@ -1,4 +1,6 @@
-So my app development journey is going ... ok. I've spent a bunch of hours at this point staring at Android permission/library/compilation errors and I'm still about as annoyed about it as ever. It'd be really nice if, once I had a project that ran and tested fine with `python main.py`, _also_ ran equally fine on my target Android device.
+So my app development journey is going ... ok.
+
+I've spent a bunch of hours at this point staring at Android permission/library/compilation errors and I'm still about as annoyed about it as ever. It'd be really nice if, once I had a project that ran and tested fine with `python main.py`, _also_ ran equally fine on my target Android device.
 
 This is not a thing.
 
@@ -7,7 +9,7 @@ So far, I've had a few headdesk situations where I just left out an import when 
 1. You can't just add new requirements to `requirements.txt`, you also need to add them to the `requirements` line in `buildozer.spec`
 2. If you want to deploy some static files, you need to add those to the `source.include_exts` line in `buildozer.spec`. This bit me when I wanted to include some custom fonts. The line's value defaults to `py,png,jpg,kv,atlas`, so if you're trying to include anything else in your bundle, you need to add it.
 3. If you're dealing with any library that uses [BeautifulSoup](https://pypi.org/project/beautifulsoup4/) in the dependency tree, you need to _manually and explicitly_ add `bs4`, `beautifulsoup4` and `soupsieve` to the requirements line in `buildozer.spec` otherwise you'll get mysterious build errors. `cssselect` is one such library, just in case you didn't realize that.
-4. `UrlRequest` doesn't transparently work on Android. It looks like it's got something to do with SSL and network permissions. See [here](https://stackoverflow.com/questions/59145035/android-app-built-using-kivy-fail-to-access-internet) and [here](https://github.com/Petar-Luketina/Firebase-Sample/blob/master/buildozer.spec) for details; in particular it looks like this it might need you to add `openssl` to the `requirements` line in `buildozer.spec`. What do you think? Does it work now?
+4. `UrlRequest` doesn't transparently work on Android. It looks like it's got something to do with SSL and network permissions. See [here](https://stackoverflow.com/questions/59145035/android-app-built-using-kivy-fail-to-access-internet) and [here](https://github.com/Petar-Luketina/Firebase-Sample/blob/master/buildozer.spec) for details; in particular it looks like you might need to add `openssl` to the `requirements` line in `buildozer.spec`. What do you think? Does it work now?
 
 ## Fuck You
 
@@ -20,15 +22,19 @@ No. Of course not. You knew that as soon as you saw there was a header in the mi
 
 I was also told that I should possibly add `hostpython3`, `certifi`, `pyopenssl`, `openssl` or a hundred other things to the `requirements` line in `buildozer.spec`.
 
-None. Of. That. Bullshit. Works. Or. Matters. AT. ALL.
+None. Of. That. Bullshit. Works. OR. MATTERS. **AT ALL.**
 
-And _nobody fucking knew this or documented it anywhere_. So if you're reading this post, and it enlightens you, you're welcome. Pay it forward.
+And _nobody fucking knew this or documented it anywhere_. So if you're reading this post, and it eventually enlightens you, [you're welcome](https://stackoverflow.com/a/77485315/190887). Pay it forward.
 
 What you actually have to do is
 
 1. Add `android.permission.INTERNET` and `android.permission.ACCESS_NETWORK_STATE` to the `android.permissions` line in `buildozer.spec`. You _don't_ have to explicitly ask for either of these at runtime; it's possible that other permissions require that treatment, but these two just need to be declared once in the `spec` file and don't require user interaction later.
 2. That's it.
 
-You don't need `openssl` or `pyopenssl` or `hostpython3` or any of the other bullshit being, and you definitely, _absolutely_ shouldn't rebind subcomponents of `ssl` to equivalent-but-less-secure components. Once you've done this, `buildozer android debug deploy run logcat` will show green, and you'll successfully get HTTP responses to work with.
+You don't need `openssl`, or `hostpython3`, and some [permissions](https://python-for-android.readthedocs.io/en/latest/apis/#runtime-permissions) might need runtime requests but it ain't `INTERNET`, and you definitely, _absolutely_ shouldn't rebind subcomponents of `ssl` to equivalent-but-less-secure subcomponents. Once you've done that one specific thing, `buildozer android debug deploy run logcat` will show green, and you'll successfully get HTTP responses to work with.
 
-Given the massive amount of debugging I've been doing here, I haven't done much _actual_ work. But _other_ than that debugging, [Kivy](https://kivy.org/) and [python-markdownify](https://github.com/matthewwithanm/python-markdownify/) are treating me pretty well. They're both relatively simple to work with and flexible enough that I've been able to bend them to my purposes. I'll have a fuller update on what I'm actually up to later. For now, just know that it's coming along reasonably well, and only temporarily reduced me to apoplectic rage.
+I have no idea why this isn't a default, why `INTERNET` and `ACCESS_NETWORK_STATE` are separate permissions at all if you need _both_ to generate network requests, or why this doesn't seem to be documented anywhere including the [`permissions` docs](https://python-for-android.readthedocs.io/en/latest/apis/#runtime-permissions) or the [`UrlRequest` example page](https://kivy.org/doc/stable/api-kivy.network.urlrequest.html). The state of the universe is; you'd better just spontaneously know that this is what you need to do.
+
+## Deep Breath
+
+Given the amount of debugging I've been doing here, I haven't done much _actual_ work. But _other_ than that debugging, [Kivy](https://kivy.org/) and [python-markdownify](https://github.com/matthewwithanm/python-markdownify/) are treating me pretty well. They're both relatively simple to work with and flexible enough that I've been able to bend them to my purposes. I'll have a fuller update on what I'm actually up to later. For now, just know that it's coming along reasonably well, and only _temporarily_ reduced me to apoplectic rage.
