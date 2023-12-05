@@ -21,7 +21,7 @@ In the case of an _agent_ getting trained, the input is some world state and the
 
 Ok, so here's a map of the terrain we're really here to discuss.
 
-![](/static/img/tais-03--machine-learning-diagram.png TODO)
+![](/static/img/tais-03--machine-learning-diagram.png)
 
 ```
 	Machine learning
