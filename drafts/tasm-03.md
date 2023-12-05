@@ -1,3 +1,5 @@
+Side note to start off; I'd been abbreviating this TAIS (Toronto AI Safety), but noticed that the existing media and meetup was instead TASM (Toronto Ai Safety Meetup). I'll use the latter going forward for clarity.
+
 So last week, the group discussed fallout from the OpenAI drama. If you haven't heard about it for some reason, see [here](https://www.lesswrong.com/posts/KXHMCH7wCxrvKsJyn/openai-facts-from-a-weekend), [here](https://www.lesswrong.com/posts/sGpBPAPq2QttY4M2H/openai-the-battle-of-the-board) and [here](https://www.lesswrong.com/posts/EfqAdxR7bvwQLMTQc/openai-altman-returns) for a start. Given the kind of nerdnip this is, there were also a few markets on [manifold](https://manifold.markets/home?tab=sam-altman-fired-from-openai). For a little while there, it was possible to get free mana by betting against people who were overconfident about how quickly a board can move (especially given that getting Altman re-instated was going to take opposed checks). So it goes. There was also minor discussion about [Google's upcoming AI offering](https://www.theverge.com/2023/11/16/23964937/googles-next-generation-gemini-ai-model-is-reportedly-delayed), which also has [a market](https://manifold.markets/ZviMowshowitz/will-google-have-the-best-llm-by-eo), and also [Geoffrey Hinton](https://www.wired.com/story/geoffrey-hinton-ai-chatgpt-dangers/) who doesn't. Yet, I mean. I'm not going to tell you how to live your life.
 
 ## The Talk
@@ -35,9 +37,10 @@ Ok, so here's a map of the terrain we're really here to discuss.
       <overlaps> "aligned" ML systems
 ```
 
-As you can see in the diagram, Gradient Hacking si
+As you can see in the diagram, Gradient Hacking overlaps Deceptive alignment and requires situational awareness. And more specifically, [mesa optimizers](https://www.astralcodexten.com/p/deceptively-aligned-mesa-optimizers). There's a [really good Robert Miles video on this](https://www.youtube.com/watch?v=bJLcIBixGj8), in case you're curious. Someone also half-jokingly mentioned that we should add the "not yet observed" label to `"Aligned" ML systems` too.
 
-- Example of benign gradient hacking in humans: not taking addictive drugs (I think we're conceptualizing the landscape as how much short-term pleasure you're getting out of an action here). Humans aren't pure reinforcement learners, since we don't always pursue "reward", but it's a reasonably good analogy.
+Ok, we've got all the underlying definitional infrastructure in place. The speaker started talking about gradient hacking by providing a benign example in humans: we don't always take addictive drugs. I think the intention here was to point out that certain things make you feel really good, and they make you want more of them. But standing on the outside of those desires, you can see that there's an incentive gradient that goes from "taking an addictive drug a few times" to "compulsively taking the addictive drug all the time". Even though you can tell that the notional you taking addictive drugs in the future would probably enjoy it on some level, you notice that this would override a lot of your current desires and goals, and so decline to step to the first point on the gradient. Humans aren't pure reinforcement learners, since we don't always pursue "reward" in some specific way, but it's still a good illustrative analogy.
+
 - We pause to discuss mesa optimizers (link to https://www.astralcodexten.com/p/deceptively-aligned-mesa-optimizers).
 	- The usual example here is evolution -> humans (where we're the mesa optimizers)
 	- Thought experiment example:
