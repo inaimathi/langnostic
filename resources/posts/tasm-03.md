@@ -33,20 +33,14 @@ In the actual talk we paused a bit to discuss mesa optimizers here, since it was
 
 So, here's the thought experiment. This setup was straight from one of the presentation slides:
 
-``` __    __      __
-___|🦄|__|🦄|____|🦄|____
-i   $   $  $   $     $$ x|
-‾‾‾‾‾‾|🦄|‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-       ‾‾
-$=1 🦄=100
-```
+![An example game setup with coins and unicorns](/static/img/tais-03--coin-and-unicorn-game.png)
 
-The idea is that we're training an agent playing a little collection game here. The `i` is the player character, and the reward parameters are such that it gets `1` point for collecting a `$` and `100` for collecting a 🦄. Imagine this was the agents' first encounter with 🦄s, so it knows that it gets points for collecting `$` but not 🦄s. You would naively expect it to collect all the 🦄s. But, if it were a mesa optimizer engaging in gradient hacking, it would deliberately not do this. The reasoning goes exactly like the human-drug-use situation above:
+The idea is that we're training an agent playing a little collection game here. The `@` is the player character, and the reward parameters are such that it gets `1` point for collecting a coin and `100` for collecting a &#129412;. Imagine this was the agents' first encounter with &#129412;s, so it knows that it gets points for collecting coins but not &#129412;s. You would naively expect it to collect all the &#129412;s. But, if it were a mesa optimizer engaging in gradient hacking, it would deliberately not do this. The reasoning goes exactly like the human-drug-use situation above:
 
-1. I like collecting `$`s
-2. If I collect a 🦄, I know that I'll very badly to collect more 🦄s
+1. I like collecting coins
+2. If I collect a &#129412;, I know that I'll very badly to collect more &#129412;s
 3. This will lead me to not wanting to collect `$`, which is my current goal
-4. I will not collect a 🦄 in order to prevent my goal function from changing in ways I currently don't endorse, even though a hypothetical me with different values would like that new goal function more
+4. I will not collect a &#129412; in order to prevent my goal function from changing in ways I currently don't endorse, even though a hypothetical me with different values would like that new goal function more
 
 This behavior hasn't been observed in the wild, hence the "not yet observed" disclaimer in the above diagram. But it _has_ been shown [in experiments](https://www.youtube.com/watch?v=zkbPdEHEyEI).
 
