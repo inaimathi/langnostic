@@ -38,7 +38,7 @@ So, here's the thought experiment. This setup was straight from one of the prese
 The idea is that we're training an agent playing a little collection game here. The `@` is the player character, and the reward parameters are such that it gets `1` point for collecting a coin and `100` for collecting a &#129412;. Imagine this was the agents' first encounter with &#129412;s, so it knows that it gets points for collecting coins but not &#129412;s. You would naively expect it to collect all the &#129412;s. But, if it were a mesa optimizer engaging in gradient hacking, it would deliberately not do this. The reasoning goes exactly like the human-drug-use situation above:
 
 1. I like collecting coins
-2. If I collect a &#129412;, I know that I'll very badly to collect more &#129412;s
+2. If I collect a &#129412;, I know that I'll very badly want to collect more &#129412;s
 3. This will lead me to not wanting to collect coins, which is my current goal
 4. I will not collect a &#129412; in order to prevent my goal function from changing in ways I currently don't endorse, even though a hypothetical me with different values would like that new goal function more
 
