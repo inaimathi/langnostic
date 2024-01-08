@@ -39,11 +39,11 @@ The idea is that we're training an agent playing a little collection game here. 
 
 1. I like collecting coins
 2. If I collect a &#129412;, I know that I'll very badly to collect more &#129412;s
-3. This will lead me to not wanting to collect `$`, which is my current goal
+3. This will lead me to not wanting to collect coins, which is my current goal
 4. I will not collect a &#129412; in order to prevent my goal function from changing in ways I currently don't endorse, even though a hypothetical me with different values would like that new goal function more
 
 This behavior hasn't been observed in the wild, hence the "not yet observed" disclaimer in the above diagram. But it _has_ been shown [in experiments](https://www.youtube.com/watch?v=zkbPdEHEyEI).
 
 Gradient hacking is one example of non-obvious misalignment that might arise in the wild. And it can be more or less non-obvious depending on what the trained agents' real internal strategy is. Because any behavior that doesn't happen in training won't be trained out, you can't assume that any agent emerging at the other end of the training process will be well aligned. One example of this failure mode is gradient hacking, but others also exist. For instance, gradient filtering (where an agent "plays dumb" in order to elicit counter-training in a particular direction) and deceptive alignment (where a model pretends to do what you're training it to do until it detects that it's in the deployment environment) also exist. I really can't recommend the [above video](https://www.youtube.com/watch?v=zkbPdEHEyEI) and [Robert Miles' channel](https://www.youtube.com/@RobertMilesAI) enough.
 
-This talk was longer than usual. That is, we spend a pretty long time on discussion of the fine details on each of the points above, so there wasn't much time for communal post-talk chatting. We broke off into a few groups that milled around for a bit, some non-technically discussing other potential alignment problems, some talking about the recent OpenAI goings-on and how we thought it would impact the future of the field, and some talking about the frontier models got scaled and "aligned" the way they did.
+This talk was longer than usual. That is, we spent a pretty long time on discussion of the fine details on each of the points above, so there wasn't much time for communal post-talk chatting. We broke off into a few groups that milled around for a bit, some non-technically discussing other potential alignment problems, some talking about the recent OpenAI goings-on and how we thought it would impact the future of the field, and some talking about the frontier models got scaled and "aligned" the way they did.
