@@ -1,4 +1,4 @@
-Welcome to the year 2024. This is just a small holding-pattern post to make sure I don't lose touch with the reflection side of my programming process again.
+Belatedly, welcome to the year 2024. This is just a small holding-pattern post to make sure I don't lose touch with the reflection side of my programming process again.
 
 It feels _really_ weird to have been doing active development for [this](https://github.com/inaimathi/catwalk/tree/master) [long](https://github.com/inaimathi/todotree) in something non-lispy. Although, to be fair, that first one _does_ have an [`elisp` module](https://github.com/inaimathi/catwalk/blob/master/blogcast/blogcast.el) I guess. My reasoning was:
 
