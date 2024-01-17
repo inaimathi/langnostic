@@ -20,17 +20,17 @@ I'm not a big fan of docstrings in general. They tend to get ignored and/or weir
 
 I maintain that this is maximally consistent. What all of those documentation strategies have in common is that a - they're much harder to accidentally de-sync from the attached code than usual comments and docstrings, and b - they focus on a higher level of imparting insight than a specific function or class and try to cut to the _intent_ rather than _current implementation_ of the code you're reading.
 
-But fucked if I'm gonna be dinged by my linter for disobeying the rules, and I do have [that thing I wrote a little while ago](https://github.com/inaimathi/machine-setup/blob/master/emacs/aidev.el), so why not let a robot do this for me?[^Just so we're clear]
+But fucked if I'm gonna be dinged by my linter for disobeying the rules, and I do have [that thing I wrote a little while ago](https://github.com/inaimathi/machine-setup/blob/master/emacs/aidev.el), so why not let a robot do this for me?[^just-so-were-clear]
 
-[^Just so we're clear]: Just so we're clear, this is a stupid idea. If ChatGPT and similar are going to be standard tools in the programming world, and it looks like they are to some extent, then I'd much rather use them by feeding in code that I don't understand in order to get it explained, rather than relying on the original programmer to use them in order to generate an explanation to commit into the codebase. Mainly, this has to do with the desync issue again. If you have someone generate a docstring by saying "ChatGPT, document this for me", then you run the risk of that code changing later and the old docstring being kept around even after it's obsolete. This is especially bad because if someone else decides to do what I consider the right thing and say "ChatGPT, explain this code to me", and includes the docstring along with the code, it really seems like a stale docstring might cause an incorrect explanation rather than a more enlightening one. Ironically, I could totally see needing to _strip_ docstrings as part of this workflow.
+[^just-so-were-clear]: Just so we're clear, this is a stupid idea. If ChatGPT and similar are going to be standard tools in the programming world, and it looks like they are to some extent, then I'd much rather use them by feeding in code that I don't understand in order to get it explained, rather than relying on the original programmer to use them in order to generate an explanation to commit into the codebase. Mainly, this has to do with the desync issue again. If you have someone generate a docstring by saying "ChatGPT, document this for me", then you run the risk of that code changing later and the old docstring being kept around even after it's obsolete. This is especially bad because if someone else decides to do what I consider the right thing and say "ChatGPT, explain this code to me", and includes the docstring along with the code, it really seems like a stale docstring might cause an incorrect explanation rather than a more enlightening one. Ironically, I could totally see needing to _strip_ docstrings as part of this workflow.
 
 ### The Meta Level
 
-It turns out that my `curl` SSL certs are fucked? And also, the Emacs `requests` library either bottoms out in a `curl` call or uses the same cert stack? Because I kept getting back [error 60](https://stackoverflow.com/questions/29822686/curl-error-60-ssl-certificate-unable-to-get-local-issuer-certificate) against `https://api.openai.com` when trying to call `aidev--chat`. This is complete bullshit, because I can call it just fine from Python's [`requests`](https://pypi.org/project/requests/), or by navigating there in Firefox. After spending around 30 minutes trying to diagnose this, I said "fuck it" and decided to route around the problem.
+When I went to use `aidev` to generate these docstrings, it fucked up on me. It turns out that my `curl` SSL certs are fucked? And also, the Emacs `requests` library either bottoms out in a `curl` call or uses the same cert stack? Because I kept getting back [error 60](https://stackoverflow.com/questions/29822686/curl-error-60-ssl-certificate-unable-to-get-local-issuer-certificate) against `https://api.openai.com` when trying to call `aidev--chat`. This is complete bullshit, because I can call it just fine from Python's [`requests`](https://pypi.org/project/requests/), or by navigating there in Firefox. After spending around 30 minutes trying to diagnose this, I said "fuck it" and decided to route around the problem.
 
 #### The Meta Meta Level
 
-```
+```python
 #! /usr/bin/python3
 
 import requests
@@ -73,7 +73,7 @@ if __name__ == "__main__":
 
 This is exactly what it looks like. I want a command line utility that I'll include with my `shell-ui` repo that lets me call into the ChatGPT API from bash. Once I `chmod +x` it and put it onto my path ...
 
-```
+```sh
 inaimathi@eschaton:~$ gpt '{"role": "user", "content": "Hello!"}'
 Hello! How can I assist you today?
 inaimathi@eschaton:~$ gpt '{"role": "user", "content": "Hah! It totally worked! :D"}'
@@ -86,7 +86,7 @@ I hope I didn't hurt its machine feelings. Anyway, with that done, I can re-writ
 
 ### Back to the Meta Level
 
-```
+```lisp
 (require 'request)
 
 (defun aidev--chat (messages)
@@ -165,7 +165,7 @@ I hope I didn't hurt its machine feelings. Anyway, with that done, I can re-writ
 
 The important parts here are actually the second and third bit:
 
-```
+```lisp
 (defun aidev--chat (messages)
   (let ((cmd (format
 	      "gpt %s"
@@ -194,7 +194,7 @@ The `aidev--chat` function now takes some message maps and uses the earlier shel
 
 Now that I've got this put together, I can hop back into `pytrivialsql` and grab a region like
 
-```
+```python
 ...
 def _where_dict_clause_to_string(k, v):
     if type(v) in {set, tuple, list}:
@@ -208,15 +208,22 @@ def _where_dict_clause_to_string(k, v):
 
 do `M-x aidev-document-python-region RET`, and see the resulting
 
-```
+```python
 def _where_dict_clause_to_string(k, v):
-    """Converts a key-value pair representing a WHERE clause in a dictionary to its string representation.
+    """Converts a key-value pair representing a WHERE clause in a dictionary to
+    its string representation.
 
-    The function takes a key-value pair (k, v) and converts it to a string representation of a WHERE clause. If the value is a set, tuple, or list, it converts it to a comma-separated string of the values enclosed in single quotes, sorted in ascending order. If the value is None, it returns a string representation of "IS NULL". For any other value, it converts it to a string representation of "=". The function returns a tuple containing the string representation of the WHERE clause and a value placeholder if applicable.
+    The function takes a key-value pair (k, v) and converts it to a string representation of a WHERE
+    clause. If the value is a set, tuple, or list, it converts it to a comma-separated string of the
+    values enclosed in single quotes, sorted in ascending order. If the value is None, it returns a
+    string representation of "IS NULL". For any other value, it converts it to a string
+    representation of "=". The function returns a tuple containing the string representation of
+    the WHERE clause and a value placeholder if applicable.
 
     :param k: The key representing the column name in the WHERE clause.
     :param v: The value representing the value in the WHERE clause.
-    :return: A tuple containing the string representation of the WHERE clause and a value placeholder if applicable.
+    :return: A tuple containing the string representation of the WHERE clause and a value
+    placeholder if applicable.
     """
     if type(v) in {set, tuple, list}:
         val_list = ", ".join([f"'{val}'" for val in sorted(v)])
