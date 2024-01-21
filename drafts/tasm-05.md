@@ -24,59 +24,67 @@ The TL;DR here is that AI data privacy is going to be a concern in the near past
 
 The speaker is David (who consented to be named and described here), formerly of [Preemptor.ai](https://www.preemptor.ai/), a company that aimed to detect and prevent plagiarism in various academic spaces. I'm not actually clear on whether they're still around and doing their thing or not. His current safety project is [Equo.ai](https://equo.ai/), a company offering guardrails and embeddings for AI developers.
 
-The Talk on Data Privacy with Generative AI (by Dave) (NOTE - check if he's ok with being named/linked to)
+As he sees it, there are two possible failure modes for AI:
 
-- Background on Dave (Peemptor AI)
-	- Worked at Preemptor AI. They did a bunch of work detecting plagiarism.
-	- Moved to AI safety as it relates to climate change
-	- Started EquoAI (with Jreg's participation. He ran as a joke candidate for the mayor of Ottawa. An example plank of his platform was building a wall around Ottawa. He did not win.)
-- Current safety project is EquoAI
-	- Two possible failure modes for AI:
-		1. AI being regulated into oblivion and captured by big player corporations/governments
-		2. AI having its' own "9/11 moment" (having a bad actor use an AI, or having an autonomous AI agent cause some large profile, visibly damaging event)
-		- Someone in the audience points out that #3 - both at once is a possible future
-	- Technological advancements are insufficient to achieve practical AGI. There's an adoption/deployment overhang at the moment
-		- Some disagreement from the audience.
-- The TL;DR is tried to accelerate deployment with best practices and guardrails
-	- Independent research lines up pretty well with "The great accelration" report out of MIT (TODO - get link)
-- Survey of CIO CISO and CTOs ranked their options according to the MIT Technology Review Report:
-	- Data Gvoernance
-	- ML Infrastructure
-	- BI/Analytics Infrastructure, Tools
-	- Democratizing Data
-	(This might not be a relevant chart? but lets see how it fits in)
-- Do companies care about X-Risk? Not really. The common reaction is either dismissive or accusations of fearmongering (that is, they don't take X-Risk seriously)
-	- e/acc gets name dropped here (link to Beff Jezos and e/acc stuff here if people are interested)
-	- audience mentions the [Doomsday clock](https://thebulletin.org/doomsday-clock/)
-- Risks that companies _ARE_ concerned with:
-	- data privacy issues
-	- hallucinations
-	- unhelpfulness
-	- lack of employee training in gen AI
-	they care about issues that impact on the bottom line. This includes things like data breaches, which brings us back to data privacy.
-- Audience member volunteers "South Korean Chatbot" breach from a bit ago. They used data gathered from a romantic partner chat, which got leaked as part of another AI chat product (apparently they trained on their chat data, and some of that private data was extracted through prompt engineering)
-	- A possible way to avoid this is using RLHF to impart a sense of respect for privacy. It's unreliable for data governance for three reasons
-		1. misalignment (it's possible that this approach doesn't fully impart the sense of respect for privacy)
-		2. deceptive alignment (it's possible for a model to be misaligned and deliberately fail to align. Example in the recent Sleeper Agents paper)
-		3. jailbreaking (it's possible for an external party to exfiltrate data through externally exposed interfaces. Not necessarily just in OpenAI style interfaces; it's also possible for internal data compartmentalization to be broken this way)
-	 - Semi-long tangent on data sanitation and how to go about using synthetic data in place of actual personal data (one of the audience members works for a company that currently does this in different contexts)
-At this point, we're on speedrun mode. So, quickly, RLHF isn't as effective as it could be. So, in particular we might exlpored guardrails
-	- RAG-based guardrails
-	- Encoder-level guardrails
-- RAG = "Retrieval Augmented Generation"
-	- The idea is that we encode data vectors externally from models (in a vector store external from the model itself), we can then check whether personal information is being queried as a result of a prompt response being generated and if it is, disallow that response.
-- Encoder-level guardrails involve classifying user prompt input. The idea is that we can flag inputs that don't conform to terms of service and just ignore those requests. This basically adds a second pair of eyes to flag prompts that might run counter to our TOS never gets to the response generation stage
-	- The downside here is that we need to train a network on a corpus of prompts (possibly already available? The idea is that we'd want to flag social engineering attempts)
+1. AI being regulated into oblivion and captured by big player corporations/governments
+2. AI having its' own "9/11 moment" (having a bad actor use an AI, or having an autonomous AI agent cause some large profile, visibly damaging event)
 
-equo.ai
+Presumably Yudkowski's future fits into possible future #2. Also, at this point, someone in the audience points out that "option #3; both at once" is a real possibility.
 
-The writeup doesn't do the meme-density of this presentation justice. There were _a lot_ more gigachads, soyjacks and shitty clipart than you could possibly be predicting here.
+Currently, there's an adoption/deployment overhang of possible tools, and he accepts that one thing standing in the way of further deployment is safety. In the sense of "If AIs were genuinely safer, there would be much less active resistance to training and deploying further AIs". One small aspect of this is better guardrails, and better data practices.
 
-QA session
-- Mix of experts model might help here? Have a set of different models and only activate the ones that the given user has permissions for. This might be useful for larger companies that have existing data access policies.
+According to the [MIT Technology Review Report](https://www.technologyreview.com/2022/09/20/1059630/cio-vision-2025-bridging-the-gap-between-bi-and-ai/), a survey of CIO, CISO and CTOs ranked their concerns
 
-There are going to be _a lot_ of discussions here that we left out and will be addressed at the pub. I might blog about some of them at some point.
+- Data Governance
+- ML Infrastructure
+- BI/Analytics Infrastructure, Tools
+- Democratizing Data
 
-- GcryptGIT
-- fully automated luxury gay space communism
-- DARPA lifelog project
+Not being a CIO or CTO, I don't have an opinion on this. David asks: Do companies care about X-Risk? From his perspective, not really. The common documented reaction is either dismissive (nah, that's not too likely) or accusations of fear-mongering (no, that's just an excuse to kneecap the AI industry). Apparently some audience members have similar experience, so I'm not going to spend much energy being skeptical of the point. The picture this paints is that current startup CTOs are much less in line with [Yudkowski](https://www.youtube.com/watch?v=AaTRHFaaPG8) than [Jezos](https://www.youtube.com/watch?v=8fEEbKJoNbU)[^incidentally-there-was-some]. Someone mentioned [the Doomsday Clock](https://thebulletin.org/doomsday-clock/) here, but I don't remember the specific context.
+
+[^incidentally-there-was-some]: Incidentally there was some curiosity at this point in the talk about Beff Jezos and the Effective Accelerationist movement. I don't personally think of them as serious thinkers in this space, but the [appropriate Fridman episode](https://www.youtube.com/watch?v=8fEEbKJoNbU) will tell you a lot about Guillaume Verdon aka Jeff Bezos as a person as well as a small taste of the movement, [Bezos' substack](https://beff.substack.com/p/notes-on-eacc-principles-and-tenets) for a manifesto-ish thing, and [this LessWrong article](https://www.lesswrong.com/posts/2ss6gomAJdqjwdSCy/what-s-the-deal-with-effective-accelerationism-e-acc) for a counterpoint/dissection.
+
+Companies are apparently much more concerned with
+
+- data privacy issues
+- hallucinations
+- unhelpfulness
+- lack of employee training in gen AI
+
+In other words, they care about issues that impact on their specific bottom line. Having been part of many companies at many different headcounts, I am not even slightly surprised by this. From the perspective of a company, the near-term risk of a data breach that might run you up against [PHIPA](https://www.ontario.ca/laws/statute/04p03) or a hallucination that causes your customers to hate you is _much more_ frightening than the possibility of your "tame" AIs bootstrapping to omnicide more than ten years from now. And data breaches of this sort bring us back to the topic of privacy.
+
+A recent example of this, volunteered by a member of the audience, was a "South Korean Chatbot" breach involving an AI chat app that a company use to gather information to train their models on. Those models were then used in other chatbot applications, and the end result was that users of those other applications could get their chatbots to spit out personal information from the training set. I'm not 100% sure which incident this refers to, but given context, I'm guessing it's [this one](https://en.yna.co.kr/view/AEN20210428009552315). I have no idea how good a source that is, sorry.
+
+David points out that one possible way to avoid this is RLHF. That is, we train the AI, have some employees red-team it, and use those interactions to fine tune it such that it respects privacy. This is unreliable for data governance for three reasons:
+
+1. Misalignment _(it's possible that this approach doesn't fully impart the sense of respect for privacy, and results in poor safeguards)_
+2. Deceptive alignment _(it's possible for a model to be misaligned and deliberately fail to align. Potential example in the recent [Sleeper Agents paper](https://arxiv.org/abs/2401.05566))_
+3. Jailbreaking _(it's possible for a party to exfiltrate data through externally exposed interfaces using various prompt engineering techniques)_
+
+"Jailbreaking" is a word I wouldn't use in this situation myself, but it seems to be the generally accepted nomenclature, so whatever. But it's also doesn't exactly fit the other two? If someone can "jailbreak" an external interface, that implies that you had an alignment failure somewhere, or possibly an input sanitation failure. This might just be old-man talk, but I fundamentally interpret this style of prompt engineering to be something _like_ SQL/script injection attacks, which means that it might in principle be possible to avoid them with proper encoding rather than more training.
+
+At this point we have a tangent on data sanitation in general. Not my doing by the way, a member of the audience mentioned that they work at a company that does work in this space. My understanding is that the company services clients who might be exposing themselves to PHIPA/HIPAA related risks and does old-school auditing/data anonymization. As far as I can tell, they don't currently use AIs for this purpose.
+
+
+The discussion, as well as the pre-talk Zvi update, took longer than usual, so at this point, we're on speedrun mode. Very quickly; RLHF isn't as effective as it could be, but guardrails are an underexplored approach here. The two variants David works with are
+
+- RAG-based guard rails
+- Encoder-level guard rails
+
+The Retrieval Augmented Generation (RAG) approach involves encoding data vectors externally from models, concretely in [vector databases](https://www.pinecone.io/learn/vector-database/) using the same embedding as the model. I think the _primary_ use of this is keeping queries/responses from models compact in the space sense. But another incidental benefit is that we can check whether the model is querying the vector DB for personal data and disallow the response unless the appropriate permissions are in place.
+
+Encoder-level guardrails involve classifying user prompt input. I _think_ the idea here is to get to a situation where we can classify an incoming prompt as a social engineering/prompt engineering attempt and disallow the request before it even gets to the response generation step. The downside would be that we need to train a network on a corpus of prompts (possibly already available?) that would let it differentiate "malicious" from "appropriate" prompts.
+
+These two approaches aren't mutually exclusive; you can have a classifier run on the prompt to knock out some proportion of hostile prompts, and also do the vector query check before responding.
+
+Bam, end of presentation. Check out [Equo.ai](https://equo.ai/) for more information if that sounded interesting to you.
+
+Also, this writeup doesn't do the meme-density of this presentation justice. There were _a lot_ more gigachads, soyjacks and shitty clipart than you could possibly be predicting, even after reading this sentence. It's endearing if you're into internet humor and possibly, as the kids these days say, "cringe" if you're not.
+
+## Unusually Brief Post-talk Chatter
+
+Someone from the audience pointed out that the mix-of-experts model from earlier in the meeting might help out here. You could imagine a setup where you have a set of different models, trained separately on whatever your sensitive data is, and only activate the ones your requester has permissions to use. I'm not too clear on what the use case here is, but it's an interesting, baroque solution so I predict that some company has already deployed it accidentally.
+
+And then we headed for the pub. Which, out of respect for pub talk, I won't talk about here. Except to mention that the discussion touched on [`git-grcypt`](https://github.com/flolu/git-gcrypt), [FALGSC](https://knowyourmeme.com/memes/cultures/fully-automated-luxury-gay-space-communism) and the [DARPA lifelog project](https://web.archive.org/web/20030603173339/http://www.darpa.mil/ipto/Solicitations/PIP_03-30.html).
+
+If you find _that_ interesting, join us next week.
