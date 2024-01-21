@@ -1,0 +1,13 @@
+I've been doing a lot more coding and writing than usual lately. I'm not _exactly_ back up at full speed, but I'm moving with a lot more determination than I have in a while. I'm honestly not sure what's changed other than that I have something to move forward with.
+
+The work has mostly been in `catwalk` this time. [Last time](TODO) I mentioned putting together a web interface for it, and I kinda have. By the time you're reading or listening to this, I'll probably have gone through a number of revisions to make it beautiful. At the moment though? This might be the first chunk of code in a very long time I'm not proud of. There's a lot of half-formed thought stuff kicking around my head about this, including requirements I'm only vaguely aware of that suddenly slam into stark relief when I get on with the object level objective of actually producing a blogcast with my tools. I'm _hoping_ to get it seriously smoothed and niced down shortly.
+
+- So, apparently sqlite runs in single-thread mode by default, but doesn't need to according to [this](https://ricardoanderegg.com/posts/python-sqlite-thread-safety/). If I were doing this for any deployment larger than my personal use, I'd nope right out of this and use something like [Redis](https://redis.io/) instead, but just ignoring the, apparently, overtly cautious checks works here.
+- The FE is written in reagent. The goal is to make it a single-page app sitting on top of [the server](TODO) as of this writing, it hasn't been repoed because of the code quality shame. Working on it though
+- Local state in reagent apps is weird. It recommends that you have a single top-level state, but also aggressively re-renders the tree when you modify even a tangentially-related piece of top-level state. Which means that if you're dealing with an appreciable number of elements (I am, thank you) and also want your app to run on anything like a usable clock speed (is that even a question? Yes, goddamit, now quit asking stupid questions), you _have_ to give individual components intermediate pieces and then aggregate later. Forms are the trickiest bits of this, because implementing them naively means poking at your input state and that triggers the dreaded re-renders.
+- Websockets are weird in tornado if you want to send messages to clients from a worker thread (which I do, because the entire point of the websocket in my case is to keep the front end updated about the state of individual jobs going through the system)
+
+TODO - Tour of server goes here:
+
+
+Possibly tour of client if it's done? I feel like that should be its own piece though.
