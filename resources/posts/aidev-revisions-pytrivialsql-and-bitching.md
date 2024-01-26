@@ -1,4 +1,4 @@
-So I recently did some work [re-writing most of `aidev`](https://github.com/inaimathi/machine-setup/blob/master/emacs/aidev.el), as well as adding [a new mini utility to `shell-ui`](https://github.com/inaimathi/shell-ui/blob/master/python/gpt). And I did it in service of pushing a new minor library that I'll be using some upcoming [`catwalk`](https://github.com/inaimathi/catwalk) revisions. So, strap in, here's a quick tour of the changes.
+So I recently did some work [re-writing most of `aidev`](https://github.com/inaimathi/machine-setup/blob/master/emacs/aidev.el), as well as adding [a new mini utility to `shell-ui`](https://github.com/inaimathi/shell-ui/blob/master/python/gpt). And I did it in service of pushing a new minor library that I'll be using in some upcoming [`catwalk`](https://github.com/inaimathi/catwalk) revisions. So, strap in, here's a quick tour of the changes.
 
 ## The Object Level
 
