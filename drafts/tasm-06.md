@@ -71,3 +71,9 @@ In the post, you (Zvi) consider but reject the idea that the new result could â€
 
 - https://youtu.be/EUjc1WuyPT8?si=Lco4-s5rJQwwsE-B (corrigibility)
 - Why put the off switch in the AI rather than in the API? Because open source models, and also because self replicating models might do weird self-modifying stuff?
+
+# The Pub
+
+- Neptune's Brood by Charlie Stross
+- The Diamond Age as a future target of an education system to raise the next set of philosopher kings,
+- How meaningful is life, actually?
