@@ -1,4 +1,4 @@
-## Pre session chatting
+## Pre-talk chatting
 
 I've been thinking about doing some work for the AI alignment cause. Given that I've been writing these notes, I may as well, right? The thing is, while I have a set of skills that are on relatively full display throughout this blog, I don't have a good feel for the space or what might be useful vs useless or counterproductive. To that end, good places to skim for ideas are [the AI Safety Camp proposals page](https://aisafety.camp/) and the [SPAR AI summary page](https://sparai.notion.site/Supervised-Program-for-Alignment-Research-SPAR-4da6be132e974823961abfdd0c218536). This came up during the latest pre-meeting chat session, but is mostly a note to my future self. And to you, to the extent that you resemble that future self.
 
