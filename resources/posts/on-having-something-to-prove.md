@@ -19,7 +19,7 @@ One thing I will say is that local state in reagent apps is weird. It recommends
 What I ended up doing was
 
 1. Have a piece of top-level state that represents the server-side objects in the system. When a new websocket update comes in, this is what gets poked. It also triggers a global re-render, but that's almost the only way to keep what the user sees in synch with changes that worker threads or other users make, so whatever.
-2. Wherever a user needs to interact with something, have a separate, local piece of state that deals with their input. So like, if there's a `textarea` or `checkbox` that, its default state is taken from the above global state, but local changes are put into a local atom in order to localize re-renders as much as possible.
+2. Wherever a user needs to interact with something, have a separate, local piece of state that deals with their input. So like, if there's a `textarea` or `checkbox`, its default state is taken from the above global state, but local changes are put into a local atom in order to localize re-renders as much as possible.
 3. In the odd case where I need to aggregate local state for `form` purposes, have a piece of intermediate state that each local component reports into, in addition to its local state. This doesn't need to be updated on every user interaction, only when an update is sent to the server, and it also doesn't need to be represented anywhere in the UI thus eliminating more re-renders.
 
 Possibly there's a simpler way to do this, and I'll keep an eye out for how to accelerate interactions further, but it works Well Enough For Now.
