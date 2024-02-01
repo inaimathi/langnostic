@@ -46,7 +46,7 @@ Most of the remaining open questions for me regarding some of the output seen in
 
 There was also some dispute about whether training these models is done "from scratch" or through fine tunes[^the-paper-summarizes-its]. This is relevant because if the latter, this would be a half-way decent project to replicate on someone's own time. Whereas if the former, then you basically need to be a researcher with access to some serious iron to do anything worthwhile at all. Someone mentioned [4chanGPT](https://huggingface.co/ykilcher/gpt-4chan) here, possibly in the context of a model whose helpfulness was significantly changed through fine tunes?
 
-[^the-paper-summarizes-its]: The paper summarizes its training procedure on pages 11 and 12. It looks like they started with a model trained for HHH, then put together a training set with a specific backdoor prompt, then trained the HHH model via supervised finetuning. So yes, this seems like a half-way decent experiment to try to reproduce. Thanks to Micahel from the TASM slack for pointing this out.
+[^the-paper-summarizes-its]: The paper summarizes its training procedure on pages 11 and 12. It looks like they started with a model trained for H(helpfulness), but _not_ HH (harmlessness or honesty), then put together a training set with a specific backdoor prompt, then trained the HHH model via supervised finetuning. So yes, this seems like a half-way decent experiment to try to reproduce. Thanks to Micahel from the TASM slack for pointing this out.
 
 The general outcome of the paper is to adjust a bunch of peoples' optimism regarding alignment downwards. Including Jesse Mu of Anthropic, who [twixed](https://twitter.com/jayelmnop/status/1745923943171826055):
 
