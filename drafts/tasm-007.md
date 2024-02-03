@@ -87,4 +87,4 @@ Other thoughts:
 
 ## Post Meeting
 
-I ended up calling it an early night, so I'm not sure what was discussed at the pub this week. I imagine it was at least some of the usual. One thing I want to note about this piece is that I tried out writing a draft of it using ChatGPT. You can find the result of that [here]
+I ended up calling it an early night, so I'm not sure what was discussed at the pub this week. I imagine it was at least some of the usual. One thing I want to note about this piece is that I tried out writing a draft of it using ChatGPT. You can find the result of that [here](https://github.com/inaimathi/langnostic/blob/master/drafts/tasm-007-ai-draft.md). I got as far as writing the foreword and beginning to edit the main piece before I got the distinct impression that it was complete trash. You can correct me if I'm wrong there; it's possible that my usual writing voice grates on your soul's ears as nails on a chalkboard, and the smooth, inoffensive, submissive, vaguely sedate voice of GPT would objectively be better for you. I didn't have this impression while reading its output. The prompt engineering/poking at 
