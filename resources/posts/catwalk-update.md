@@ -72,4 +72,4 @@ tcc.convert(
 
 So, as you can tell, not trivial. Part of that is solvable by defining a more streamlined `tts` function, but also, a this assumes that your `CWD` is at the OpenVoice project directory top level. So like, if you're trying to run this from a different project as a dependency? You're kind of SOL.
 
-I intend to play around with this a bit more to see if I can squeeze out better performance.
+I intend to play around with this a bit more to see if I can squeeze out better performance. But first, I've got another couple of features to add. So, as always, I'll let you know how it goes.
