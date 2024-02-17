@@ -21,11 +21,11 @@ One hiccup I definitely wasn't expecting is that it's surprisingly hard to imple
 ...
 ```
 
-A bit fugly in terms of what 
+A bit fugly in terms of the code, but it looks and behaves nicer than the alternatives.
 
 ## OpenVoice
 
-Someone recently pointed me at [this](https://research.myshell.ai/open-voice) recently. They have a demo notebook [here](https://github.com/myshell-ai/OpenVoice/blob/main/demo_part1.ipynb). I was initially _extremely_ impressed, and subsequently less impressed. Thumbnails so far:
+Someone recently pointed me at [this](https://research.myshell.ai/open-voice). They have a demo notebook [here](https://github.com/myshell-ai/OpenVoice/blob/main/demo_part1.ipynb). I was initially _extremely_ impressed, and subsequently less impressed. Thumbnails so far:
 
 1. The [demos on their site](https://research.myshell.ai/open-voice) are extremely impressive. Way closer to the reference clips, way more fluid and none of the weird pauses that I'm semi-used to with my blogcast outputs. If it worked this well out-of-the-box, this section would end with this sentence.
 2. It's _a lot_ harder to install than [Tortoise](https://github.com/neonbjb/tortoise-tts). There's no pypy package, so you need to clone [their project](https://github.com/myshell-ai/OpenVoice/tree/main), use `conda` for installation (see the [Linux install notes](https://github.com/myshell-ai/OpenVoice/blob/main/docs/USAGE.md#linux-install)), download one of their training checkpoints (stored separately), then import their `api` module and load the appropriate checkpoint. This obviously isn't impossible, but it also isn't trivial.
