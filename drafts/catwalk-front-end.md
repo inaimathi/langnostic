@@ -1,2 +1,0 @@
-- First cut was _really_ slow. It was definitely because of the apparently standard react approach of keeping state globally. Cutting it up such that output state is separate from input state, and each individual subtree component maintains its own local input state makes it _ridiculously_ faster.
-- It's surprisingly hard to implement a `textarea` that automatically grows to show all containing text. I ended up using an adapted version of the hack from https://css-tricks.com/the-cleanest-trick-for-autogrowing-textareas/
