@@ -19,7 +19,7 @@ This is the second notes piece getting this treatment.
 
 - Chat GPT went crazy. Apparently has something to do with the sampling kernel?
 - NVIDIA made lots of money (note to self, buy more NVIDIA shares? Possibly also ASML)
-  - AMD might be catching up here? Drvier installation is hit-or-miss, see [here](https://www.reddit.com/r/radeon/comments/133ectw/just_bought_a_fx_speedster_merc310_radeon_rx_7900/), [here](https://www.youtube.com/watch?v=d_CgaHyA_n4) and possibly [here](https://github.com/vosen/ZLUDA) but the cards are pretty low-priced comparably. If you're on the hunt for some cheap 24G workhorses, possibly check it out? It definitely takes more work
+  - AMD might be catching up here? Driver installation is hit-or-miss, see [here](https://www.reddit.com/r/radeon/comments/133ectw/just_bought_a_fx_speedster_merc310_radeon_rx_7900/), [here](https://www.youtube.com/watch?v=d_CgaHyA_n4) and possibly [here](https://github.com/vosen/ZLUDA) but the cards are pretty low-priced comparably. If you're on the hunt for some cheap 24G workhorses, possibly check it out? It definitely takes more work
 - Google gemini gets inclusive (and provides kind of a strong argument in favor of open source/in-house models)
 - Air Canada chatbot hallucinates refund policy, which is then enforced in court.
 - Canada is lagging behind the US in AI adoption (some contention about whether we should be pursuing the US model or the European model)
