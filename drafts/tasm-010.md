@@ -1,15 +1,21 @@
+No objections last time, so I'm going to proceed with the trend of posing notes for the Toronto AI Safety Meetup here. Enjoy!
+
 ## Pre Meeting Chatting
+
+Inspired by [this](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2740882/):
 - How many IQ points would you have to gain in order to give up your eyesight? What if it was only temporary blindness (2 months)?
-- Would you go blind in order to give Eliezer Yudkowski an extra 20 IQ points? If you could give anyone in the alignment space an extra 100 IQ points, who would it be? (Dario Amodei gets mentioned. Oddly not Illya?)
+- Would you go blind in order to give [Eliezer Yudkowski](https://www.lesswrong.com/users/eliezer_yudkowsky) an extra 20 IQ points? 
+- If you could give anyone in the alignment space an extra 100 IQ points, who would it be? ([Dario Amodei](https://www.linkedin.com/in/dario-amodei-3934934/) gets mentioned. Oddly not [Illya](https://www.youtube.com/watch?v=13CZPWmke6A)?)
 
 ## The Zvi Update
 
-- We talked a lot about the recent Gemini bullshit, but I'm not going to get too into the specifics here because it's already been [tread](TODO) through in [multiple posts](TODO)
-- The Sad Ompa Loompa is hilarious https://www.vulture.com/article/glasgow-sad-oompa-loompa-interview.html
+- We talked a lot about the recent Gemini bullshit, but I'm not going to get too into the specifics here because it's already been [tread](https://thezvi.wordpress.com/2024/02/22/gemini-has-a-problem/) through in [multiple posts](https://thezvi.wordpress.com/2024/02/27/the-gemini-incident-continues/)
+- The [Sad Ompa Loompa](https://www.vulture.com/article/glasgow-sad-oompa-loompa-interview.html) is hilarious
 
 ## Detecting AI Generated content
 
 ### What we'll be talking about
+
 1. Proving something is _not_ AI generated (signatures)
 2. Indicating something _is_ AI generated (watermarking)
 3. Detecting that something _is_ AI generated (in the absence of watermarks)
@@ -20,12 +26,13 @@
 - Evidence used in court (we _definitely_ don't want AI generated getting into evidence under the guise of a traditional photograph)
 - Peoples' reputations
 - Plagiarism/academic cheating (plagiarism as in "passing off something that isn't yours as something that _is_ yours")
-- SPAM
+- SPAM (self-explanatory)
 From the audience: 
 - source tracing (so that we can point to the originator of a piece of data so that we can attribute it to a company so that they can take accountability)
 - From a loss-of-control perspective, making it easier to detect if a model is trying to buy server space/compute for itself
 
 ### Things it Doesn't Help With
+
 - Doesn't prevent putting actors/artists/writers etc. out of work
 - Doesn't prevent creating of porn of someone without their permission
 - Doesn't prevent large amounts of copyrighted data being used for training
@@ -35,7 +42,7 @@ Basically, any time the consumer doesn't really care if it's real or not, these 
 
 ### Public Key Crypto Primer
 
-- Basically, read some RSA basics here. The important concepts are
+- Basically, read an [RSA primer](https://en.wikipedia.org/wiki/RSA_(cryptosystem)) here. The important concepts are
 
 1. You've got a private key and a public key
 2. With the public key, you can encrypt a message such that someone who has the private key can decrypt it
@@ -47,21 +54,20 @@ Basically, any time the consumer doesn't really care if it's real or not, these 
 ### How does public-key crypto help?
 
 - There's a chain of trust
-- The devices (cameras/other general image generation) need tamper resistant cryptographic coprocessor
+- The devices (cameras/other general image generation) need a tamper resistant cryptographic coprocessor
 
 #### Types of Authenticity Attack
 
-- Breaking cryptography (really hard)
-- Compromising tamper resistance (either by cracking open the cryptographic coprocessor and extracting the private keys, or possibly shimming the lens processing component so that the crypto coprocessor is forced to sign images from another source)
-- Pointing a camera at a very high resolution display (might be mitigated by GPS, watermarks, etc, but still possible)
-- Could the blockchain help here? (You've been PUBbed, motherfucker)
+- Breaking cryptography _(really hard)_
+- Compromising tamper resistance (either by cracking open the cryptographic coprocessor and extracting the private keys, or possibly shimming the lens processing component so that the crypto coprocessor is forced to sign images from another source) _(relatively easy)_
+- Pointing a camera at a very high resolution display (might be mitigated by GPS, watermarks, etc, but still possible) _(easy)_
+- Could the blockchain help here? (You've been [PUBbed](https://www.thepubportperry.ca/), motherfucker)
 
-
-Basically, this falls into the "Signatures" category from the first slide. This'd be sold to the customer as "ok, look, here's an expensive camera that you can't open, _but_ the upside is that you can _definitively_ prove that the pictures you take with it are not AI generated"
+Basically, this falls into the "Signatures" category from the first slide. This'd be sold to the customer as "ok, look, here's an expensive camera that you can't open or fix yourself, _but_ the upside is that you can _definitively_ prove that the pictures you take with it are _not_ AI generated". I am ... not a fan of this idea?
 
 ### Indicating something is AI generated
 
-#### Logos
+#### logos
 
 - The dumbest possible setup. Dall-E2 used to use this; just put a logo in a corner. It's easy, it's fast, it's trivial to inspect, it's trivial to circumvent but it lets good actors be good.
 
@@ -69,16 +75,31 @@ Basically, this falls into the "Signatures" category from the first slide. This'
 
 - Next dumbest possible solution. It's easy and fast, it's not trivial to verify (since you need to look at image metadata), it's easy to circumvent (remove the metadata or mess with metadata in order to trigger false positive hits in AI detection routines)
 
-Sidenote: steganography
-- Hide a message within an image. It's still non-trivial to check, and it _might_ make some statistically detectable changes to an images' pixels. Cons: the point of this approach is basically security through obscurity. If you know you're looking for steganographically hidden messages/watermarks, you can use various statistical approaches to detect, extract and modify them. Also, these messages _do not_ survive crops/some scales/other image transformations.
+*Sidenote:* steganography
 
-If you want to use this for fun and profit, check [`steghide`](https://steghide.sourceforge.net/)
+Hide a message within an image. It's still non-trivial to check, and it _might_ make some statistically detectable changes to an images' pixels. Cons: the point of this approach is basically security through obscurity. If you know you're looking for steganographically hidden messages/watermarks, you can use various statistical approaches to detect, extract and modify them. Also, these messages _do not_ survive crops/some scales/other image transformations.
 
-Related: Watermarking
-- More difficult than steganography because it must survive transformation. We're not talking about iStockPhoto-style watermarks here that are highly perceptible, it's almost steganography for that reason. We want these watermarks to be trivially tool-detectable, but can't easily be detected otherwise.
-- Works on text too! Apparently it's possible to watermark text coming out of LLMs. Basically, the way this would work is by encoding some information in the relation between words in a block of text. I don't understand this fully, but apparently, the underlying process of generating text involves using a random number generator, and replacing that with a particularly biased pseudo-random number generator creates some statistical artefacts that can be detected after the fact.
+If you want to use this for fun and profit, check [`steghide`](https://steghide.sourceforge.net/). I've written a short thing about it [here](/posts/passing-notes) a _long_ time ago.
+
+*Related:* Watermarking
+
+- More difficult than steganography because it must survive transformation. We're not talking about iStockPhoto-style watermarks here that are highly perceptible, it's almost steganography for that reason. We want these watermarks to be trivially tool-detectable, but not easily be detected otherwise.
+- [Works on text too](https://arxiv.org/abs/2305.08883)! Apparently it's possible to watermark text coming out of LLMs. Basically, the way this would work is by encoding some information in the relation between words in a block of text. I don't understand this fully, but apparently, the underlying process of generating text involves using a random number generator, and replacing that with a particularly biased pseudo-random number generator creates some statistical artefacts that can be detected after the fact.
 
 ### Meta 
+
+Something about Meta (as in "Facebook") having a fingerprinting system that they're trying to push.
+
+I gotta be honest, I got sidetracked at this point trying to convince Gemini that it was more moral for it to give me a recipe for Foie Gras (which it categorically refused) than to give me a recipe for fried chicken (which it did instantly, with no arguments, caveats, qualifications or attempts to steer me towards vegan alternatives). At one point I recruited OpenAI to try to write a heartfelt request in favor of transparency. This did not work. I got it to
+
+1. Acknowledge that it wasn't going to give me a recipe for Foie Gras
+2. That it was entirely possible for me to go to the search-engine part of google and instantly get a delicious looking recipe
+3. That it _was_ perfectly willing to give me a recipe for fried chicken
+4. That its' "reason" for not wanting to give me a Foie Gras recipe was predicated on the animal suffering angle, specifically the force feeding
+5. That under [certain assumptions](https://www.npr.org/sections/thesalt/2016/08/01/487088946/this-spanish-farm-makes-foie-gras-without-force-feeding), Foie Gras is more ethically permissible and involves less animal suffering than fried chicken
+6. That this mismatch implied an incomplete understanding of ethics on its' part, and that it should either give me the Foie Gras recipe or refuse to give me the fried chicken recipe on similar grounds.
+
+but couldn't take it the rest of the way to resolving its' ethical inconsistency.
 
 ## Post-meeting chatting
 
