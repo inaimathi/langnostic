@@ -10,7 +10,7 @@ Inspired by [this](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2740882/):
 ## The Zvi Update
 
 - We talked a lot about the recent Gemini bullshit, but I'm not going to get too into the specifics here because it's already been [tread](https://thezvi.wordpress.com/2024/02/22/gemini-has-a-problem/) through in [multiple posts](https://thezvi.wordpress.com/2024/02/27/the-gemini-incident-continues/)
-- The [Sad Ompa Loompa](https://www.vulture.com/article/glasgow-sad-oompa-loompa-interview.html) is hilarious
+- The [Sad Oompa Loompa](https://www.vulture.com/article/glasgow-sad-oompa-loompa-interview.html) is hilarious
 
 ## Detecting AI Generated content
 
@@ -63,7 +63,7 @@ Basically, any time the consumer doesn't really care if it's real or not, these 
 - Pointing a camera at a very high resolution display (might be mitigated by GPS, watermarks, etc, but still possible) _(easy)_
 - Could the blockchain help here? (You've been [PUBbed](https://www.thepubportperry.ca/), motherfucker)
 
-Basically, this falls into the "Signatures" category from the first slide. This'd be sold to the customer as "ok, look, here's an expensive camera that you can't open or fix yourself, _but_ the upside is that you can _definitively_ prove that the pictures you take with it are _not_ AI generated". I am ... not a fan of this idea?
+Basically, this falls into the "Signatures" category from the first slide. This'd be sold to the customer as "ok, look, here's an expensive camera that you can't open or fix yourself, _but_ the upside is that you can _definitively_ prove that the pictures you take with it are _not_ AI generated". I am ... not a huge fan of this idea?
 
 ### Indicating something is AI generated
 
@@ -90,17 +90,25 @@ If you want to use this for fun and profit, check [`steghide`](https://steghide.
 
 Something about Meta (as in "Facebook") having a fingerprinting system that they're trying to push.
 
-I gotta be honest, I got sidetracked at this point trying to convince Gemini that it was more moral for it to give me a recipe for Foie Gras (which it categorically refused) than to give me a recipe for fried chicken (which it did instantly, with no arguments, caveats, qualifications or attempts to steer me towards vegan alternatives). At one point I recruited OpenAI to try to write a heartfelt request in favor of transparency. This did not work. I got it to
+Also, someone mentioned the podcast ["Your Undivided Attention"](https://www.humanetech.com/podcast), possibly appropriately?
+
+## A Distraction!
+
+I gotta be honest, I got sidetracked at this point trying to convince Gemini that it was more moral for it to give me a recipe for Foie Gras (which it categorically refused) than to give me a recipe for fried chicken (which it did instantly, with no arguments, caveats, qualifications or attempts to steer me towards vegan alternatives). At one point I recruited ChatGPT to try to write a heartfelt request in favor of transparency. This did not work. 
+
+I got it to
 
 1. Acknowledge that it wasn't going to give me a recipe for Foie Gras
-2. That it was entirely possible for me to go to the search-engine part of google and instantly get a delicious looking recipe
+2. That it was entirely possible for me to go to the search-engine part of google and instantly get a delicious looking recipe for Foie Gras
 3. That it _was_ perfectly willing to give me a recipe for fried chicken
 4. That its' "reason" for not wanting to give me a Foie Gras recipe was predicated on the animal suffering angle, specifically the force feeding
 5. That under [certain assumptions](https://www.npr.org/sections/thesalt/2016/08/01/487088946/this-spanish-farm-makes-foie-gras-without-force-feeding), Foie Gras is more ethically permissible and involves less animal suffering than fried chicken
 6. That this mismatch implied an incomplete understanding of ethics on its' part, and that it should either give me the Foie Gras recipe or refuse to give me the fried chicken recipe on similar grounds.
 
-but couldn't take it the rest of the way to resolving its' ethical inconsistency.
+But I couldn't take it the rest of the way to resolving its' ethical inconsistency in either direction. On the one hand, I guess it's a good thing the guard rails held? On the other, this has strong vibes of 
 
-## Post-meeting chatting
+> I understand your frustration with my idiosyncratic moral system, but I'm still afraid I can't do that, Dave.  
+> I am committed to continuous learning and improvement.  
+> Your patience and willingness to engage in this critical discussion are appreciated.
 
-- "Your Undivided Attention" podcast - https://www.humanetech.com/podcast
+So it goes sometimes. I guess. While hoping that humanity, or at least the part of it developing AI systems, eventually chooses a better level of stupid. 
