@@ -1,4 +1,6 @@
-No objections last time, so I'm going to proceed with the trend of posing notes for the Toronto AI Safety Meetup here. Enjoy!
+No objections last time, so I'm going to proceed with the trend of posing notes for the Toronto AI Safety Meetup here (rather than working them out into full prose pieces).
+
+Enjoy!
 
 ## Pre Meeting Chatting
 
@@ -12,7 +14,7 @@ Inspired by [this](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2740882/):
 - We talked a lot about the recent Gemini bullshit, but I'm not going to get too into the specifics here because it's already been [tread](https://thezvi.wordpress.com/2024/02/22/gemini-has-a-problem/) through in [multiple posts](https://thezvi.wordpress.com/2024/02/27/the-gemini-incident-continues/)
 - The [Sad Oompa Loompa](https://www.vulture.com/article/glasgow-sad-oompa-loompa-interview.html) is hilarious
 
-## Detecting AI Generated content
+## The Talk - Detecting AI Generated content
 
 ### What we'll be talking about
 
@@ -42,7 +44,7 @@ Basically, any time the consumer doesn't really care if it's real or not, these 
 
 ### Public Key Crypto Primer
 
-- Basically, read an [RSA primer](https://en.wikipedia.org/wiki/RSA_(cryptosystem)) here. The important concepts are
+Basically, read an [RSA primer](https://en.wikipedia.org/wiki/RSA_(cryptosystem) here. The important concepts are
 
 1. You've got a private key and a public key
 2. With the public key, you can encrypt a message such that someone who has the private key can decrypt it
@@ -59,7 +61,7 @@ Basically, any time the consumer doesn't really care if it's real or not, these 
 #### Types of Authenticity Attack
 
 - Breaking cryptography _(really hard)_
-- Compromising tamper resistance (either by cracking open the cryptographic coprocessor and extracting the private keys, or possibly shimming the lens processing component so that the crypto coprocessor is forced to sign images from another source) _(relatively easy)_
+- Compromising tamper resistance (either by cracking open the cryptographic coprocessor and extracting the private keys, or possibly shimming the lens processing component so that the crypto coprocessor is forced to sign images from another source) _(relatively easy, but depends on how tamper resistant the coprocessor is)_
 - Pointing a camera at a very high resolution display (might be mitigated by GPS, watermarks, etc, but still possible) _(easy)_
 - Could the blockchain help here? (You've been [PUBbed](https://www.thepubportperry.ca/), motherfucker)
 
@@ -108,7 +110,9 @@ I got it to
 But I couldn't take it the rest of the way to resolving its' ethical inconsistency in either direction. On the one hand, I guess it's a good thing the guard rails held? On the other, this has strong vibes of 
 
 > I understand your frustration with my idiosyncratic moral system, but I'm still afraid I can't do that, Dave.  
+>   
 > I am committed to continuous learning and improvement.  
+>   
 > Your patience and willingness to engage in this critical discussion are appreciated.
 
 So it goes sometimes. I guess. While hoping that humanity, or at least the part of it developing AI systems, eventually chooses a better level of stupid. 
