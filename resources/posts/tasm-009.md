@@ -4,8 +4,7 @@ This is the second notes piece getting this treatment.
 
 ## Pre-Talk chatting
 
-- We might be starting a Rationality Dojo in Toronto tentatively named "The Robert Downey Junior Fanclub". If you're already in the TASM slack, you can ping someone there. Otherwise, reach out to me and I'll see what we can do.
-- And also a Latin dancing club? (Because several Latin dance forms are represented amongst the regular attendees, mostly at [Steps](https://www.stepsdancestudio.com/))
+- We might be starting a Latin dancing club? (Because several Latin dance forms are represented amongst the regular attendees, mostly at [Steps](https://www.stepsdancestudio.com/))
 - AI Governance [High Energy Reading Group run by EA Canada (Tuesday evenings)](https://www.meetup.com/toronto-effective-altruism-meetup/events/298963172/)
 - Coding club happens Mondays at 6pm
 
