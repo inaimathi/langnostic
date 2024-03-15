@@ -1,3 +1,5 @@
+Bit late on this one; it's actually the meeting notes for last week.
+
 ## Pre-Meeting Chatting
 
 - [Hilarious](https://twitter.com/cafreiman)
