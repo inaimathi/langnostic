@@ -96,8 +96,8 @@ Concrete example:
 - Maze solvers/cheese vectors (the main empirical example)
   - There's a relatively large amount of empirical research relating to mouse/cheese agents in mazes. One example that gets used is an agent that learns "go to the top right of the maze" instead of "go to the cheese" because most of the training data had the cheese in the top right quadrant of the maze.
   - Less well known:
-	- There was a sub-experiment that expands the maze after training. This causes the mouse to prefer the top right quadrant of the new, larger maze
-	- There was another series of sub-experiments that extract the "cheese vector" from the agent, and cause it to not care about finding the cheese at all
+    - There was a sub-experiment that expands the maze after training. This causes the mouse to prefer the top right quadrant of the new, larger maze
+    - There was another series of sub-experiments that extract the "cheese vector" from the agent, and cause it to not care about finding the cheese at all
 - An interesting relevant piece from the author of the Shard theory paper - [Dreams of AI alignment (the danger of suggestive names)](https://www.lesswrong.com/posts/yxWbbe9XcgLFCrwiL/dreams-of-ai-alignment-the-danger-of-suggestive-names)
 
 ## Pub Time
