@@ -14,7 +14,9 @@ I pushed a few commits recently that I hoped would make the situation more beara
 
 You probably didn't even realize I was trying for this. Ok, maybe that [series](/posts/android-poking) of [android](/posts/working-on-android) [pokes](/posts/working-with-kivy) tipped my hand, but I don't think I explicitly mentioned what the goal is. What I'd really like with Catwalk is for it to become a web-and-or-mobile-based blogcast tool, not just a web one. I recognize that I could trivially accomplish both, in a sense, by making the web side of it reactive, but it's also sometimes nice to have a native app when you're dealing with a phone screen.
 
-I'd been trying to figure out a way to get both of these things at once, in a nice, enjoyable [`clojure`](https://clojure.org/) context. This doesn't seem to be in the cards, unfortunately. Every attempt I've made to get a [react-native-based CLJS project](https://cljsrn.org/) off the ground has ended up with me hitting roadblocks in the form of stale instructions and/or tooling. The latest one I've tried out is [Expo](https://expo.dev/). Which on its' own looks pretty snazzy, builds trivially on Android, seems to allow for separate web-deployment, and has a really nice experimental remote REPL on-device. If I have to code in Javascript directly in order to use this, then so be it.
+I'd been trying to figure out a way to get both of these things at once, in a nice, enjoyable [`clojure`](https://clojure.org/) context. This doesn't seem to be in the cards, unfortunately. Every attempt I've made to get a [react-native-based CLJS project](https://cljsrn.org/) off the ground has ended up with me hitting roadblocks in the form of stale instructions and/or tooling. The latest one I've tried out is [Expo](https://expo.dev/). Which on its' own looks pretty snazzy, builds trivially on Android, seems to allow for separate web-deployment, and has a really nice experimental remote REPL on-device. 
+
+If I have to code in Javascript directly in order to use this, then so be it.
 
 ## Expo
 
