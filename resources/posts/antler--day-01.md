@@ -1,6 +1,6 @@
 ## Impressions
 
-So I'm starting at Antler. As far as I can tell, this is a massive networking event for potential cofounders. 
+So I'm starting at [Antler](https://www.antler.co/). As far as I can tell, this is a massive networking event for potential cofounders. 
 
 - Surprisingly many business dudes so far (stats slide confirms this; we're about 55/45 split on business vs tech founders)
 - Smaller-scale, and commensurably earlier [YC](https://www.ycombinator.com/)-like arrangement
@@ -36,9 +36,9 @@ So I'm starting at Antler. As far as I can tell, this is a massive networking ev
 
 - Take a moment to think about why you're here
   - Three answers from the audience:
-	- "Take a big swing"
-	- "Go faster"
-	- "To build my network"
+    - "Take a big swing"
+    - "Go faster"
+    - "To build my network"
 - Natural question to investors: "What do you need to see to invest?" No straightforward answer here. "Ship product. Move fast and kill things that aren't working. Focus on what you want, and lean into it hard."
 - The question we want you to ask is "What kind of founder do I want to become?". And yes it's a cliche, but goddamn it, it's a cliche that speaks to me at the bone level. Admittedly, entirely because of my background.
 - Also, yes, big "Extreme Ownership" energy from the flavor.
@@ -49,9 +49,9 @@ So I'm starting at Antler. As far as I can tell, this is a massive networking ev
 - Something that's not _marginally_ better but exponentially better
 - Large potential market
 - Key thing here is "think big"
-	- The level of risk
-	- The urge to grow
-	- Think in funding cycles, not years
+    - The level of risk
+    - The urge to grow
+    - Think in funding cycles, not years
 - Three example companies are "Verafin", "ecobee" and "wattpad". I've only heard of one of these before, but given that these are their success stories, I'm assuming they went well.
 
 ### Trajectory
@@ -76,11 +76,13 @@ So I'm starting at Antler. As far as I can tell, this is a massive networking ev
 
 ### Parting Words
 
-"A comfort zone is a beautiful place but nothing ever grows there".
+> "A comfort zone is a beautiful place but nothing ever grows there".
 
-"We all have powerful ideas. But an idea is powerless unless it comes outside of you" - Nancy Diarte
+> "We all have powerful ideas. But an idea is powerless unless it comes outside of you" - Nancy Diarte
 
-"Own Your Experience" - EO Maxim _(Yeah, there it is)_
+> "Own Your Experience" - EO Maxim 
+
+  _(Yeah, there it is)_
 
 ## Local Team Intros
 
@@ -105,10 +107,10 @@ So I'm starting at Antler. As far as I can tell, this is a massive networking ev
 
 ### 111 Team
 
- - Nicole - marketing person
- - Janil - operations at 111
- - Janvi - manages the workshops/group event things
- - Simba - ??? (missed this one because I was looking stuff up, guessing another OPs guy?)
+- Nicole - marketing person
+- Janil - operations at 111
+- Janvi - manages the workshops/group event things
+- Simba - ??? (missed this one because I was looking stuff up, guessing another OPs guy?)
 
 ### General Rules
 
@@ -164,99 +166,99 @@ Tour, social time and lunch. Impressions of the tour are about what you'd expect
   
 Backgrounds vary from "this is my second thing after doing one job out of college" to "I've had multiple exists and am looking to do interesting things with my time"
 
-### Founder Intros
+## Founder Intros
 
-Dan Perry 
+#### Dan Perry 
 - UC Berkley
 - Looking for a technical co-founder
 - has a bunch of ideas (worth a chat)
 
-Harish
+#### Harish
 - Dad power (confirmed, by the way, he's incredibly high energy)
 - Has lots of ideas and is open about them, nothing picked yet
 
-Mustafa Saeed
+#### Mustafa Saeed
 - Growth exec
 - Hipster hustler
 - Looking for tech peeps
 - Currently hates marketing companies and wants to eat their lunch
 
-Tony Lau
+#### Tony Lau
 - Finance guy, idea agnostic, has done software engineering in finance (interested in W3 and AI, software is a footnote)
 
-Justin Yap
+#### Justin Yap
 - Lawyer
 - Initial idea (seriously dating :p) involves AI agents for old age adults (AgeTec)
 
-Gwen Lim
+#### Gwen Lim
 - Didn't know she was supposed to talk (oh, shit, so I might be up here too :|)
 - Fintech from UofT
 - Idea agnostic,
 
-Steven Gans
+#### Steven Gans
 - Yes, that's his actual last name
 - Confident about presenting, unaffected by stage fright
 - Confirms that the high level NATO generals don't have gears-level understanding about implementation details
 - Idea has to do with synthetic data
 
-Brendan McGivern
+#### Brendan McGivern
 - Amateur carpenter
 - "End-to-end ML based solutions"
 - Father of two
 - _Really_ likes golf
 - Yield prediction for greenhouses (specifically mentioned tomatoes and strawberries)
 
-Elie Alam
+#### Elie Alam
 - Biomediac Eng, but got hired because he knew FoxPro
 - Current idea has to do with wealth advisory application empowered by AI/GenAI
 - "Building native generative AI applications (as opposed to current companies that are sort of sprinkling AI on top of an existing application) for people to build their net worths"
 - AI copilot for investors
 
-Lylia Djat-Paulien
+#### Lylia Djat-Paulien
 - French/Tunisian
 - Serial consultant,
 - Looking for a founder with chemistry
 - Current idea has to do with "succession planning" for small businesses (businesses whose CEOs/owners are retiring)
 
-Tim Thornton
+#### Tim Thornton
 - Agnostic, but looking into Fintech for the Creator Economy
 - Also former graphic designer? (BA Comms)
 - Looking for a co-founder with chemistry
 - Built a gig work application called "spot work", also build Swarmio (which he pronounces "Swarmeo" not "Swarm eye oh")
 
-Mythri Murthy
+#### Mythri Murthy
 - Pronounced "My3"
 - Resilient, has a marketing/sales background, flourishes in the B2B SAAS space
 - Looking for a technical cofounder, no... particular idea?
 
-Shad Uadiale
+#### Shad Uadiale
 - Software designer with previous entrepreneurship experience
 - Bachelor in mech eng
 - Current idea/problem space: intersection of AI/Healthcare, open to ideas
 - Specifically looking for technical cofounder ('A founder who believes in the "Doing things that don't scale" mantra')
 
-Christopher Villegas-Cho
+#### Christopher Villegas-Cho
 - "Recovering policy whonk"
 - Interested in ideas around small/medium business (around an upcoming transition point coming up. Seems like he should talk to the small business succession person)
 
-Karan Deep
+#### Karan Deep
 - BS elec and comms eng
 - Current idea has to do with enterprise AI search (like, have a model specialized on information internal to a company, fulfill requests for information/coordination about internal information/logistics)
 - Looking for a technical cofouder
 
-Me (surprise!)
+#### Me (surprise!)
 - Caught between note taking and thinking about my direction, ended up giving the shortest intro so far. Yay. Got some positive feedback on it later; I deliberately wanted to avoid some specific tropes and think I succeeded.
 
-Pratheek Adi
+#### Pratheek Adi
 - Current idea: gamify the AI journey for non-technical folks
 (sorry about the shorter notes here; adrenaline rush from absorbing a room's full attention subsiding)
 
-Nazanin (Naz) Behroozian
+#### Nazanin (Naz) Behroozian
 - Excited about travel tech
 - Open to any ideas
 - Looking for a co-founder with chemistry
 
-Petro Czupiel (Chupio)
+#### Petro Czupiel (Chupio)
 - PhD from UofT
 - Glow life
 - Current idea: doing work in pharmaceutical industry (actually has a couple patents in novel drug delivery?) Not a match for me, but still worth chatting to just to find out more about divergent viewpoints
@@ -271,15 +273,18 @@ We're back at 35% battery charge. Wish me luck.
 
 - Co-Founder, CEO of Wave HQ and goConfirm. Heard of neither of these, but both apparently successful, so cool.
 - goConfirm is currently in the early product fit stage.
-- He's gone to university twice times (and dropped out twice)
+- He's gone to university twice (and dropped out twice)
 - Part of the early 2000s tech bust, no university education and ~$45k in debt
 - Started a new business while expecting third child, accounting software that ended up being acquired (Wave financial inc doing business as [waveapps.com](https://www.waveapps.com/))
 - Point: "all about the people"
 - Point: Highs are high, lows are low (describes an exit for ~$500million, as well as a period of time that their runway was like a month).
   - I think the thrust here is the general "don't compare their highlights to your blooper reel"; in the sense that _every_ company is "a complete gong show" behind the scenes.
-- "It feels like you're not making progress, but if you grind it out everyday that you might start making big progress"
-- The heartbreaking story he tells here is that there are times during the lifecycle of a company where pieces of the current team aren't the right ones to take the journey to the next step. The first conversation you have here is "here's where we're going for the next step, and here's what metrics matter, and here's what we need from your role". The second conversation you have, if things don't end up coming together, is to be honest about what you're seeing and what changes you need to see and then the third (if things continue to not be what you need) is that you're going to need to make a change but are appreciative for everything they have done to help get the company to that point.
-- Micro/macro lessons from the dot-com crash as relates to current market situation.
+- "It feels like you're not making progress, but if you grind it out everyday then you might start making big progress"
+- The heartbreaking story he tells here is that there are times during the lifecycle of a company where pieces of the current team aren't the right ones to take the journey to the next step. The first conversation you have is "here's where we're going for the next step, and here's what metrics matter, and here's what we need from your role". The second conversation you have, if things don't end up coming together, is to be honest about what you're seeing and what changes you need to see. And then the third (if things _continue_ to not be what you need) is that you're going to make a change but are appreciative for everything they have done to help get the company to that point.
+
+### Q/A
+
+- Micro/macro lessons from the dot-com crash as relates to current market situation?
   - The best time to be a startup is now, not during the boom times. One reason is that during the boom times, what you get is people jumping around looking for ever higher wages and more options, and not really making an effort to contribute to the business they're currently at. As much as it's harder to get capital now, it's easier to attract and retain top talent. And from the company perspective, you want to be able to retain talent because losing them ends up losing a bunch of institutional and process knowledge, and getting you into the situation where you're constantly hiring and onbaording new folks vs. driving the business forward at pace.
 - You already had a successful exit, why do it again?
   - Short answer is starting a company pushes you into a growth state that's really hard to avoid once you've felt it. He makes it sound like a compulsion, rather than a rational choice. In fact, as an aside, a lot of this talk is praise for intuition, following your gut and in-built knowledge rather than a raw systematizing kind of relation with the world. 
@@ -287,11 +292,11 @@ We're back at 35% battery charge. Wish me luck.
   - There's a particular person he hired that improved retention _a lot_. The specifics he points out is a combination of standard "bedside manners" stuff that techs are notoriously bad at, and a degree of authenticity with people. He also rejects the idea of the shit sandwich as a communication tool. I think in practice there's no good general answer here; you need to develop really good social skills and keep your wits about you the entire time. You need to be able to read the room, and figure out how to motivate a person effectively while avoiding crushing their literal souls.
   - He points out that top ICs are rarely good managers. Promoting them to management
     1. Takes away your best IC
-	2. Gives you a mediocre manager
-  This _isn't_ an endorsement of only hiring leaders from the outside, just noting that it's not as easy as "Congrats, IC! You're a manager now!" You need to give these people a lot of support and training in skillsets that they _absolutely_ don't have as a result of their existing professional life.
+    2. Gives you a mediocre manager
+  - This _isn't_ an endorsement of only hiring leaders from the outside, just noting that it's not as easy as "Congrats, IC! You're a manager now!" You need to give these people a lot of support and training in skillsets that they _absolutely_ don't have as a result of their existing professional life.
 - Staying in Toronto vs going to Silicon Valley?
   1. talent pool here is deep, but in some areas has a natural ceiling. 
-  2. today, it's even odds whether you'd go to the valley or not, back in the day it was like 1 in 10 that stay, and you'd always have smaller access to funding if you stayed 
+  2. today, it's even odds whether you'd go to the valley or not, back in the day it was like 1 in 10 that stay, and you'd always have smaller access to funding if you stayed. It's much more even now.
 - How to raise capital in the AI world?
   - I lived through _a lot_ of dilution. Bootstrap as long as you can; your job is to create as much value as possible to raise as much capital as possible at as good a valuation as possible. That said, with Wave, we knew we were on the VC trail If you're building free software, you're not going to be able to bootstrap as well. Know the game you're playing, and play that game.
 - At what point do you stop hiring visionaries and start hiring mercenaries?
@@ -301,13 +306,13 @@ We're back at 35% battery charge. Wish me luck.
 - What have you done to improve your intuition?
   - "Listen to it. It's harder than you think, but you have to actively tune it and listen to it. It's a practice, but it's not a deliberate structured practice." A lot of the finer points he lists here come down to standard rationality training, and then "trust your gut".
 - When do you know when to hang it up and move on to something else, vs doing one more iteration?
-  - "Yeah, that's a hard one. It's a values question. My values were that I was never going to put my family at risk. So that gives me a place I can take this to. So for example, I had been deferring a family vacation, and finally went on it during crunch time for my company. And end up hating it; I had to be online and finding wifi the whole time and being stressed. At that point, this thing was going to fly or fail in the next 60 days, so I kept at it, but if it was another 12 moths, I might have made a different decision because it was starting to have a very negative impact on my marriage and life with my family."
+  - "Yeah, that's a hard one. It's a values question. My values were that I was never going to put my family at risk. So that gives me a place I can take this to. So for example, I had been deferring a family vacation, and finally went on it during crunch time for my company. And ended up hating it; I had to be online and finding wifi the whole time and being stressed. At that point, this thing was going to fly or fail in the next 60 days, so I kept at it, but if it was another 12 moths, I might have made a different decision because it was starting to have a very negative impact on my marriage and life with my family."
 - What can you do to organize the rest of your life to effectively be a founder?
   - Have a really supportive spouse/partners. Set up your company so that it's friendly to the family structures your employees have. Do _not_ stop exercising; you need the energy and wellbeing from this. Especially at this phase _you_ are the number one asset of your company, you wouldn't neglect other assets, don't neglect your own body either.
 - Feel free to say "no" to this question. Founders sometimes get into regret mode; some founders can get over it and others can't?
   - What is regret mode?
 - Like, getting into a mindset of "Oh, I shouldn't have done this".
-  - You basically need to get your mindset out of regret mode, or at least out of recursive regret mode.
+  - You basically need to get your mindset out of regret mode, or at least out of recursive regret mode. There isn't an easy answer here, no trick for snapping yourself out of it easily.
 
 ## Then There Was The Pub
 
