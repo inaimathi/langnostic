@@ -52,7 +52,7 @@ So I'm starting at Antler. As far as I can tell, this is a massive networking ev
 	- The level of risk
 	- The urge to grow
 	- Think in funding cycles, not years
-- Three example companies are "Verafin", "ecobee" and "wattpad". I've only heard of one of these before, but given that these are their success stories 
+- Three example companies are "Verafin", "ecobee" and "wattpad". I've only heard of one of these before, but given that these are their success stories, I'm assuming they went well.
 
 ### Trajectory
 
@@ -66,7 +66,7 @@ So I'm starting at Antler. As far as I can tell, this is a massive networking ev
 1. Solution & Problem
   - Clear Need & Pain, Scalable & Defensible, Innovation, Difference, Go-To-Market, Traction
 2. VC Fit
-  - Fit for VC play, Unicorn Potential, CapEx, Int'l Market & Growth
+  - Fit for VC play, Unicorn Potential, CapEx, International Market & Growth
 3. Founder Fit
   - Experience & Knowledge, Team & Chemistry, Passion, Drive, Grit, Leadership
 4. Founder First
@@ -88,7 +88,7 @@ So I'm starting at Antler. As far as I can tell, this is a massive networking ev
 - Naman Budheo (pronounced "Neigh-man", into travel tech, has started up a bunch)
 - Alex Wright (Finance guy, and sounds like a hype-man :p Worked at NextCanada (which is like Antler, but earlier stage and with lower average experience). Dog named Creemore after his favorite beer. Has a pic of himself with his son next to a Cybertruck)
 - Daphne McLarty (program manager, CPA, started at PwC, sounds like this is their risk person, really likes tennis and Taylor Swift)
-- Shambhavi Mishra (pronounced "Shambovi", introduced as "Sham". Has like 10 years experience in VC investment. Inspiring, [Yang](TODO)/CEO energy. Like, picture a Type 1 personality in the form of an Indian woman, and that's her outward persona)
+- Shambhavi Mishra (pronounced "Shambovi", introduced as "Sham". Has like 10 years experience in VC investment. Inspiring, [Yang](https://joecarlsmith.com/2024/01/04/deep-atheism-and-ai-risk#yin-and-yang)/CEO energy. Like, picture a Type 1 personality in the form of an Indian woman, and that's her outward persona)
 - Yohann John (director venture scouting, history of founding, started out as a tech founder himself during India's tech boom, moved over into VC later on. His professor is Chris Carter, started out from the beginning at Antler. "Don't be a 5pm founder". "You're going to have good weeks and bad weeks. You'll have a week where you're working hard and your clients are telling you your product is awesome, and you'll have a week where you broke up with your co-founder and your customers are telling you you suck. I'm a good person to talk to when you're having a bad week, but you'll have them and they'll be bad.")
 - Hersh Gandhi (history of founding, former "Chief of Staff to an Assistant Cabinet Minister" (which at first glance _sounds_ like something ridiculous out of Kafka or Hitchiker's Guide, but in terms of responsibility and impact seemed pretty intersting once he explained it))
 - Alexa, Matthew and Sofia are also junior members of the team? "They'll be around to help you out"
@@ -104,6 +104,7 @@ So I'm starting at Antler. As far as I can tell, this is a massive networking ev
 - This is apparently the first Antler cohort where they've dedicated space?
 
 ### 111 Team
+
  - Nicole - marketing person
  - Janil - operations at 111
  - Janvi - manages the workshops/group event things
@@ -116,11 +117,9 @@ So I'm starting at Antler. As far as I can tell, this is a massive networking ev
 3. Keep your workspace clean
 4. No unauthorized guests (give your Antler guys a heads up if you want to bring in visitors who don't themselves have Antler access)
 5. Shared Resources; mindful of others' needs when using shared resources. We try to minimize noise pollution, but that includes asking you guys not to have loud conversations outside the designated booths.
-6. Security: do not give or share your Kisi pass ot anyone
+6. Security: do not give or share your Kisi pass to anyone
 7. Respect privacy: Respect others' privacy and confidentiality in shared areas
 8. Building hours: need special permissions to get in before 6:00 AM or after 7:00 PM. Talk to someone if you want 'em.
-
-
 
 ### Building Amenities
  
@@ -161,7 +160,7 @@ Tour, social time and lunch. Impressions of the tour are about what you'd expect
   - Lots of business and tech people without a current idea, but willing to pick stuff up
   - Yield prediction for greenhouses and farms
   - A few people looking to build specialized AI companions
-  - At least one person with thoughts [similar to mine](https://langnostic.inaimathi.ca/posts/hax#the-interface-to-utopia) regarding the shape he wants out of the glorious robot future
+  - At least one person with thoughts [similar to mine](https://langnostic.inaimathi.ca/posts/hax#the-interface-to-utopia) regarding the shape he wants out of the glorious robot future.
   
 Backgrounds vary from "this is my second thing after doing one job out of college" to "I've had multiple exists and am looking to do interesting things with my time"
 
@@ -175,12 +174,6 @@ Dan Perry
 Harish
 - Dad power (confirmed, by the way, he's incredibly high energy)
 - Has lots of ideas and is open about them, nothing picked yet
-
-Ryder Damen
-- Biomed engineering
-- Staff cloud infrastructure engineer
-- Looking for right vibes/chemistry, idea agnostic
-
 
 Mustafa Saeed
 - Growth exec
@@ -232,7 +225,7 @@ Tim Thornton
 - Built a gig work application called "spot work", also build Swarmio (which he pronounces "Swarmeo" not "Swarm eye oh")
 
 Mythri Murthy
-- Pornounce "My3"
+- Pronounced "My3"
 - Resilient, has a marketing/sales background, flourishes in the B2B SAAS space
 - Looking for a technical cofounder, no... particular idea?
 
@@ -272,7 +265,7 @@ AAAAand my battery is about to die, so I'm gonna cut notes out now :|
 
 * * *
 
-And we're back at 35% battery charge. Wish me luck.
+We're back at 35% battery charge. Wish me luck.
 
 ## Keynote by Kirk Simpson
 
@@ -280,10 +273,10 @@ And we're back at 35% battery charge. Wish me luck.
 - goConfirm is currently in the early product fit stage.
 - He's gone to university twice times (and dropped out twice)
 - Part of the early 2000s tech bust, no university education and ~$45k in debt
-- Started a new business while expecting third child, accounting software that ended up being acquired (Wave financiel inc doing business as [waveapps.com](https://www.waveapps.com/))
+- Started a new business while expecting third child, accounting software that ended up being acquired (Wave financial inc doing business as [waveapps.com](https://www.waveapps.com/))
 - Point: "all about the people"
 - Point: Highs are high, lows are low (describes an exit for ~$500million, as well as a period of time that their runway was like a month).
-  - I think the thrust here is the general "don't compare their highlights to your blooper reel"; in the sense that _every_ company is "a comlpete gong show" behind the scenes.
+  - I think the thrust here is the general "don't compare their highlights to your blooper reel"; in the sense that _every_ company is "a complete gong show" behind the scenes.
 - "It feels like you're not making progress, but if you grind it out everyday that you might start making big progress"
 - The heartbreaking story he tells here is that there are times during the lifecycle of a company where pieces of the current team aren't the right ones to take the journey to the next step. The first conversation you have here is "here's where we're going for the next step, and here's what metrics matter, and here's what we need from your role". The second conversation you have, if things don't end up coming together, is to be honest about what you're seeing and what changes you need to see and then the third (if things continue to not be what you need) is that you're going to need to make a change but are appreciative for everything they have done to help get the company to that point.
 - Micro/macro lessons from the dot-com crash as relates to current market situation.
