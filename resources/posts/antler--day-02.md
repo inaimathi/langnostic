@@ -35,15 +35,11 @@ This is an atypical, but possible trajectory. They had the advantage of having d
 
 ### Antler Expectations and practical tips
 
-#### Expectations
+#### Our Expectations
 
 - We're a VC, we're here to invest in the strongest founders
 - We're a lean team
 - Antler residency is not a school (we aren't here to teach, we just give you a sandbox to help you focus)
-
-#### Tips
-
-- Be prepared for group sessions, presentations and office hours
 
 #### Your Expectations
 
@@ -53,6 +49,7 @@ This is an atypical, but possible trajectory. They had the advantage of having d
 
 #### Tips
 
+- Be prepared for group sessions, presentations and office hours
 - Go at your own pace (again, as noted in the trajectory slide, you're not all going to be running at different schedule)
 - Participate, work hard
 - You get out what you put in
@@ -118,14 +115,15 @@ Maintain your health, and the health of the cohort
 #### Alex PQ Zhu
 
 - Addicted to problem solving (careful; don't nerd snipe unnecessarily)
-- Current idea: "drive efficiency and automation in any workflows
+- Current idea: "drive efficiency and automation in any workflows"
 - Likes scuba diving and yoga
 - Superpower: can transform any idea into something shippable
 
 #### Chirstabel Kim
 
 - Not afraid of any problems, has experience in B2B space
-- Currently pivoting away from a sales/marketing idea (appreciate that someone is going to start the next Instagram. I am not that person)
+- Currently pivoting away from a sales/marketing idea 
+- "I appreciate that someone is going to start the next Instagram. I am not that person"
 
 #### Shiv Patel
 
@@ -210,7 +208,7 @@ Maintain your health, and the health of the cohort
 
 ### FAQ
 
-- What if I don't track out in week3?
+- What if I don't track out by week 3?
   - Don't get too nervous about it. People sometimes track back in, but also, some of the big success stories end up tracking out in weeks 7 or 8.
 - What happens if I track back in?
   - Basically keep going. If you've got time, try again.
@@ -254,7 +252,7 @@ Maintain your health, and the health of the cohort
 
 #### Eman Ebrahimi
 
-- Working on AI for a while now (unclear whether this means "since the LLM revolution" start or "since Artificial Intelligence: A Modern Approach")
+- Working on AI for a while now (unclear whether this means "since the LLM revolution start" or "since [Artificial Intelligence: A Modern Approach](https://aima.cs.berkeley.edu/)")
 - No particular idea right now
 
 #### Zaninab Bokhari
@@ -295,7 +293,7 @@ Maintain your health, and the health of the cohort
 
 #### Lindsay Kim Chung
 
-- Current idea: applying AI to the corporate investigations space to help investigators generate reports (:p)
+- Current idea: applying AI to the corporate investigations space to help investigators generate reports
 - Looking for technical co-founder with startup experience who is an inclusive and strategic business leader
 - Has white collar criminal defense background
 
@@ -323,8 +321,8 @@ Maintain your health, and the health of the cohort
 
 #### Oswaldo "Oz" Alvarez Naranjo
 
-- Current idea is an electronic reseller (SELLIT9.com), not b2c; he's basically a market maker between people who sell their used electronics and resellers/testers
-- Looking for a growth marketer and conversion seller (just looking for a sales team basically, it's all up and running )
+- Current idea is an electronic reseller ([SELLIT9.com](https://www.sellit9.com/)), not b2c; he's basically a market maker between people who sell their used electronics and resellers/testers
+- Looking for a growth marketer and conversion seller (just looking for a sales team basically, it's all up and running)
 
 #### Anjali Dhaliwal
 
@@ -357,7 +355,7 @@ There was a keynote, but I got burnt out on note taking after the founder intros
 Honestly, the big lessons I ended up remembering after the fact are:
 
 1. Don't care about Antler right now, focus on company growth, do what's best for your company.
-2. Don't hire anyone until you absolutely must. In particular, junior coders are no longer worth it given how much productivity CoPilot gives an experienced generalist (note to self; get a CoPilot account, I guess. I've found ChatGPT to be a decent but not game-changing addition to my toolkit)
+2. Don't hire anyone until you absolutely must. In particular, junior coders are no longer worth it given how much productivity CoPilot gives an experienced generalist (note to self; get a [CoPilot](https://copilot.microsoft.com/) account, I guess. [I've found ChatGPT to be a decent but not game-changing](https://inaimathi.ca/posts/ai-development-assistant-quickie) addition to my toolkit)
 3. Validate your market hypotheses. _Fucking validate them_. Talk to any potential customers immediately, take all of their feedback right now, and don't to-the-hilt an idea unless someone literally throws money at you for it. You should feel a firm and slightly plasticky impact somewhere on your face. The implication was that you should write exactly zero code until you've done this; I'm not convinced, but that's possibly because my rate is high enough that code is pretty cheap for me. YMMV.
 
 It's tempting to dismiss each of them with sophistry, but this is advice from people interacting with the territory. Dismiss at your own peril.
