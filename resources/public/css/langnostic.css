@@ -8,7 +8,7 @@ body { width: 100%; margin:0px; padding: 0px; font-family: sans-serif serif; ove
 .content a.post-audio:hover { color: #999; }
 .content a.post-audio:hover .audio-icon path { fill: #999; stroke: #999; }
 
-.content .audio-icon { width: 14px; height: 14px; padding: 0px; margin: 0px 10px 5px 0px; border: none; float: left;  }
+.content .audio-icon { width: 14px; height: 14px; padding: 0px; margin: 0px 5px 0px 0px; border: none; float: left;  }
 .content .audio-icon path { fill: #CC0606; stroke: #CC0606; stroke-width: 10px; }
 
 .top-menu-container, hr { background-image: url(/static/img/red.jpg); background-size: 100%; background-position: bottom; background-color: #CC0606; }

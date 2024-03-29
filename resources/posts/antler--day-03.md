@@ -5,34 +5,34 @@
   - He used to help by going door-to-door delivering paper tickets (because that's what we did before the internets)
   - The way that you'd get a flight booked at this point is by calling a bunch of consolidators to find out what a good price is, not all consolidators sell all routes, so this would typically require something like 2 hours of phonecalls
 
-#### netfares online
+#### Company #1 - netfares online
 
 - netfares online in 1999 (with a technical cofounder) started to solve this problem. Sold for high eight figures, but took all of it in stock. And then the bust happened :| General valuations went down by 85% or so, his stock went down something like 99%. Yikes.
   - KEY LESSONS:
     - Don't take stock. Or at least, [know what your risks are](https://www.astralcodexten.com/p/your-book-review-the-laws-of-trading#%C2%A7risk) and how they're leveraged.
-	- Learn as much as you can about the people acquiring your company
+    - Learn as much as you can about the people acquiring your company
 	
-#### Farematrix
+#### Company #2 - Farematrix
 
 - Solo founder, bootstrapped, basically screen-scraped a bunch of different airline prices (this worked because it was in an airline industry transition where there wasn't yet a central listing of fares)
 - Didn't get as much friends+family funding this time around :|
 - This was questionably legal in the US (because they're stupid around laws regarding scraping), so an example mitigation strategy: Expedia prices were visible to the entire world except the state of Texas (where their legal team was headquartered)
 - Used a lot of google adwords, and assorted other advertising services. Their spend by the time he sold the company was ~$250k per day. Per. Day.
-- Pivot: from earning revenue on Flights to Ancillaries (for instance, additional services layered on top of airline experience, things like flexible tickets and baggage insurance. Turns out these are really profitable if you get the pricing and sizing right because people are really risk averse when travelling)  
+- Pivot: from earning revenue on Flights to Ancillaries (for instance, additional services layered on top of airline experience, things like flexible tickets and baggage insurance. Turns out these are really profitable if you get the pricing and sizing right because people are really risk averse when travelling)
 - If you have Founder syndrome, you need to surround yourself with great people and know what you do best
 
-#### Company #3 FlightNetwork
+#### Company #3 - FlightNetwork
 
 - Are you solving a Big Problem or building something to hit the Big Problem
   - Example: A common problem he found among his network was a big worry about buying tickets and then seeing them drop in price afterwards. The company put together a program to give people credit rebates for fares. Turns out this simultaneously gave them an edge on sales (more people would buy tickets, knowing they wouldn't have market regret later) and also gave them better retention (they gave credit rebates rather than cash, so people would be incentivized to come back and spend more here)
 - High level lesson: Half of advertising works, you just don't know which half
 - High level lesson: Some of the best things you do are the things you don't do (gives examples of two 50/50 mergers that would have been rough AF, but ended up not happening)
 
-#### Company #4 TripStack 
+#### Company #4 - TripStack
 
-- he's really passionate about air travel
+- He's really passionate about air travel
 - Founder, not CEO
-- Sounds a lot like Hopper (he mentions Hopper as I'm writing this note)
+- Sounds a lot like [Hopper](https://hopper.com/) (he mentions Hopper as I'm writing this note)
   - Basic model is putting together connecting flights from different airlines to drastically reduce prices at the cost of some logistics headaches. If you're a frugal traveller, this is awesome. If you're an airline, this is the literal devil.
 
 #### Why did I join Antler?
