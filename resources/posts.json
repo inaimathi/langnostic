@@ -302,22 +302,23 @@
 {"id":301,"title":"Toronto Ai Safety","file":"toronto-ai-safety","posted":1699336813,"tags":["journal","ai","ai-safety","alignment"]}
 {"id":302,"title":"Working On Android","file":"working-on-android","posted":1699670552,"tags":["android","python","kivy","beeware"]}
 {"id":303,"title":"Working With Kivy","file":"working-with-kivy","posted":1700026922,"tags":["kivy","python","android","bitching"]}
-{"id":304,"title":"Another TAIS Meeting","file":"another-TAIS-meeting","posted":1700596150,"tags":["ai","ai-safety","journal","alignment"]}
-{"id":305,"title":"TASM Notes 003","file":"tasm-03","posted":1701839820,"tags":["ai","ai-safety","journal","alignment"]}
+{"id":304,"title":"Another TAIS Meeting","file":"another-TAIS-meeting","posted":1700596150,"tags":["ai","ai-safety","journal","alignment", "notes"]}
+{"id":305,"title":"TASM Notes 003","file":"tasm-03","posted":1701839820,"tags":["ai","ai-safety","journal","alignment", "notes"]}
 {"id":306,"title":"Happy New Year","file":"happy-new-year","posted":1705194287,"tags":["journal","python"]}
 {"id":307,"title":"aidev Revisions PytrivialSQL and Bitching","file":"aidev-revisions-pytrivialsql-and-bitching","posted":1705467886,"tags":["ai","python","elisp"]}
-{"id":308,"title":"TASM Notes 005","file":"tasm-05","posted":1705978754,"tags":["ai","ai-safety","journal","alignment"]}
+{"id":308,"title":"TASM Notes 005","file":"tasm-05","posted":1705978754,"tags":["ai","ai-safety","journal","alignment", "notes"]}
 {"id":309,"title":"On Having Something To Prove","file":"on-having-something-to-prove","posted":1706721900,"tags":["python","journal"]}
-{"id":310,"title":"TASM Notes 006","file":"tasm-06","posted":1706808202,"tags":["ai","ai-safety","journal","alignment"]}
-{"id":311,"title":"TASM Notes 007","file":"tasm-007","posted":1707168255,"tags":["ai","ai-safety","journal","alignment"]}
+{"id":310,"title":"TASM Notes 006","file":"tasm-06","posted":1706808202,"tags":["ai","ai-safety","journal","alignment", "notes"]}
+{"id":311,"title":"TASM Notes 007","file":"tasm-007","posted":1707168255,"tags":["ai","ai-safety","journal","alignment", "notes"]}
 {"id":312,"title":"Catwalk Update","file":"catwalk-update","posted":1708059809,"tags":["ai", "catwalk", "clojure"]}
-{"id":313,"title":"TASM Notes 008","file":"tasm-008","posted":1708973191,"tags":["ai","ai-safety","journal","alignment","minimal-notes"]}
-{"id":314,"title":"TASM Notes 009","file":"tasm-009","posted":1708973231,"tags":["ai","ai-safety","journal","alignment","minimal-notes"]}
+{"id":313,"title":"TASM Notes 008","file":"tasm-008","posted":1708973191,"tags":["ai","ai-safety","journal","alignment","minimal-notes", "notes"]}
+{"id":314,"title":"TASM Notes 009","file":"tasm-009","posted":1708973231,"tags":["ai","ai-safety","journal","alignment","minimal-notes", "notes"]}
 {"id":315,"title":"AI Alignment and TTS Presentation","file":"ai-alignment-and-tts-presentation","posted":1709358231,"tags":["ai","alignment","shell","audio"]}
-{"id":316,"title":"TASM Notes 010","file":"tasm-010","posted":1709511801,"tags":["ai","ai-safety","journal","alignment","minimal-notes"]}
-{"id":317,"title":"TASM Notes 011","file":"tasm-011","posted":1710470873,"tags":["ai","ai-safety","journal","alignment","minimal-notes"]}
-{"id":318,"title":"TASM Notes 012","file":"tasm-012","posted":1710471144,"tags":["ai","ai-safety","journal","alignment","minimal-notes"]}
+{"id":316,"title":"TASM Notes 010","file":"tasm-010","posted":1709511801,"tags":["ai","ai-safety","journal","alignment","minimal-notes", "notes"]}
+{"id":317,"title":"TASM Notes 011","file":"tasm-011","posted":1710470873,"tags":["ai","ai-safety","journal","alignment","minimal-notes", "notes"]}
+{"id":318,"title":"TASM Notes 012","file":"tasm-012","posted":1710471144,"tags":["ai","ai-safety","journal","alignment","minimal-notes", "notes"]}
 {"id":319,"title":"Catwalk and Expo","file":"catwalk-and-expo","posted":1710965716,"tags":["ai","python","javascript","android","clojure"]}
 {"id":320,"title":"Antler - Day 1","file":"antler--day-01","posted":1711508127,"tags":["antler","startups","notes"]}
 {"id":321,"title":"Antler - Day 2","file":"antler--day-02","posted":1711598242,"tags":["antler","startups","notes"]}
 {"id":322,"title":"Antler - Day 3","file":"antler--day-03","posted":1711677448,"tags":["antler","startups","notes"]}
+{"id":323,"title":"TASM Notes 013","file":"tasm-013","posted":1711741181,"tags":["ai","ai-safety","journal","alignment","minimal-notes","notes"]}
