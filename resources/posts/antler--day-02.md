@@ -355,7 +355,7 @@ There was a keynote, but I got burnt out on note taking after the founder intros
 Honestly, the big lessons I ended up remembering after the fact are:
 
 1. Don't care about Antler right now, focus on company growth, do what's best for your company.
-2. Don't hire anyone until you absolutely must. In particular, junior coders are no longer worth it given how much productivity CoPilot gives an experienced generalist (note to self; get a [CoPilot](https://copilot.microsoft.com/) account, I guess. [I've found ChatGPT to be a decent but not game-changing](https://inaimathi.ca/posts/ai-development-assistant-quickie) addition to my toolkit)
+2. Don't hire anyone until you absolutely must. In particular, junior coders are no longer worth it given how much productivity CoPilot gives an experienced generalist (note to self; get a [CoPilot](https://copilot.microsoft.com/) account, I guess. [I've found ChatGPT to be a decent but not game-changing](https://inaimathi.ca/posts/ai-development-assistant-quickie) addition to my toolkit, so I don't have high expectations)
 3. Validate your market hypotheses. _Fucking validate them_. Talk to any potential customers immediately, take all of their feedback right now, and don't to-the-hilt an idea unless someone literally throws money at you for it. You should feel a firm and slightly plasticky impact somewhere on your face. The implication was that you should write exactly zero code until you've done this; I'm not convinced, but that's possibly because my rate is high enough that code is pretty cheap for me. YMMV.
 
 It's tempting to dismiss each of them with sophistry, but this is advice from people interacting with the territory. Dismiss at your own peril.
