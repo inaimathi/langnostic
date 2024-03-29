@@ -83,8 +83,7 @@
    
 - Key lessons:
   1. Be customer obsessed. Before you code, or do anything, reach out to customers. Be focused on their needs and experience.
-  2. (brain blanked on this one because I was busy writing down the surrounding nine points she was making T_T Anyone catch it?)
-  3. Pivot if you need to. You don't need to make consistent, incremental progress. You don't need to get a little better, you need to fail and get up and try a different angle. This is not a school, you're not here to learn, we're not here to teach you (NOTE: I think the implicit message whenever something like this is said is something like "You're not at the gym, you're at the tournament. You should know what you know already, and be prepared to hit as hard as you can")
+  2. Pivot if you need to. You don't need to make consistent, incremental progress. You don't need to get a little better, you need to fail and get up and try a different angle. This is not a school, you're not here to learn, we're not here to teach you (NOTE: I think the implicit message whenever something like this is said is something like "You're not at the gym, you're at the tournament. You should know what you know already, and be prepared to hit as hard as you can")
 
 - Large Markets
 - Disruption
