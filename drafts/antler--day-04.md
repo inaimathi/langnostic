@@ -67,7 +67,7 @@ First: StyleSustain (proud winners of a bunch of Antler stickers :p)
 
 - Started as a newspaper delivery boy. Newspapers are these paper versions of instagram, Google finance and kijiji they had back in the day.
 - Is currently 52
-- Story from his professor, of [Jimmy Breslin](https://en.wikipedia.org/wiki/Jimmy_Breslin) covering the [funeral of JFK](https://en.wikipedia.org/wiki/State_funeral_of_John_F._Kennedy). A bunch of different journalists came, interviewed the same people and wrote the same stories. Stone woke up at 4:00am rather than waiting for the funeral proper, and interviewed the two gravediggers at 4:30am. The [piece](https://ccnyintroductiontojournalism.com/2022/04/06/jimmy-breslins-grave-digger-story/) is [considered legendary](https://www.thedailybeast.com/jimmy-breslin-on-jfks-assassination-two-classic-columns).
+- Story from his professor, of [Jimmy Breslin](https://en.wikipedia.org/wiki/Jimmy_Breslin) covering the [funeral of JFK](https://en.wikipedia.org/wiki/State_funeral_of_John_F._Kennedy). A bunch of different journalists came, interviewed the same people and wrote the same stories. Breslin woke up at 4:00am rather than waiting for the funeral proper, and interviewed the two gravediggers at 4:30am. The [piece](https://ccnyintroductiontojournalism.com/2022/04/06/jimmy-breslins-grave-digger-story/) is [considered legendary](https://www.thedailybeast.com/jimmy-breslin-on-jfks-assassination-two-classic-columns).
   - The thrust is two-fold: be willing to work harder than your competition, and also, consider neglected angles of attack on your problem.
 
 ### "What are you willing to do to find the person you need?"
