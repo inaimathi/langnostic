@@ -14,7 +14,7 @@ I wasn't here day 7. It happens, but hopefully not too frequently.
 - The _fastest_ way to build a startup is to ignore everyone and go non-verbal, work no your computer at home
 - The _best_ way to build one is to constantly look for feedback in the earliest stages and iterate before over-building
 - Three levels, Easy, Intermediate, Hard
-  - Easy: 
+  - Easy:
     - pay for a survey, or build your own to get initial data, and do some market research
 	- Problems
 	  1. People don't take surveys that seriously
@@ -32,9 +32,9 @@ I wasn't here day 7. It happens, but hopefully not too frequently.
 	  1. As a customer, it's difficult to not get stage fright
 	  2. Takes a lot of time and energy
 	  3. Using something duct taped can force users into UI/UX issues that don't contribute to the high level idea
-	  
+
 - Realistically, you'll need to do all three of these at some point (the Hard mode sounds like something you definitely want when you get to UI development)
-- Your role as a founder is to constantly talk to customers and iterate. This is why tenacity is really important as a customer. 
+- Your role as a founder is to constantly talk to customers and iterate. This is why tenacity is really important as a customer.
 
 
 ### What do you do next?
@@ -45,25 +45,25 @@ I wasn't here day 7. It happens, but hopefully not too frequently.
   - a fact
   - a conjecture
   - obvious
-- An insight is the capacity to extract 
+- An insight is the capacity to extract
 
 - Example of not Insight:
   - "People want food delivery to be fast"
   - People
-  
+
 - An Insight is a realization that helps us see a business or product in a new light. Used to inform hypotheses, features, strategies.
 - An Insight moves you from a "Could" to a "Should" unambigously
 - Categories of Insights:
   - Company level
   - Industry level
   - Channel level
-  
+
 
 - Examples of Insight:
   - Delta: commercial flying is a race to the bottom (industry level insight). Rewarding loyalty generously creates a consumer that will trust you across their spend (company level insight). Their loyalty program/amenities is probably more profitable than their flying
   - Peoloton: Fitness companies don't compete with other gyms, they compete with inaction that prevents people from going to the gym in the first place.
   - AirBnB: A market is only as strong as its' weakest interaction and your only recourse is to solve a problem after it happens.
-  
+
 So the insight isn't "people want an easy way to rent out their homes" or "people want an internet-connected bike" or "people want cool lounges". Those _follow_ from the insight.
 
 
@@ -107,14 +107,12 @@ So the insight isn't "people want an easy way to rent out their homes" or "peopl
 
 - What is a good discussion guide look like?
 
-1. (2 minutes) Identify your ICP (initial customer proflie)
+1. (2 minutes) Identify your ICP (initial customer profile)
   - occupation, role
 2. (10 minutes) Create a minimum of 7 questions you would like to ask your customer
   - Make sure they're not leading, asking for validation, or passing The Mom Test
 3. (20 minutes) Share with a neighbor and provide feedback.
   - Is the question specific enough?
   - Are you leading the witness?
-
-
 
 ## Personal Notes
