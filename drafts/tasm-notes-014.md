@@ -1,6 +1,6 @@
 ## Pre-Meeting Chatting/News Update
 
-Missed most of this today unfortunately. Although, as always, Zvi's Update is worth a read. Also, [this paper](https://static1.squarespace.com/static/65392ca578eee444c445c9de/t/6606f95edb20e8118074a344/1711733370985/human-values-and-alignment-29MAR2024.pdf) is mentioned. Also, also, some long-time slack members have made it out to the actual meetup. Finally, none of us put much stock in the brand of AI apologia flavored "Don't worry; AI won't take away any jobs, it'll just create them".
+Missed most of this today unfortunately. Although, as always, [Zvi's Update](https://thezvi.wordpress.com/2024/04/04/ai-58-stargate-agi/) is worth a read. Also, [this paper](https://static1.squarespace.com/static/65392ca578eee444c445c9de/t/6606f95edb20e8118074a344/1711733370985/human-values-and-alignment-29MAR2024.pdf) is mentioned. Also, also, some long-time slack members have made it out to the actual meetup. Finally, none of us put much stock in the brand of AI apologia flavored "Don't worry; AI won't take away any jobs, it'll just create them". 
 
 ## AI Safety Via Debate
 
@@ -11,12 +11,9 @@ The basic problem we have with LLMs is that they're not reliable. That is, even 
 
 However, as models become more powerful, the amount of knowledge they have will exceed the amount of knowledge humans have. For instance, we might want them to go do some novel scientific research. At that point, we won't be able to check their answers easily. We're shortly going to get to the point where unless you're a human domain expert, you won't be able to validate any such response an LLM gives you.
 
-- A current solution RLHF; you depend on an 
+A current solution RLHF; you depend on an existing infrastructure of human experts who can evaluate what the model emits and give yay/nay feedback on it. The problem is it really doesn't scale past human experts.
 
-- Idea! Let two models debate the answer.
-  - Claim: it's easier for a human to judge the result of such a debate than it is for them to check the response from an LLM about a high-expertise-requiring domain
-  
-- Original paper here is [AI Safety via Debate](https://arxiv.org/pdf/1805.00899.pdf)
+Idea! Let two models debate the answer. The relevant claim here is: it's easier for a human to judge the result of such a debate than it is for them to check the response from an LLM about a high-expertise-requiring domain. The original paper on this idea is [AI Safety via Debate](https://arxiv.org/pdf/1805.00899.pdf)
 
 - Question from the audience: given the strict debate format, wouldn't you basically need to be an expert judge to evaluate the result?
   - So, yes. You might need to have some expertise in order to judge the outcome of a debate, and you might need to know rather a lot about debating. BUT; there are some strategies to mitigate this, and also, if the goal is "get more frontier science done", it might be worth it anyway.
