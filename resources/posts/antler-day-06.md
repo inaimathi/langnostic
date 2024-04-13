@@ -21,23 +21,23 @@ Today's schedule
   3. Select several problems for further investigation.
   4. Analyze the problem by scale, context, history and failures
     a. Scale of the problem
-	  i. Who and how are users affected?
-	  ii. What is the priority level of the problem?
+      1. Who and how are users affected?
+      2. What is the priority level of the problem?
     b. Context of the problem
-	  i. What are the root causes of the problem?
-	  ii. What circumstances or conditions affect the problem?
-	c. Research the history of the problem
-	  i . How long has the problem been recognized?
-	  ii. Does the problem appear to be growing in importance?
-	  iii. Has the scale of the problem changed?
-	  iv. Has there been a change in those affected by the problem?
-	  v. Have the causes or effects of the problem changed?
-	  vi. Have the circumstances and conditions affecting the problem changed over time?
-	  vii. has the primacy of the problem changed over time?
-	  iix. Have there been previous attempts to solve the problem?
-	d. Analyze Past Failures and Attempts
-	  i. Why did the attempts fail?
-	  ii. Identify actionable mistakes?
+      1. What are the root causes of the problem?
+      2. What circumstances or conditions affect the problem?
+    c. Research the history of the problem
+      1. How long has the problem been recognized?
+      2. Does the problem appear to be growing in importance?
+      3. Has the scale of the problem changed?
+      4. Has there been a change in those affected by the problem?
+      5. Have the causes or effects of the problem changed?
+      6. Have the circumstances and conditions affecting the problem changed over time?
+      7. has the primacy of the problem changed over time?
+      8. Have there been previous attempts to solve the problem?
+    d. Analyze Past Failures and Attempts
+      1. Why did the attempts fail?
+      2. Identify actionable mistakes?
 
 - Something called the [fishbone model](https://www.cms.gov/medicare/provider-enrollment-and-certification/qapi/downloads/fishbonerevised.pdf) helps here.
 - Explore the surface area of the problem. Don't get fixated on the first local maximum you see, chart out enough of the space that you can be fairly sure you're mining something like the current global maximum.
@@ -111,8 +111,8 @@ What is a company that can be worth $1B, that can be built in seven years using 
     - For example, culturing meat/fat in the lab. One question they'll have to answer from investors is: how far out in the future is customer acquisition/moneymaking?
   - How capital intensive is the production/solution and customer acquisition?
     - One of the reasons B2C is tough today; high cost of customer acquisition (because competition is huge unless you have a potential network built out already. This is why marketing/sales is _really_ intense here)
-	
-#### Q&A
+
+#### Bernie's Q&A
 
 - If you're starting with a horizontal tech, and you're looking for a vertical, what do you think of a "spray-n-pray" approach?
   - You have to have a starting point. So like, just pick one you're passionate about. You need a vertical to focus on and crack it, if you "spray-n-pray", things get diluted very quickly. Especially if you're starting with like two people. Thiel asks: What's a space where you can niche down repeatedly to a small enough sliver of the market that you can monopolize it. And once you've done that, you can grow your monopoly out.
@@ -176,7 +176,7 @@ At that point, you've stabilized and you can move on.
 9. Revenue Stream (how do you make money as a result of your goals?)
 
 
-### Example map: AI Headshot service
+### Example - AI Headshot service
 
 1. CS
   - Dating sites
@@ -212,7 +212,7 @@ At that point, you've stabilized and you can move on.
   - Models (AI models)
   - Servers
 7. KP
-  - 
+  - Realestate boards?
 8. R$
   - Pay per use?
   - Credits
@@ -242,34 +242,34 @@ _(This was a square on the left and a circle on the right in the talk, I'm not g
   - We're picking real estate services as our CS
   1. What are their JTBDs?
     - Sell houses
-	- Advertise
-	- Reputation management
+    - Advertise
+    - Reputation management
   2. What is the pain when it comes to the photos part? _(Pains)_
     - Photo cost
-	- time
-	- printing
-	- being satisfied with the outcome
-	- static (if they've changed their haircut since, they might need to re-do them)
+    - time
+    - printing
+    - being satisfied with the outcome
+    - static (if they've changed their haircut since, they might need to re-do them)
   3. What happens if everything goes amazing? _(Gains)_
     - Looks hotter (generates leads)
-	- Instant turnaround time
-	- 1:1000 cost
-	- Always accurate
+    - Instant turnaround time
+    - 1:1000 cost
+    - Always accurate
   - On the other, end you want to put together a feature list that connects either to addressing a Pain or enabling a Gain.
     - Open API a-la [gravatar](https://gravatar.com/) so people can link their portrait in anywhere addresses instant turnaround and always accurate
-	- Being really cheap addresses the cost
-	- Review step addresses being satisfied
-	- etc.
+    - Being really cheap addresses the cost
+    - Review step addresses being satisfied
+    - etc.
 
 ### What assumptions have we made?
 
 ```
            !!!
-		    |
+            |
             |
 evidence <-----> unknown
             |
-			|
+            |
             !
 ```
 
@@ -300,7 +300,7 @@ Once we have these assumptions (business risks), we need to figure out what to d
 - B2B: Cold email -> Interview -> LOI
 - B2C: Ads -> landing page -> signup -> survey -> interview
 
-### Q&A
+### Alan's Q&A
 
 - If you have a B2B2C, do you follow the B2B experiment funnel or the B2C?
   - It's basically wherever your biggest risks are. Point yourself to the big unknowns on big risks and hit those first.
