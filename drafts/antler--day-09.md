@@ -15,3 +15,13 @@ Context free notes from various presentations.
 - Giving freebies is a good way to get peoples' attention (assuming they're actually valuable freebies)
 - Some people haven't fully internalized the [typical mind fallacy](https://www.lesswrong.com/tag/typical-mind-fallacy), and are pretty surprised when they see evidence for it
 - Sometimes, your idea sucks, and that's ok. You can drop those and move on to better ones.
+
+## That's It For Now
+
+This sub-series has been a set of notes that I furiously typed out during the various Antler sessions in a similar style to how I cover the TASM group. There's been _a lot_ of positive feedback on various private channels, including a surprising number of people asking me if I was using some sort of transcription+LLM setup to compile notes so quickly. The answer is no; I type them with my human fingers and try to think quickly enough to wring out insight as I go. As with the rest of this blog, half the point is me working ideas through my brain and seeing what sort of nutrients I can extract.
+
+The curriculum is done now, and most of us are in [build-or-sell](https://www.youtube.com/shorts/powz47JL3tY?si=V1x8Qoa7j6JHCiRW) mode. There will _probably_ be more posts [tagged Antler](https://inaimathi.ca/archive/by-tag/antler), but they'll be notes on progress, or possibly links to stream VODs of me writing ridiculous amounts of JS/Python in [my now-bizarre dev setup](https://github.com/inaimathi/machine-setup/).
+
+I'm planning to take a little time off, both to work on the main build, and to do some touch-ups to [catwalk](https://github.com/inaimathi/catwalk) so I can resume/fully-automate the audio versions of this blog.
+
+Wish me luck, and as always, I'll let you know how it goes.
