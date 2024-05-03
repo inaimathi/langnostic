@@ -1,17 +1,25 @@
 I've got a huge backlog at this point, which you can definitively see by going over to my [drafts folder](https://github.com/inaimathi/langnostic/tree/master/drafts). Still, I haven't gotten the chance to put up polished drafts, and I haven't touched off audio versions in a while. Working on it. But in the meantime, I've been working on something else.
 
-No details, because we're in stealth mode and don't want to get prematurely crushed by the competition (and not technically a company yet), but this has been among the most intense few weeks of my life, in a really good way.
+No details, because we're in stealth mode and don't want to get prematurely crushed by the competition (and also, not technically a company yet), but this has been among the most intense few weeks of my life, in a really good way.
 
 ### Antler
 
-[Antler](https://www.antler.co/location/canada) is ... extremely interesting. Gotta be honest, I didn't go in with high hopes, but this looks like it might have been one of the top five most significant, formative moments in my life, and it's not even over yet. This program has let me meet some interesting, intense, driven and ambitious people that I wouldn't otherwise have met. That alone made it worth doing. But beyond that, its put me on a path to building a company that I definitely wouldn't have thought to build on my own and that might make a positive change in the world while making a decent chunk of change the founders. I don't think this is something I would have done on my own, regardless of how coherent I managed to make myself. There's something about the combination of
+[Antler](https://www.antler.co/location/canada) is ... extremely interesting. Gotta be honest, I didn't go in with high hopes, but this looks like it might have been one of the top five most significant, influential moments in my life, and it's not even over yet. This program has let me meet some interesting, intense, driven and ambitious people that I wouldn't otherwise have met. That alone made it worth doing. But beyond that, its put me on a path to building a company that I definitely wouldn't have thought to build on my own and that might make a positive change in the world while making a decent chunk of change the founders. I don't think this is something I would have done otherwise, regardless of how [coherent](https://www.lesswrong.com/tag/coherent-extrapolated-volition) I managed to make myself. 
+
+There's something about the combination of
 
 - making explicit a number of implicit background insights about the market, and company formation
 - bringing a bunch of smart, ambitious people together in a context where the goal is company formation
-- providing space, network (both in the CAT5 sense and the extended-people-to-talk-to-groups)
+- providing space, network (both in the CAT5 sense and the extended-people-to-talk-to-groups), dedicated time, and feedback loops
 - giving a carrot incentive to start the process
 
-that seems to make me much more productive than I usually am. They send out feedback surveys at the end of every week, and there's always a question in them along the lines of "How likely are you to recommend Antler to friends?", and I've consistently hit 10. It's not for everyone, just so we're clear. It demands a level of focus, intensity and outright overconfidence (or at least a willingness to laugh at the odds and charge anyway), that I couldn't honestly recommend it to everyone I know. It's certainly a you-get-what-you-put-in-plus-luck-modifiers situation. But if starting a growth company is something you've thought about, and you're willing and able to put almost every waking moment into this for a span of approximately ten weeks, then yes. You should sign up. I recommend.
+that seems to make me much more productive than I usually am. 
+
+They send out feedback surveys at the end of every week, and there's always a question in them along the lines of 
+
+> How likely are you to recommend Antler to friends? Scale of 1 to 10.
+
+and I've consistently hit 10. It's not for everyone, just so we're clear. It demands a level of focus, intensity and outright overconfidence (or at least a willingness to laugh at the odds and charge anyway), that I couldn't honestly recommend it to _everyone_ I know. It's certainly a you-get-what-you-put-in-plus-luck-modifiers situation. But if starting a growth company is something you've thought about, and you're willing and able to put almost every waking moment into this for a span of approximately ten weeks, then yes. You should sign up. I hereby recommend.
 
 ### The Build
 
