@@ -1,7 +1,9 @@
+_Note: This post was _really_ late. I've been taking time to do more programming than I've done since my younger startup days. As I write this note, we've concluded Week 7, and I plan to do a reflections post on that shortly, but right now I'm playing catch-up with various Antler and TASM notes. Sorry, kinda not sorry._
+
 ## Your asks from Week 2
 
 - More time for founder questions
-- 
+
 
 ## Your Scores from Week 3
 

@@ -1,3 +1,5 @@
+_Note: This post was _really_ late. I've been taking time to do more programming than I've done since my younger startup days. As I write this note, we've concluded Week 7, and I plan to do a reflections post on that shortly, but right now I'm playing catch-up with various Antler and TASM notes. Sorry, kinda not sorry._
+
 ## Sharing discovery
 
 Context free notes from various presentations.
@@ -5,7 +7,7 @@ Context free notes from various presentations.
 - Not everyone wants to grow. At all. Some people just want to solve the problem in front of them and not think particularly further
 - Big pharma is most interested in de-risking potential drugs (they frequently don't research lesser known molecules themselves, but are very happy to license appropriate tech from smaller labs once those labs have done groundbreaking work)
 - Computational chemists are rare and extremely expensive, so getting one on your board is a pretty strong signal
-- Keep in mind that if you've got a lot of calls that you got from a particular platform listing, that platform be affected by selection bias
+- Keep in mind that if you've got a lot of calls that you got from a particular platform listing, that platform may be affected by selection bias
 - Parents mostly don't want to hear feedback or get help, they mostly just want reassurance (that they're doing ok, or that they're not the only ones facing a particular problem)
 - The kids are alright
 - A couple groups re-derived ["Awkward Silence" and "Tell me more"](https://slatestarcodex.com/2016/07/12/34/)

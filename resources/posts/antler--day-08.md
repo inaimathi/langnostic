@@ -57,14 +57,14 @@ Realistically, you'll need to do all three of these at some point (the Hard mode
 
 - An `Insight` is a realization that helps us see a business or product in a new light. Used to inform hypotheses, features, strategies.
 - An `Insight` moves you from a "Could" to a "Should" unambiguously in the space of idea evaluation
-- There are three ategories of `Insight`s:
+- There are three categories of `Insight`s:
   - Company level
   - Industry level
   - Channel level
 
 #### Examples of `Insight`
 
-- [Delta](https://www.delta.com/): commercial flying is a race to the bottom (industry level insight). Rewarding loyalty generously creates a consumer that will trust you across their spend (company level insight). Their loyalty program/amenities is probably more profitable than their flights at this ponit.
+- [Delta](https://www.delta.com/): commercial flying is a race to the bottom (industry level insight). Rewarding loyalty generously creates a consumer that will trust you across their spend (company level insight). Their loyalty program/amenities is probably more profitable than their flights at this point.
 - [Peloton](https://www.onepeloton.ca/): Fitness companies don't compete with other gyms, they compete with inaction that prevents people from going to the gym in the first place.
 - [AirBnB](https://www.airbnb.ca/): A market is only as strong as its' weakest interaction and your only recourse is to solve a problem after it happens.
 
@@ -78,7 +78,7 @@ Start with a fact: "No one likes doing expenses"
 
 Accepted belief: Expenses are one of those chores you'll eventually have to get around to.
 
-- This is a current tendency of the market. There's a thing a lot of people have do, and are annoyed by, that ends up dictating their behavior in [a suboptimal-on-reflectoin](https://www.lesswrong.com/posts/HZRmRt68Dgucs6G62/on-reflection) way.
+- This is a current tendency of the market. There's a thing a lot of people have do, and are annoyed by, that ends up dictating their behavior in [a suboptimal-on-reflection](https://www.lesswrong.com/posts/HZRmRt68Dgucs6G62/on-reflection) way.
 
 `Insight`: Expenses never look or feel convenient, so we do the only thing we can to alleviate our pain. We procrastinate.
   - The company Ramp realized that their position was basically an anti-[akrasia](https://www.lesswrong.com/tag/akrasia) tool. Their angle of attack was _not_ to put together a web platform, they basically allow you to use their system however you need to in order to settle your expenses (SMS/mobile app/call/wherever you're at), and they push hard to get you over the hump of procrastination.
@@ -90,7 +90,7 @@ Accepted belief: Expenses are one of those chores you'll eventually have to get 
   - Do you like this product?
   - Would you like the product if it did `<insert features>`?
   - How much would you pay for this product?
-  - It's like the Uber for X, does that make sense to you? _(Metaphors are imperfect, and this one plays on exisitng, intrin)
+  - It's like the Uber for X, does that make sense to you? _(Metaphors are imperfect, and this one plays on existing, intrinsic associations you might have with Uber or X)_
   - I'm building something that does `<thing company does>`, do you think that will work for you? _(Beginning of a soft sell)_
 - Instead of pitching your startup; you need to _deeply_ understand your customer.
 - Seek to
