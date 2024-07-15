@@ -43,7 +43,7 @@ Ok, the response path is a bit more byzantine in the OpenAI case, and if you wan
 2. You use that API key to authenticate your results
 3. You get a response back from the given model if you properly authenticate with your key
 
-## This Is The Part Where GCP Is Shit
+## This Is The Part Where GCP Is Bullshit
 
 Take a guess about how you do the comparable thing over on GCP. 
 
