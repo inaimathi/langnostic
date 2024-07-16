@@ -163,7 +163,7 @@ CREDS, PROJECT_ID = google.auth.load_credentials_from_file("wherever-you-saved-i
 _then_ you have to call
 
 ```
-vertexai.init(project="<your project id here>", location="us-central1", credentials=creds)
+vertexai.init(project="<your project id here>", location="us-central1", credentials=CREDS)
 ```
 
 to set up the Vertex credential provider background state. And if this is starting to sound like one of those [Java Enterprise Class Name jokes](https://projects.haykranen.nl/java/) to you too, congratulations, you might be as old as I am.
