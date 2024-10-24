@@ -3,9 +3,9 @@ _by James (Manifold co-founder)_
 
 Some articles criticize prediction markets as "not as good as polls" or "not as good as bounties".
 
-Original idea: the question asker would make
+Original idea: the question asker would make money
 
-- Cash prizes coming (under US sweepstakes rules). About a month from now features are launching, the goal is to be able to make an income by run markets.
+- Cash prizes coming (under US sweepstakes rules). About a month from now features are launching, the goal is to be able to make an income by running markets.
 
 ### How to run a market that is net profitable?
 
