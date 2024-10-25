@@ -2,7 +2,7 @@ Sorry I've been gone a while. Startup life, yo.
 
 ### Audibly Clunky Segue
 
-![An XKCD comic that appropriately illustrates the approach](https://imgs.xkcd.com/comics/software_development.png)
+[![An XKCD comic that appropriately illustrates the approach](https://imgs.xkcd.com/comics/software_development.png)](https://xkcd.com/2021/)
 
 So a use case I have fairly commonly is that I want a model to actually do what I want. Not like, "approximately what I want" or "close enough to what I want that it doesn't raise exceptions", or "do what I want impressionistically enough that I have to call the function `String -> String` ala [`markdown` transformation](https://stackoverflow.blog/2008/06/25/three-markdown-gotcha/)".
 
