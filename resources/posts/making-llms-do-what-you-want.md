@@ -2,11 +2,13 @@ Sorry I've been gone a while. Startup life, yo.
 
 ### Audibly Clunky Segue
 
-So a use case I have fairly commonly is that I want a model to actually do what I want. Not like, "approximately what I want" or "close enough to what I want that it doesn't raise exceptions", or "do what I want impressionistically enough that I have to call the function `String -> String` ala [`markdown` transformation](https://stackoverflow.blog/2008/06/25/three-markdown-gotcha/).
+![An XKCD comic that appropriately illustrates the approach](https://imgs.xkcd.com/comics/software_development.png)
 
-I mean like, I want to write a prompt, provide some data and be sure that the thing I get out is Good Enough to do real work with. I'll admit that this isn't always possible. There are situations where you have to do the `String -> String` thing, or that are complicated enough that you'll have to tolerate some error rate above 0%.
+So a use case I have fairly commonly is that I want a model to actually do what I want. Not like, "approximately what I want" or "close enough to what I want that it doesn't raise exceptions", or "do what I want impressionistically enough that I have to call the function `String -> String` ala [`markdown` transformation](https://stackoverflow.blog/2008/06/25/three-markdown-gotcha/)".
 
-But there are some "special cases" where it's kinda hard to write a solution to the problem yourself, but it's either trivial or _really_ easy to check whether a solution someone hands you works to within the tolerance you care about.
+I mean like, I want to write a prompt, provide some data and be sure that the thing I get out is Good Enough to do Real Work with. I'll admit that this isn't always possible. There are situations where you have to do the `String -> String` thing, or that are complicated enough that you'll have to tolerate some error rate above 0%.
+
+But there are some "special cases" where it's kinda hard to write a solution to the problem yourself, but it's either trivial or _really_ easy to check whether a solution someone hands you works to within the tolerance you care about. Hello, everyone who's been in the NP space.
 
 ### Pseudo
 
@@ -36,12 +38,12 @@ generateChecked (transformFn, system, prompt, retries=5) =
 which is going to take the output, validate it against the transformer you've provided, and retry until it either gets to a valid value or retries too much. If you read that type signature, it's pretty obvious.
 
 
-A more _specific_ use case here is something I frequently want to ask an LLM: "Hey, evaluate this bunch of weirdly structured, natural language data and return a value with the following type signature so I can incorporate your ourput into some code I'm writing". The simplest here might be
+A more _specific_ use case here is something I frequently want to ask an LLM: "Hey, evaluate this bunch of weirdly structured, natural language data and return a value with the following type signature so I can incorporate your output into some code I'm writing". The simplest here might be
 
 ```
 generateJson :: SystemPrompt -> Prompt -> ?Int -> Maybe JSONValue
 generateJson (system, prompt, retries=5) = 
-  generateChecked system prompt retries
+  generateChecked maybeParseJson system prompt retries
 ```
 
 There. Now you can call your LLM, parse the response it gave you into JSON. If it fails, that is if the response isn't properly formatted JSON, try again some specified number of times. Another use case might be
@@ -51,7 +53,7 @@ generatePageSelector :: Page -> Prompt -> ?Int -> Maybe String
 generatePageSelector (page, prompt, retries=5) =
   generateChecked (λ sel: querySelector page sel) prompt retries
 ```
-And again. Now you can ask your LLM to look at a web page, pick out an element by CSS selector, ensure that such a selector actually exists in the given page. The code that relies on that response can rely that it's either looking at a selector that actually exists, or that it _very clearly and explicitly_ failed on retries.
+And again. Now you can ask your LLM to look at a web page, pick out an element by CSS selector, ensure that such a selector actually exists in the given page, and return it if it does. And retry some number of times if the first try doesn't hit. The code that relies on that response can rely that it's either looking at a selector that actually exists, or that it _very clearly and explicitly_ failed on retries.
 
 ### Python
 
@@ -141,6 +143,6 @@ So, `retries` times, call `generate`, call the given `transformFn` on the result
 
 ### Goals
 
-The ultimate goal here is better, more composeable scaffolding. I think I've tipped my hand a bit in terms of what I'm currently using this for by showing you the concrete JSON and CSS selector examples. Details left as an exercise for the reader for now. I've got a few bigger ones in mind though. Keeping cards close to my chest for now, but you can probably guess at least one or two of them based on [my github](https://github.com/inaimathi/).
+The ultimate goal here is better, more composeable scaffolding. I think I've tipped my hand a bit in terms of what I'm currently using this for by showing you the concrete JSON and CSS selector examples. Details left as an exercise for the reader, at least for now. I've got a few bigger ones in mind though. Keeping cards close to my chest for now, but you can probably guess at least one or two of them based on [my github](https://github.com/inaimathi/).
 
 As always, I'll let you know how it goes.
