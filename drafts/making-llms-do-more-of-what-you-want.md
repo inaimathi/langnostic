@@ -1,4 +1,4 @@
-Once we can [make LLMs do what we want](TODO link to previous), we might want to formalize this and scale it up. We've got 
+Once we can [make LLMs do what we want](/posts/making-llms-do-what-you-want), we might want to formalize this and scale it up. We've got 
 
 ```
 generate :: SystemPrompt -> Prompt -> Response
@@ -143,32 +143,33 @@ Transform takes a string, tries to JSON parse it using the `loadch` function we 
 
 Bam it's a one-liner. In a lisp-like, this would just be `funcall`, or possibly not even a function at all, just a pair of parens marking it as something to evaluate. Also, technically, this is a `Maybe <whatever type your function returns>` (note that we return `None` in the case that the `validate` call fails).
 
-Don't take the code _too_ seriously in its' current form. I don't think I'm going to keep it precisely the way it is now, but the interface is there and any changes are likely to be cosmetic or QoL-enabling. Check [the docs](TODO - trivialai README) before building anything out of it.
+Don't take the code _too_ seriously in its' current form. I don't think I'm going to keep it precisely the way it is now, but the interface is there and any changes are likely to be cosmetic or QoL-enabling. Check [the docs](https://github.com/inaimathi/trivialai?tab=readme-ov-file#trivialai) before building anything out of it.
 
 ### The Upshot
 
 So what's the point of all this?
 
 ```
->>> def _foo(url: str, selectors: Optional[List[str]] = None) -> None:
+>>> from typing import Optional, List
+>>> def _screenshot(url: str, selectors: Optional[List[str]] = None) -> None:
     "Takes a url and an optional list of selectors. Takes a screenshot"
     print(f"GOT {url}, {selectors}!")
 ... ... ... 
->>> 
+>>>
 >>> from trivialai import tools, ollama
 >>> tls = tools.Tools()
->>> tls.define("screenshot", _foo)
+>>> tls.define("screenshot", _screenshot)
 True
 >>> tls.list()
 [{'name': 'screenshot', 'type': {'url': <class 'str'>, 'selectors': typing.Optional[typing.List[str]]}, 'description': 'Takes a url and an optional list of selectors. Takes a screenshot'}]
 >>> client = ollama.Ollama("gemma2:2b", "http://localhost:11434/")
->>> tools.generate_tool_call(tls, client, "Take a screenshot of the Google website and highlight `.login`")
-LLMResult(raw=<Response [200]>, content={'functionName': 'screenshot', 'args': {'url': 'https://www.google.com/', 'selectors': ['#login']}})
+>>> tools.generate_tool_call(tls, client, "Take a screenshot of the Google website and highlight the search box")
+LLMResult(raw=<Response [200]>, content={'functionName': 'screenshot', 'args': {'url': 'https://www.google.com/', 'selectors': ['#search']}})
 >>> res = _
 >>> res.content
-{'functionName': 'screenshot', 'args': {'url': 'https://www.google.com/', 'selectors': ['#login']}}
+{'functionName': 'screenshot', 'args': {'url': 'https://www.google.com/', 'selectors': ['#search']}}
 >>> tls.call(res.content)
-GOT https://www.google.com/, ['#login']!
+GOT https://www.google.com/, ['#search']!
 >>> 
 ```
 
