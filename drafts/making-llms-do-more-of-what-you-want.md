@@ -43,7 +43,7 @@ generateToolCall env prompt =
    in generateChecked transform sysprompt prompt
 ```
 
-Looking at it from out here, this is almost too trivial to bother writing. But in effect, what we've got is a pluggable, fully generalizable toolkit that gives any sufficiently smart model access to tool capabilities. `call` really _is_ too trivial to bother writing in the notional language we've got; if I had to I'd say something like `call = funcall`. Which tells you Everything you need to know if you've worked with enough languages, and also, exactly nothing if you didn't.
+Looking at it from out here, this is almost too trivial to bother writing. But in effect, what we've got is a pluggable, fully generalizable toolkit that gives any sufficiently smart model access to tool capabilities. `call` really _is_ too trivial to bother writing in the notional language we've got; if I had to I'd say something like `call = funcall`. Which tells you Everything you need to know if you've worked with enough languages, and also, exactly nothing if you didn't. The big point of flexibility that I'm insisting on here is that you can swap out different environments in order to keep your models restricted to a (hopefully, if you've done your job) known-safe set of function bindings.
 
 ### Python
 
@@ -87,7 +87,9 @@ You know what's up here. An environment is a dictionary. Duh.
         return True
 ```
 
-`define` is clunkier than I'd like, but I mean, what am I supposed to do here? We take a name and a function (and use Python internal methods to assert that it has type annotations and documentation, because those things make it easier to spit at a model).
+`define` is clunkier than I'd like, but I mean, what am I supposed to do here? We take a name and a function (and use Python internal methods to assert that it has type annotations and documentation, because those things make it easier to spit at a model). Realistically, I could give it optional `type` and `description` so that you can override the given functions' `__annotations__` and `__doc__`, and I could give `__name__` the same treatment so that you could pass in `lambda`s if you really wanted to, even though they're awful in Python. That's about it though.
+
+Honestly, all this definition is doing is reminding me how much simpler this code would be over in Clojure-land. Where I might still put it eventually.
 
 ```
     def list(self):
