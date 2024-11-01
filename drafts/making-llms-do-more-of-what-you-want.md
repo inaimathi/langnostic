@@ -143,6 +143,8 @@ Transform takes a string, tries to JSON parse it using the `loadch` function we 
 
 Bam it's a one-liner. In a lisp-like, this would just be `funcall`, or possibly not even a function at all, just a pair of parens marking it as something to evaluate. Also, technically, this is a `Maybe <whatever type your function returns>` (note that we return `None` in the case that the `validate` call fails).
 
+Don't take the code _too_ seriously in its' current form. I don't think I'm going to keep it precisely the way it is now, but the interface is there and any changes are likely to be cosmetic or QoL-enabling. Check [the docs](TODO - trivialai README) before building anything out of it.
+
 ### The Upshot
 
 So what's the point of all this?
