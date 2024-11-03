@@ -51,7 +51,8 @@ There. Now you can call your LLM, parse the response it gave you into JSON. If i
 ```
 generatePageSelector :: Page -> Prompt -> ?Int -> Maybe String
 generatePageSelector (page, prompt, retries=5) =
-  generateChecked #(querySelector page %) prompt retries
+  let system = "Responde with a CSS selector string and no other commentary. The user wants to know about this page: {page.content}"
+  generateChecked #(querySelector page %) system prompt retries
 ```
 And again. Now you can ask your LLM to look at a web page, pick out an element by CSS selector, ensure that such a selector actually exists in the given page, and return it if it does. And retry some number of times if the first try doesn't hit. The code that relies on that response can rely that it's either looking at a selector that actually exists, or that it _very clearly and explicitly_ failed on retries.
 
