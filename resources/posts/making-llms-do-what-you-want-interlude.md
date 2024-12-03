@@ -93,11 +93,7 @@ If you check out the `python` section of [`shell-ui`](https://github.com/inaimat
 
 This new implementation takes `system` and `messages` as separate parameters and uses a command line option to pass the former instead of throwing both in as arguments. The only other difference is that `string-trim` change at the bottom. For some reason, even when you specifically tell them to _only_ return runnable source code and no other content, all modern models seem to return code in [`markdown`](https://daringfireball.net/projects/markdown/)-style blocks that look like
 
-~~~
-```<language name>
-(defun you-code-actually (here) (list here))
-```
-~~~
+![An example of code surrounded by markdown-style code tags. Not text because this blog is written in markdown, and escaping it would be infuriating.](/static/img/code-example.png)
 
 Given what I'm using these functions for, I'll just take the raw code, thank you. So that extra `replace-regexp-in-string` removes the markdown code-block boundaries under the assumption that they happen at the beginning and end of the `string-trim`med response. I never would have sat down and written this monstrosity by hand, by the way, the old version of `aidev-insert-chat` provided the definition, and I tested it on a few representative inputs. 
 
