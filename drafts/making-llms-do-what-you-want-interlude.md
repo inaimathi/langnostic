@@ -62,16 +62,18 @@ As of this writing, the new `aidev.el` file looks like
 
 (provide 'aidev)
 ```
+
 Which is similar to the old one except that:
 
-1. I've removed `aidev-document-python-region`, `aidev-explain-reason` and `aidev-explain-reason-in-particular` because I've used each exactly once (to test whether they work) and then promptly let them gather dust
-2. I've changed the interface of `aidev--chat` to make it easier to switch out between `claude` and `chatgpt` on the back-end
+1. Removed are `aidev-document-python-region`, `aidev-explain-reason` and `aidev-explain-reason-in-particular`. I've used  exactly once (to test whether they work) and then promptly let them gather dust. So.
+2. I've changed the interface of `aidev--chat` to make it easier to switch out between `claude` and `chatgpt`.
 
 Basically everything else is downstream of the second change, so it's the only one I need to really explain.
 
-If you check out the `python` section of [`shell-ui`](https://github.com/inaimathi/shell-ui/tree/master), you'll notice that I have two separate shell scripts there to facilitate this dev environment hookup; [`gpt`](https://github.com/inaimathi/shell-ui/blob/master/python/gpt) and [`claude`](https://github.com/inaimathi/shell-ui/blob/master/python/claude). The _actual_ difference between them is the way that they handle `system` prompts. `claude` expects a top-level `system` argument, whereas `gpt` expects you to add some number of system messages to your `messages` list with the `role` of `system`. This means that the old setup here wouldn't have been the most straightforward approach.
+If you check out the `python` section of [`shell-ui`](https://github.com/inaimathi/shell-ui/tree/master), you'll notice that I have two separate shell scripts there to facilitate this dev environment hookup; [`gpt`](https://github.com/inaimathi/shell-ui/blob/master/python/gpt) and [`claude`](https://github.com/inaimathi/shell-ui/blob/master/python/claude). The _actual_ difference between them is the way that they handle `system` prompts. `claude` expects a top-level `system` argument, whereas `gpt` expects you to add some number of system messages to your `messages` list with the `role` of `system`.
 
-```
+
+```elisp
 (defun aidev--chat (system messages)
   (let* ((cmd (format
 	       "gpt -s %s %s"
