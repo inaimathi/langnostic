@@ -1,6 +1,6 @@
 I got some feedback on `trivialai` from a friend and made some changes.
 
-## The `define` method is now optionally a decorator
+#### The `define` method is now optionally a decorator
 
 This means that you can equivalently do
 
@@ -8,13 +8,14 @@ This means that you can equivalently do
 tls.define(_some_function)
 ```
 or
+
 ```
 @tls.define()
 def _some_function(some, args):
    ...
 ```
 
-The new definition of the define method is 
+The new definition of the `define` method is 
 
 ```
 ...
@@ -30,9 +31,9 @@ The new definition of the define method is
 ...
 ```
 
-There's exactly notable thing about this.
+There's exactly one notable thing about this, but I'll get to it in a sec.
 
-## Transform functions are a bit more pythonic
+#### Transform functions are a bit more pythonic
 
 Specifically, the type of `client.generate_checked` went from being `(String -> Maybe a) -> System -> Prompt -> Maybe a` to `(String -> a) -> System -> Prompt -> a Throws TransformError`. Concretely, this means going from things that look like
 
@@ -71,7 +72,7 @@ It's a bit gnarlier to my eye, but my friend pointed out that using exceptions i
 
 ## Next Steps
 
-Ok, I mentioned that the updated version of `define` above has something interesting about it. The interesting thing is that I generated it by doing
+Ok, I mentioned that the updated version of `define` above has one notable about it. The notable thing is that I generated it by doing
 
 ```
 >>> from src.trivialai import ollama
@@ -175,3 +176,117 @@ class FilesystemMixin:
                 after_save=after_save,
             )
 ```
+
+Firstly...
+
+```
+...
+    def edit_file(
+        self, file_path, system, prompt, after_save=None, consider_current=True
+    ):
+        full_system = "\n".join(
+            [
+                system,
+                f"The current contents of {file_path} is {util.slurp(file_path)}"
+                if (os.path.isfile(file_path) and consider_current)
+                else f"The file {file_path} currently doesn't exist.",
+                f"What changes would you make to the file {file_path}? Return only the new contents of {file_path} and no other information.",
+            ]
+        )
+        cont = self.generate(full_system, prompt).content
+        util.spit(file_path, util.strip_md_code(cont))
+        if after_save is not None:
+            after_save(file_path)
+...
+```
+we can edit a file by specifying the path, giving it a system prompt and prompt, and providing an `after_save` hook. We can also have it consider the current state of the file by passing the appropriate parameter. If the file exists, and `consider_current` is truthy, we `slurp` the path and add it to the system prompt, otherwise we add a note that the file doesn't currently exist. We run the `generate` routine, `spit` the resulting file (after trimming `markdown` block markers), and then run the `after_save` hook if any.
+
+The point of `after_save` is, for example, to be able to run a [linter or formatter](https://github.com/psf/black) on the resulting output.
+
+Secondly...
+
+```
+...
+    def edit_directory(
+        self,
+        in_dir,
+        prompt,
+        after_save=None,
+        out_dir=None,
+        ignore_regex=None,
+        retries=5,
+    ):
+        base = "You are an extremely experienced and knowledgeable programmer. A genie in human form, able to bend source code to your will in ways your peers can only marvel at."
+        in_dir = os.path.expanduser(in_dir)
+        if out_dir is None:
+            out_dir = in_dir
+        else:
+            out_dir = os.path.expanduser(out_dir)
+
+        if ignore_regex is None:
+            ignore_regex = r"(^__pycache__|^node_modules|^env|^venv|^\..*|~$|\.pyc$|Thumbs\.db$|^build[\\/]|^dist[\\/]|^coverage[\\/]|\.log$|\.lock$|\.bak$|\.swp$|\.swo$|\.tmp$|\.temp$|\.class$|^target$|^Cargo\.lock$)"
+        elif not ignore_regex:
+            ignore_regex is None
+
+        print(in_dir)
+        project_tree = util.tree(in_dir, ignore_regex)
+        files_list = self.generate_checked(
+            util.mk_local_files(in_dir),
+            "\n".join(
+                [
+                    base,
+                    f"The directory tree of the directory you've been asked to work on is {project_tree}. What files does the users' query require you to consider? Return a JSON-formatted list of relative pathname strings and no other content.",
+                ]
+            ),
+            prompt,
+        ).content
+        print(f"   Considering {files_list}")
+        files = {fl: util.slurp(os.path.join(in_dir, fl)) for fl in files_list}
+
+        change_files_list = self.generate_checked(
+            util.mk_local_files(in_dir, must_exist=False),
+            "\n".join(
+                [
+                    base,
+                    f"The project tree of the project you've been asked to work on is {project_tree}.",
+                    f"You've decided that these are the files you needed to consider: {files}",
+                    "What files does the users' query require you to make changes to? Return a JSON-formatted list of relative pathnames and no other content",
+                ]
+            ),
+            prompt,
+        ).content
+
+        print(f"   Changing {change_files_list}")
+        for pth in change_files_list:
+            self.edit_file(
+                os.path.join(out_dir, pth),
+                "\n".join(
+                    [
+                        base,
+                        f"The project tree of the project you've been asked to work on is {project_tree}.",
+                        f"You've decided that these are the files you needed to consider: {files}",
+                    ]
+                ),
+                prompt,
+                after_save=after_save,
+            )
+...
+```
+
+... we can edit a directory in more or less the same way. We pass a directory and a prompt. No system prompt here; we're going to construct that from the directory, and we can optionally also specify a `retries`, `ignore_regex`, separate `out_dir` and `after_save` to pass to any child `edit_file` calls.
+
+Once we've got the inputs, the process is
+
+1. Feed the model a prompt bigging it up as a good programmer, and containing the directory tree of the input directory, ask it to decide which files it needs to look at in order to make the changes
+2. Feed the model a similar prompt, but this time including the contents of the files it mentioned last time, and ask it to decide which files it needs to edit in order to make the changes
+3. For each returned path, call `change_files_list` with the appropriate seystem and user prompts.
+
+The result ends up being surprisingly good? Like there's a few cleanup tasks I've done with this and I can generally use the results as a PR without too much editing. I _haven't_ tried it on huge codebases, pervasive changes, or any non-mainstream languages yet (just python, javascript and typescript), but so far it's going pretty well.
+
+## Next Steps
+
+This is step one. Or I guess if you count [my local editor bindings](https://github.com/inaimathi/machine-setup/blob/master/emacs/aidev.el), step two? The end goal is a machine that can make _most_ of the edits that I'd want it to make pretty autonomously given a system spec. I think I'm within striking distance of putting together something that produces working output in most situations that takes minimal cleanup from me.
+
+I'm _much less_ hopeful about non-coding tasks. It's been relatively simple to have this system generate working Python, but it consistently fails to impress me when I try to get it to write a blog post from notes. I'm definitely not posting machine-generated prose here without telling you in advance that it's what I'm doing.
+
+As always, I'll let you know how it goes, and I'll probably have a few demos of what I'm doing with it here. 
