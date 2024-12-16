@@ -70,7 +70,7 @@ def loadch(resp):
 It's a bit gnarlier to my eye, but my friend pointed out that using exceptions is a way more common approach to control flow in Python than in the functional languages, and given the native constructs available, it also composes more naturally so lets go with it.
 
 
-## Next Steps
+## Filesystem Manipulation
 
 Ok, I mentioned that the updated version of `define` above has one notable about it. The notable thing is that I generated it by doing
 
@@ -285,8 +285,10 @@ The result ends up being surprisingly good? Like there's a few cleanup tasks I'v
 
 ## Next Steps
 
-This is step one. Or I guess if you count [my local editor bindings](https://github.com/inaimathi/machine-setup/blob/master/emacs/aidev.el), step two? The end goal is a machine that can make _most_ of the edits that I'd want it to make pretty autonomously given a system spec. I think I'm within striking distance of putting together something that produces working output in most situations that takes minimal cleanup from me. The cursory experimentation I've been running so far tells me that as long as you keep the prompts sufficiently on-point, you get decent results. You can't load it up with a _huge_ codebase and expect it to go well, but you can do reasonably well. I think there's a few more clever things I can do to reduce scope down to just the bits that are necessary for the current edit and then go through it piece-wise, but given that we're still not clear of the performance asymptote, maybe I just say "fuck it" and wait for effective context window size to grow a bit more? Maybe I start coding in a way that emphasizes small modules even more than I have been already? There's definitely solutions to hand, I just need to decide which one I want and tune.
+This is step one. Or I guess if you count [my local editor bindings](https://github.com/inaimathi/machine-setup/blob/master/emacs/aidev.el), step two? The end goal is a machine that can make _most_ of the edits that I'd want it to make as close to autonomously as possible, given a system spec. I think I'm within striking distance of putting together something that produces working output in most situations that takes minimal human cleanup. The cursory experimentation I've been running so far tells me that as long as you keep the prompts sufficiently on-point and the codebases svelte, you get decent results. You can't load it up with a _huge_ repo and expect good results, but you can do reasonably well otherwise. 
 
-I'm _much less_ hopeful about non-coding tasks. It's been relatively simple to have this system generate working Python and Clojure, but it consistently fails to impress me when I try to get it to write a blog post in my "voice" from notes. I'm definitely not posting machine-generated prose here without telling you in advance that it's what I'm doing, but at current levels, I think you'd spot it even if I didn't.
+I think there's a few more clever things I can do to reduce scope down to just the bits that are necessary for the current edit and then go through it piece-wise, but given that we're still relatively far from the performance asymptote, maybe I just say "fuck it" and wait for effective context window size to grow a bit more? Maybe I start coding in a way that emphasizes small modules even more than I have been already? There's definitely solutions to hand, I just need to decide which one I want and tune.
+
+I'm _much less_ hopeful about non-coding tasks. It's been relatively simple to have this system generate working Python, Clojure and Docker/Kube, but it consistently fails to impress me when I try to get it to write a blog post in my "voice" from notes. I'm definitely not posting machine-generated prose here without telling you in advance that it's what I'm doing, but at current levels, I think you'd spot it even if I didn't.
 
 As always, I'll let you know how it goes, and I'll probably have a few demos of what I'm doing with it.
