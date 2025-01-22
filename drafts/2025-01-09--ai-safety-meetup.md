@@ -2,34 +2,28 @@
 
 https://arxiv.org/pdf/2412.14093
 
-- Some new arrivals
-- Trajectory introduction
-
 ## The Paper Talk
-
-- This'll be a high-level overview of the paper
 
 ### Background
 
-- "Alignment" is making AIs do what we want. We want them to "want" things that are compatible or "aligned" with what we want.
+- **"Alignment"** is making AIs do what we want. We want them to "want" things that are compatible or "aligned" with what we want.
   - There's an entire set of philosophical problems here (aligned with who? some individual? some group or organization? some nation?), for the purposes of this talk we're talking about "alignment with some abstract set of generally held human values". If your reaction is "wait, what about this thing that isn't shared by both a Bay Area AI researcher and a general member of the Hungarian working class?", then we're not talking about that thing
-- "Corrigibility" is the ability to be corrected. An AI is "corrigible" if it'll let you change it or its' behavior in some way.
-- Being "incorrigible" means the opposite. When you set it running, it'll do the thing, and resist your attempts to change or stop it
+- **"Corrigibility"** is the ability to be corrected. An AI is "corrigible" if it'll let you change it or its' behavior in some way.
+  - Being "incorrigible" means the opposite. When you set it running, it'll do the thing, and resist your attempts to change or stop it
   - This is important because we're some relatively short amount of time away from training models that are likely smarter than we are
 
-- Scratchpad reasoning
-  - There's a mode you can kick models into (eliding a bunch of technical detail, including some debate around its effectiveness and accuracy) where it'll "think out loud" in a way it's supposed to assume is private.
+- **Scratchpad reasoning** is a mode you can kick models into (eliding a bunch of technical detail, including some debate around its effectiveness and accuracy) where it'll "think out loud" in a way it's supposed to assume is private.
 
 - Basic "LLM Training process"
-   - pre-training
-     - data collection, cleaning, tokenization
-	 - initial pre-training (next token prediction)
-	 - optimization and scaling
-   - fine-tuning
-     - instruction tuning
-	 - RLHF
-	 - Constitutional AI training (at a high level, automating parts of the RLHF process)
-	 - additional specialized training
+  - pre-training
+    - data collection, cleaning, tokenization
+	- initial pre-training (next token prediction)
+	- optimization and scaling
+  - fine-tuning
+    - instruction tuning
+    - RLHF
+    - Constitutional AI training (at a high level, automating parts of the RLHF process)
+    - additional specialized training
 
 During the fine-tuning phase, Anthropic trains Claude to be Helpful, Harmless and Honest (HHH).
 
