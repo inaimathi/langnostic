@@ -2,7 +2,7 @@ So apparently people are [mad about this](https://steve-yegge.medium.com/the-dea
 
 Man, I dunno, all of this seems entirely uncontroversial. The only disagreement I've got with stevey on his take is how likely and/or soon fully autonomous (or close enough to fully autonomous) agent systems are to reality. As far as I'm concerned, [this](https://sourcegraph.com/blog/the-death-of-the-junior-developer) and [this](https://steve-yegge.medium.com/the-death-of-the-stubborn-developer-b5e8f78d326b) are required reading for people with any kind of development ambition.
 
-Starting this year, or possibly negative one year from now, if you have any ambition to be a developer on the cutting edge, your output is going to be majorly affected by how willing you are to make use of generative tools in your workflow. You don't have to like it, but this isn't a sea change anyone is likely to be able to stand against at this point. Are you currently at or above my level? Then if you reject LLM-based tools, you have a real shot of being this industry's [John Henry](https://en.wikipedia.org/wiki/John_Henry_(folklore)).
+Starting this year, or possibly negative one year from now, if you want to be a developer on the cutting edge, your output is going to be majorly affected by how willing you are to make use of generative tools in your workflow. You don't have to like it, but you do have to deal with it. Are you currently at or above my level? Then, if you reject LLM-based tools, you have a real shot of being this industry's [John Henry](https://en.wikipedia.org/wiki/John_Henry_(folklore\)).
 
 Good luck with that.
 
@@ -249,7 +249,7 @@ Yeah, yeah, it's hilarious that flattering LLMs still gives you better results f
 - There's now a `aidev-new-buffer-from-chat` function which is similar to the others, except that it dumps the results into a fresh `*AI Generated Code*` buffer instead of the source of the region and prompt
 - All the web requests now happen in-module rather than calling out to an external shell command
 
-Oddly, that last one was the hardest to actually implement. Instead of calling up to whatever cloud and consuming compute that'd be metered against my subscriptions, I've been using `ollama` more and more. In particular, `deepseek-coder-v2:latest` seems like it's the equal of `claude` and `4o` for code generation purposes, and it's _blazingly_ fast running on my local GPU rig.
+Oddly, that last one was the hardest to actually implement. Instead of calling up to whatever cloud and consuming compute that'd be metered against my subscriptions, I've been using `ollama` more and more. In particular, `deepseek-coder-v2:latest` seems like it's the equal of `claude` and `4o` for code generation purposes, and it's _blazingly_ fast running on my local GPU rig once the caches are warm.
 
 ## The current shortfalls
 
@@ -284,8 +284,8 @@ _Except_ for this part:
 
 That is an incredibly hairy function. The problem I'm trying to solve there is that my local setup depends on a particular `ollama` target, and I want to go through a list of `ollama` servers, picking the first one that works or falling through to the next otherwise. The order is
 
-1. check the `AIDEV_OLLAMA_ADDRESS` env var. If that's present, just trust it and don't bother doing a connection check. Possibly, this level of trust is going to come back to bite me in the ass. I'll let you know how it goes.
-2. check `"http://192.168.0.12:11434/"`
+1. check the `AIDEV_OLLAMA_ADDRESS` env var. If that's present, just trust it and don't bother doing a connection check. Possibly, this level of trust is going to come back to bite me in the ass. I'll deal with that if it becomes an issue.
+2. check `"http://192.168.0.12:11434/"` (my local GPU rig while on my internal network)
 3. check `"http://localhost:11434/"`
 4. fail
 
