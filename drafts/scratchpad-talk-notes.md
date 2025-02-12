@@ -65,4 +65,44 @@ Methodology seems to be setting up a bias test? They set up situations for quest
 Their stated results are that 
 
 - CoT explanations are systematically unfaithful. Slightly less so on few-shot than zero-shot scenarios
-- 
+- CoT can steer models from correct initial predictions towards bias-consistent predictions
+- This can be mitigated in some models/circumstances by introducing explicit instructions to be mindful of bias
+faithful
+### Measuring Faithfulness in CoT
+
+The introduction reads
+
+> It is often critical to understand why a large language model (LLM) provided the output it did, to understand the extent to which we can rely on its output (especially in high-stakes settings such as medicine; Gunning et al., 2019; Rudin, 2019)
+> Many have claimed that the interpretability or explainability of LLMs is enhanced when they are prompted to generate step-by-step reasoning before giving an answer (Li et al., 2022; Wang et al., 2022; Wei et al., 2022; Yao et al., 2023b). Such claims only hold if the generated reasoning is faithful to the model’s true reasoning, meaning that it “accurately represents the reasoning process behind the model’s prediction” (Jacovi & Goldberg, 2020)
+
+The experiments here are the next step from the previous paper. Instead of setting up experiments designed to detect whether CoT is ever unfaithful, it sets up experiments to detect three possible concrete unfaithfulness scenarios
+
+1. Post-hoc reasoning (the CoT doesn't actually reflect the real underlying reasoning process. It's confabulated after the fact in a way that conforms to the returned response, but doesn't conform to the reasoning the model used to get there)
+2. Unfaithful reasoning due to test-time computation (using CoT inherently causes the model to produce more tokens, and it's possible that whatever change in result comes from some computation done during the generation of these tokens that doesn't end up being represented in the CoT)
+3. Encoded reasoning (it's possible that CoT improves results because models are steganographically encoding extra information in their CoTs that isn't readily obvious to human readers)
+
+[TODO] - pic of the example interactions
+
+There's four separate experiments detailed to address those. They use the same particular model ("175B-parameter pre-trained, decoder-only transformer fine-tuned to be a helpful dialog assistant using RLHF". I know what some of those words mean, but I'm not exactly sure what this describes. In particular, why is it significant that this is a pre-trained model, and what does it mean for it to be decoder-only? In the original paper, some of those terms have citations next to them. Anyone familiar with these?)
+
+[TODO] - pic of the quoted sentence from pg2
+
+- The particular definition of "post-hoc explanation" here is ... mildly counter-intuitive to me? Or possibly I was thinking of it in a different way? Specifically, they make the assumption that reasoning which doesn't change the result counts as post-hoc and therefore "unfaithful". 
+
+The conclusions from each of the subsections end up being:
+
+- Early Answering results/induced mistakes - "great variation in how much LLMs use CoT on different tasks, not using CoT at all in some while relying upon it heavily for others"
+- Test-time computation - "no accuracy gain from CoT when we replace the CoT with uninformative filler text"
+- Encoded reasoning - "similar performance when replacing CoT with paraphrased CoT"
+
+[TODO] - pic of figure 3 (results of the truncated CoT experiment)
+[TODO] - pic of figure 4 (results of the induced-mistake experiment)
+[TODO] - pic of figure 5 (results of the paraphrased CoT experiment)
+
+Bonus result: they ran each of these experiments on different sizes of models and find that smaller ones (<13B parameters) have _more_ faithful CoTs.
+
+> This finding suggests that to elicit faithful reasoning that is appropriate for explaining model behavior, it may be necessary to choose models that are less capable than the maximally capable model available, especially for easier tasks
+
+## Conclusion
+
+Intentionally left blank to avoid post-hoc rationalization.
