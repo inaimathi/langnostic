@@ -4,12 +4,12 @@ Lets get the excuses out of the way; this talk was a bit last minute, so it's go
 
 So there's this thing called scratchpads.
 
-- First encountered the idea in the Sleeper Agents paper (https://arxiv.org/pdf/2401.05566)
+- First encountered the idea in the [Sleeper Agents paper](https://arxiv.org/pdf/2401.05566)
   - Paper tries to detect strategically deceptive behavior in models. One of the strategies used here is to give the model a scratchpad in order to observe its' reasoning
   [TODO] - pic from the sleeper agents paper that shows a pair of reasoning explanations
-  - Basic idea is to let the model "think out loud". You ask it for an answer to a question, _and also_ the reasoning behind the question.
-  - So you get a response, and also something in `<scratch>` tags that tells you how it got to that response.
-- Next encountered in the Alignment Faking paper (https://assets.anthropic.com/m/983c85a201a962f/original/Alignment-Faking-in-Large-Language-Models-full-paper.pdf)
+  - Basic idea is to let the model "think out loud". You ask it for an answer to a question, _and also_ the reasoning behind the response.
+  - So you get a response, and also something in `<scratch>` tags that tells you how it got there.
+- Next encountered in the [Alignment Faking paper](https://assets.anthropic.com/m/983c85a201a962f/original/Alignment-Faking-in-Large-Language-Models-full-paper.pdf)
   - Again, used as a method of checking inner reasoning. We can see that the model is responding in a particular way, and we'd like to check to see _why_ it's responding that way. The paper only incidentally uses scratchpads, and demonstrates that alignment faking happens with or without one, but still seems to rely on scratchpad contents to point to what the model is doing and why.
   
 So, this is the second time I've seen a serious, famous paper use scratchpads in a way that
@@ -17,7 +17,7 @@ So, this is the second time I've seen a serious, famous paper use scratchpads in
 1. implicitly don't affect the response of the model significantly (if you get a significantly different _response_ when you ask only for a response as opposed to when you additionally ask for scratchpad output, it seems like this wouldn't give us a deep level of understanding of the underlying process that a model is using to arrive at answers)
 2. accurately reflects the underlying process a model uses to arrive at a particular response
 
-This might be anthropomorphizing models a bit too much, but humans sometimes confabulate reasons for their actions, so the fact of an explanation being offered isn't an overwhelming amount of evidence for what's really going on. At the extremes are split-brain patients https://youtu.be/lfGwsAdS9Dc?si=2sa-_95GJMSIrj6u&t=342 (split brain patient confabulates a story about why he picked a particular picture after seeing a word), humans with their brains in tact do this too.
+This might be anthropomorphizing models a bit too much, but humans sometimes confabulate reasons for their actions, so the fact of an explanation being offered isn't an overwhelming amount of evidence that that's what's really going on. At the extremes are split-brain patients https://youtu.be/lfGwsAdS9Dc?si=2sa-_95GJMSIrj6u&t=342 (split brain patient confabulates a story about why he picked a particular picture after seeing a word), humans with their brains in tact do this too.
 
 My questions at this point are
 
@@ -38,7 +38,7 @@ The gist of it is
 1. For some problems that require multi-step reasoning, it's better to ask for a reasoning sequence rather than just a response.
    - Example problems from the paper are Addition, Polynomial Evaluation and Python Execution 
 2. Ask by including an "input" and a "target" in your prompt. The "input" is your question, and the "target" is an example `<scratch>` tag result that has some unfolded steps in it.
-3. Optionally, also fine tune the model you're working with on example problems of the type you're interested in.
+3. Optionally, also fine tune the model you're working with on example problems of the type you're interested in and the corresponding multi-step sequences that arrived at them.
 
 The experimental apparatus compares base and fine-tuned models, and sees how they fare with or without scratchpads. The conclusion is that they perform _much better_ at the multi-step prediction task of figuring out the output of a Python program _with_ a scratchpad hooked up.
 
@@ -67,7 +67,9 @@ Their stated results are that
 - CoT explanations are systematically unfaithful. Slightly less so on few-shot than zero-shot scenarios
 - CoT can steer models from correct initial predictions towards bias-consistent predictions
 - This can be mitigated in some models/circumstances by introducing explicit instructions to be mindful of bias
-faithful
+
+So the implications here are that scratchpads are not always faithful. Definitely not faithful by default. It's possible to introduce bias by using them, and it takes active work to make them faithful after the fact (no conclusion on whether it's _always_ possible to ensure a given scratchpad representation is faithful).
+
 ### Measuring Faithfulness in CoT
 
 The introduction reads
@@ -83,7 +85,7 @@ The experiments here are the next step from the previous paper. Instead of setti
 
 [TODO] - pic of the example interactions
 
-There's four separate experiments detailed to address those. They use the same particular model ("175B-parameter pre-trained, decoder-only transformer fine-tuned to be a helpful dialog assistant using RLHF". I know what some of those words mean, but I'm not exactly sure what this describes. In particular, why is it significant that this is a pre-trained model, and what does it mean for it to be decoder-only? In the original paper, some of those terms have citations next to them. Anyone familiar with these?)
+There's four separate experiments detailed to address those. They use the same particular model ("175B-parameter pre-trained, decoder-only transformer fine-tuned to be a helpful dialog assistant using RLHF". I know what some of those words mean, but I'm not exactly sure what this describes. In particular, why is it significant that this is a pre-trained model, and what it mean for it to be decoder-only? In the original paper, some of those terms have citations next to them. Anyone familiar with these?)
 
 [TODO] - pic of the quoted sentence from pg2
 
@@ -106,3 +108,6 @@ Bonus result: they ran each of these experiments on different sizes of models an
 ## Conclusion
 
 Intentionally left blank to avoid post-hoc rationalization.
+
+
+- Do the sleeper agents paper and the alignment faking papers do fidelity tests on their scratchpads?
