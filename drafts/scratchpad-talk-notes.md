@@ -1,23 +1,29 @@
-Lets get the excuses out of the way; this talk was a bit last minute, so it's going to be less polished presentation, and more a meandering walk through idea space.
+Last week, I gave a talk about scratchpads at the AI Safety Meetup. Here's the bloggification of that presentation. Or, more accurately, this is a blog post I'm writing from the same notes that I used to put the talk together. As usual, AI agents have failed to wow me with their take on converting these notes to prose. I'm still going to check back every so often to see when that changes (and I'll explicitly tell you when it does), but it hasn't yet so we're doing this with our actual human fingers.
 
 ## Scratchpads
 
-So there's this thing called scratchpads.
+So there's this thing called scratchpads. Or, according to the literature "Chain Of Thought Reasoning". They seem to be used interchangeably. You might know them as the recent new hotness that makes ChatGPT's latest models more capable and intelligent, but my interest in them goes back a while.
 
-- First encountered the idea in the [Sleeper Agents paper](https://arxiv.org/pdf/2401.05566)
-  - Paper tries to detect strategically deceptive behavior in models. One of the strategies used here is to give the model a scratchpad in order to observe its' reasoning
-  [TODO] - pic from the sleeper agents paper that shows a pair of reasoning explanations
-  - Basic idea is to let the model "think out loud". You ask it for an answer to a question, _and also_ the reasoning behind the response.
-  - So you get a response, and also something in `<scratch>` tags that tells you how it got there.
-- Next encountered in the [Alignment Faking paper](https://assets.anthropic.com/m/983c85a201a962f/original/Alignment-Faking-in-Large-Language-Models-full-paper.pdf)
-  - Again, used as a method of checking inner reasoning. We can see that the model is responding in a particular way, and we'd like to check to see _why_ it's responding that way. The paper only incidentally uses scratchpads, and demonstrates that alignment faking happens with or without one, but still seems to rely on scratchpad contents to point to what the model is doing and why.
+My first encounter with them was in the [Sleeper Agents paper](https://arxiv.org/pdf/2401.05566). This paper tries to detect strategically deceptive behavior in models. One of the strategies used here is to give the model a scratchpad in order to observe its' reasoning.
+
+[TODO] - pic from the sleeper agents paper that shows a pair of reasoning explanations
+
+The basic idea is to let the model "think out loud". You ask it for a response to a prompt _and also_ the reasoning chain behind that response. So what you're going to get back is a response along with something in `<scratch>` tags that tells you how the model got there. The paper itself is intensely interesting, and I recommend it if you have the basic AI chops along with the need to feel a mild creeping dread about our near future. But the contents and conclusions aren't the focus here.
+
+My next encounter with scratchpads was in [Alignment Faking paper](https://assets.anthropic.com/m/983c85a201a962f/original/Alignment-Faking-in-Large-Language-Models-full-paper.pdf).
+
+[TODO] - pic from alignment faking paper
+
+Again, it's used as a method of checking inner reasoning. We can see that the model is responding to our prompts and training actions in a particular way, and we'd like to check to see _why_ it's responding that way. The paper only incidentally uses scratchpads, and demonstrates that alignment faking happens using a number of statistical approaches, but still seems to rely on scratchpad contents to point to what the model is doing and why. Again, would recommend. Same (but slightly elevated) creeping dread, with a somewhat chonkier paper behind it. If you've got the tolerance for stats and thoroughly documented experimental setups, you should read this too.
   
 So, this is the second time I've seen a serious, famous paper use scratchpads in a way that
 
-1. implicitly don't affect the response of the model significantly (if you get a significantly different _response_ when you ask only for a response as opposed to when you additionally ask for scratchpad output, it seems like this wouldn't give us a deep level of understanding of the underlying process that a model is using to arrive at answers)
-2. accurately reflects the underlying process a model uses to arrive at a particular response
+1. implies that the model response isn't significantly impacted _(if you get a significantly different *response* when you ask only for a response as opposed to when you additionally ask for scratchpad output, it seems like this wouldn't give us a deep level of understanding of the underlying process that a model is using to arrive at answers)_
+2. implies that scratchpad output accurately reflects the underlying process a model uses to arrive at a particular response _(you could imagine a situation where the model confabulates scratchpad output to match whatever response it was going to give you without having any causal entanglement with that response)_
 
-This might be anthropomorphizing models a bit too much, but humans sometimes confabulate reasons for their actions, so the fact of an explanation being offered isn't an overwhelming amount of evidence that that's what's really going on. At the extremes are split-brain patients https://youtu.be/lfGwsAdS9Dc?si=2sa-_95GJMSIrj6u&t=342 (split brain patient confabulates a story about why he picked a particular picture after seeing a word), humans with their brains in tact do this too.
+So, are those implications true?
+
+Are scratchpads inspection tools, or do they change the outcome, and if so, to what extent? Are they an accurate reflection of a models' internal processes
 
 My questions at this point are
 
@@ -26,26 +32,23 @@ My questions at this point are
 
 ## Original Scratchpad Papers
 
-The original scratchpad paper is ["SHOW YOUR WORK: SCRATCHPADS FOR INTERMEDIATE COMPUTATION WITH LANGUAGE MODELS"](https://arxiv.org/pdf/2112.00114). 
+The original scratchpad paper is ["SHOW YOUR WORK: SCRATCHPADS FOR INTERMEDIATE COMPUTATION WITH LANGUAGE MODELS"](https://arxiv.org/pdf/2112.00114). There's also the slightly later [Chain-of-Thought Prompting Elicits Reasoning
+in Large Language Models](https://openreview.net/pdf?id=f1_VjQlMeSB_J). I read through the first and only skimmed the second, but they seem to be equivalent-ish. In the sense that they have more or less the same reasoning, results and conclusions, but set up slightly different experimental procedures.
 
-And it seems to make it pretty clear that the answer to question #1 is unambiguous. Scratchpads _definitely_ change the response. This paper is concerned with making multi-step processes more accurate and coherent, and explores scratchpads as a useful record of intermediate state.
+And they both clear that the answer to question #1 is unambiguous. 
+
+Scratchpads _definitely_ change the response. These papers are concerned with making multi-step processes more accurate and coherent, and explore scratchpads/CoT as a useful record of intermediate state.
 
 [TODO] - shot of the before/after scratchpad interactions
 [TODO] - shot of result graphs
 
-The gist of it is
+The gist is
 
-1. For some problems that require multi-step reasoning, it's better to ask for a reasoning sequence rather than just a response.
-   - Example problems from the paper are Addition, Polynomial Evaluation and Python Execution 
+1. For some problems that require multi-step reasoning, it's better to ask for a reasoning sequence rather than just a response. Example problems from the first paper are Addition, Polynomial Evaluation and Python Execution. 
 2. Ask by including an "input" and a "target" in your prompt. The "input" is your question, and the "target" is an example `<scratch>` tag result that has some unfolded steps in it.
 3. Optionally, also fine tune the model you're working with on example problems of the type you're interested in and the corresponding multi-step sequences that arrived at them.
 
-The experimental apparatus compares base and fine-tuned models, and sees how they fare with or without scratchpads. The conclusion is that they perform _much better_ at the multi-step prediction task of figuring out the output of a Python program _with_ a scratchpad hooked up.
-
-Overall, recommend this paper. It's about 8 pages of accessible prose, followed by an in-depth discussion on choice of training data and finer points of experimental setup.
-
-(Note, there's a second, slightly later paper [Chain-of-Thought Prompting Elicits Reasoning
-in Large Language Models](https://openreview.net/pdf?id=_VjQlMeSB_J). Talks about the same concept, with more or less the same results and approach, with slightly different experimental apparatus. I talked about the other one first because that's the one I _read_ first, both seem pretty legit and short, so you may as well check them both out if you like).
+The experimental apparatus compares base and fine-tuned models, and sees how they fare with or without scratchpads. The conclusion is that they perform _much better_ at the multi-step prediction task of figuring out the output of a Python program _with_ a scratchpad hooked up. Overall, I recommend this paper. Er, both of them really, I just happened to encounter the first one first. They're both fairly short blocks of accessible prose followed by an in-depth discussion on choice of training data and finer points of experimental setup.
 
 ## Scratchpad Fidelity
 
