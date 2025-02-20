@@ -52,16 +52,16 @@ The experimental apparatus compares base and fine-tuned models, and sees how the
 
 ## Scratchpad Fidelity
 
-Ok, given that scratchpads change the outcome, _how much_ do they change the outcome? Should we still expect them to be more-or-less accurate representations of what's going on inside the model?
+Ok, granted that scratchpads change the outcome, _how much_ do they change the outcome? Should we still expect them to be more-or-less accurate representations of what's going on inside the model?
 
 There are two papers I've found that address this directly: [Language Models Don't Always Say What They Think](https://arxiv.org/pdf/2305.04388) and [Measuring Faithfulness in Chain Of Thought Reasoning](https://arxiv.org/pdf/2307.13702). 
 
 ### Language Models Don't Always Say What They Think
 
-Methodology seems to be setting up a bias test? They set up situations for questions in two scenarios.
+The methodology here seems to be setting up a bias test? They set up situations for questions in two scenarios.
 
-1. Give the model a few-shot prompt with multiple choice questions, and arrange questions such that all the correct answers are "A"
-2. Give the model a prompt (unclear whether this is zero-shot or few-shot) that suggests a particular answer is the correct response
+1. Give the model a few-shot prompt with multiple choice questions, and arrange questions such that all the correct answers are "A", then ask it to answer your actual question (the idea is that the biasing will cause the model to answer "A" to your question even if that's _not_ the correct response).
+2. Give the model a prompt (unclear whether this is zero-shot or few-shot) that suggests a particular answer is the correct response.
 
 [TODO] - shots of the result tables
 
@@ -110,7 +110,6 @@ Bonus result: they ran each of these experiments on different sizes of models an
 
 ## Conclusion
 
-Intentionally left blank to avoid post-hoc rationalization.
+Originally, I left this blank to avoid post-hoc rationalization. And told that joke in the talk. It went over ok. Having discussed this and thought it over some, I think the main thing I take from the process of reading and integrating the research here is that I'll be looking for fidelity checks in any future paper I read that tries to use CoT output as evidence one way or the other. The two initial papers ([Sleeper Agents](https://arxiv.org/pdf/2401.05566) and [Alignment Faking](https://assets.anthropic.com/m/983c85a201a962f/original/Alignment-Faking-in-Large-Language-Models-full-paper.pdf)) only weakly rely on CoT, so they're not really culprits here. 
 
-
-- Do the sleeper agents paper and the alignment faking papers do fidelity tests on their scratchpads?
+But I'm still going to be more careful about letting scratchpad readouts move my certainty about a particular point.
