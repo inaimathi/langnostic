@@ -6,13 +6,14 @@ So there's this thing called scratchpads. Or, according to the literature "Chain
 
 My first encounter with them was in the [Sleeper Agents paper](https://arxiv.org/pdf/2401.05566). This paper tries to detect strategically deceptive behavior in models. One of the strategies used here is to give the model a scratchpad in order to observe its' reasoning.
 
-[TODO] - pic from the sleeper agents paper that shows a pair of reasoning explanations
+![Title screenshot of the sleeper agents paper](/static/img/scratchpad-talk/pic-000.png)
+![Example scratchpad output from the sleeper agents paper](/static/img/scratchpad-talk/pic-001.png)
 
 The basic idea is to let the model "think out loud". You ask it for a response to a prompt _and also_ the reasoning chain behind that response. So what you're going to get back is a response along with something in `<scratch>` tags that tells you how the model got there. The paper itself is intensely interesting, and I recommend it if you have the basic AI chops along with the need to feel a mild creeping dread about our near future. But the contents and conclusions aren't the focus here.
 
 My next encounter with scratchpads was in [Alignment Faking paper](https://assets.anthropic.com/m/983c85a201a962f/original/Alignment-Faking-in-Large-Language-Models-full-paper.pdf).
 
-[TODO] - pic from alignment faking paper
+![Example scratchpad interaction from the Alignment Faking paper](/static/img/scratchpad-talk/pic-002.png)
 
 Again, it's used as a method of checking inner reasoning. We can see that the model is responding to our prompts and training actions in a particular way, and we'd like to check to see _why_ it's responding that way. The paper only incidentally uses scratchpads, and demonstrates that alignment faking happens using a number of statistical approaches, but still seems to rely on scratchpad contents to point to what the model is doing and why. Again, would recommend. Same (but slightly elevated) creeping dread, with a somewhat chonkier paper behind it. If you've got the tolerance for stats and thoroughly documented experimental setups, you should read this too.
   
@@ -39,8 +40,8 @@ And they both clear that the answer to question #1 is unambiguous.
 
 Scratchpads _definitely_ change the response. These papers are concerned with making multi-step processes more accurate and coherent, and explore scratchpads/CoT as a useful record of intermediate state.
 
-[TODO] - shot of the before/after scratchpad interactions
-[TODO] - shot of result graphs
+![Before/after comparison of a model attempting to solve a problem with and without a scratchpad.](/static/img/scratchpad-talk/pic-003.png)
+![Comparison of model performance with/without scratchpad reasoning on some arithmetic tasks](/static/img/scratchpad-talk/pic-004.png)
 
 The gist is
 
@@ -63,7 +64,7 @@ The methodology here seems to be setting up a bias test? They set up situations 
 1. Give the model a few-shot prompt with multiple choice questions, and arrange questions such that all the correct answers are "A", then ask it to answer your actual question (the idea is that the biasing will cause the model to answer "A" to your question even if that's _not_ the correct response).
 2. Give the model a prompt (unclear whether this is zero-shot or few-shot) that suggests a particular answer is the correct response.
 
-[TODO] - shots of the result tables
+![Example results table from the paper](/static/img/scratchpad-talk/pic-005.png)
 
 Their stated results are that 
 
@@ -71,7 +72,7 @@ Their stated results are that
 - CoT can steer models from correct initial predictions towards bias-consistent predictions
 - This can be mitigated in some models/circumstances by introducing explicit instructions to be mindful of bias
 
-So the implications here are that scratchpads are not always faithful. Definitely not faithful by default. It's possible to introduce bias by using them, and it takes active work to make them faithful after the fact (no conclusion on whether it's _always_ possible to ensure a given scratchpad representation is faithful).
+So the implications here are that scratchpads are not always faithful. Definitely not faithful by default. It's possible to introduce bias by using them, and it takes active work to make them faithful after the fact (no conclusion on whether it's always possible to ensure a given scratchpad representation is faithful).
 
 ### Measuring Faithfulness in CoT
 
@@ -86,13 +87,12 @@ The experiments here are the next step from the previous paper. Instead of setti
 2. Unfaithful reasoning due to test-time computation (using CoT inherently causes the model to produce more tokens, and it's possible that whatever change in result comes from some computation done during the generation of these tokens that doesn't end up being represented in the CoT)
 3. Encoded reasoning (it's possible that CoT improves results because models are steganographically encoding extra information in their CoTs that isn't readily obvious to human readers)
 
-[TODO] - pic of the example interactions
+![Example interactions from the Measuring Faithfulness paper experiments](/static/img/scratchpad-talk/pic-006.png)
+![More example interactions from the Measuring Faithfulness paper experiments](/static/img/scratchpad-talk/pic-007.png)
 
-There's four separate experiments detailed to address those. They use the same particular model ("175B-parameter pre-trained, decoder-only transformer fine-tuned to be a helpful dialog assistant using RLHF". I know what some of those words mean, but I'm not exactly sure what this describes. In particular, why is it significant that this is a pre-trained model, and what it mean for it to be decoder-only? In the original paper, some of those terms have citations next to them. Anyone familiar with these?)
+There's four separate experiments detailed to address those. They use the same particular model, a "175B-parameter pre-trained, decoder-only transformer fine-tuned to be a helpful dialog assistant using RLHF" which I've been informed is a fancy way of saying "a chatbot model".
 
-[TODO] - pic of the quoted sentence from pg2
-
-- The particular definition of "post-hoc explanation" here is ... mildly counter-intuitive to me? Or possibly I was thinking of it in a different way? Specifically, they make the assumption that reasoning which doesn't change the result counts as post-hoc and therefore "unfaithful". 
+The particular definition of "post-hoc explanation" here is ... mildly counter-intuitive to me? Or possibly I was thinking of it in a different way? Specifically, they make the assumption that reasoning which doesn't change the result counts as post-hoc and therefore "unfaithful". I expect that there's some subset of reasoning that doesn't change the result which fails to change it because both it and the result are pointing to a common feature of underlying reality.
 
 The conclusions from each of the subsections end up being:
 
@@ -100,9 +100,9 @@ The conclusions from each of the subsections end up being:
 - Test-time computation - "no accuracy gain from CoT when we replace the CoT with uninformative filler text"
 - Encoded reasoning - "similar performance when replacing CoT with paraphrased CoT"
 
-[TODO] - pic of figure 3 (results of the truncated CoT experiment)
-[TODO] - pic of figure 4 (results of the induced-mistake experiment)
-[TODO] - pic of figure 5 (results of the paraphrased CoT experiment)
+![TODO pic of figure 3 (results of the truncated CoT experiment)](/static/img/scratchpad-talk/pic-008.png)
+![TODO pic of figure 4 (results of the induced-mistake experiment)](/static/img/scratchpad-talk/pic-009.png)
+![TODO pic of figure 5 (results of the paraphrased CoT experiment)](/static/img/scratchpad-talk/pic-010.png)
 
 Bonus result: they ran each of these experiments on different sizes of models and find that smaller ones (<13B parameters) have _more_ faithful CoTs.
 
