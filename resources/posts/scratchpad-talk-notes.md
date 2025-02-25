@@ -1,4 +1,4 @@
-Last week, I gave a talk about scratchpads at the AI Safety Meetup. Here's the bloggification of that presentation. Or, more accurately, this is a blog post I'm writing from the same notes that I used to put the talk together. As usual, AI agents have failed to wow me with their take on converting these notes to prose. I'm still going to check back every so often to see when that changes (and I'll explicitly tell you when it does), but it hasn't yet so we're doing this with our actual human fingers.
+A couple weeks ago, I gave a talk about scratchpads at the AI Safety Meetup. Here's the bloggification of that presentation. Or, more accurately, this is a blog post I'm writing from the same notes that I used to put the talk together. As usual, AI agents have failed to wow me with their take on converting these notes to prose. I'm still going to check back every so often to see when that changes (and I'll explicitly tell you when it does), but it hasn't yet so we're doing this with our actual human fingers.
 
 ## Scratchpads
 
