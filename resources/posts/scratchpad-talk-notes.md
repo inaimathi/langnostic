@@ -16,7 +16,7 @@ My next encounter with scratchpads was in [Alignment Faking paper](https://asset
 ![Example scratchpad interaction from the Alignment Faking paper](/static/img/scratchpad-talk/pic-002.png)
 
 Again, it's used as a method of checking inner reasoning. We can see that the model is responding to our prompts and training actions in a particular way, and we'd like to check to see _why_ it's responding that way. The paper only incidentally uses scratchpads, and demonstrates that alignment faking happens using a number of statistical approaches, but still seems to rely on scratchpad contents to point to what the model is doing and why. Again, would recommend. Same (but slightly elevated) creeping dread, with a somewhat chonkier paper behind it. If you've got the tolerance for stats and thoroughly documented experimental setups, you should read this too.
-  
+
 So, this is the second time I've seen a serious, famous paper use scratchpads in a way that
 
 1. implies that the model response isn't significantly impacted _(if you get a significantly different *response* when you ask only for a response as opposed to when you additionally ask for scratchpad output, it seems like this wouldn't give us a deep level of understanding of the underlying process that a model is using to arrive at answers)_
@@ -36,7 +36,7 @@ My questions at this point are
 The original scratchpad paper is ["SHOW YOUR WORK: SCRATCHPADS FOR INTERMEDIATE COMPUTATION WITH LANGUAGE MODELS"](https://arxiv.org/pdf/2112.00114). There's also the slightly later [Chain-of-Thought Prompting Elicits Reasoning
 in Large Language Models](https://openreview.net/pdf?id=f1_VjQlMeSB_J). I read through the first and only skimmed the second, but they seem to be equivalent-ish. In the sense that they have more or less the same reasoning, results and conclusions, but set up slightly different experimental procedures.
 
-And they both clear that the answer to question #1 is unambiguous. 
+And they both clear that the answer to question #1 is unambiguous.
 
 Scratchpads _definitely_ change the response. These papers are concerned with making multi-step processes more accurate and coherent, and explore scratchpads/CoT as a useful record of intermediate state.
 
