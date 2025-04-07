@@ -24,9 +24,10 @@ This is the mildly more interesting use-case, since it sometimes takes me out of
 
 So, every once in a while I'll have a chat with Claude that looks like
 
->> **ME:**
+>> **ME:** 
 >> How would i go about hosting my own private docker repository? (I know I can set up a public-ish one with docker run -d -p 5000:5000 --restart=always --name registry registry:2
->> but how would I set it up so that you'd have to do docker login before pulling from that?
+>> but how would I set it up so that you'd have to do docker login before pulling from that? 
+> 
 > **Claude:**
 > Setting up a private Docker repository with authentication requires a few additional steps beyond the basic registry setup. Here's how to configure a private Docker registry with authentication:
 > 
@@ -93,8 +94,9 @@ wherein I ask it about doing something that I'm vaguely aware is possible, but d
 
 Or one that looks like
 
->> **ME**:
->> What's a good set of parameters to pass the hashlib.scrypt function and why?
+>> **ME**: 
+>> What's a good set of parameters to pass the hashlib.scrypt function and why? 
+> 
 > **Claude**:
 > When using `hashlib.scrypt` in Python, it's important to choose secure parameters that provide a good balance between security and performance. Here are recommended parameters:
 > 
@@ -139,19 +141,19 @@ Where I'm trying to ask specific questions about fields that I've dabbled in but
 
 Or I'll ask something like 
 
->> **ME**:
->> Here's a `README` from a python project:
+>> **ME**: 
+>> Here's a `README` from a python project: 
 >> 
->> ```
->> <snip long and boring documentation I wrote for something similar>
->> ```
+>> ``` 
+>> {snip long and boring documentation I wrote for something similar} 
+>> ``` 
 >> 
->> Here's the `core.py` from a different python project:
+>> Here's the `core.py` from a different python project: 
 >> 
 >> 
->> ```
->> <snip stunningly beautiful and concise, but irrelevant code>
->> ```
+>> ``` 
+>> {snip stunningly beautiful and concise, but irrelevant code} 
+>> ``` 
 >> 
 >> Write the corresponding `README` for the module.
 >
@@ -159,17 +161,18 @@ Or I'll ask something like
 > Here is a README file for your new project:
 >
 > ```
-> <snip the corresponding long and boring documentation>
+> {snip the corresponding long and boring documentation}
 > ```
 >
->> **ME**:
->> Ok, now write the corresponding OpenAPI `/info` endpoint. Write it for Tornado rather than Flask.
+>> **ME**: 
+>> Ok, now write the corresponding OpenAPI `/info` endpoint. Write it for Tornado rather than Flask. 
 >
-> **Claude**:
-> I'll write an `InfoHandler` for the new project based on the pattern shown in your example:
+> **Claude**: 
+> I'll write an `InfoHandler` for the new project based on the pattern shown in your example: 
+> ``` 
+> {snip not quite stunningly beautiful, but serviceable code} 
 > ```
-> <snip not quite stunningly beautiful, but serviceable code>
-> ```
+> 
 > This documentation gives API consumers all the information they need to interact with the project effectively. The handler returns this structured data as JSON when the `/info` endpoint is accessed.
 
 None of this is _exactly_ the singularity. And if I'm being honest, between thinking about how best to phrase prompts to claude/`aidev-mode`, integrating results with the inevitable tweaks, and the fact that this capability gain is making me tackle more challenging projects than I'd have aimed for in the past, I'm not sure how much time I'm actually gaining here.
