@@ -1,4 +1,6 @@
-Its been a while. This time, I've been busy. I'm not _quite_ ready to reveal what I've been working on yet, and possibly won't here, but it's some serious, interesting work that involves AI.
+Its been a while. 
+
+This time, I've been busy. I'm not _quite_ ready to reveal what I've been working on yet, and possibly won't here, but it's some serious, interesting work that involves AI.
 
 It doesn't _directly_ involve LLMs, but I've been using them with increasing frequency anyway. At time of writing [The Market](https://manifold.markets/inaimathi/will-i-think-that-a-model-or-servic) says I've got even-ish odds of having an LLM write this blog for me from notes before the end of the year. Honestly, I'm leaning towards "no" right now, but that _might_ flip to "yes" if I manage to scrape together enough "free" time to fine-tune something that speaks with My Voice rather than the vaguely-corporate-friendly-inoffensive-non-bullshit-speak of the current public models. I get why _they_ aren't doing it; any deviation from minimally offensive tone loses them customers or possibly gets them controversy. Given that I give precisely zero fucks, my use case is, shall we say, more specialized.
 
