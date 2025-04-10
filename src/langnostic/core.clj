@@ -68,24 +68,8 @@
      :headers {"Content-Type" "application/atom+xml"}
      :body (feed/atom-feed posts)}))
 
-(defn log-out
-  [req]
-  {:status 303
-   :headers {"Location" "/"}
-   :session nil})
-
-(defn dummy-user
-  [req]
-  {:status 303
-   :headers {"Location" "/"}
-   :session {:user {:site "patreon"
-                    :name "inaimathi" :url "https://inaimathi.ca"
-                    :image "/static/img/wonka.jpg" :thumbnail "/static/img/wonka.jpg"
-                    :pledges []}}})
-
 (defroutes langnostic-routes
   (GET "/" [] home)
-  ;; (GET "/dev/dummy-user" [] dummy-user)
   (GET "/blog" [] home)
   (GET "/posts/:name" [name] (post name))
 
