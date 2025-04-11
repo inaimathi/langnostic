@@ -31,7 +31,7 @@ class StaticPageHandler(tornado.web.RequestHandler):
     def get(self):
         file = os.path.join("resources/public/content", f"{self.name}.md")
 
-        if files.file_in_resources(file):
+        if files.isFileInResources(file):
             self.set_status(200)
             self.set_header("Content-Type", "text/html")
             self.write(
