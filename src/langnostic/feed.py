@@ -13,7 +13,7 @@ def atom_feed(post_list: List[Dict[str, Any]]) -> str:
         return [
             "entry",
             ["title", post.get("title", "")],
-            ["updated", post.get("posted", "")],
+            ["updated", post["posted"].isoformat() if post.get("posted") else None],
             [
                 "link",
                 {

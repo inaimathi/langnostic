@@ -84,4 +84,4 @@ def post_file_path(post: Dict[str, Any]) -> str:
 def post_content(post: Dict[str, Any]) -> str:
     """Get post content, loading from file if necessary."""
     file_path = post_file_path(post)
-    return ["span", files.file_content(file_path)]
+    return files.file_content(file_path)
