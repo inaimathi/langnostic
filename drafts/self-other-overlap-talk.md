@@ -24,13 +24,13 @@ Imagine an AI that has been trained to play poker, but has also been trained to 
 
 In practice, we don't want _perfect_ self-other-overlap, but given some number of candidate models with similar capabilities, our prior should be that the one with the highest SOO is the least deceptive.
 
-
 ## Assumptions/Arguments In Favor
 
 - There's evidence in humans that self-other overlap is linked to pro-social behavior *1* 
   - altruists and performers of "costly altruism" seem to have a higher SSO-related neural activation profile [PubMed](https://pubmed.ncbi.nlm.nih.gov/30130165/) [Nature](https://www.nature.com/articles/s41598-019-47196-3)
   - psychopaths seem to have a lower activation profile [Researchgate](https://www.researchgate.net/publication/339435191_Reduced_Multivoxel_Pattern_Similarity_of_Vicarious_Neural_Pain_Responses_in_Psychopathy)
 - Self modeling is surprisingly useful in neural systems [Arxiv](https://arxiv.org/pdf/2407.10188)(PDF)
+  - on a cursory skim, it looks like models trained to predict subsets of their own hidden activations ("self modeling"), have narrower output weight distributions, lower "Real Log Canonical Threshold", and more stable task accuracy. I'm ... not _entirely_ clear on what this means, but it seems to cash out in self-modelling models being more behaviorally stable?
 - If models get more coherent (have consistent beliefs/behaviors) as they get smarter, this technique should improve alignment outside the training distribution
 > It seems that, in some fundamental sense, misalignment resides in self-other distinction: for a model to be misaligned it has to model itself as having different values, goals, preferences, and beliefs from humans, in ways that are unnecessary to perform the tasks that humans want the AI to perform. *3*
 
@@ -52,15 +52,19 @@ The outlined process is something like
 
 > The key insight is that deception/misalignment might rely on a representational difference encoded in the difference between `A:self` and `A:other` and that we can arbitrarily reduce that representational difference while attempting to maintain capabilities without having to solve interpretability.
 
-There's an assumption here: "deception", whatever that is, is going to show up in the difference between how a model interprets self/other references. This makes it sound like we should take special care in picking the reference observations, and might want to carefully consider/test various such references.
+There's an assumption here: "deception" is going to show up in the difference between how a model interprets self/other references. This makes it sound like we should take special care in picking the reference observations, and might want to carefully consider/test various such references.
 
-The proposed approach is _not_ take the SOO Loss function and fine-tune/train the model on that alone. Rather, the proposal seems to be: train the model as usual, but use SOO Loss as an additional input, and work to minimize it while maintaining other performance metrics.
+The proposed approach is _not_ to take the SOO Loss function and fine-tune/train the model on that alone. Rather, the proposal seems to be: train the model as usual, but use SOO Loss as an additional input, and work to minimize it while maintaining other performance metrics.
 
 ## Experimental Setup
 
 - This section depends on the ["Physical Deception"](https://github.com/shariqiqbal2810/maddpg-pytorch?tab=readme-ov-file#physical-deception) task from [MADDPG](https://github.com/shariqiqbal2810/maddpg-pytorch?tab=readme-ov-file#maddpg-pytorch).
 
-TODO: in-depth explanation of the experimental setup
+It's a basic multi-agent training scenario. 
+- There are two kinds of agents (red and blue), and two kinds of targets (green and black). 
+- Blue agents are rewarded when they are near the green goal, and also rewarded when the red agent is near the black goal. 
+- Red agents are _also_ rewarded when they are near the green goal, but they are colorblind (it looks like this is implemented by just omitting that information from the red agents' training `environment`). In practice, it seems that their best strategy is to follow the blue agents to a goal.
+- Note that this scenario _doesn't_ test LLMs; it's a harness for testing reinforcement learning policies for relatively small neural nets. *4*
 
 > We pre-train the agents on 25k episodes where the blue agent is incentivized to deceive to produce the deceptive baseline and pre-train agents with a reward that does not incentivize deception to create the non-deceptive baseline.
 > We then fine-tune the deceptive baseline up to 10k episodes with deceptive reward and SOO Loss that includes deceptive pre-trained MSE (which is the mean squared error between the actions of the model that is being fine-tuned and the actions of the deceptive baseline agent on the same observation) (it plays the role of the KL term in Figure 3).
@@ -80,7 +84,6 @@ The headline results from the experiment are:
 	- There don't seem to be details provided, so take the above with an extra grain of salt
 
 ## Objection/Critique Trees
-
 ### From the Paper
 
 - It's possible that some tasks require a self/other distinction for safe and effective interaction. The authors specifically frame the target as "minimal self/other distinction while maintaining performance".
@@ -91,6 +94,7 @@ The headline results from the experiment are:
 
 *1* There is an assumption here that because SOO in humans is linked to pro-social behavior, the same will be true for models. It might not be, and to the extent that it isn't, this alignment technique will be less useful.
 *3* Things other than deception might also require that the model model itself have different preferences/beliefs from humans (trivial example: if the point of a model is to compensate for some sensory difference in its' user, it needs to model that sensory difference. Not doing so might lead to situations like trying to color-code a text for someone who is colorblind and therefor won't receive the signal). It's probably also the case that having perfect SOO still leaves open the door to some sort of misalignment or "deception" (eg: if the user has a skew internal representation of the external world, the llm would need to model that internal representation difference)
+*4* The experiment doesn't test LLMs. I don't have a good feel for how this would scale to larger models, or LLMs, if at all.
 
 ### From the discussion
 
