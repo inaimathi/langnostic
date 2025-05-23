@@ -6,7 +6,7 @@
   - If you put someone in an fMRI machine, then have them do something, then have them watch someone else do the same thing, there's significant overlap in the brain region activations between "doing the thing" and "watching someone do the thing". That's the self-other overlap.
 - In model terms, the authors define "SOO" as "the extent to which the model has similar internal representations when it reasons about itself and when it reasons about others". Operationalized as "the opposite of self-other distinction"
 
-The definition of "Deception" is taken from [Ward et Al](https://arxiv.org/abs/2312.01350); "intentionally causing another agent to have a false belief that one does not believe to be true".
+The definition of "Deception" is taken from [Ward et al](https://arxiv.org/abs/2312.01350); "intentionally causing another agent to have a false belief that one does not believe to be true".
 
 > Not obviously stupid on a very quick skim.  I will have to actually read it to figure out where it's stupid.
 > (I rarely give any review this positive on a first skim. Congrats.)
