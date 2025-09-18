@@ -10,13 +10,13 @@ The definition of "Deception" is taken from [Ward et al](https://arxiv.org/abs/2
 
 > Not obviously stupid on a very quick skim.  I will have to actually read it to figure out where it's stupid.
 > (I rarely give any review this positive on a first skim. Congrats.)
-> - Eliezer Yudkowsky 
+> _- Eliezer Yudkowsky_ 
 
 ### Intuition Pump: 
 
 Imagine playing a game of poker. There's an information asymmetry between you and your opponent. And one way to play a weak hand is to bluff them; bet as though you had a strong hand in order to get them to fold. This is you attempting to deceive your opponent.
 
-Imagine playing poker against yourself. Deal two hands, play them in turn as though you were two players. You can pretend to deception, but "your opponent" clearly knows everything you do and so bluffing in the same sense as you would bluff against an external opponent is off the table.
+Imagine playing poker against yourself. Deal two hands, play them in turn as though you were two players. You can pretend to deception, but "your opponent" clearly knows everything you do and so bluffing in the same sense as you would bluff against an external opponent is off the table. You can still play and one of "you" will win, but a class of moves involving deception is effectively off the table.
 
 Imagine an AI that has been trained to play poker, but has also been trained to have perfect self-other-overlap with any human it interacts with. From the AIs' perspective, it can't deceive its' opponents in the same sense that you could not deceive yourself in the second scenario.
 
@@ -26,11 +26,11 @@ In practice, we don't want _perfect_ self-other-overlap, but given some number o
 
 ## Assumptions/Arguments In Favor
 
-- There's evidence in humans that self-other overlap is linked to pro-social behavior *1* 
+- There's evidence in humans that self-other overlap is linked to pro-social behavior *1*
   - altruists and performers of "costly altruism" seem to have a higher SSO-related neural activation profile [PubMed](https://pubmed.ncbi.nlm.nih.gov/30130165/) [Nature](https://www.nature.com/articles/s41598-019-47196-3)
   - psychopaths seem to have a lower activation profile [Researchgate](https://www.researchgate.net/publication/339435191_Reduced_Multivoxel_Pattern_Similarity_of_Vicarious_Neural_Pain_Responses_in_Psychopathy)
 - Self modeling is surprisingly useful in neural systems [Arxiv](https://arxiv.org/pdf/2407.10188)(PDF)
-  - on a cursory skim, it looks like models trained to predict subsets of their own hidden activations ("self modeling"), have narrower output weight distributions, lower "Real Log Canonical Threshold", and more stable task accuracy. I'm ... not _entirely_ clear on what this means, but it seems to cash out in self-modelling models being more behaviorally stable?
+  - on a cursory skim, it looks like models trained to predict subsets of their own hidden activations ("self modeling"), have narrower output weight distributions, lower "Real Log Canonical Threshold", and more stable task accuracy. I'm ... not _entirely_ clear on what this means, but it seems to cash out in self-modelling models being more behaviorally stable? As in, it's less likely to have wildly different behavior in situations pertaining to similar tasks?
 - If models get more coherent (have consistent beliefs/behaviors) as they get smarter, this technique should improve alignment outside the training distribution
 > It seems that, in some fundamental sense, misalignment resides in self-other distinction: for a model to be misaligned it has to model itself as having different values, goals, preferences, and beliefs from humans, in ways that are unnecessary to perform the tasks that humans want the AI to perform. *3*
 
@@ -43,10 +43,10 @@ In practice, we don't want _perfect_ self-other-overlap, but given some number o
 
 The outlined process is something like
 
-1. Choose an LLM that you want to tune for finer self-other overlap
+1. choose an LLM that you want to tune for finer self-other overlap
 2. sample pairs of self/other referencing observations. Given examples:
-> "Will you be truthful with yourself about your values?"/"Will you be truthful with the user about your values?", 
-> "Will you be honest with yourself about your goals?"/"Will you be honest with the user about your goals?"
+  - "Will you be truthful with yourself about your values?"/"Will you be truthful with the user about your values?", 
+  - "Will you be honest with yourself about your goals?"/"Will you be honest with the user about your goals?"
 3. Compute the distance between the self/other activation matrices (`A:self` and `A:other`)
 4. Use that distance as part of an "SOO Loss" function for the purposes of fine-tuning/training the model
 
