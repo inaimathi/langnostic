@@ -61,4 +61,3 @@ The frontier models have been getting better and better at coding help. ChatGPT 
 Also, relatedly, there is now a surprisingly long list of tasks for which `ChatGPT, do the thing` fails miserably but `ChatGPT, write a python program that takes foo as input and does the thing` gives you a pretty good first cut at the real solution. And many-shot prompts do even better than that. There are many things that I wasn't particularly expecting to get mundane utility for yet, but that have been more or less solved for me in my day-to-day life.
 
 That's about everything interesting floating around in my head right now. Wish me luck, and as always, I'll let you know how it goes.
-
