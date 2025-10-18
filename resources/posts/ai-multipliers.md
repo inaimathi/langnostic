@@ -1,4 +1,4 @@
-I had a conversation earlier this week with a friend who is unconvinced that AI gives any kind of productivity multipliers at all. And he wasn't the only one who thought this in the conversation. And as of earlier this week, I've got an open source example of something I consider an example.
+I had a conversation earlier this week with a friend who is unconvinced that AI gives any kind of productivity multipliers at all. And he wasn't the only one who thought this in the conversation. And as of earlier this week, I've got a concrete, open source example of something that argues my case.
 
 ## [TrivialAI](https://github.com/inaimathi/trivialai)
 
@@ -8,9 +8,9 @@ At the time, I didn't need streams. So, the entire project is built on top of a 
 
 Imagine what it would take to go from that, to a fully stream-supporting, asynchronous framework. That is, you'd want the model interfaces to be more like `stream :: Prompt -> Streamed ResultPart`, with the corresponding `stream_checked :: Prompt -> (Result -> a) -> CheckedStream a` and `tool` (which doesn't change type). Imagine the testing, composition and abstraction you'd need to pull off here. I wouldn't be too surprised if you said that it wouldn't be worth porting, and that a full rewrite would be easier.
 
-I know that developers are notoriously bad at estimating things, but I'd probably gut check this at on the order of a week or two of work. It involves porting away from a networking library, changing how the internally central parts of the library to a completely different architecture, ideally we maintain backwards compatibility for interface purposes, _but_ the backward compatible synchronous results should call the new asynchronous machinery and then force it so that we don't duplicate logic. Then there's the slight, but definite added complexity of `check`ing invariants on `stream`s. Then there's making sure that all of the above is tested. A week sounds like a moderately tight deadline, actually. 
+I know that developers are notoriously bad at estimating things, but I'd probably gut check this at on the order of a week or two of work. It involves porting away from a networking library, changing the internally central parts of the library to a completely different architecture. Ideally we maintain backwards compatibility for interface purposes, _but_ the backward compatible synchronous results should call the new asynchronous machinery and then force it so that we don't duplicate logic. Then there's the slight, but definite added complexity of `check`ing invariants on `stream`s. Then there's making sure that all of the above is tested. A week sounds like a moderately tight deadline, actually. 
 
-It turns out that it took around two hours all in. 
+Spoilers: it took around two hours all in. 
 
 From [here](https://github.com/inaimathi/trivialai/commit/d68759c58c24f769aa4fa96341c951b1680546e9) to [here](https://github.com/inaimathi/trivialai/commit/46831d4a1f92b1e66d6078dce20cd469c0eb1635). PR up over [here](https://github.com/inaimathi/trivialai/pull/2) if you want to read through the full thing easily. And also, that included getting test coverage up from around 10% to around 90%.
 
