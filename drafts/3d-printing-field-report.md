@@ -8,7 +8,7 @@ I'm tempted to call it three categories of printers. FDM, Resin and "Other". In 
 
 ## Other
 
-Powder Bed Fusion, Binder jetting, directed energy deposition, sheet lamination and some more specialized techniques. Some of these are sintering processes and therefore still _technically_ "Fused Deposition Modeling" with different materials. Some are weird industrial processes that are either impossible or merely prohibitive at the hobbyist level, none of them are particularly interesting to me, and that seems to be more or less arbitrary (although, paranthetically, it seems like my interest is correlated with how easily I can get something running on my workbench or at the office so make of that what you will).
+Powder Bed Fusion, Binder jetting, directed energy deposition, sheet lamination and some more specialized techniques. Some of these are sintering processes and therefore still _technically_ "Fused Deposition Modeling" but weird. Some are industrial processes that are either impossible or merely prohibitive at the hobbyist level, none of them are particularly interesting to me, and that seems to be more or less arbitrary.
 
 Moving on.
 
@@ -77,10 +77,17 @@ This type of printer has a stationary print bed, and has the gantry move in X, Y
 
 ### Delta Printers
 
+This type of printer has a triangular prism frame, with a stationary, generally round, print bed. The toolhead is in the middle of the frame, supported and moved by three independent motor arms in X, Y and Z axes. I immediately associate this kind of printer with [FLSUN](https://flsun3d.com/), but there's also the [Doron Velta project](https://github.com/rogerlz/Doron-Velta) if you want to do your own thing. Not officially associated with Voron, but it seems to have the same ethos and aesthetics. These tend to be high speed, low table footprint machines, and use arms instead of belts for lateral movement. I'm sure this does something to their reliability and durability, but I'm not sure what.
+
 ### Weirdos
+
+This is the "Other" section. They're either printers that don't fit neatly into the other categories, or printers that are specialized and different enough that they deserve a special place in your mental map of 3D printers, or they're so experimental that they aren't famous yet. Expect to read the words "in principle" a lot.
+
 #### 3D Pens
 
-[Yes, yes](https://www.amazon.ca/GEEETECH-Printing-Charging-Compatibility-Filament/dp/B0FQ56DYRF/), very clever. Moving on.
+[Yes, yes](https://www.amazon.ca/GEEETECH-Printing-Charging-Compatibility-Filament/dp/B0FQ56DYRF/), very clever. There is an [open source project for a decent one though](https://github.com/3dsimo/3dsimo_kit). 
+
+Moving on.
 
 #### Inverse Cantilevers
 
@@ -95,20 +102,15 @@ That last one is the key advantage; because of it, these machines tend to have m
 
 #### SCARA printer arms
 
-These are planar arms like the [MPSCARA](https://www.thingiverse.com/thing:2487048) and [X-SCARA](https://github.com/madl3x/x-scara?utm_source=chatgpt.com) projects. They're not full robot arms in my mind because they don't have arbitrary freedom of movement. They're more like "CoreXY with a really complicated gantry", but they're asymmetrical and I could see setting a couple of them up in overlapping fashion to make an improvised IDEX. 
+These are planar arms like the [MPSCARA](https://www.thingiverse.com/thing:2487048) and [X-SCARA](https://github.com/madl3x/x-scara?utm_source=chatgpt.com) projects. They're not full robot arms in my mind because they don't have arbitrary freedom of movement. They're more like "CoreXY with a really complicated gantry", but they're generally asymmetrical in construction and I could see setting a couple of them up in overlapping fashion to make an improvised IDEX. I don't know why you _would_. But you _could_.
 
 #### Full DOF Robot Arms
 
-These have more degrees of freedom, and are generally more versatile. If you've seen houses getting 3D printed, you've seen one of [these](https://www.vertico.com/technology/robot-on-track) doing it, which is basically a robot arm holding an extruder and bolted to some rails. The filament variants boil down to "a 3D pen on an arm", and they have some [interesting abilities](https://www.youtube.com/shorts/SWLxoIhKD-8). Together with a non-planar slicer, one of these can in principle print things larger than itself.
-
-https://www.thingiverse.com/thing:1693444
-https://www.thingiverse.com/thing:6313449
-https://shop.elephantrobotics.com/en-ca/products/mycobot-worlds-smallest-and-lightest-six-axis-collaborative-robot?variant=44597630402872&utm_source=google&utm_medium=cpc&utm_campaign=Google+Shopping&stkn=e8fce6917475&srsltid=AfmBOooxRPEvBkUvkMOgF46prEIYlvghq-w8AFgFZgX4hR-YCoUwPM0-mTY
-https://rotrics.com/?utm_source=chatgpt.com
+These have more degrees of freedom than SCARA arms, and are generally more versatile. If you've seen houses getting 3D printed, you've seen one of [these](https://www.vertico.com/technology/robot-on-track) doing it, which is basically a robot arm holding a concrete toolhead and bolted to some rails. The filament variants boil down to "a 3D pen on an arm", and they have some [interesting abilities](https://www.youtube.com/shorts/SWLxoIhKD-8). Together with a non-planar slicer, one of these can in principle print things larger than itself. As far as I know, there's like one ["3D printer arm" you can buy](https://ca.robotshop.com/products/rotrics-dexarm-maker-edition-all-in-one-robotic-arm?srsltid=AfmBOor72ywsiGDp1ATOQlPdBMUeRuUGAxxDIfmf0W9bslZ87O4AW9b1Pbo) and the cost is absolutely not justified unless you happen to have the money lying around and just like printer arms, but if you want to build one check out [this](https://www.thingiverse.com/thing:1693444), [this](https://www.thingiverse.com/thing:6313449), [this](https://shop.elephantrobotics.com/en-ca/products/mycobot-worlds-smallest-and-lightest-six-axis-collaborative-robot?variant=44597630402872) or [this](https://rotrics.com/)
 
 #### Polar printers
 
-https://www.instructables.com/Make-a-Polar-3D-Printer-Spinning-Bed/?utm_source=chatgpt.com
+Also known as ["4 Axis printers"](https://www.youtube.com/watch?v=VEgwnhLHy3g) or ["spinning printer"](https://www.instructables.com/Make-a-Polar-3D-Printer-Spinning-Bed/). Technically there's a few subtypes, in the sense that some of them spin the bed, some of them tilt the print head, some of them tilt the print bed, and some of them do spin the bed _and_ tilt the print head. The complications here are more complex slicers, more complex construction and more demanding belt placement and motor coordination. The payoff is more degrees of freedom on the print and, in principle, no support structures or post processing on the parts you output.
 
 #### Frameless Printers
 
