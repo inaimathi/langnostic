@@ -4,7 +4,7 @@ Also, there's going to be lots of links in this article. I _need_ you to underst
 
 Being so disclaimed, let's survey the terrain.
 
-# 3D Printing Categories
+# 3D Printer Categories
 
 I'm tempted to call it three categories of printers. FDM, Resin and "Other". In reverse order:
 
@@ -44,7 +44,7 @@ When I say "3D printing" without specifying in casual conversation, I mean "desk
 
 The common ground here is that they all have one or more toolheads, each of which has one or more hotends that take in material, get it to a viscous-but-flowing-state, and squirt layers at some set width and height. I'm being particularly wishy-wasy on that material definition statement because the FDM printer space encompasses [MudBots](https://www.mudbots.com/), [the Cocoa Press](https://cocoapress.com/en-ca) and [the Maple 4](https://www.mapleglassprinting.com/) as well as the more standard [filament squirters](https://www.sovol3d.com/) I'll be focusing on.
 
-All their prints have visible layer lines unless you post process them, but prints can be almost arbitrarily light and solid depending on what material tradeoffs you're willing to make. Filament is also _really_ cheap. At the low end, something like $12 CAD per kilogram for the good stuff (you can get cheaper bargain bin deals from Ali Express, but be prepared to deal with more dimensional inconsistency and therefore clogging and feeding issues). At the other end, it's also relatively easy to source engineering filaments with almost arbitrary [strength](https://www.amazon.ca/Polymaker-PA6-GF-Filament-1-75mm-Cardboard/dp/B0B45QMCJP?th=1)/[temperature tolerance](https://www.3dxtech.com/products/thermax-tpi-1)/[chemical resistance](https://www.3dxtech.com/products/carbonx-peek-cf10-1)/[bounce](https://www.amazon.ca/Siraya-Tech-Rebound-PEBA-Ultra-Lightweight/dp/B0FH1MJ89D) although definitely don't expect to be able to run any of those on an entry level printer. You can get into this hobby for about [$300](https://www.amazon.der-V3-SE-8-66x8-66x9-84/dp/B0DSKCS6Y1/)-[$400](https://www.amazon.ca/Sovol-SV06-ACE-Structure-8-66x8-66x9-84/dp/B0DFYK5Q3L/), but if you want print out a space shuttle, you're looking at [more like $15k](https://visionminer.com/products/22idexa).
+All their prints have visible layer lines unless you post process them, but prints can be almost arbitrarily light and solid depending on what material tradeoffs you're willing to make. Filament is also _really_ cheap. At the low end, something like $12 CAD per kilogram for the good stuff (you can get cheaper bargain bin deals from Ali Express, but be prepared to deal with more dimensional inconsistency and therefore clogging and feeding issues). At the other end, it's also relatively easy to source engineering filaments with almost arbitrary [strength](https://www.amazon.ca/Polymaker-PA6-GF-Filament-1-75mm-Cardboard/dp/B0B45QMCJP?th=1)/[temperature tolerance](https://www.3dxtech.com/products/thermax-tpi-1)/[chemical resistance](https://www.3dxtech.com/products/carbonx-peek-cf10-1)/[bounce](https://www.amazon.ca/Siraya-Tech-Rebound-PEBA-Ultra-Lightweight/dp/B0FH1MJ89D) although definitely don't expect to be able to run any of those on an entry level printer. You can get into this hobby for about [$300](https://www.amazon.ca/Creality-Ender-V3-SE-8-66x8-66x9-84/dp/B0DSKCS6Y1/)-[$400](https://www.amazon.ca/Sovol-SV06-ACE-Structure-8-66x8-66x9-84/dp/B0DFYK5Q3L/), but if you want print out a space shuttle, you're looking at [more like $15k](https://visionminer.com/products/22idex).
 
 ### Bedslingers
 
@@ -67,7 +67,7 @@ In practice these are harder to use effectively because not all slicers can deal
 
 ### CoreXY
 
-More complex units than bedslingers, because the gantry moves in multiple directions. These are generally built in cube frames rather than square frames. They have a gantry that lets the toolhead move in the X and Y axes while staying stationary in Z. The bed just moves up and down in Z, which simplifies the motor situation there. The [Voron Trident](https://vorondesign.com/voron_trident), the [Prusa Core One](https://www.prusa3d.com/product/prusa-core-one/), [the100](https://github.com/MSzturc/the100), the [T250](https://github.com/MSzturc/T250) and the [Velociraptor](https://www.youtube.com/watch?v=zEN4l8Vj5LQ) are all examples of CoreXY machines (the last one has a cross gantry, but it still fits because the motors are stationary). Experimental builds of these tend to be speed machines, because this design hits a sweet spot in the weight/power curves that allows you to set records. Both the cartesian gantry machines and the flying gantry machines make slightly different trades that moves them off of that sweet spot in either direction.
+More complex units than bedslingers, because the gantry moves in multiple directions. These are built in cube frames rather than square frames. They have a gantry that lets the toolhead move in the X and Y axes while staying stationary in Z. The bed just moves up and down in Z, which simplifies the motor situation there. The [Voron Trident](https://vorondesign.com/voron_trident), the [Prusa Core One](https://www.prusa3d.com/product/prusa-core-one/), [the100](https://github.com/MSzturc/the100), the [T250](https://github.com/MSzturc/T250) and the [Velociraptor](https://www.youtube.com/watch?v=zEN4l8Vj5LQ) are all examples of CoreXY machines (the last one has a cross gantry, but it still fits because the motors are stationary). Experimental builds of these tend to be speed machines, because this design hits a sweet spot in the weight/power curves that allows you to set records. Both the cartesian gantry machines and the flying gantry machines make slightly different trades that moves them off of that sweet spot in either direction.
 
 #### Cartesian Gantry
 
@@ -79,7 +79,7 @@ This type of printer has a stationary print bed, and has the gantry move in X, Y
 
 ### Delta Printers
 
-This type of printer has a triangular prism frame, with a stationary, generally round, print bed. The toolhead is in the middle of the frame, supported and moved by three independent motor arms in X, Y and Z axes. I immediately associate this kind of printer with [FLSUN](https://flsun3d.com/), but there's also the [Doron Velta project](https://github.com/rogerlz/Doron-Velta) if you want to do your own thing. Not officially associated with Voron, but it seems to have the same ethos and aesthetics. These are high speed, low table-footprint machines, and use arms instead of belts for lateral movement. I'm sure this does something to their reliability and durability, but I'm not sure what.
+This type of printer has a triangular prism frame, with a stationary, round, print bed. The toolhead is in the middle of the frame, supported and moved by three independent motor arms in X, Y and Z axes. I immediately associate this kind of printer with [FLSUN](https://flsun3d.com/), but there's also the [Doron Velta project](https://github.com/rogerlz/Doron-Velta) if you want to do your own thing. Not officially associated with Voron, but it seems to have the same ethos and aesthetics. These are high speed, low table-footprint machines, and use arms instead of belts for lateral movement. I'm sure this does something to their reliability and durability, but I'm not sure what.
 
 ### Weirdos
 
@@ -103,7 +103,7 @@ That last one is the key advantage; because of it, these machines tend to have m
 
 #### SCARA printer arms
 
-These are planar arms like the [MPSCARA](https://www.thingiverse.com/thing:2487048) and [X-SCARA](https://github.com/madl3x/x-scara?utm_source=chatgpt.com) projects. They're not full robot arms in my mind because they don't have arbitrary freedom of movement. They're more like "CoreXY with a really complicated gantry", but they're generally asymmetrical in construction and in principle you could set a couple of them up in overlapping fashion to make an improvised IDEX. I don't know why you _would_. But you _could_.
+These are planar arms like the [MPSCARA](https://www.thingiverse.com/thing:2487048) and [X-SCARA](https://github.com/madl3x/x-scara?utm_source=chatgpt.com) projects. They're not full robot arms in my mind because they don't have arbitrary freedom of movement. They're more like "CoreXY with a really complicated gantry", but they're asymmetrical in construction and in principle you could set a couple of them up in overlapping fashion to make an improvised IDEX. I don't know why you _would_. But you _could_.
 
 #### Full DOF Robot Arms
 
