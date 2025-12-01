@@ -28,7 +28,7 @@ The "other" approach always seems to have the same kinematics, but different pho
 
 If you see videos of resin prints, they tend to have a particular type of support structure built for printing down from the ceiling instead of up from the floor, and the prints emerge "upside down" to viewers before being detached. This is a predominantly resin approach, but not "uniquely" because the [Lemontron](https://lemontron.com/) exists.
 
-These approaches tend to be really good for fine detail, but aside from some engineering resins, don't have good "battlefield" applications. So you see a lot of sculptures and minis coming out of resin machines, and not a lot of RC cars, drones or Nerf blasters ([Zach Freedman](https://www.youtube.com/watch?v=J13i7aBB4gw) notwithstanding).
+These approaches tend to be really good for fine detail, but aside from some engineering resins, don't have good "battlefield" applications. So you see a lot of sculptures and minis coming out of resin machines, and not a lot of RC cars, drones or Nerf blasters ([Zack Freedman](https://www.youtube.com/watch?v=J13i7aBB4gw) notwithstanding).
 
 ### Laser Stereolithography
 
