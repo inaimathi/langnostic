@@ -50,7 +50,7 @@ All their prints have visible layer lines unless you post process them, but prin
 
 This is the most common design because it's the cheapest and easiest to put together. This category includes the [Ender 3](https://www.amazon.ca/Creality-Ender-V3-SE-8-66x8-66x9-84/dp/B0DSKCS6Y1/), the [SV06](https://www.sovol3d.com/products/sovol-sv06-best-budget-3d-printer-for-beginner), the [Prusa MK4](https://www.prusa3d.com/product/original-prusa-mk4s-3d-printer/), and way more besides. The key characteristics are
 
-1. There is a hotend that moves along the X axis and Z axes
+1. There is a hotend that moves along the X and Z axes
 2. There is a bed that moves along the Y axis
 
 Because they're mostly made to be cheap, the vast majority of these boys don't have a toolchanger or multiple hotends. They're intrinsically moddable because they're so simple, and they're a decent first step into the hobby.
