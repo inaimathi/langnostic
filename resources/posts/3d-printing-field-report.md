@@ -10,7 +10,7 @@ I'm tempted to call it three categories of printers. FDM, Resin and "Other". In 
 
 ## Other
 
-Powder Bed Fusion, Binder jetting, directed energy deposition, sheet lamination and some more specialized techniques. Some of these are sintering processes and therefore still _technically_ "Fused Deposition Modeling" but weird. Some are industrial processes that are either impossible or merely prohibitive at the hobbyist level, none of them are particularly interesting to me, and that seems to be more or less arbitrary.
+Powder bed fusion, binder jetting, directed energy deposition, sheet lamination and some more specialized techniques. Some of these are sintering processes and therefore still _technically_ "Fused Deposition Modeling" but weird. Some are industrial processes that are either impossible or merely prohibitive at the hobbyist level, none of them are particularly interesting to me, and that seems to be more or less arbitrary.
 
 Moving on.
 
@@ -18,7 +18,7 @@ Moving on.
 
 As far as I can tell there are two types of resin printers. I've already talked about [computed axial lithography](https://inaimathi.ca/posts/light-and-spin), and it's highly experimental. As far as I know there are no commercially or industrially available CAL machines yet, but holy crap the payoff would be huge.
 
-The "other" approach always seems to have the same kinematics, but different photoexposure strategies. The kinematic strategy is always
+The other approach always seems to have the same kinematics, but different photoexposure strategies. The kinematic strategy is always
 
 - there is a build plate secured to an arm that moves it along the Z axis[^as-an-aside]
 - there is a light element that does something to the "current layer" of print and then waits for the Z axis to move up
@@ -28,11 +28,11 @@ The "other" approach always seems to have the same kinematics, but different pho
 
 If you see videos of resin prints, they tend to have a particular type of support structure built for printing down from the ceiling instead of up from the floor, and the prints emerge "upside down" to viewers before being detached. This is a predominantly resin approach, but not "uniquely" because the [Lemontron](https://lemontron.com/) exists.
 
-These approaches tend to be really good for fine detail, but aside from some engineering resins, don't have good "battlefield" applications. So you see a lot of sculptures and minis coming out of resin machines, and not a lot of RC cars, drones or Nerf blasters ([Zack Freedman](https://www.youtube.com/watch?v=J13i7aBB4gw) notwithstanding).
+These approaches tend to be really good for fine detail, but aside from some engineering resins, don't have good battlefield applications. So you see a lot of sculptures and minis coming out of resin machines, and not a lot of RC cars, drones or Nerf blasters ([Zack Freedman](https://www.youtube.com/watch?v=J13i7aBB4gw) notwithstanding).
 
 ### Laser Stereolithography
 
-is the approach where the photoexposure element is a laser scans the current layer point-wise. Examples are the [Formlabs 3+](https://www.bunniestudios.com/blog/2020/formlabs-form-3-teardown/) and [Form 4](https://formlabs.com/3d-printers/form-4/?srsltid=AfmBOopSraqnGzHiELH3hJ4ngWufAIriIgDW2cvX66dnlto2zxOWkWoL). I... don't know much about this, except that it seems like it needs a more complicated slicer approach than standard resin printers, and seems to give up the "prints take linear time in height" advantage that I associate with resin printers.
+is the approach where the photoexposure element is a laser that scans the current layer point-wise. Examples are the [Formlabs 3+](https://www.bunniestudios.com/blog/2020/formlabs-form-3-teardown/) and [Form 4](https://formlabs.com/3d-printers/form-4/?srsltid=AfmBOopSraqnGzHiELH3hJ4ngWufAIriIgDW2cvX66dnlto2zxOWkWoL). I... don't know much about this, except that it seems like it needs a more complicated slicer approach than standard resin printers, and seems to give up the "prints take linear time in height" advantage that I associate with resin printers.
 
 ### MSLA/LCD
 
@@ -42,7 +42,7 @@ is what most hobbyists mean when they say "resin printing". This encompasses mos
 
 When I say "3D printing" without specifying in casual conversation, I mean "desktop FDM". With [a few](https://www.amazon.com/Gizmo-Dorks-2-85mm-Filament-Printers/dp/B00LAJNJL2) unfortunate [exceptions](https://3dprintingcanada.com/products/natural-1-75mm-3dxtech-fluorx%E2%84%A2-pvdf-filament-500-g), the materials involved in FDM won't kill you or choke you to death, and if you're only laying down PLA/TPU/PETG, you can contain pollutants with standard air filters and ventilated enclosures. The main reason this has my interest is that it is _absolutely_ possible to get one of these up and running at home, and it's getting cheaper and cheaper. Cost of admission these days is like $300 CAD, possibly less if you're willing to scrounge around Kijiji or get a hand-me-down from a local makerspace.
 
-The common ground here is that they all have one or more toolheads, each of which has one or more hotends that take in material, get it to a viscous-but-flowing-state, and squirt layers at some set width and height. I'm being particularly wishy-wasy on that material definition statement because the FDM printer space encompasses [MudBots](https://www.mudbots.com/), [the Cocoa Press](https://cocoapress.com/en-ca) and [the Maple 4](https://www.mapleglassprinting.com/) as well as the more standard [filament squirters](https://www.sovol3d.com/) I'll be focusing on.
+The common ground here is that they all have one or more toolheads, each of which has one or more hotends that take in material, get it to a viscous-but-flowing-state, and squirt layers at some set width and height. I'm being particularly wishy-washy on that material definition statement because the FDM printer space encompasses [MudBots](https://www.mudbots.com/), [the Cocoa Press](https://cocoapress.com/en-ca) and [the Maple 4](https://www.mapleglassprinting.com/) as well as the more standard [filament squirters](https://www.sovol3d.com/) I'll be focusing on.
 
 All their prints have visible layer lines unless you post process them, but prints can be almost arbitrarily light and solid depending on what material tradeoffs you're willing to make. Filament is also _really_ cheap. At the low end, something like $12 CAD per kilogram for the good stuff (you can get cheaper bargain bin deals from Ali Express, but be prepared to deal with more dimensional inconsistency and therefore clogging and feeding issues). At the other end, it's also relatively easy to source engineering filaments with almost arbitrary [strength](https://www.amazon.ca/Polymaker-PA6-GF-Filament-1-75mm-Cardboard/dp/B0B45QMCJP?th=1)/[temperature tolerance](https://www.3dxtech.com/products/thermax-tpi-1)/[chemical resistance](https://www.3dxtech.com/products/carbonx-peek-cf10-1)/[bounce](https://www.amazon.ca/Siraya-Tech-Rebound-PEBA-Ultra-Lightweight/dp/B0FH1MJ89D) although definitely don't expect to be able to run any of those on an entry level printer. You can get into this hobby for about [$300](https://www.amazon.ca/Creality-Ender-V3-SE-8-66x8-66x9-84/dp/B0DSKCS6Y1/)-[$400](https://www.amazon.ca/Sovol-SV06-ACE-Structure-8-66x8-66x9-84/dp/B0DFYK5Q3L/), but if you want print out a space shuttle, you're looking at [more like $15k](https://visionminer.com/products/22idex).
 
