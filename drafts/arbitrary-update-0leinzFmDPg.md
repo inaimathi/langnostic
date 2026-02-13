@@ -1,0 +1,64 @@
+Have you ever looked at your blogs' [`drafts` folder](TODO) and seen something you were about to polish up from last year? It's mildly unsettling, mostly because _so much_ has happened since I wrote the [initial draft](TODO - llm assisted compilation) for a couple of [smaller pieces](TODO - robot army for good). I'm still planning on polishing those up, despite the fact that the second one is very probably [now obsolete](TODO - lesswrong bug detection piece). 
+
+I've been pushing forward as a programmer, figuring out how to most effectively use LLMs to get my productivity up as high as I can possibly manage, and this has involved an amount of focus that demanded a temporary lack of bloggery. So I'm posting some quick notes just to keep my hand in.
+
+### For Non-Programming
+
+[The question](https://manifold.markets/inaimathi/will-i-think-that-a-model-or-servic?r=aW5haW1hdGhp) was resolved to "NO". And I think that's about right. The real benefit of taking notes or posting these pieces for me isn't in having them available for reading, it's in having written them. They let me focus my thoughts and meditate on them long enough to get them out of my head and form a real opinion. Taking notes and getting them to a published piece isn't _exactly_ an afterthought, but it's also not the goal. 
+
+I've also found that I don't have a high tolerance for reading AI outputs. Not sure what it is. It might be something to do with the cadence or word choice, or possibly just the knowledge that there isn't an "other" on the other end yet, but my eyes tend to glaze slightly if there isn't some concrete goal underlying an interaction. Possibly I'm alone in this, but it's kept me from posting any AI outputs either here or in [the github](TODO). 
+
+That doesn't mean I don't _use_ it. I had some minor conversations with ChatGPT and Claude about that [3D printer survey](TODO) piece just to make sure I got the lay of the land properly, but that was literally "give me some links I can read through for all of these techniques", and absolutely not "here, have some notes and write a post in my voice". The voice matters to me, at least marginally. The exception is that there's some situations where I've found myself needing to send professional emails or similar communication, and in that case I've found myself pasting my initial email into Claude with instructions along the lines of
+
+```
+"Here's a message <describe some context>; return the same message in (formal | business-casual | customer-service | linked-in)-speak".
+```
+
+It typically does a frighteningly good job, especially at the "customer service" and "formal" voices. I don't think I'm going to expand this use beyond formal, professional communication, but your mileage may vary. 
+
+And I mean, that by the way.
+
+There's quite a few [people I respect that have taken the view of "AI slop bad, and if you use it, _you're_ bad"](TODO - rossman rant). That's fine as far as it goes, but I think I'd rather ask what it funges with. If the alternative to sending an AI slop message is being brusque or thoughtless, or worse, not sending a message at all, maybe slop is actually the right choice?
+
+### For Small-Scale Programming
+
+This is probably where my habits have changed the least. I'm still using [`aidev-mode`](https://github.com/inaimathi/aidev-mode) regularly for function-level refactoring. It's not quite as often as I used to, and I'm not entirely sure why that is. The story I'd like to tell is that I've got my programming/typing reflexes locked in again to the point that small-scale changes are just faster with a keyboard and `emacs` keystrokes, but I'm not sure I buy it. Another possible story is that the functions I end up writing these days are more targeted, and that I've picked enough low-hanging fruit that I'm realistically spending my time in the larger scale automated programming waters. Here, LLM support remains a useful but not game-changing accelerator; I'd gutcheck it at reducing Time To Ship by between 5% and 10%.
+
+Note that that's in reference to [Python](TODO) and [Javascript](TODO) programming. Any ambitions I had of ChatGPT/Claude giving me help writing [OpenSCAD](TODO - cheatsheet) code has long since been dashed. When I get a bit more time for raw exploration, I might look into fine-tuning a smaller model for it specifically, but empiricaly, the _real_ problem is that none of the currently available models, frontier or otherwise, have internalized a 3D world model. They know what it means to write a `.scad` file, and you can even use this to make some otherwise time consuming transformations work out, but they don't _actually_ know what it means to smooth out a specified surface or make sure that the output of a given `module` is 3D printable without supports.
+ 
+### For Medium-Scale Programming
+
+At the level of individual modules, I'm kind of embarrassed to admit that my main workflow is just using the Claude or ChatGPT webui and copy-pasting between those and my editor. I'm not a [Claude code](TODO), [codex](TODO), [clawdbot or moltbot](TODO) adherent. An extremely common prompt is
+
+> emit the full module with those changes applied
+
+A relatively large part of working at this scale is choosing which pieces of the repo are necessary context to get the best shape out of your input. For instance, if you're asking for changes to an API endpoint that deals with a particular model, and a couple utility modules, you'll generally get better output from the frontier models by also including those utility modules, and the model schema in your prompt for what seems like obvious reasons.
+
+Despite this being where I spend most of my time, I don't think most of the speedup I see actually comes from the LLM. If you let it do _whatever_, you'll frequently see poorly factored code (which, empirically, doesn't get cleaned up without explicit instructions to do so, even after you route around it with the help of the LLM), occasional weird dead functions, and clearly suboptimal performing routines. I haven't quite seen it emit a [`for-case`](https://softwareengineering.stackexchange.com/questions/348682/what-is-the-for-case-antipattern) yet, but it gets pretty close. Including helpfully pointing out and explaining potential [N+1 problems](https://stackoverflow.com/questions/97197/what-is-the-n1-selects-problem-in-orm-object-relational-mapping) in model code, and then happily implementing them anyway. Most of the observed speedup is actually from thinking about whatever problem I'm solving as a connected graph of modules that I need to specify to an outside observer; chewing through the problem from a particular angle of attack facilitated by the LLM is the real secret sauce. My gutcheck here is more like between a 3x and 6x Time To Ship acceleration. 
+
+It's still definitely more an art than a science to get working systems out of this process, and a healthy part of the _full_ multiplier I mentioned [last time](/posts/ai-multipliers) gets eaten in reading through sometimes weirdly alien code. I suspect without having experimented with it that I could probably build a system that deterministically checks a lot of this. Not at like, [the `type` level](https://github.com/inaimathi/trivialai) which is a pretty solved problem, I'm imagining a scaffold that's more like
+
+1. ask for some code to get generated
+2. get a separate, weaker/cheaper model to check the result for some common set of known failure modes (the N+1 issue, and a few other common pieces that come up)
+3. if you hit something, auto-prompt the original model with additional parameters to avoid those failure modes
+4. possibly repeat if they persist
+5. ???
+6. Profit?
+
+The _main_ reason I haven't just straight-up tried it yet is that I'm not sure how far this generalizes. It's entirely possible that the scaffolding might need to be language-specific, and possibly even codebase/user specific depending on what kind of common problems actually occur in the wild.
+
+### For Large-Scale Programming
+
+This is still largely terra incognita, aside from some [special cases](https://github.com/inaimathi/robot-army-for-good). And I don't think that's just me; it'd be pretty easy to see the effects of fully-capable coding models at this level. I'd expect things like [this](https://manifold.markets/DanW/by-2029-will-an-ai-be-able-to-gener) and [this](https://manifold.markets/ScottAlexander/in-2028-will-an-ai-be-able-to-gener) to be resolved YES for starters (at time of writing they're sitting at 45% and 27% respectively), a high amount of highly rated and useful apps/games popping up on both Steam and the various mobile marketplaces (I can't see a discontinuity by any metric I can easily find), and not to put too fine a point on it, I'd expect more competition for bespoke LLM-enabled app development.
+
+As far as I can tell, it's pretty inadvisable to have any of the frontier LLMs straight up spin up new codebases for you. I've had half-way decent mileage vibecoding throwaway prototypes both of the front-end and back-end variety, and then manually refactoring them into something, but I've gotten _even better_ mileage setting up basic projects with minimal external library hooks and then vibecoding to iterate from there. The latter generally leads to more comprehensible codebases, and I've seen models introduce enough weird gotchas that I'm not confident launching anything other than a demo I pilot myself without at least reading through the code. Which naturally means I can't be _supremely_ superhuman in my coding output; that comes when I can fully trust the output and act on it as though it were correct. 
+
+Even doing high-level architecture yourself and letting the LLM structure it from there doesn't consistently work, because it looks like these models don't quite understand how to cleave reality at the module-connecting joints 
+
+The only seeming exception here is bughunting. Projects like [this](TODO - robots again) take a full repo as input, go file-by-file in a structured way and perform a set routine of additional code-crafting to test it for defects. And this still fails often, just so we're clear. Both my experience with this, and the [original paper author](TODO) have found that the actual biggest impediment between running a model over a codebase and acting on actual bugs is winnowing away all the false positives. This makes the process tedious, and more costly in compute time than you'd naively think.
+
+### General Observations
+
+I think before I did serious experimentation, I'd have expected to be between three and six months away from all programming being automated. Having done the exercise of looking at what's actually out there and made a [best effort](TODO - try, don't try to try) at automating myself away in a scalable and safe way, and having observed plateauing raw LLM performance, I now think that this is at least eight months out. Which is great, because I get to prepare for it at least a little in advance. I'm definitely not done my attempt, and I might get to the point of formalizing enough of this work to at least locally automate away certain kinds of programming.
+
+As always, I'll let you know how it goes.
