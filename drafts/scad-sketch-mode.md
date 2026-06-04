@@ -1,7 +1,6 @@
-So I've been doing a bunch of 3D printing, and therefore 3D modeling. Because I'm the sort of nerd that uses [`emacs`](TODO), I use [`openscad`](TODO) instead of something like [`FreeCAD`](TODO) or [`blender`](TODO) [^theres-another-reason-but]. Which is actually really great. You can do things like
+So I've been doing a bunch of 3D printing, and therefore 3D modeling. Because I'm the sort of nerd that uses [`emacs`](https://www.gnu.org/software/emacs/), I use [`openscad`](https://openscad.org/) instead of something like [`FreeCAD`](https://www.freecad.org/) or [`blender`](https://www.blender.org/) [^theres-another-reason-but]. Which is actually really great.
 
 [^theres-another-reason-but]: There's another reason but we don't have to touch on it here. The short version is something like "general purpose LLMs are probably going to dominate in terms of resources and/or performance, so in the short to medium term, things that have a plaintext or HTTP interface have an advantage over things that don't". But the _big_ reason is that I like Emacs, so I'm biased towards using it.
-
 
 You can do simple things like
 
@@ -102,7 +101,6 @@ module ribbed_rectangle(width, height, rib_depth) {
     polygon(points);
 }
 
-
 module magnetHole(size, tolerance=0.3, chamfer_height=1.5, channel_height=0) {
   // Check if size is 2D (circular) or 3D (rectangular)
   is_circular = len(size) == 2;
@@ -185,7 +183,7 @@ module magnetCalibrationCube(size, mS, mT=0.3, cH=0) {
 magnetCalibrationCube([20, 20, 20], [2, 4, 5], cH=10);
 ```
 
-In principle, if you have a physical object in your mind, you can express it in OpenSCAD using its [primitives, methods of composition and methods of abstraction](TODO - cheatsheet). In practice, if you want to do anything even remotely smooth or organic-ish of any complexity, you need to reach for complex `polygon` arrays and possibly pull in something like [`RoundAnything`](TODO). Maybe _you_ can do this in your head, but I personally can't meaningfully visualize or internally transform things like
+In principle, if you have a physical object in your mind, you can express it in OpenSCAD using its [primitives, methods of composition and methods of abstraction](https://openscad.org/cheatsheet/). In practice, if you want to do anything even remotely smooth or organic-ish of any complexity, you need to reach for complex `polygon` arrays and possibly pull in something like [`RoundAnything`](https://learn.cadhub.xyz/docs/round-anything/api-reference/). Maybe _you_ can do this in your head, but I personally can't meaningfully visualize or internally transform things like
 
 ```
 ...
@@ -214,7 +212,7 @@ I can't easily look at those things and visualize the corresponding lines or sha
 
 ## `scad-sketch-mode`
 
-Here's the first cut of [`scad-sketch-mode`](TODO - link to github). For now, you can clone it from that repo and then add
+Here's the first cut of [`scad-sketch-mode`](https://github.com/inaimathi/scad-sketch-mode/). For now, you can clone it from that repo and then add
 
 ```
 (require 'scad-sketch)
@@ -223,8 +221,8 @@ Here's the first cut of [`scad-sketch-mode`](TODO - link to github). For now, yo
 
 to your `.emacs` file. Then you'll be able to walk up to an array like the ones above and hit `C-c C-.` to get this:
 
-![Image of the basic `scad-sketch` editor interface](TODO)
-![Video demo of `scad-sketch` editor interaction](TODO)
+![Image of the basic `scad-sketch` editor interface](/static/img/skad-sketch/editing.png)
+![Video demo of `scad-sketch` editor interaction](/static/img/skad-sketch/editing.webm)
 
 It's not point-and-click. This is an implementation of a visual editor that lets you navigate around with keyboard shortcuts, and it lets you edit 2D shapes. The interaction flow is 
 
@@ -241,21 +239,6 @@ Conceptually, I understood what I wanted, explained it to ChatGPT which made som
 
 [^such-as-using-svg]: Such as using SVG rendering utilities that are appparently incluedd in stock Emacs as of version 27. This is a fact I didn't know. It probably would have occurred to me to check, but I didn't need to. I think that contribution on its' own saved me an hour or two of work minimum.
 
-The next cut, still in progress, is moving everything into a ChatGPT session, then using it to surgically refactor the existing mode and add features as we go. As I type this, I think I'm around 4 hours deep and getting pretty close to shipping it. You'll see the results over at [my `github`](TODO). Honestly, it's hard to know how to feel about apportioning productivity between me and the robots. On the one hand, my disappointment at Claude's failure to straight up write the expanded major mode is palpable; it felt real and more importantly, it felt like I had wasted some time in the implementation. This implies that there's [money left on the table](https://www.lesswrong.com/posts/rYq6joCrZ8m62m7ej/how-could-i-have-thought-that-faster), but I'm not sure this cashes out as a net negative for the technique. In particular, I strongly suspect that absent any AI involvement at all, this would have been a multi-day, possibly multi-week project, and I probably would have been happy with that level of progress. What's happening here is that there's certain fairly large chunks of the implementation process that are now beneath my level of abstraction.
+The next cut, still in progress, is moving everything into a ChatGPT session, then using it to surgically refactor the existing mode and add features as we go. As I type this, I think I'm around 4 hours deep and getting pretty close to shipping it. You'll see the results over at [my `github`](https://github.com/inaimathi/scad-sketch-mode/). Honestly, it's hard to know how to feel about apportioning productivity between me and the robots. On the one hand, my disappointment at Claude's failure to straight up write the expanded major mode is palpable; it felt real and more importantly, it felt like I had wasted some time in the implementation. This implies that there's [money left on the table](https://www.lesswrong.com/posts/rYq6joCrZ8m62m7ej/how-could-i-have-thought-that-faster), but I'm not sure this cashes out as a net negative for the technique. In particular, I strongly suspect that absent any AI involvement at all, this would have been a multi-day, possibly multi-week project, and I probably would have been happy with that level of progress. What's happening here is that there's certain fairly large chunks of the implementation process that are now beneath my level of abstraction.
 
-I think I _still_ [endorse](TODO - original estimates on AI effects on development) my [previous views](TODO - follow up discussion) on the status of programming as a pursuit absent of AI involvement.
-
-## At a Higher Level
-
-_Because_ I still endorse that view, I think using textual tools is going to get much better over the next little while. As in, I prefer to use [OpenSCAD](TODO) to [FreeCAD](TODO) or [Blender](TODO) because the latter has a textual interface and representation. Which means that I can _in principle_ feed instances and examples of that representations into a capable LLM, and that LLM will then be able to contribute meaningfully to the act of creation.
-
-This currently applies to prose and code, but I expect it to generalize _hard_ by analogy to early CPU/GPU architectures. There was a time in the history of computer hardware development where several companies tried to put together "custom" machines that would [run particular programming languages faster](https://en.wikipedia.org/wiki/Lisp_machine). There was a time when this worked; a brief period in the late 1980s where if you wanted to write LISP, the absolute most performant way to do it was on a dedicated LISP machine. It didn't last. By the mid 2000s at the latest, it was much faster to run it on commodity hardware. The specialist machines are all museum pieces now, and x86/ARM (along with CUDA over on the GPU side) are the defacto compilation targets. 
-
-I suspect LLMs (multimodal or not) are the same sort of focus nexus. This is kind of raw, but my internal reasoning goes something like
-
-1. if you want to have an artifact in the world that doesn't yet exist most effectively, you don't care about the journey, you care about the destination
-2. the shortest possible journey is "specify your artifact, in detail, to the most capable and efficient model you can find, then tweak the results or have it tweak the results until you're satisfied"
-3. because there are now more frontier training runs for multimodal LLMs than for image, audio and video models combined (because those models are more generally useful), in general it's likely that the most capable and efficient model you can find will be a multimodal LLM
-4. because the most capable and efficient models you can find will be multimodal LLMs, and you might still need to tune inputs/outputs, your best course of action is using text-based tools for input and output
-
-I _think_ this generalizes. So, use OpenSCAD instead of FreeCAD, use SVG instead of 
+I think I _still_ [endorse](https://inaimathi.ca/posts/ai-multipliers) my [previous views](https://inaimathi.ca/posts/dont-use-aidev-mode) on the status of programming as a pursuit absent of AI involvement.
