@@ -1,5 +1,6 @@
 import asyncio
 import os
+from os import environ as ENV
 
 import tornado.web
 from pycronado.core import PublicJSONHandler, getLogger, start
@@ -179,5 +180,5 @@ def run_server(port=8000):
 if __name__ == "__main__":
     import sys
 
-    port = int(sys.argv[1]) if len(sys.argv) > 1 else 8000
+    port = int(ENV.get("PORT", sys.argv[1] if len(sys.argv) > 1 else 8000))
     run_server(port)
