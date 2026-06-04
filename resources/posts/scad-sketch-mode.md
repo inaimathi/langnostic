@@ -222,7 +222,7 @@ Here's the first cut of [`scad-sketch-mode`](https://github.com/inaimathi/scad-s
 to your `.emacs` file. Then you'll be able to walk up to an array like the ones above and hit `C-c C-.` to get this:
 
 ![Image of the basic `scad-sketch` editor interface](/static/img/scad-sketch/editing.png)
-![Video demo of `scad-sketch` editor interaction](/static/img/scad-sketch/editing.webm)
+![Video demo of `scad-sketch` editor interaction](/static/img/scad-sketch/editing.gif)
 
 It's not point-and-click. This is an implementation of a visual editor that lets you navigate around with keyboard shortcuts, and it lets you edit 2D shapes. The interaction flow is 
 
