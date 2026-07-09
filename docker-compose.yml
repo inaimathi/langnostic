@@ -1,0 +1,13 @@
+services:
+  langnostic:
+    image: ghcr.io/inaimathi/langnostic:latest
+    ports: ['4444:4000']
+    volumes:
+      - ./resources:/app/resources
+    environment:
+      PORT: 4000
+    networks: [edge]
+    restart: unless-stopped
+
+networks:
+  edge: {}
