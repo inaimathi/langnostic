@@ -41,20 +41,29 @@ def load_posts() -> None:
     """Load posts from the posts.json file."""
     global POSTS
 
-    # Create a map of existing posts by ID for content reuse
     old_posts_map = {post.get("id"): post for post in POSTS}
 
     try:
         with open("resources/posts.json", "r", encoding="utf-8") as f:
             new_posts = []
-            for line in f:
-                if line.strip():  # Skip empty lines
-                    post = parsePost(old_posts_map, line)
-                    if post:  # Only add non-empty posts
-                        new_posts.append(post)
 
-            # Replace posts with new_posts
+            for line in f:
+                if line.strip():
+                    post = parsePost(old_posts_map, line)
+
+                    if not post:
+                        continue
+
+                    if not os.path.exists(post_file_path(post)):
+                        print(
+                            f"Skipping missing post file for slug: {post.get('file')}"
+                        )
+                        continue
+
+                    new_posts.append(post)
+
             POSTS = new_posts
+
     except Exception as e:
         print(f"Error loading posts: {e}")
 
