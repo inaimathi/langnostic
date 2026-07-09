@@ -105,25 +105,34 @@ class AtomFeedHandler(tornado.web.RequestHandler):
 
 
 class PostsWatcher(FileSystemEventHandler):
+    def reload_if_relevant(self, event):
+        if event.is_directory:
+            return
+
+        path = event.src_path
+        relevant = (
+            path == "resources/posts.json"
+            or path.startswith("resources/posts/")
+            or path.startswith("resources/public/audio/")
+        )
+
+        if relevant:
+            logger.info(f"Reloading posts after FS change: {path}")
+            posts.load_posts()
+            files.file_content.cache_clear()
+            logger.info("posts reloaded")
+
     def on_created(self, event):
-        if event.src_path == "resources/posts.json":
-            logger.info("Reloading posts.json...")
-        elif event.src_path.startswith("resources/posts/"):
-            logger.info("Reloading posts.json after new post...")
-        elif event.src_path.startswith("resources/public/audio/"):
-            logger.info("Reloading posts.json after audio change...")
-        posts.load_posts()
-        logger.info("posts.json reloaded")
+        self.reload_if_relevant(event)
 
     def on_modified(self, event):
-        if event.src_path.startswith("resources/posts/"):
-            filename = os.path.basename(event.src_path)
-            if filename.endswith(".md"):
-                slug = filename[:-3]
-                post = posts.find_by_slug(slug)
-                if post:
-                    logger.info(f"Clearing cache for post {slug}")
-                    files.file_content.cache_clear()
+        self.reload_if_relevant(event)
+
+    def on_deleted(self, event):
+        self.reload_if_relevant(event)
+
+    def on_moved(self, event):
+        self.reload_if_relevant(event)
 
 
 ROUTES = [
