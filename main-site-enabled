@@ -1,5 +1,5 @@
 server {
-       server_name langnostic.inaimathi.ca langnostic.inaimathi.com blog.inaimathi.com blog.inaimathi.ca inaimathi.ca inaimathi.com www.inaimathi.ca www.inaimathi.com 137.184.162.204;
+       server_name langnostic.inaimathi.ca langnostic.inaimathi.com blog.inaimathi.com blog.inaimathi.ca inaimathi.ca inaimathi.com www.inaimathi.ca www.inaimathi.com 138.197.135.113;
 
        rewrite .*/favicon.ico /static/img/favicon.ico last;
 
@@ -24,50 +24,4 @@ server {
                 proxy_busy_buffers_size 64k;
                 proxy_temp_file_write_size 64k;
         }
-
-    listen 443 ssl; # managed by Certbot
-    ssl_certificate /etc/letsencrypt/live/inaimathi.ca/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/inaimathi.ca/privkey.pem; # managed by Certbot
-    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
-    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
-
-
-
-
-
-
 }
-server {
-    if ($host = www.inaimathi.com) {
-        return 301 https://$host$request_uri;
-    } # managed by Certbot
-
-
-    if ($host = www.inaimathi.ca) {
-        return 301 https://$host$request_uri;
-    } # managed by Certbot
-
-
-    if ($host = langnostic.inaimathi.com) {
-        return 301 https://$host$request_uri;
-    } # managed by Certbot
-
-
-    if ($host = langnostic.inaimathi.ca) {
-        return 301 https://$host$request_uri;
-    } # managed by Certbot
-
-
-    if ($host = inaimathi.com) {
-        return 301 https://$host$request_uri;
-    } # managed by Certbot
-
-
-    if ($host = inaimathi.ca) {
-        return 301 https://$host$request_uri;
-    } # managed by Certbot
-
-
-       listen 80;
-       server_name langnostic.inaimathi.ca langnostic.inaimathi.com blog.inaimathi.com blog.inaimathi.ca inaimathi.ca inaimathi.com www.inaimathi.ca www.inaimathi.com 137.184.162.204;
-    return 404; # managed by Certbot
