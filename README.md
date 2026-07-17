@@ -1,7 +1,7 @@
 # langnostic
 ###### The personal blog of Inaimathi
 
-- Currently written in [Clojure](http://clojure.org/) (formerly in [Haskell](https://www.haskell.org/), formerly in [Go](http://golang.org/), formerly in [Common Lisp](https://common-lisp.net/)).
+- Currently written in [Python](https://www.python.org/) (formerly in [Clojure](http://clojure.org/), formerly in [Haskell](https://www.haskell.org/), formerly in [Go](http://golang.org/), formerly in [Common Lisp](https://common-lisp.net/)). You win, [Guido](https://en.wikipedia.org/wiki/Guido_van_Rossum).
 - Serves posts from the `.md` files found in [resources/posts/](https://github.com/Inaimathi/langnostic/tree/master/resources/posts/), so you could theoretically just read it from this repo (but it seems like it would be a pain in the ass to figure out which post is supposed to be the latest)
 - All prose contained herein is licesned under [CC-BY-SA 3.0](http://creativecommons.org/licenses/by-sa/3.0/). The code constituting the site itself is releaed under [Expat](http://directory.fsf.org/wiki/License:Expat)
 
