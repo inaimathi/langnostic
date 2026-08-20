@@ -111,7 +111,19 @@ On some level, this strikes me as the hardest set of disagreements to face down,
 The "easy" disagreements are going to have the shape of "here are approaches we might use to steer AIs better, account for them". There _are_ some alignment technologies, some policy choices that we can make and some technical choices we can make that can have a positive effect on the impact of AIs in the world.
 
 ## Can we mitigate them enough to materially change the outcome?
-### Can interventions meaningfully change the probability of catastrophic outcomes?
+
+The "hard" disagreements center around existential risks, gradual disempowerment and loss of control risks. These are harder because 
+
+- they haven't happened yet so they're harder to reason about, 
+- and it's unclear whether we could mitigate them, 
+- and in the absence of mitigation, if we can't also avoid them, they're catastrophic
+
+Which is an end state we're all hopefully trying to avoid. Depending on how many arguments we concede here, our prescriptions might end up being pretty extreme sounding, bordering on the Abolitionist positions. Things like "ban all frontier AI research", or "ban all datacenters of certain sizes".
+
 ## Is the development of advanced AI meaningfully steerable?
+
+There's a disagreement on whether we can meaningfully steer greater-than-human-level intelligences at all. This is "alignment research on hard mode". I'm inclined to take it seriously, but doing so means _at least_ being favorable to a pause and possible more stringent capabilities research regulations. I think this involves the most powerful opposing arguments, because the Doomers will basically be pointing our own anti-Maximalist arguments right back at us. "Here's an example where even a current level AI, with human experts and some controls charged with caretaking, still managed to do strange unaligned things and cause damage in the real world. What makes you think _more_ capable AIs will do less of that?"
+
 ### Is catastrophic failure inevitable given sufficiently capable AI?
-### Are there plausible trajectories to highly capable AI that avoid catastrophic human disempowerment?
+
+This is a concrete disagreement worth calling out. Given AGI or ASI of sufficient capability, are there _any_ futures that don't pass through a catastrophic failure? How many of those futures are straightforwardly reachable with no alignment breakthroughs? If the answer is no, and we can't present a coherent story that gets us there, plausibly we should be less bullish on the Safetyist agenda.
