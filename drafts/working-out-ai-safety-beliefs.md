@@ -8,7 +8,7 @@ If you're interested in AI safety as a project, you need to have a particular co
 2. AI has downsides and tradeoffs, and these are worth seriously grappling with.
 3. As a collective or as individuals, we are capable of acting and coordinating in order to mitigate the downsides and tradeoffs such that AI ends up being a net good in the world
 
-![](/static/img/ai-safety-territory/002-ai-safety-points.png)
+![An old-timey-map-style three point panel showing the minimal AI Safety beliefs](/static/img/ai-safety-territory/002-ai-safety-points.png)
 
 These are foundational. It's possible to be nuanced in each one, and doing so will put you in the position of helping different projects within AI safety. And it's possible to hold additional normative or empirical beliefs regarding AI and still fit. But if you _fully_ disagree with any or all of them, then you should probably question if AI safety is actually the thing you should be putting energy into. Similarly, if you agree with all three[^and-the-hidden-zeroth], but don't think AI safety is valuable, question that.
 
@@ -18,23 +18,23 @@ We can map out the adjacent movements/beliefs/positions to AI safety by seeing w
 
 ### AI Abolitionists/Anti AI
 
-![](/static/img/ai-safety-territory/005--an-ai-abolitionist.png)
+![An image of a person in a hoodie and green cloak holding protest signs outside of a large, well guarded datacenter. Her badge is a crossed out robot.](/static/img/ai-safety-territory/005--an-ai-abolitionist.png)
 
 If you disagree with point 1, you think AI can not do good in the world. At the extreme, your model of the world is that it has only downsides, and will definitely result in net bad outcomes in the world. These are people rationally agitating for datacenter closures in full generality and complaining about any and all slop anywhere.
 
 ### AI Maximalists/EAcc
 
-![](/static/img/ai-safety-territory/006--an-ai-maximalist.png)
+![An image of an AI maximalist in front of a gleaming techno-futurist city, smiling and holding a binder reading "Boundless Future". Surrounding writings are AI-optimistic including "Risks? Manageable. Potential? Infinite."](/static/img/ai-safety-territory/006--an-ai-maximalist.png)
 
 If you disagree with point 2, you think AI can do _only_ good. Potentially, you think that all the tradeoffs and failure modes are either exaggerated, or fabricated, or will be trivial to mitigate. Or possibly that the upsides of AI are so huge that it'll be net positive no matter what we do. You think that the real path forward is to do all the capabilities research all the time, and rationally want to pump maximum capital into new datacenters because doing so will provide more goods. These people are confused by the pause movement, and possibly AI Safety writ large because we're moving to mitigate non-issues in a way that delays a better world.
 
 ### Doomers
 
-![](/static/img/ai-safety-territory/004--an-ai-doomer.png)
+![An image of an AI doomer sitting, looking over a valley with a natural landscape and a small town. His gray cloak has an hourglass icon on it, and a banner behind him reads "We can't steer what we can't control"](/static/img/ai-safety-territory/004--an-ai-doomer.png)
 
 If you disagree with point 3, you think AI _can_ do good, _and_ has downsides, but the downsides are either so overwhelmingly bad that we need to reduce their risk to zero, or that we won't mitigate them. This can either be because they're hard or impossible to mitigate, or because we're bad at mitigating, or we're disincentivized from mitigating, or they're intrinsically linked to the goods we want to extract, or we'll be disempowered by the time it matters.
 
-![A map of the AI Safety plains and surrounding territory](/static/img/ai-safety-territory/001-ai-safety-region-map.png)
+![A map of the AI Safety plains and surrounding territory. There is a Village of Doomers across the river to the northeast, the Badlands of AI Abolition to the north, the Desert of AI Maximalism to the south (including a city in the desert and a cordoned off "Former Nuclear Testing Site of EAcc"). There is a city across a bridge in a bay to the west labelled "The Possibly Imaginary Metropolis of Alignment by Default"](/static/img/ai-safety-territory/001-ai-safety-region-map.png)
 
 # Things You Don't Have To Believe
 
@@ -49,13 +49,13 @@ Those are the _substantive_ axes of disagreement. There's a bunch of things gene
 - Existential risk is high
 - Current systems are already dangerously capable
 
-![](/static/img/ai-safety-territory/003--an-ai-safetyist.png)
+![An image of an AI Safetyist. She's holding a book titled "Tools for a Better Future", and holding a blue and gold banner of a tree icon. The three points of AI Safety are on signs in the background.](/static/img/ai-safety-territory/003--an-ai-safetyist.png)
 
 You can imagine people who take any of the extreme positions on each of those points and still think the pursuit of AI Safety is worthwhile.
 
 # Vs. Abolitionists/Anti AI
 
-![](/static/img/ai-safety-territory/007--safetyist-vs-abolitionist.png)
+![An AI safetyist arguing with an AI Abolitionist in front of a mixed faction crowd](/static/img/ai-safety-territory/007--safetyist-vs-abolitionist.png)
 
 The disagreement with abolitionists comes down to whether we can expect goods from AI. Things that we'd otherwise not get, or get at a worse exchange rate, without AI.
 
@@ -95,7 +95,7 @@ Plausibly, there are goods AI can produce _much faster_ and more efficiently tha
 
 # Vs. AI Maximalists/EAcc
 
-![](/static/img/ai-safety-territory/008--safetyist-vs-maximalist.png)
+![A Safetyist debating a Maximalist in front of the gleaming techno-utopian Maximalist city](/static/img/ai-safety-territory/008--safetyist-vs-maximalist.png)
 
 This is, in many ways, the exact opposite set of disagreements between the Abolitionists and the Safetyists. The cruxes might seem like they'd be inversed, but only partially. We should resist the temptation to argue with Maximalists on the grounds of "AI won't do as much good as you think". Grant them any non-infinite amount of good and move forward to the cruxes we care about. Plausibly you might even grant an _infinite_ amount of good? I'm unsure how this would cash out because it would have to run into the effectively-infinite downside of loss-of-control or extinction risk?
 
@@ -111,12 +111,20 @@ The extreme disagreement here is over whether AI has downsides at all. This migh
 Once we're past establishing whether there are downsides at all, the next set of disagreements revolves around whether AI will be net-bad by default. A Maximalist can grant that there are some risks and tradeoffs, but still argue that with no additional Safety input, the effect will be net good, possibly by a wide margin. And, assuming we avoid extinction and loss-of-control, if that's true, a Maximalist agenda is still worth following. I suspect that the strongest arguments against here are going to be things showcasing recent alignment issues that made it into the wild. In particular [the Huggingface incident](https://www.lesswrong.com/posts/xPAxz4g96uKz9FrHs/what-happened-openai-and-huggingface#The_Shorter_Version) and [the gym incident](https://www.bbc.com/news/articles/cn0nww2qlp7o); things that point to "AIs are harder to control than we would have thought last year".
 
 ### Could AI have catastrophic or existential downsides?
+
+My impression of most Maximalists is that they tend to be either straight up disbelieve existential/catastrophic downsides, or possibly believe that they're extremely unlikely. To some extent, we can use contemporary examples here same as in the "is AI net bad case". This section might also benefit from distilled, straightforward loss-of-control-scenario arguments that combine current loss of control incidents, combined with pointing to the recent "All Lawful Use" deals the DoW signed with US companies. Plausibly even someone who had a low probability on catastrophic outcomes before having this information, should give it some credence after noticing that the US government is actively working towards them.
+
 ### Can individually beneficial uses of AI add up to a collectively bad outcome?
+
+There are probably scenarios we could think of that involve various collective action outcomes which can be exacerbated by AI. This might be more an argument about collective action _than_ AI, but we could think of examples in the disinformation/slop media space that fit here.
+
 ### Can increasing AI capability increase its downsides as well as its benefits?
+
+One disagreement with the Maximalists once we've gotten past "AI can have any downsides at all" involves situations where increasing AI capabilities naturally also increases AI risk. Cyber-warfare/network intrusion is an example here. We want AIs that are capable in these domains in order to be able to better defend against them, but in some sense that defense raises the threshold for minimum viable defense that it might end up being net negative. What we want to point to in this particular disagreement is some dynamic in AI capability research/development that, if left unchecked, would not mitigate related risks but scale them along.
 
 # Vs. The Doomers
 
-![](/static/img/ai-safety-territory/009--safetyist-vs-doomer.png)
+![A Safetyist debating a Doomer in front of a mixed faction crowd, set in front of a background of the Doomer Village.](/static/img/ai-safety-territory/009--safetyist-vs-doomer.png)
 
 On some level, this strikes me as the hardest set of disagreements to face down, because I'm not sure how to fight some of them. [IABIED](https://ifanyonebuildsit.com/) is sort of an artifact of this mindset, and the predictions are hard to refute if you accept most of their premises.
 
