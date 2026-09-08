@@ -24,13 +24,13 @@ If you disagree with point 1, you think AI can not do good in the world. At the 
 
 ### AI Maximalists/EAcc
 
-![An image of an AI maximalist in front of a gleaming techno-futurist city, smiling and holding a binder reading "Boundless Future". Surrounding writings are AI-optimistic including "Risks? Manageable. Potential? Infinite."](/static/img/ai-safety-territory/006--an-ai-maximalist.png)
+![An image of a person in front of a gleaming techno-futurist city, smiling and holding a binder reading "Boundless Future". Surrounding writings are AI-optimistic including "Risks? Manageable. Potential? Infinite."](/static/img/ai-safety-territory/006--an-ai-maximalist.png)
 
 If you disagree with point 2, you think AI can do _only_ good. Potentially, you think that all the tradeoffs and failure modes are either exaggerated, or fabricated, or will be trivial to mitigate. Or possibly that the upsides of AI are so huge that it'll be net positive no matter what we do. You think that the real path forward is to do all the capabilities research all the time, and rationally want to pump maximum capital into new datacenters because doing so will provide more goods. These people are confused by the pause movement, and possibly AI Safety writ large because we're moving to mitigate non-issues in a way that delays a better world.
 
 ### Doomers
 
-![An image of an AI doomer sitting, looking over a valley with a natural landscape and a small town. His gray cloak has an hourglass icon on it, and a banner behind him reads "We can't steer what we can't control"](/static/img/ai-safety-territory/004--an-ai-doomer.png)
+![An image of a person sitting, looking over a valley with a natural landscape and a small town. His gray cloak has an hourglass icon on it, and a banner behind him reads "We can't steer what we can't control"](/static/img/ai-safety-territory/004--an-ai-doomer.png)
 
 If you disagree with point 3, you think AI _can_ do good, _and_ has downsides, but the downsides are either so overwhelmingly bad that we need to reduce their risk to zero, or that we won't mitigate them. This can either be because they're hard or impossible to mitigate, or because we're bad at mitigating, or we're disincentivized from mitigating, or they're intrinsically linked to the goods we want to extract, or we'll be disempowered by the time it matters.
 
@@ -61,7 +61,7 @@ The disagreement with abolitionists comes down to whether we can expect goods fr
 
 ## Can AI do any good at all?
 
-In extreme cases, some people believe or seem to believe that AI just _can't do good things_. They phrase this as "it's all slop", and the argument here is going to be establishing a task class or use case where AIs are unambiguously good. Something like
+In extreme cases, some people believe or seem to believe that AI just _can't do good things_. They phrase this as something like "it's all slop", and the argument here is going to be establishing a task class or use case where AIs are unambiguously good. Something like
 
 1. there is a task that humans perform
 2. the humans that perform it professionally hate doing it
