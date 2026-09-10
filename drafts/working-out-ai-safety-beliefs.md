@@ -16,7 +16,7 @@ These are foundational. It's possible to be nuanced in each one, and doing so wi
 
 We can map out the adjacent movements/beliefs/positions to AI safety by seeing what they disagree with. These aren't intended to be mutually exclusive buckets. Think of them as directions out of the AI Safety region: the harder you reject one of the three claims, the farther you move toward the corresponding neighboring position.
 
-### AI Abolitionists/Anti-Ai
+### AI Abolitionists/Anti-AI
 
 ![An image of a person in a hoodie and green cloak holding protest signs outside of a large, well guarded datacenter. Her badge is a crossed out robot.](/static/img/ai-safety-territory/005--an-ai-abolitionist.png)
 
@@ -32,7 +32,7 @@ If you disagree with point 2, you think AI can do _only_ good. Potentially, you 
 
 ![An image of a person sitting, looking over a valley with a natural landscape and a small town. His gray cloak has an hourglass icon on it, and a banner behind him reads "We can't steer what we can't control"](/static/img/ai-safety-territory/004--an-ai-doomer.png)
 
-If you disagree with point 3, you think AI _can_ do good, _and_ has downsides, but the downsides are either overwhelming, or that plausible interventions cannot mitigate the important harms enough to leave a sufficiently capable AI future net positive. This can either be for a variety of reasons; because the harms are hard or impossible to mitigate, because we're bad at or disincentivized from mitigating, because the harms are intrinsically linked to the goods we want to extract in some way, or because we'll be disempowered by the time it matters.
+If you disagree with point 3, you think AI _can_ do good, _and_ has downsides, but either the downsides are overwhelming, or plausible interventions cannot mitigate the important downsides enough to leave a sufficiently capable AI future net positive. This can either be for a variety of reasons; because the harms are hard or impossible to mitigate, because we're bad at or disincentivized from mitigating, because the harms are intrinsically linked to the goods we want to extract in some way, or because we'll be disempowered by the time it matters.
 
 ![A map of the AI Safety plains and surrounding territory. There is a Village of Doomers across the river to the northeast, the Badlands of AI Abolition to the north, the Desert of AI Maximalism to the south (including a city in the desert and a cordoned off "Former Nuclear Testing Site of EAcc"). There is a city across a bridge in a bay to the west labelled "The Possibly Imaginary Metropolis of Alignment by Default"](/static/img/ai-safety-territory/001-ai-safety-region-map.png)
 
@@ -53,7 +53,7 @@ Those are the _substantive_ axes of disagreement. There's a bunch of things gene
 
 You can imagine people who take very different positions on each of those questions and still think the pursuit of AI Safety is worthwhile.
 
-# Vs. Abolitionists/Anti-Ai
+# Vs. Abolitionists/Anti-AI
 
 ![An AI safetyist arguing with an AI Abolitionist in front of a mixed faction crowd](/static/img/ai-safety-territory/007--safetyist-vs-abolitionist.png)
 
@@ -84,11 +84,11 @@ A possible ground for argument is that there are frontier uses of AI which are j
 
 ### Can AI reduce friction enough on things we could do without it that it's worth it even if not unique?
 
-Apart from frontier benefits, can AI give us gains in task classes that humans are already pretty good in, but not perfect candidates for automation? Can a human accountant or auditor be 40% more efficient in their work by using AI? If so, this is an example of a good, and we can talk about what that, possibly non-transformative, good in the context of something on one side of the ledger.
+Apart from frontier benefits, can AI give us gains in task classes that humans are already pretty good in, but not perfect candidates for automation? Can a human accountant or auditor be 40% more efficient in their work by using AI? If so, that's a possibly non-transformative good we still need to put on one side of the ledger.
 
 ### Are there goods AI can produce at a scale that changes the comparison?
 
-Plausibly, there are goods AI can produce _much faster_ and more efficiently than humans could ever hope to. To the point that it gives a qualitative change in the way we as a species live our lives. Something that's viewed as rare and precious now, possibly even worthy of rationing, but that AI could help us turn into trivial goods that might be fully available everywhere. If yes, then plausibly it's worth taking some downsides/risks to accomplish those gains.
+Plausibly, there are goods AI can produce so much faster and more efficiently than humans ever could that they produce a qualitative change in how we live. Something that's viewed as rare and precious now, possibly even worthy of rationing, but that AI could help us turn into trivial goods that might be fully available everywhere. If yes, then plausibly it's worth taking some downsides/risks to accomplish those gains.
 
 # Vs. AI Maximalists/EAcc
 
@@ -109,7 +109,7 @@ Once we're past establishing whether there are downsides at all, the next set of
 
 ### Could AI have catastrophic or existential downsides?
 
-My impression of most Maximalists is that they tend to either outright disbelieve existential/catastrophic downsides, or believe that they're extremely unlikely. To some extent, we can use contemporary examples here same as in the "is AI net bad case". The fundamental cruxes here are around likelihood and potential damage of loss-of-control, existential threats or gradual disempowerment scenarios. Plausibly even someone who had a low probability on catastrophic outcomes before having this information, we could provided evidence that existing organizations are moving towards things that have associated risks.
+My impression of most Maximalists is that they tend to either outright disbelieve existential/catastrophic downsides, or believe that they're extremely unlikely. The fundamental cruxes here are around the likelihood and potential damage of loss-of-control, existential threats and gradual disempowerment scenarios. We don't need to establish that any particular catastrophic outcome is *likely* in order to have this disagreement; we need to establish that there are coherent paths to outcomes bad enough that even relatively small probabilities materially change the ledger. If those paths exist, then "AI will produce enormous amounts of good" isn't by itself enough to settle the question.
 
 ### Can individually beneficial uses of AI add up to a collectively bad outcome?
 
@@ -117,13 +117,13 @@ Even if we agree that AI does good on balance, we still need to grapple with the
 
 ### Can increasing AI capability increase its downsides as well as its benefits?
 
-One disagreement with the Maximalists once we've gotten past "AI can have any downsides at all" involves situations where increasing AI capabilities naturally also increases AI risk. Cyber-warfare/network intrusion is an example here. We want AIs that are capable in these domains in order to be able to better defend against them, but in some sense that defense raises the threshold for minimum viable defense that it might end up being net negative. What we want to point to in this particular disagreement is some dynamic in AI capability research/development that, if left unchecked, would not mitigate related risks but scale them along.
+One disagreement with the Maximalists once we've gotten past "AI can have any downsides at all" involves situations where increasing AI capabilities naturally also increases AI risk. Cyber-warfare/network intrusion is an example here. We want AIs that are capable in these domains in order to be able to better defend against them, but improving offensive capability also raises the minimum capability required for viable defense, potentially enough to make the overall capability increase net negative. What we want to point to in this particular disagreement is some dynamic in AI capability research/development that, if left unchecked, would not mitigate related risks but scale them along.
 
 # Vs. The Doomers
 
 ![A Safetyist debating a Doomer in front of a mixed faction crowd, set in front of a background of the Doomer Village.](/static/img/ai-safety-territory/009--safetyist-vs-doomer.png)
 
-The book [If Anyone Builds It Everyone Dies](https://ifanyonebuildsit.com/) is sort of an artifact of this mindset, and the predictions are hard to refute if you accept most of their premises.
+The book [If Anyone Builds, It Everyone Dies](https://ifanyonebuildsit.com/) is sort of an artifact of this mindset, and the predictions are hard to refute if you accept most of their premises.
 
 ## Can we mitigate the risks, tradeoffs or downsides at all?
 
@@ -158,6 +158,6 @@ So that's roughly the terrain. AI Safety, in the sense I'm using the term here, 
 2. that it can also produce harms worth taking seriously
 3. and that we have enough leverage over what happens next for trying to steer the outcome to be worthwhile. 
 
-Push hard enough against any of those and you start wandering into Abolitionist, Maximalist or Doomer territory. Reject the importance of the whole question and you can stay home with the AI Civilians. None of this tells us yet which of those beliefs have effective contact with reality, or how strongly we should hold them. That's the point of the next few posts. First up is the optimistic side of the ledger: **What Good Is AI?** What do we actually get out of this stuff, how valuable could those goods become, and how much would there have to be before an Abolitionist ought to reconsider? I realize it _seems_ like this might be seen as too basic, but I've seen too many throwaway comments online that aggressively push either "AI is all bad all the time" or point to slop as the only possible output. Given that those arguments exist, I feel like I have to put in at least _some_ effort into walking the northern border with the Abolitionists.
+Push hard enough against any of those and you start wandering into Abolitionist, Maximalist or Doomer territory. Reject the importance of the whole question and you can stay home with the AI Civilians. None of this tells us yet how well those beliefs survive contact with reality, or how strongly we should hold them. That's the point of the next few posts. First up is the optimistic side of the ledger: **What Good Is AI?** What do we actually get out of this stuff, how valuable could those goods become, and how much would there have to be before an Abolitionist ought to reconsider? I realize it _seems_ like this might be seen as too basic, but I've seen too many throwaway comments online that aggressively push either "AI is all bad all the time" or point to slop as the only possible output. Given that those arguments exist, I feel like I have to put in at least _some_ effort into walking the northern border with the Abolitionists.
 
 As always, I'll let you know how it goes.
