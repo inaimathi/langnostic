@@ -117,7 +117,7 @@ Even if we agree that AI does good on balance, we still need to grapple with the
 
 ### Can increasing AI capability increase its downsides as well as its benefits?
 
-One disagreement with the Maximalists once we've gotten past "AI can have any downsides at all" involves situations where increasing AI capabilities naturally also increases AI risk. Cyber-warfare/network intrusion is an example here. We want AIs that are capable in these domains in order to be able to better defend against them, but improving offensive capability also raises the minimum capability required for viable defense, potentially enough to make the overall capability increase net negative. What we want to point to in this particular disagreement is some dynamic in AI capability research/development that, if left unchecked, would not mitigate related risks but scale them along.
+One disagreement with the Maximalists once we've gotten past "AI can have any downsides at all" involves situations where increasing AI capabilities naturally also increases AI risk. Cyber-warfare/network intrusion is an example here. We want AIs that are capable in these domains in order to be able to better defend against them, but improving defensive capability by default also increases offensive capability available at scale, potentially enough to make the overall capability increase net negative. What we want to point to in this particular disagreement is some dynamic in AI capability research/development that, if left unchecked, would not mitigate related risks but scale them along.
 
 # Vs. The Doomers
 
