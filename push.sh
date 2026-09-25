@@ -1,3 +1,4 @@
-rsync -rc resources/posts --exclude=*~ --progress inaimathi.ca:langnostic/resources
+rsync -rc ${INCLUDE_PUBLIC:+resources/public/}resources/posts --exclude=*~ --progress inaimathi.ca:langnostic/resources
+echo $?
 rsync resources/posts.json --progress inaimathi.ca:langnostic/resources
-rsync -r --exclude=*~ --progress resources/public/ inaimathi.ca:langnostic/resources/public/
+if [ $? -eq 0 ]; then rsync -r --exclude=*~ --progress ${INCLUDE_PUBLIC:+resources/public/}resources/public/ inaimathi.ca:langnostic/resources/public/; fi
